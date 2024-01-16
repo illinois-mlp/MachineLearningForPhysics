@@ -7,7 +7,7 @@ You will learn the basics of Artificial Neural Networks
 * Learn about Artificial Neural Networks
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing)
 * {doc}`lectures/ArtificialNeuralNetworks`
 
 ## *Homework Assignment*

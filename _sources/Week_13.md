@@ -7,7 +7,7 @@ You will learn the basics of Physics Informed Neural Networks
 * Learn about Physics Informed Neural Networks
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing)
 * {doc}`lectures/PhysicsInformedNeuralNetworks`
 
 ## *Homework Assignment*

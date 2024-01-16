@@ -7,7 +7,7 @@ You will learn the basics of Artificial Intelligence and Machine Learning
 * Learn about Artificial Intelligence and Machine Learning
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1o9tM9ppKZWIa9B3WIHy5JDF4myR5NkO02W6WAlyiTSg/edit?usp=sharing)
 * {doc}`lectures/ArtificialIntelligenceMachineLearning`
 
 ## *Homework Assignment*
