@@ -7,7 +7,7 @@ You will learn the basics of Variational Inference and Normalizing Flows
 * Learn about Variational Inference and Normalizing Flows
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing)
 * {doc}`lectures/VariationalInferenceNormalizingFlows`
 
 ## *Homework Assignment*

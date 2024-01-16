@@ -7,7 +7,7 @@ You will learn the basics of Bayesian Inference
 * Learn about Bayesian Inference
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing)
 * {doc}`lectures/BayesianInference`
 
 ## *Homework Assignment*

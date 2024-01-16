@@ -7,7 +7,7 @@ You will learn the basics of Generative Models
 * Learn about Generative Models
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing)
 * {doc}`lectures/GenerativeModels`
 
 ## *Homework Assignment*

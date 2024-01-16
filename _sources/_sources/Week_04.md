@@ -7,7 +7,7 @@ You will learn the basics of Types of Learning from Data
 * Learn about Types of Learning from Data
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing)
 * {doc}`lectures/Learning`
 
 ## *Homework Assignment*

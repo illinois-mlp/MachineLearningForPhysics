@@ -7,7 +7,7 @@ You will learn the basics of Learning Physics from the Machines
 * Learn about Learning Physics from the Machines
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing)
 * {doc}`lectures/LearningPhysicsMachines`
 
 ## *Homework Assignment*

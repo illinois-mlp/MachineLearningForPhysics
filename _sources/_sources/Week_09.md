@@ -7,7 +7,7 @@ You will learn the basics of Convolutional and Recurrent Neural Networks
 * Learn about Convolutional and Recurrent Neural Networks
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing)
 * {doc}`lectures/ConvolutionalRecurrentNeuralNetworks`
 
 ## *Homework Assignment*

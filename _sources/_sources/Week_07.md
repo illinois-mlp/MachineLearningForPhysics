@@ -7,7 +7,7 @@ You will learn the basics of Simulation-free Inference
 * Learn about Simulation-free Inference
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing)
 * {doc}`lectures/SimulationFreeInference`
 
 ## *Homework Assignment*
