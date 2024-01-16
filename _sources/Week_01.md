@@ -16,7 +16,7 @@ You will start with an overview of the course and then an introduction to statis
 * Learn about Kernel functions
 
 ## *Lecture Materials*
-* [Slides]()
+* [Slides](https://docs.google.com/presentation/d/1cQJycGyQ07qSOoeskr6GjjTD3byIkxDbdi228NRgFeU/edit?usp=sharing)
 * {doc}`lectures/JupyterNumpy`
 * {doc}`lectures/Pandas`
 * {doc}`lectures/Visualization`
