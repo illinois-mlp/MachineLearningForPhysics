@@ -3,3 +3,4 @@ __pycache__
 *.dat
 *.zip
 tfs
+tmp_data
