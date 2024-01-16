@@ -1,0 +1,110 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: _sources/Week_01 # Introduction to Data Science
+  sections:
+  - url: https://docs.google.com/presentation/d/1vq4b3zxrhEMJbfeCH52hufBbXvTwhufEXdSs8mWY2ec/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/JupyterNumpy
+  - file: _sources/lectures/Pandas
+  - file: _sources/lectures/Visualization
+  - file: _sources/lectures/Clustering
+  - file: _sources/lectures/Dimensionality
+  - file: _sources/lectures/Nonlinear
+  - file: _sources/homework/Homework_01
+- file: _sources/Week_02 # Introduction to Artifical Intelligence and Machine Learning
+  sections:
+  - url: https://docs.google.com/presentation/d/1fxUZ9nOM9RtQYOGHNl7qQPq2yX_YYokqfyaQvOMRIHY/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/ArtificialIntelligenceMachineLearning
+  - file: _sources/homework/Homework_02
+- file: _sources/Week_03 # Artificial Neural Networks
+  sections:
+  - url: https://docs.google.com/presentation/d/162LeNpOREjgB2dSaUUs369-KLCTafVjscWL6jGIEQ94/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/ArtificialNeuralNetworks
+  - file: _sources/homework/Homework_03
+- file: _sources/Week_04 # Types of Learning from Data
+  sections:
+  - url: https://docs.google.com/presentation/d/1El5ZPCZU_J45VfFUg80DigBZ8jnC5xXrXVnpOSdx0KY/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/Learning
+  - file: _sources/homework/Homework_04
+- file: _sources/Week_05 # Bayesian Inference
+  sections:
+  - url: https://docs.google.com/presentation/d/1y7zT3bz7simKqefCd54S9kba3tNw0pO7-0FajWPP27Y/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/BayesianInference
+  - file: _sources/homework/Homework_05
+- file: _sources/Week_06 # Variational Inference and Normalizing Flows
+  sections:
+  - url: https://docs.google.com/presentation/d/1PTfD9Ds2XGWao6XB387rg11-17sX0dYQvWWLYs78lFo/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/VariationalInferenceNormalizingFlows
+  - file: _sources/homework/Homework_06
+- file: _sources/Week_07 # Simulation-free Inference
+  sections:
+  - url: https://docs.google.com/presentation/d/1i9vv4J9iaAeiDIbI7y46tcSdteM9js9uiNpy5j2mF0E/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/SimulationFreeInference
+  - file: _sources/homework/Homework_07
+- file: _sources/Project_01 # Project 01
+  sections:
+  - file: _sources/projects/Project_01_HiggsTauTau
+  - file: _sources/projects/Project_01_ExoticParticles
+  - file: _sources/projects/Project_01_GalaxyZoo
+  - file: _sources/projects/Project_01_NuclearGeometryQGP
+  - file: _sources/projects/Project_01_AberratedImages
+  - file: _sources/projects/Project_01_DarkEnergySurvey
+- file: _sources/Week_08 # Generative Models
+  sections:
+  - url: https://docs.google.com/presentation/d/1L4UQPP-3EntdFerMZV4UGhH1MOSXr13ttZwns8kgA6Q/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/GenerativeModels
+  - file: _sources/homework/Homework_08
+- file: _sources/Week_09 # Convolutional and Recurrent Neural Networks
+  sections:
+  - url: https://docs.google.com/presentation/d/1qz-upN4lyUPY6_YxAuHbLoa5JCKtexUrM7LWITM1sg0/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
+  - file: _sources/homework/Homework_09
+- file: _sources/Week_10 # Geometric Deep Learning and Graph Neural Networks
+  sections:
+  - url: https://docs.google.com/presentation/d/132-j5XibZfUJi-74fDGiW7_EGEuJBNqfIoj0H52Lv7s/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/GraphNeuralNetworks
+  - file: _sources/homework/Homework_10
+- file: _sources/Week_11 # Attention Mechanism and Transformers
+  sections:
+  - url: https://docs.google.com/presentation/d/1QbUPr2X_PZhAqpmmaUbotf66ijRqWDMDhFSeREr3GY4/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/AttentionTransformers
+  - file: _sources/homework/Homework_11
+- file: _sources/Week_12 # Uncertainty Quantification and Anomaly Detection
+  sections:
+  - url: https://docs.google.com/presentation/d/1YfS8VFVGFZOIyf3ktE4a752tTy7XCAgWBATPeIt3Q9s/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/UncertaintyQuantificationAnomalyDetection
+  - file: _sources/homework/Homework_12
+- file: _sources/Project_02 # Project 02
+  sections:
+  - file: _sources/projects/Project_02_HiggsTauTau
+  - file: _sources/projects/Project_02_ExoticParticles
+  - file: _sources/projects/Project_02_GalaxyZoo
+  - file: _sources/projects/Project_02_NuclearGeometryQGP
+  - file: _sources/projects/Project_02_AberratedImages
+- file: _sources/Week_13 # Physics Informed Neural Networks
+  sections:
+  - url: https://docs.google.com/presentation/d/1dzBzUDiL8J8xmn-9igHU7n4dmCu_rigLaptJKCHzH88/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/PhysicsInformedNeuralNetworks
+  - file: _sources/homework/Homework_13
+- file: _sources/Week_14 # Learning Physics from the Machines
+  sections:
+  - url: https://docs.google.com/presentation/d/1M-kEhd9YPDOOkuDhTRS9oHY9yUnq9xLuu0Gl4I-5yeo/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/LearningPhysicsMachines
+  - file: _sources/homework/Homework_14
