@@ -1,0 +1,5 @@
+_build
+__pycache__
+*.dat
+*.zip
+tfs
