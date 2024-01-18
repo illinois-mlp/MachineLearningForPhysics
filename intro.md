@@ -112,6 +112,91 @@ Letter grades will be assigned as follows:
 * D-  &nbsp; [60.0 - 62.9]
 * F   &nbsp; &nbsp; [00.0 - 59.9]
 
+## <span style="color:Red">Datasets</span>
+
+In this section we describe the datasets used in the lectures and homeworks. There are additional scientific datasets used for the projects that as described in the projects area of the course page. 
+
+### Line
+
+A simple line with errors.  Columns are `x`, `y` and `dy`.  The reported errors are systematically too large by a constant factor, and are set to NaN for a fraction of the samples.  Target is `y_true`.
+
+Applications:
+- Reading CSV into a Pandas dataframe.
+- Straight line regression.
+- Handling missing values.
+- Handling (overestimated) input errors.
+
+### Pong
+
+Each sample is a 2D trajectory of a ping-pong ball launched with different initial conditions.  Trajectories are calculated with an analytic model that includes a linear drag term.  There are three clusters of trajectories with similar initial conditions, identified by target 'grp'. Target 'th0' gives the true initial launch angle in degrees. Target `hit` target identifies trajectories that pass through a fixed "hoop" at x=0.5.
+
+Applications:
+- Reading HF5 into a Pandas dataframe.
+- Dimensionality reduction (20D points lie on a 2D manifold).
+- Nonlinear regression (target 'th0').
+- Clustering (target 'grp').
+- Classification (target 'hit').
+
+### Cosmo
+
+Each sample is LCDM cosmology defined by input parameters 'omega_b', 'omega_cdm', 'ln10^{10}A_s' and 'H0'.  Corresponding targets are values of 'sigma8', 'rd', 'DA(0.57)/rd', 'DH(0.57)/rd', 'DA(2.34)/rd', and 'DH(2.34)/rd' calculated with CLASS. The CLASS calculations are relatively slow (~1 hr per 1K), so the goal of this dataset is to train a faster emulator. Input values are uniformly distributed on a grid centered on the Planck2015 best fit result and spanning +/-10 sigmas.
+
+Applications:
+ - Dimensionality reduction.
+ - Approximately linear regression.
+
+### Higgs
+
+Data from the [2014 Higgs Challenge](https://www.kaggle.com/c/higgs-boson) which is now archived [here](http://opendata.cern.ch/record/328).
+
+This file is too large to include in the repo, so instead the Pandas notebook provides a function to generate `higgs_data.hf5` and `higgs_target.hf5` from the downloaded `.csv.gz` file and copy them into the installed data path.
+
+Applications:
+ - Dimensionality reduction.
+ - Train/test/split.
+ - Classification.
+
+### Clusters
+
+Demo files for clustering: 4 in 2D with 2 clusters, and 1 in 3D with 3 clusters. Data features are 'x0', 'x1' ('x2') and target is 'y'.
+
+Applications:
+ - Clustering.
+
+### Spectra
+
+Spectra containing two peaks with variable flux and fixed locations and widths, over a constant background, with Poisson noise added.  Data features are fluxes in wavelength bins (with un-named columns).  Targets are the true fluxes in each peak ('flux1', 'flux2').
+
+Applications:
+ - Dimensionality reduction.
+ - Clustering.
+ - Regression.
+
+### Circles
+
+The circles files contain 500 2D points on two concentric circles with feature names 'x0', 'x1' and target integer 'y' = 0,1 indicating which circle they belong to.
+
+Applications:
+ - Linear clustering in higher dimensions.
+ - Kernel trick.
+ - Kernel PCA.
+
+### Ess
+
+The ess files contain 500 3D points on a 2D sheet bent into an S-shape with features named 'x0', 'x1', 'x2' and target value 'y' from 0-1 giving the coordinate along the sheet.
+
+Applications:
+ - Manifold learning.
+ - Locally linear embedding (LLE).
+
+### Blobs
+
+The blobs files contain 2K 3D points sampled from 3 Gaussian blobs with features named 'x0', 'x1', 'x2' and target value 'y' = 0, 1, 2 giving their generated group membership.
+
+Applications:
+ - Clustering.
+ - Density estimation.
+
 ## <span style="color:Red">Policies</span>
 
 ### Covid 
