@@ -461,6 +461,18 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-grading-span"><span style="color:Red">Grading</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-datasets-span"><span style="color:Red">Datasets</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#line">Line</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pong">Pong</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmo">Cosmo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#higgs">Higgs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clusters">Clusters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectra">Spectra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#circles">Circles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ess">Ess</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blobs">Blobs</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-policies-span"><span style="color:Red">Policies</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covid">Covid</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-using-code-you-find-on-the-web-or-generative-ai-for-homework-and-projects">About using code you find on the web or generative AI for homework and projects</a></li>
@@ -712,6 +724,99 @@ document.write(`
 <li><p>F       [00.0 - 59.9]</p></li>
 </ul>
 </section>
+<section id="span-style-color-red-datasets-span">
+<h2><span style="color:Red">Datasets</span><a class="headerlink" href="#span-style-color-red-datasets-span" title="Permalink to this heading">#</a></h2>
+<p>In this section we describe the datasets used in the lectures and homeworks. There are additional scientific datasets used for the projects that as described in the projects area of the course page.</p>
+<section id="line">
+<h3>Line<a class="headerlink" href="#line" title="Permalink to this heading">#</a></h3>
+<p>A simple line with errors.  Columns are <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">dy</span></code>.  The reported errors are systematically too large by a constant factor, and are set to NaN for a fraction of the samples.  Target is <code class="docutils literal notranslate"><span class="pre">y_true</span></code>.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Reading CSV into a Pandas dataframe.</p></li>
+<li><p>Straight line regression.</p></li>
+<li><p>Handling missing values.</p></li>
+<li><p>Handling (overestimated) input errors.</p></li>
+</ul>
+</section>
+<section id="pong">
+<h3>Pong<a class="headerlink" href="#pong" title="Permalink to this heading">#</a></h3>
+<p>Each sample is a 2D trajectory of a ping-pong ball launched with different initial conditions.  Trajectories are calculated with an analytic model that includes a linear drag term.  There are three clusters of trajectories with similar initial conditions, identified by target ‘grp’. Target ‘th0’ gives the true initial launch angle in degrees. Target <code class="docutils literal notranslate"><span class="pre">hit</span></code> target identifies trajectories that pass through a fixed “hoop” at x=0.5.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Reading HF5 into a Pandas dataframe.</p></li>
+<li><p>Dimensionality reduction (20D points lie on a 2D manifold).</p></li>
+<li><p>Nonlinear regression (target ‘th0’).</p></li>
+<li><p>Clustering (target ‘grp’).</p></li>
+<li><p>Classification (target ‘hit’).</p></li>
+</ul>
+</section>
+<section id="cosmo">
+<h3>Cosmo<a class="headerlink" href="#cosmo" title="Permalink to this heading">#</a></h3>
+<p>Each sample is LCDM cosmology defined by input parameters ‘omega_b’, ‘omega_cdm’, ‘ln10^{10}A_s’ and ‘H0’.  Corresponding targets are values of ‘sigma8’, ‘rd’, ‘DA(0.57)/rd’, ‘DH(0.57)/rd’, ‘DA(2.34)/rd’, and ‘DH(2.34)/rd’ calculated with CLASS. The CLASS calculations are relatively slow (~1 hr per 1K), so the goal of this dataset is to train a faster emulator. Input values are uniformly distributed on a grid centered on the Planck2015 best fit result and spanning +/-10 sigmas.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Dimensionality reduction.</p></li>
+<li><p>Approximately linear regression.</p></li>
+</ul>
+</section>
+<section id="higgs">
+<h3>Higgs<a class="headerlink" href="#higgs" title="Permalink to this heading">#</a></h3>
+<p>Data from the <a class="reference external" href="https://www.kaggle.com/c/higgs-boson">2014 Higgs Challenge</a> which is now archived <a class="reference external" href="http://opendata.cern.ch/record/328">here</a>.</p>
+<p>This file is too large to include in the repo, so instead the Pandas notebook provides a function to generate <code class="docutils literal notranslate"><span class="pre">higgs_data.hf5</span></code> and <code class="docutils literal notranslate"><span class="pre">higgs_target.hf5</span></code> from the downloaded <code class="docutils literal notranslate"><span class="pre">.csv.gz</span></code> file and copy them into the installed data path.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Dimensionality reduction.</p></li>
+<li><p>Train/test/split.</p></li>
+<li><p>Classification.</p></li>
+</ul>
+</section>
+<section id="clusters">
+<h3>Clusters<a class="headerlink" href="#clusters" title="Permalink to this heading">#</a></h3>
+<p>Demo files for clustering: 4 in 2D with 2 clusters, and 1 in 3D with 3 clusters. Data features are ‘x0’, ‘x1’ (‘x2’) and target is ‘y’.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Clustering.</p></li>
+</ul>
+</section>
+<section id="spectra">
+<h3>Spectra<a class="headerlink" href="#spectra" title="Permalink to this heading">#</a></h3>
+<p>Spectra containing two peaks with variable flux and fixed locations and widths, over a constant background, with Poisson noise added.  Data features are fluxes in wavelength bins (with un-named columns).  Targets are the true fluxes in each peak (‘flux1’, ‘flux2’).</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Dimensionality reduction.</p></li>
+<li><p>Clustering.</p></li>
+<li><p>Regression.</p></li>
+</ul>
+</section>
+<section id="circles">
+<h3>Circles<a class="headerlink" href="#circles" title="Permalink to this heading">#</a></h3>
+<p>The circles files contain 500 2D points on two concentric circles with feature names ‘x0’, ‘x1’ and target integer ‘y’ = 0,1 indicating which circle they belong to.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Linear clustering in higher dimensions.</p></li>
+<li><p>Kernel trick.</p></li>
+<li><p>Kernel PCA.</p></li>
+</ul>
+</section>
+<section id="ess">
+<h3>Ess<a class="headerlink" href="#ess" title="Permalink to this heading">#</a></h3>
+<p>The ess files contain 500 3D points on a 2D sheet bent into an S-shape with features named ‘x0’, ‘x1’, ‘x2’ and target value ‘y’ from 0-1 giving the coordinate along the sheet.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Manifold learning.</p></li>
+<li><p>Locally linear embedding (LLE).</p></li>
+</ul>
+</section>
+<section id="blobs">
+<h3>Blobs<a class="headerlink" href="#blobs" title="Permalink to this heading">#</a></h3>
+<p>The blobs files contain 2K 3D points sampled from 3 Gaussian blobs with features named ‘x0’, ‘x1’, ‘x2’ and target value ‘y’ = 0, 1, 2 giving their generated group membership.</p>
+<p>Applications:</p>
+<ul class="simple">
+<li><p>Clustering.</p></li>
+<li><p>Density estimation.</p></li>
+</ul>
+</section>
+</section>
 <section id="span-style-color-red-policies-span">
 <h2><span style="color:Red">Policies</span><a class="headerlink" href="#span-style-color-red-policies-span" title="Permalink to this heading">#</a></h2>
 <section id="covid">
@@ -881,6 +986,18 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-grading-span"><span style="color:Red">Grading</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-datasets-span"><span style="color:Red">Datasets</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#line">Line</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pong">Pong</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmo">Cosmo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#higgs">Higgs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clusters">Clusters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectra">Spectra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#circles">Circles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ess">Ess</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blobs">Blobs</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-red-policies-span"><span style="color:Red">Policies</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covid">Covid</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-using-code-you-find-on-the-web-or-generative-ai-for-homework-and-projects">About using code you find on the web or generative AI for homework and projects</a></li>
