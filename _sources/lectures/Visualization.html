@@ -531,9 +531,16 @@ document.write(`
 <h2><span style="color:Orange">Get Data</span><a class="headerlink" href="#span-style-color-orange-get-data-span" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/line_data.csv&#39;</span><span class="p">)</span>
-<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/pong_data.hf5&#39;</span><span class="p">)</span>
-<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/pong_targets.hf5&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/line_data.csv&#39;</span><span class="p">)</span>
+<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_data.hf5&#39;</span><span class="p">)</span>
+<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_targets.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/line_data.csv’ already there; not retrieving.
+File ‘./tmp_data/pong_data.hf5’ already there; not retrieving.
+File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -556,7 +563,7 @@ document.write(`
 <h2><span style="color:Orange">Low-level Plots</span><a class="headerlink" href="#span-style-color-orange-low-level-plots-span" title="Permalink to this heading">#</a></h2>
 <p>The low-level historical foundation of python visualization is <a class="reference external" href="https://matplotlib.org/">matplotlib</a>, which was originally created to emulate the successful MATLAB graphics beloved by generations of engineers. Matplotlib is still relevant today, and often the best choice for simple tasks or to produce publication-quality plots. The downside of matplotlib is that relatively simple tasks often require many low-level steps.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the 1D distributions (“histograms”) of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> values in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>. Note how this goes one step further than the summary statistics by showing the full distribution of a single column.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-hist.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-hist.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-hist.png" style="width: 600px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png" style="width: 600px;" /></a></img><br></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.5</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -567,9 +574,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9cff0353d7df1c04359bc64d7b7fa63c32ffbdd9283a9024201120c7659260f5.png" src="../../_images/9cff0353d7df1c04359bc64d7b7fa63c32ffbdd9283a9024201120c7659260f5.png" />
+</div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.errorbar</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the first 12 rows of <code class="docutils literal notranslate"><span class="pre">line_data</span></code>:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-errorbar.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-errorbar.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-errorbar.png" style="width: 600px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png" style="width: 600px;" /></a></img><br></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;dy&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span>
@@ -580,9 +590,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f2b565ab9483b510689bc77199861d30bfb1456bdba09d5f2b9bbd8a0e8d090f.png" src="../../_images/f2b565ab9483b510689bc77199861d30bfb1456bdba09d5f2b9bbd8a0e8d090f.png" />
+</div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.colorbar</span></code> to reproduce the plot below that shows the 2D distribution of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>, color coded by each row’s <span class="math notranslate nohighlight">\(dy\)</span> value. Note how this type of plot reveals correlations between a pair of columns that cannot be deduced from their 1D histograms.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-scatter.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-scatter.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/Visualization-scatter.png" style="width: 600px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png" style="width: 600px;" /></a></img><br></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;dy&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -591,6 +604,9 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;dy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/af1d5117e6bfb328c74bee86b33db51355e15b81c6dc5f900c4f3b4720984c60.png" src="../../_images/af1d5117e6bfb328c74bee86b33db51355e15b81c6dc5f900c4f3b4720984c60.png" />
 </div>
 </div>
 </section>
@@ -609,6 +625,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/13fa51b51ff702a34d31484bbf8d3a714d0fa00636a3fc9e0479b94bf54c3574.png" src="../../_images/13fa51b51ff702a34d31484bbf8d3a714d0fa00636a3fc9e0479b94bf54c3574.png" />
+</div>
 </div>
 <p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code>, which shows 1D histograms along the sides comes in several kinds for displaying the central 2D information, e.g.</p>
 <div class="cell docutils container">
@@ -616,6 +635,9 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/16d4500be7eeb1934fa53c83e51f085e1f77dcb7b6a414a8df26596d8e4c35a8.png" src="../../_images/16d4500be7eeb1934fa53c83e51f085e1f77dcb7b6a414a8df26596d8e4c35a8.png" />
 </div>
 </div>
 <p>Note how the axis labels are generated automatically.</p>
@@ -630,6 +652,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5d8ec523444a3666d7f0b91151f12104228eabdca3ee809964734298459f2ee7.png" src="../../_images/5d8ec523444a3666d7f0b91151f12104228eabdca3ee809964734298459f2ee7.png" />
+</div>
 </div>
 <p>The resulting grid shows a 2D scatter plot each pair (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) of columns with 1D histograms on the diagonal (<span class="math notranslate nohighlight">\(i\)</span>=<span class="math notranslate nohighlight">\(j\)</span>). Note that the (<span class="math notranslate nohighlight">\(j\)</span>,<span class="math notranslate nohighlight">\(i\)</span>) scatter plot is just (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) transposed, so this format is not very space efficient.</p>
 <p>A pairplot is less practical for a dataset with lots of columns but you can zoom in on any submatrix, for example:</p>
@@ -639,6 +664,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bdf1159b0ee2a45905f46cb12dedfc7ca3d8d5f19f3a63406b5d9e1ffea49a60.png" src="../../_images/bdf1159b0ee2a45905f46cb12dedfc7ca3d8d5f19f3a63406b5d9e1ffea49a60.png" />
+</div>
 </div>
 <p>The three clusters that appear in each scatter plot suggest that there are three types of observations (rows) in the dataset.  We can confirm this using the combined data+targets dataset and color-coding each row according to each target <code class="docutils literal notranslate"><span class="pre">grp</span></code> value:</p>
 <div class="cell docutils container">
@@ -646,6 +674,9 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;grp&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8b8095ea4213922945f353f5600f3ebea2615bbca6725643d69f94727656a6c9.png" src="../../_images/8b8095ea4213922945f353f5600f3ebea2615bbca6725643d69f94727656a6c9.png" />
 </div>
 </div>
 <p>We will soon learn how to automatically assign rows to the clusters you discover during visualization, i.e., without “cheating” with the target <code class="docutils literal notranslate"><span class="pre">grp</span></code> column.</p>

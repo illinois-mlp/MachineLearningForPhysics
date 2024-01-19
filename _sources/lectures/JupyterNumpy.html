@@ -495,7 +495,7 @@ document.write(`
 <section id="span-style-color-orange-jupyter-notebooks-span">
 <h2><span style="color:Orange">Jupyter Notebooks</span><a class="headerlink" href="#span-style-color-orange-jupyter-notebooks-span" title="Permalink to this heading">#</a></h2>
 <p>Jupyter is an interactive front-end to a rich ecosystem of python packages that support machine learning and data science tasks. We will use the core set of packages shown below for this course:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png" style="width: 800px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/JupyterNumpy-packages.png" style="width: 800px;" /></a></img><br></p>
 <p>All course notebooks begin with some preamble code to import and configure some frequently used packages:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -520,14 +520,22 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matplotlib 3.7.0
+seaborn 0.12.2
+numpy 1.23.5
+pandas 2.0.3
+</pre></div>
+</div>
+</div>
 </div>
 <p>You will get plenty of experience with notebooks during this course so we will start with just a few basic survival skills.  For a deeper dive, start with <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/01.00-ipython-beyond-normal-python.html">IPython: Beyond Normal Python</a> in the <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/index.html">Python Data Science Handbook</a>.</p>
 <p>Type <code class="docutils literal notranslate"><span class="pre">command?</span></code> to display help on <code class="docutils literal notranslate"><span class="pre">command</span></code>. Try this now for the built-in <code class="docutils literal notranslate"><span class="pre">range</span></code> function then dismiss the help window.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg" width="200" /></a></img><br></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg" width="200" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg" width="200" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg" width="200" /></a></img><br></p>
 <p>Hit the tab key to display possible completions of a partial name.  Try this now by typing <code class="docutils literal notranslate"><span class="pre">np.arc</span></code> below then hitting TAB.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsStart.svg" width="200" /></a></img><br></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/AnsEnd.svg" width="200" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsStart.svg" width="200" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AnsEnd.svg" width="200" /></a></img><br></p>
 <p>Your notebook will sometimes be unresponsive while executing a long command that you don’t want to wait for. Use the <em>Interrupt</em> command in the <em>Kernel</em> menu to recover from situations like this.  Try this out now by:</p>
 <ul class="simple">
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">time.sleep(3600)</span></code> line below, which sleeps for an hour.</p></li>
@@ -582,6 +590,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 111 ms, sys: 7.45 ms, total: 118 ms
+Wall time: 120 ms
+</pre></div>
+</div>
+</div>
 </div>
 <p>The resulting list is very flexible so, for example, we can replace any value with a completely different type or append new values:</p>
 <div class="cell docutils container">
@@ -609,6 +623,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8.68 ms, sys: 4.06 ms, total: 12.7 ms
+Wall time: 12 ms
+</pre></div>
+</div>
+</div>
 </div>
 <p>The resulting numpy array holds only 64-bit floating point numbers and has a fixed size:</p>
 <div class="cell docutils container">
@@ -617,6 +637,11 @@ document.write(`
     <span class="n">x2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;not a number&#39;</span>
 <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>could not convert string to float: &#39;not a number&#39;
 </pre></div>
 </div>
 </div>
@@ -638,11 +663,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+</pre></div>
+</div>
+</div>
 </div>
 <p><em><strong><span style="color:violet">EXAMPLE</span>:</strong></em> Use <code class="docutils literal notranslate"><span class="pre">np.linspace</span></code> to create an array of 11 floats 0.0, 0.1, …, 0.9, 1.0:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0. , 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1. ])
 </pre></div>
 </div>
 </div>
@@ -662,11 +697,23 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.69646919, 0.28613933, 0.22685145, 0.55131477, 0.71946897,
+       0.42310646, 0.9807642 , 0.68482974, 0.4809319 , 0.39211752])
+</pre></div>
+</div>
+</div>
 </div>
 <p><em><strong><span style="color:violet">EXAMPLE</span></strong></em>: Use <code class="docutils literal notranslate"><span class="pre">np.random.normal</span></code> to generate an array of 10 random numbers drawn from a <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">normal (aka Gaussian) distribution</a> with mean -1 and <a class="reference external" href="https://en.wikipedia.org/wiki/Standard_deviation">standard deviation</a> 2:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generator</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.53187252, -2.7334808 , -2.3577723 , -1.18941794,  1.98277925,
+       -2.27780399, -1.88796392, -1.86870255,  3.41186017,  3.37357218])
 </pre></div>
 </div>
 </div>
@@ -721,10 +768,20 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># single row</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1.])
 </pre></div>
 </div>
 </div>
@@ -735,10 +792,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1.])
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># submatrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1.],
+       [1., 1.]])
 </pre></div>
 </div>
 </div>
@@ -750,10 +818,20 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.0
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matrix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4., 4., 4.])
 </pre></div>
 </div>
 </div>
@@ -765,6 +843,13 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.84147098, 1.84147098, 1.84147098, 1.84147098],
+       [1.84147098, 1.84147098, 1.84147098, 1.84147098],
+       [1.84147098, 1.84147098, 1.84147098, 1.84147098]])
+</pre></div>
+</div>
+</div>
 </div>
 <p>Arrays of different shapes can also be combined when they are compatible according to the <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html">broadcasting rules</a>.  Note that the broadcasting rules do not depend on the operations being used so, for example, if <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code> is valid, then so is <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">**</span> <span class="pre">2</span> <span class="pre">+</span> <span class="pre">x</span> <span class="pre">**</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span></code>.</p>
 <div class="cell docutils container">
@@ -773,10 +858,24 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.1, 1.1, 1.1, 1.1],
+       [1.1, 1.1, 1.1, 1.1],
+       [1.1, 1.1, 1.1, 1.1]])
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span> <span class="o">+</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[2., 2., 2., 2.],
+       [2., 2., 2., 2.],
+       [2., 2., 2., 2.]])
 </pre></div>
 </div>
 </div>
@@ -802,10 +901,20 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shapes (1, 3) (3,) broadcast to (1, 3)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">broadcast</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>operands could not be broadcast together with shapes (1,2) (3,) 
 </pre></div>
 </div>
 </div>
@@ -828,12 +937,26 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shapes (3, 1, 2) (3, 2) broadcast to (3, 3, 2)
+operands could not be broadcast together with shapes (2,1,3) (3,2) 
+shapes (3,) (2, 1) broadcast to (2, 3)
+operands could not be broadcast together with shapes (3,) (1,2) 
+shapes (3,) (1, 3) broadcast to (1, 3)
+</pre></div>
+</div>
+</div>
 </div>
 <p>Since array values are always “unrolled” into physical memory, arrays with different shapes can look identical in memory.  Numpy takes advantage of this with “views” that allow the same memory to be very efficiently interpreted with different shapes:</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">np.newaxis</span></code> method is useful to increase the dimensionality of an array, especially when used in combination with numpy’s broadcast functionality.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4,)
 </pre></div>
 </div>
 </div>
@@ -845,11 +968,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 4)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make it as column vector by inserting an axis along second dimension</span>
 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 1)
 </pre></div>
 </div>
 </div>
@@ -861,11 +994,23 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[[ 0,  1,  2,  3,  4,  5]],
+
+       [[ 6,  7,  8,  9, 10, 11]]])
+</pre></div>
+</div>
+</div>
 </div>
 <p><em><strong><span style="color:violet">EXAMPLE</span></strong></em>: Use <code class="docutils literal notranslate"><span class="pre">np.newaxis</span></code> to create a view of <code class="docutils literal notranslate"><span class="pre">np.arange(12)</span></code> with shape (1, 12):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]])
 </pre></div>
 </div>
 </div>

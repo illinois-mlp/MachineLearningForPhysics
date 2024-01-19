@@ -524,7 +524,12 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/pong_data.hf5&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_data.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/pong_data.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -547,11 +552,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./tmp_data/pong_data.hf5&#39;
+</pre></div>
+</div>
+</div>
 </div>
 <p>Data files are stored in the industry standard <a class="reference external" href="https://en.wikipedia.org/wiki/Hierarchical_Data_Format">binary HDF5</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Comma-separated_values">text CSV</a> formats, with extensions <code class="docutils literal notranslate"><span class="pre">.hf5</span></code> and <code class="docutils literal notranslate"><span class="pre">.csv</span></code>, respectively. HDF5 is more efficient for larger files but requires specialized software to read.  CSV files are just plain text:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/line_data.csv&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/line_data.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/line_data.csv’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -562,6 +577,15 @@ document.write(`
     <span class="c1"># Print the first 5 lines of the file.</span>
     <span class="k">for</span> <span class="n">lineno</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x,y,dy
+0.3929383711957233,0.08540861657452603,0.3831920560881885
+-0.42772133009924107,-0.5198803411067978,0.38522044793317467
+-0.5462970928715938,-0.8124804852644906,
+0.10262953816578246,0.10527828529558633,0.38556680974439583
 </pre></div>
 </div>
 </div>
@@ -592,6 +616,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2000, 3)
+</pre></div>
+</div>
+</div>
 </div>
 <p>Individual columns also behave like enhanced 1D numpy arrays:</p>
 <div class="cell docutils container">
@@ -600,10 +629,20 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2000,)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2000,)
 </pre></div>
 </div>
 </div>
@@ -615,6 +654,82 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2000.000000</td>
+      <td>2000.000000</td>
+      <td>1850.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.000509</td>
+      <td>-0.086233</td>
+      <td>0.479347</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.585281</td>
+      <td>0.782878</td>
+      <td>0.228198</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.999836</td>
+      <td>-2.390646</td>
+      <td>0.151793</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.513685</td>
+      <td>-0.648045</td>
+      <td>0.302540</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-0.006021</td>
+      <td>-0.068052</td>
+      <td>0.431361</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.501449</td>
+      <td>0.473741</td>
+      <td>0.610809</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.999289</td>
+      <td>2.365710</td>
+      <td>1.506188</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Jot down a few things you notice about this data from this summary.</p>
 <ul class="simple">
@@ -630,6 +745,235 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x0</th>
+      <th>x1</th>
+      <th>x2</th>
+      <th>x3</th>
+      <th>x4</th>
+      <th>x5</th>
+      <th>x6</th>
+      <th>x7</th>
+      <th>x8</th>
+      <th>x9</th>
+      <th>y0</th>
+      <th>y1</th>
+      <th>y2</th>
+      <th>y3</th>
+      <th>y4</th>
+      <th>y5</th>
+      <th>y6</th>
+      <th>y7</th>
+      <th>y8</th>
+      <th>y9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.0</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.049004</td>
+      <td>0.132093</td>
+      <td>0.212905</td>
+      <td>0.291504</td>
+      <td>0.367950</td>
+      <td>0.442301</td>
+      <td>0.514615</td>
+      <td>0.584949</td>
+      <td>0.653355</td>
+      <td>0.719888</td>
+      <td>0.0</td>
+      <td>0.125206</td>
+      <td>0.217122</td>
+      <td>0.276658</td>
+      <td>0.304702</td>
+      <td>0.302116</td>
+      <td>0.269740</td>
+      <td>0.208390</td>
+      <td>0.118860</td>
+      <td>0.001921</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.062998</td>
+      <td>0.067380</td>
+      <td>0.075805</td>
+      <td>0.086806</td>
+      <td>0.099285</td>
+      <td>0.112547</td>
+      <td>0.126175</td>
+      <td>0.139919</td>
+      <td>0.153624</td>
+      <td>0.167196</td>
+      <td>0.0</td>
+      <td>0.010876</td>
+      <td>0.021454</td>
+      <td>0.031742</td>
+      <td>0.041748</td>
+      <td>0.051481</td>
+      <td>0.060946</td>
+      <td>0.070153</td>
+      <td>0.079107</td>
+      <td>0.087815</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.161553</td>
+      <td>-0.089041</td>
+      <td>-0.018516</td>
+      <td>0.050077</td>
+      <td>0.116790</td>
+      <td>0.181677</td>
+      <td>0.244785</td>
+      <td>0.306165</td>
+      <td>0.365863</td>
+      <td>0.415850</td>
+      <td>0.0</td>
+      <td>0.093722</td>
+      <td>0.155016</td>
+      <td>0.184769</td>
+      <td>0.183846</td>
+      <td>0.153088</td>
+      <td>0.093310</td>
+      <td>0.005310</td>
+      <td>-0.110141</td>
+      <td>-0.252291</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.001755</td>
+      <td>0.079435</td>
+      <td>0.157023</td>
+      <td>0.229517</td>
+      <td>0.293469</td>
+      <td>0.353604</td>
+      <td>0.414068</td>
+      <td>0.473338</td>
+      <td>0.532280</td>
+      <td>0.590583</td>
+      <td>0.0</td>
+      <td>0.115816</td>
+      <td>0.198597</td>
+      <td>0.249250</td>
+      <td>0.268654</td>
+      <td>0.257665</td>
+      <td>0.217116</td>
+      <td>0.147817</td>
+      <td>0.050555</td>
+      <td>-0.073903</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.076534</td>
+      <td>0.148675</td>
+      <td>0.205846</td>
+      <td>0.270214</td>
+      <td>0.338380</td>
+      <td>0.406922</td>
+      <td>0.476322</td>
+      <td>0.542847</td>
+      <td>0.608249</td>
+      <td>0.673589</td>
+      <td>0.0</td>
+      <td>0.127098</td>
+      <td>0.220852</td>
+      <td>0.282177</td>
+      <td>0.311961</td>
+      <td>0.311068</td>
+      <td>0.280338</td>
+      <td>0.220589</td>
+      <td>0.132616</td>
+      <td>0.017191</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.100177</td>
+      <td>0.187800</td>
+      <td>0.286463</td>
+      <td>0.383127</td>
+      <td>0.475724</td>
+      <td>0.565217</td>
+      <td>0.651398</td>
+      <td>0.734418</td>
+      <td>0.816378</td>
+      <td>0.896600</td>
+      <td>0.0</td>
+      <td>0.132847</td>
+      <td>0.232193</td>
+      <td>0.298956</td>
+      <td>0.334029</td>
+      <td>0.338281</td>
+      <td>0.312554</td>
+      <td>0.257672</td>
+      <td>0.174431</td>
+      <td>0.063610</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.151118</td>
+      <td>0.261095</td>
+      <td>0.370325</td>
+      <td>0.476563</td>
+      <td>0.579891</td>
+      <td>0.684321</td>
+      <td>0.787124</td>
+      <td>0.887111</td>
+      <td>0.984358</td>
+      <td>1.078941</td>
+      <td>0.0</td>
+      <td>0.144799</td>
+      <td>0.255769</td>
+      <td>0.333838</td>
+      <td>0.379908</td>
+      <td>0.394854</td>
+      <td>0.379530</td>
+      <td>0.334764</td>
+      <td>0.261364</td>
+      <td>0.160113</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Some things that stick out from this summary are:</p>
 <ul class="simple">
@@ -648,6 +992,58 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.392938</td>
+      <td>0.085409</td>
+      <td>0.383192</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.427721</td>
+      <td>-0.519880</td>
+      <td>0.385220</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.546297</td>
+      <td>-0.812480</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.102630</td>
+      <td>0.105278</td>
+      <td>0.385567</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Note how the missing value in the CSV file is represented as NaN = “not a number”.  This is generally how Pandas handles any <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/missing_data.html">data that is missing / invalid or otherwise not available (NA)</a>.</p>
 <p>We may not want to use any rows with missing data. Select the subset of useful data with:</p>
@@ -664,6 +1060,58 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.392938</td>
+      <td>0.085409</td>
+      <td>0.383192</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.427721</td>
+      <td>-0.519880</td>
+      <td>0.385220</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.102630</td>
+      <td>0.105278</td>
+      <td>0.385567</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.438938</td>
+      <td>0.582137</td>
+      <td>0.509960</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>You can also select rows using any logical test on its column values. For example, to select all rows with dy &gt; 0.5 and y &lt; 0:</p>
 <div class="cell docutils container">
@@ -673,6 +1121,58 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>13</th>
+      <td>-0.880644</td>
+      <td>-1.482074</td>
+      <td>0.698284</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>-0.635017</td>
+      <td>-1.192232</td>
+      <td>0.619905</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>-0.815790</td>
+      <td>-0.172324</td>
+      <td>0.643215</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>-0.375478</td>
+      <td>-1.320013</td>
+      <td>0.574198</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">describe</span></code> to compare the summary statistics for rows with x &lt; 0 and x &gt;= 0. Do they make sense?</p>
 <div class="cell docutils container">
@@ -681,6 +1181,82 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1006.000000</td>
+      <td>1006.000000</td>
+      <td>938.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.507065</td>
+      <td>-0.689012</td>
+      <td>0.472889</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.288074</td>
+      <td>0.498581</td>
+      <td>0.227474</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.999836</td>
+      <td>-2.390646</td>
+      <td>0.159862</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.758180</td>
+      <td>-1.005357</td>
+      <td>0.294420</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-0.511167</td>
+      <td>-0.643512</td>
+      <td>0.419482</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>-0.264287</td>
+      <td>-0.338449</td>
+      <td>0.611192</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>-0.000128</td>
+      <td>0.757903</td>
+      <td>1.506188</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -688,6 +1264,82 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>994.000000</td>
+      <td>994.000000</td>
+      <td>912.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.512162</td>
+      <td>0.523822</td>
+      <td>0.485989</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.287312</td>
+      <td>0.491520</td>
+      <td>0.228875</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.001123</td>
+      <td>-1.154558</td>
+      <td>0.151793</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.266587</td>
+      <td>0.163363</td>
+      <td>0.312799</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.502736</td>
+      <td>0.471419</td>
+      <td>0.436676</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.761346</td>
+      <td>0.821626</td>
+      <td>0.607731</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.999289</td>
+      <td>2.365710</td>
+      <td>1.378183</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="span-style-color-orange-extend-data-with-new-columns-span">
@@ -720,6 +1372,100 @@ What would you expect the mean and standard deviation (std) of this new column t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>dy</th>
+      <th>yprediction</th>
+      <th>ypull</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2000.000000</td>
+      <td>2000.000000</td>
+      <td>1850.000000</td>
+      <td>2000.000000</td>
+      <td>1850.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.000509</td>
+      <td>-0.086233</td>
+      <td>0.479347</td>
+      <td>-0.100611</td>
+      <td>0.036367</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.585281</td>
+      <td>0.782878</td>
+      <td>0.228198</td>
+      <td>0.702338</td>
+      <td>0.661659</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-0.999836</td>
+      <td>-2.390646</td>
+      <td>0.151793</td>
+      <td>-1.299803</td>
+      <td>-2.162585</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.513685</td>
+      <td>-0.648045</td>
+      <td>0.302540</td>
+      <td>-0.716422</td>
+      <td>-0.429185</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-0.006021</td>
+      <td>-0.068052</td>
+      <td>0.431361</td>
+      <td>-0.107225</td>
+      <td>0.033875</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.501449</td>
+      <td>0.473741</td>
+      <td>0.610809</td>
+      <td>0.501739</td>
+      <td>0.484257</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.999289</td>
+      <td>2.365710</td>
+      <td>1.506188</td>
+      <td>1.099146</td>
+      <td>2.033837</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="span-style-color-orange-combine-data-from-different-sources-span">
@@ -729,6 +1475,11 @@ What would you expect the mean and standard deviation (std) of this new column t
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/pong_targets.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -746,6 +1497,14 @@ What would you expect the mean and standard deviation (std) of this new column t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#rows: 1000, 1000.
+data columns: [&#39;x0&#39; &#39;x1&#39; &#39;x2&#39; &#39;x3&#39; &#39;x4&#39; &#39;x5&#39; &#39;x6&#39; &#39;x7&#39; &#39;x8&#39; &#39;x9&#39; &#39;y0&#39; &#39;y1&#39; &#39;y2&#39; &#39;y3&#39;
+ &#39;y4&#39; &#39;y5&#39; &#39;y6&#39; &#39;y7&#39; &#39;y8&#39; &#39;y9&#39;].
+targets columns: [&#39;th0&#39; &#39;hit&#39; &#39;grp&#39;].
+</pre></div>
+</div>
+</div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">pd.concat</span></code> to combine the (different) columns, matching row by row. Verify that your combined data has the expected number of rows and column names.</p>
 <div class="cell docutils container">
@@ -759,6 +1518,13 @@ What would you expect the mean and standard deviation (std) of this new column t
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#rows: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pong_both</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;columns: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pong_both</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#rows: 1000
+columns: [&#39;x0&#39; &#39;x1&#39; &#39;x2&#39; &#39;x3&#39; &#39;x4&#39; &#39;x5&#39; &#39;x6&#39; &#39;x7&#39; &#39;x8&#39; &#39;x9&#39; &#39;y0&#39; &#39;y1&#39; &#39;y2&#39; &#39;y3&#39;
+ &#39;y4&#39; &#39;y5&#39; &#39;y6&#39; &#39;y7&#39; &#39;y8&#39; &#39;y9&#39; &#39;th0&#39; &#39;hit&#39; &#39;grp&#39;].
 </pre></div>
 </div>
 </div>
@@ -788,6 +1554,11 @@ What would you expect the mean and standard deviation (std) of this new column t
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;http://opendata.cern.ch/record/328/files/atlas-higgs-challenge-2014-v2.csv.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/atlas-higgs-challenge-2014-v2.csv.gz’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -821,10 +1592,20 @@ What would you expect the mean and standard deviation (std) of this new column t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./tmp_data/higgs_data.hf5&#39;
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;higgs_targets.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./tmp_data/higgs_targets.hf5&#39;
 </pre></div>
 </div>
 </div>
@@ -843,6 +1624,245 @@ What would you expect the mean and standard deviation (std) of this new column t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DER_mass_MMC</th>
+      <th>DER_mass_transverse_met_lep</th>
+      <th>DER_mass_vis</th>
+      <th>DER_pt_h</th>
+      <th>DER_deltaeta_jet_jet</th>
+      <th>DER_mass_jet_jet</th>
+      <th>DER_prodeta_jet_jet</th>
+      <th>DER_deltar_tau_lep</th>
+      <th>DER_pt_tot</th>
+      <th>DER_sum_pt</th>
+      <th>...</th>
+      <th>PRI_met_sumet</th>
+      <th>PRI_jet_num</th>
+      <th>PRI_jet_leading_pt</th>
+      <th>PRI_jet_leading_eta</th>
+      <th>PRI_jet_leading_phi</th>
+      <th>PRI_jet_subleading_pt</th>
+      <th>PRI_jet_subleading_eta</th>
+      <th>PRI_jet_subleading_phi</th>
+      <th>PRI_jet_all_pt</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>693636.000000</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+      <td>237985.000000</td>
+      <td>237985.000000</td>
+      <td>237985.000000</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+      <td>...</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+      <td>490867.000000</td>
+      <td>490867.000000</td>
+      <td>490867.000000</td>
+      <td>237985.000000</td>
+      <td>237985.000000</td>
+      <td>237985.000000</td>
+      <td>818238.000000</td>
+      <td>818238.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>121.867699</td>
+      <td>49.252712</td>
+      <td>81.140556</td>
+      <td>57.849522</td>
+      <td>2.404626</td>
+      <td>372.181000</td>
+      <td>-0.828740</td>
+      <td>2.373871</td>
+      <td>18.969620</td>
+      <td>158.596161</td>
+      <td>...</td>
+      <td>209.908752</td>
+      <td>0.979923</td>
+      <td>84.904297</td>
+      <td>-0.001248</td>
+      <td>-0.018856</td>
+      <td>57.810280</td>
+      <td>-0.006669</td>
+      <td>-0.010470</td>
+      <td>73.205574</td>
+      <td>0.503144</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>56.942486</td>
+      <td>35.378609</td>
+      <td>40.582706</td>
+      <td>63.411938</td>
+      <td>1.742546</td>
+      <td>398.235413</td>
+      <td>3.583769</td>
+      <td>0.780875</td>
+      <td>21.918491</td>
+      <td>116.089806</td>
+      <td>...</td>
+      <td>126.816689</td>
+      <td>0.978793</td>
+      <td>60.649529</td>
+      <td>1.779419</td>
+      <td>1.815363</td>
+      <td>32.455467</td>
+      <td>2.031695</td>
+      <td>1.816033</td>
+      <td>98.331757</td>
+      <td>0.572200</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>9.044000</td>
+      <td>0.000000</td>
+      <td>6.329000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>13.602000</td>
+      <td>-19.011999</td>
+      <td>0.208000</td>
+      <td>0.000000</td>
+      <td>46.103001</td>
+      <td>...</td>
+      <td>13.678000</td>
+      <td>0.000000</td>
+      <td>30.000000</td>
+      <td>-4.500000</td>
+      <td>-3.142000</td>
+      <td>30.000000</td>
+      <td>-4.500000</td>
+      <td>-3.142000</td>
+      <td>-0.000000</td>
+      <td>0.000461</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>91.862000</td>
+      <td>19.304001</td>
+      <td>59.414001</td>
+      <td>14.164250</td>
+      <td>0.886000</td>
+      <td>112.627998</td>
+      <td>-2.626000</td>
+      <td>1.814000</td>
+      <td>2.839000</td>
+      <td>77.491997</td>
+      <td>...</td>
+      <td>122.985001</td>
+      <td>0.000000</td>
+      <td>44.487999</td>
+      <td>-1.337000</td>
+      <td>-1.591000</td>
+      <td>37.325001</td>
+      <td>-1.604000</td>
+      <td>-1.589000</td>
+      <td>0.000000</td>
+      <td>0.005721</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>112.500999</td>
+      <td>46.484001</td>
+      <td>73.744003</td>
+      <td>38.470001</td>
+      <td>2.101000</td>
+      <td>226.192993</td>
+      <td>-0.244000</td>
+      <td>2.492000</td>
+      <td>12.383000</td>
+      <td>120.665001</td>
+      <td>...</td>
+      <td>179.882996</td>
+      <td>1.000000</td>
+      <td>65.760002</td>
+      <td>0.000000</td>
+      <td>-0.044000</td>
+      <td>47.993000</td>
+      <td>-0.011000</td>
+      <td>-0.020000</td>
+      <td>40.506001</td>
+      <td>0.357223</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>135.576004</td>
+      <td>73.620003</td>
+      <td>92.188004</td>
+      <td>79.226748</td>
+      <td>3.691000</td>
+      <td>478.782013</td>
+      <td>0.945000</td>
+      <td>2.962000</td>
+      <td>27.634001</td>
+      <td>200.884495</td>
+      <td>...</td>
+      <td>263.828003</td>
+      <td>2.000000</td>
+      <td>103.569504</td>
+      <td>1.336000</td>
+      <td>1.557000</td>
+      <td>66.695000</td>
+      <td>1.593000</td>
+      <td>1.568000</td>
+      <td>110.387001</td>
+      <td>0.733462</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1949.260986</td>
+      <td>968.669006</td>
+      <td>1349.350952</td>
+      <td>2834.999023</td>
+      <td>8.724000</td>
+      <td>4974.979004</td>
+      <td>17.650000</td>
+      <td>5.751000</td>
+      <td>2834.999023</td>
+      <td>2079.162109</td>
+      <td>...</td>
+      <td>2190.274902</td>
+      <td>3.000000</td>
+      <td>1163.438965</td>
+      <td>4.500000</td>
+      <td>3.142000</td>
+      <td>817.801025</td>
+      <td>4.500000</td>
+      <td>3.142000</td>
+      <td>1860.175049</td>
+      <td>2.386316</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 31 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -857,6 +1877,48 @@ What would you expect the mean and standard deviation (std) of this new column t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>818238</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>b</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>538678</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>You can now safely remove the <code class="docutils literal notranslate"><span class="pre">tmp_data</span></code> directory if you like. This is an example of a <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/01.05-ipython-and-shell-commands.html">shell command</a>. Uncomment this line if you want to do this. Colab will clean this up after you end the session.</p>
 <div class="cell docutils container">
