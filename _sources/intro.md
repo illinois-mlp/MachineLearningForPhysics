@@ -53,14 +53,14 @@ Upon completion of the course students will be able to:
 ### Instructor
 * Professor [Mark Neubauer](https://marksneubauer.com)
   * email: msn@illinois.edu
-  * Office Hour: Thursdays from 6:00 pm - 7:00 pm
+  * Office Hour: Thursdays at 6:00 pm
   * Location: [Zoom](https://illinois.zoom.us/j/84972810339?pwd=Ly9yNWYzdnBuR01wZ2lYZTV4L3hPdz09)
 
 ### TA
 * Max Gold
   * email: mjgold2@illinois.edu
-  * Office Hour: TBD
-  * Location: TBD
+  * Office Hour: Tuesdays at 6:00 pm
+  * Location: 322 Loomis
 
 ## <span style="color:Red">Online Tools</span>
 
