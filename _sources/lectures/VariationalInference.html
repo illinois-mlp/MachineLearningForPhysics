@@ -1,0 +1,1171 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Variational Inference &#8212; PHYS 498 MLP</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/VariationalInference';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Normalizing Flows" href="NormalizingFlows.html" />
+    <link rel="prev" title="Model Selection" href="ModelSelection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="PHYS 498 MLP - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="PHYS 498 MLP - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <span style="color:Blue">Machine Learning for Physics</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_01.html"><span style="color: blue;"><b>Introduction to Data Science</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cQJycGyQ07qSOoeskr6GjjTD3byIkxDbdi228NRgFeU/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JupyterNumpy.html">Jupyter Notebooks and Numerical Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pandas.html">Handling Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Visualization.html">Visualizing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Clustering.html">Finding Structure in Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dimensionality.html">Measuring and Reducing Dimensionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Nonlinear.html">Adapting Linear Methods to Non-Linear Data and Kernel Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_01.html">Homework 01: Introduction to Data Science</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_02.html"><span style="color: blue;"><b>Probability Theory and Density Estimation</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1o9tM9ppKZWIa9B3WIHy5JDF4myR5NkO02W6WAlyiTSg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ProbabilityTheory.html">Probability Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ProbabilityDistributions.html">Important Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DensityEstimation.html">Estimating Probability Density from Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_02.html">Homework 02:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_03.html"><span style="color: blue;"><b>Bayesian Statistics I</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BayesianInference.html">Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MarkovChainMonteCarlo.html">Markov Chain Monte Carlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MarkovChains.html">Markov Chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_03.html">Homework 03:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_04.html"><span style="color: blue;"><b>Bayesian Statistics II</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ModelSelection.html">Model Selection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NormalizingFlows.html">Normalizing Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SimulationBasedInference.html">Simulation Based Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_04.html">Homework 04:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence and Macnhine Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Learning.html">Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrossValidation.html">Cross Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SupervisedLearning.html">Supervised Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ArtificialNeuralNetworks.html">Artificial Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_05.html">Homework 05:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_06.html"><span style="color: blue;"><b>Deep Learning and Generative Modeling</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeepLearning.html">Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GenerativeModeling.html">Generative Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConvolutionalRecurrentNeuralNetworks.html">Convolutional and Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Project_01.html"><span style="color: blue;"><b>Project 01</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_HiggsTauTau.html">Higgs Boson Decaying to Tau Leptons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_ExoticParticles.html">Searching for Exotic Particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_GalaxyZoo.html">Galaxy Zoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_NuclearGeometryQGP.html">Nuclear Geometry and Characterization of the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_01_DarkEnergySurvey.html">Dark Energy Survey</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_08.html">Homework 08:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_09.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AttentionTransformers.html">Attention Mechanism and Transformers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_09.html">Homework 09:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ReinforcementLearning.html">Reinforcement Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_10.html">Homework 10:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_11.html"><span style="color: blue;"><b>Uncertainty Quantification and Anomaly Detection</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UncertaintyQuantificationAnomalyDetection.html">Uncertainty Quantification and Anomaly Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_11.html">Homework 11:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_12.html"><span style="color: blue;"><b>Physics Informed Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PhysicsInformedNeuralNetworks.html">Physics Informed Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_12.html">Homework 12:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Project_02.html"><span style="color: blue;"><b>Project 02</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_02_HiggsTauTau.html">Higgs Boson Decaying to Tau Leptons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_02_ExoticParticles.html">Searching for Exotic Particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_02_GalaxyZoo.html">Galaxy Zoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_02_NuclearGeometryQGP.html">Nuclear Geometry and Characterization of the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../projects/Project_02_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_13.html"><span style="color: blue;"><b>Learning from the Machines</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LearningPhysicsMachines.html">Learning Physics from the Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_13.html">Homework 13:</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_14.html"><span style="color: blue;"><b>Future of AI and Physics: What Lies Ahead?</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LookingForward.html">Future of AI and Physics: What Lies Ahead?</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/illinois-mlp/MachineLearningForPhysics/blob/main/_sources/lectures/VariationalInference.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+<a href="https://github.com/illinois-mlp/MachineLearningForPhysics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/_sources/lectures/VariationalInference.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Variational Inference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-kullback-leibler-divergence-span"><span style="color:Lightgreen">Kullback-Leibler Divergence</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-evidence-lower-bound-span"><span style="color:Lightgreen">Evidence Lower Bound</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-practical-calculations-with-vi-span"><span style="color:Orange">Practical Calculations with VI</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="variational-inference">
+<h1>Variational Inference<a class="headerlink" href="#variational-inference" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p>Most Bayesian inference problems cannot be solved exactly, so require an approximate method. The MCMC method is one such method, invented in the 1950s. <span style="color:violet">Variational inference</span> is an alternative approximate method, invented in the 1990s:</p>
+<ul class="simple">
+<li><p><span style="color:LightGreen">MCMC</span>: provides an approximate description of the exact posterior distribution (using <span style="color:violet">sampling</span>).</p></li>
+<li><p><span style="color:LightGreen">VI</span>: provides an exact description of an approximate posterior distribution (using <span style="color:violet">optimization</span>).</p></li>
+</ul>
+<p>The underlying assumptions and numerical algorithms involved (sampling and optimization) are fundamentally different, leading to different tradeoffs between these methods.</p>
+<p>The essence of VI is to first define a family of PDFs that balance two competing criteria:</p>
+<ul class="simple">
+<li><p>convenient for calculations, and</p></li>
+<li><p>flexible enough to approximately match some unknown target PDF.</p></li>
+</ul>
+<p>We then select the family member that is “closest” to the target. In a Bayesian context, our target PDF is a posterior distribution, but VI is a more general technique for finding approximate PDFs.</p>
+</section>
+<section id="span-style-color-lightgreen-kullback-leibler-divergence-span">
+<h2><span style="color:Lightgreen">Kullback-Leibler Divergence</span><a class="headerlink" href="#span-style-color-lightgreen-kullback-leibler-divergence-span" title="Permalink to this heading">#</a></h2>
+<p>Variational inference relies on a concept of “closeness” between two PDFs, which we call <span class="math notranslate nohighlight">\(q(\theta)\)</span> and <span class="math notranslate nohighlight">\(p(\theta)\)</span>. Note that we are talking about “separation” in an abstract function space, rather than a coordinate space. Just as with coordinate separation, there are many possible valid definitions, e.g.</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+(\sum_i (x_i - y_i)^2)^{1/2} \quad, \quad
+\sum_i |x_i - y_i| \quad, \quad
+\max_i\, |x_i - y_i| \quad, \ldots
+\]</div>
+<p>VI uses the <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Kullback Leibler (KL) divergence</a> to measure the “closeness” of PDFs <span class="math notranslate nohighlight">\(q(\theta)\)</span> and <span class="math notranslate nohighlight">\(p(\theta)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+\text{KL}( q \parallel p ) \equiv \int d\theta\, q(\theta)\, \log\frac{q(\theta)}{p(\theta)}} \; .
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(q\)</span> is a PDF, KL divergence can also be written as a difference of expectation values over <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{KL}( q \parallel p ) = \langle \log q(\theta)\rangle_q - \langle \log p(\theta)\rangle_q \; .
+\]</div>
+<p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>:</p>
+<ul class="simple">
+<li><p>Is KL divergence symmetric, <span class="math notranslate nohighlight">\(\text{KL}(q\parallel p) = \text{KL}(p\parallel q)\)</span>?</p></li>
+<li><p>What is the value of <span class="math notranslate nohighlight">\(\text{KL}(q\parallel p)\)</span> when <span class="math notranslate nohighlight">\(p = q\)</span>?</p></li>
+<li><p>What happens to the integrand when either <span class="math notranslate nohighlight">\(q(\theta)\)</span> or <span class="math notranslate nohighlight">\(p(\theta)\)</span> approaches zero?</p></li>
+<li><p>What bounds, if any, can you place on the value of <span class="math notranslate nohighlight">\(\text{KL}(q\parallel p)\)</span> given that <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q\)</span> are PDFs?</p></li>
+</ul>
+<p>KL divergence is not symmetric since exchanging <span class="math notranslate nohighlight">\(q\)</span> and <span class="math notranslate nohighlight">\(p\)</span> in the integrand changes its value. This makes KL divergence an unusual measure of separation and means that it is not a true
+<a class="reference external" href="https://en.wikipedia.org/wiki/Metric_%28mathematics%29">metric</a>.</p>
+<p>When <span class="math notranslate nohighlight">\(p=q\)</span>, the log zeros the integrand (except possibly where <span class="math notranslate nohighlight">\(q\)</span> has a singularity), resulting in a KL divergence of zero. This is what we would expect for a useful measure of separation.</p>
+<p>When <span class="math notranslate nohighlight">\(q \rightarrow 0\)</span> the combination <span class="math notranslate nohighlight">\(q \log q \rightarrow 0\)</span>. When <span class="math notranslate nohighlight">\(p(\theta)\rightarrow 0\)</span>, the log term diverges <span class="math notranslate nohighlight">\(\log(1/p)\rightarrow +\infty\)</span>. As a result, the KL integrand blows up wherever <span class="math notranslate nohighlight">\(\theta\)</span> is very unlikely according to <span class="math notranslate nohighlight">\(p\)</span> doesn’t care when <span class="math notranslate nohighlight">\(\theta\)</span> is very unlikely according to <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p>A PDF is always <span class="math notranslate nohighlight">\(\ge 0\)</span> but not bounded from above, so the KL divergence is not bounded from above. However, nothing prevents <span class="math notranslate nohighlight">\(q(\theta) &lt; p(\theta)\)</span>, so the integrand can be negative (due to the log) even with <span class="math notranslate nohighlight">\(p, q \ge 0\)</span>.</p>
+<p>It turns out that the KL divergence is always <span class="math notranslate nohighlight">\(\ge 0\)</span> but this is not obvious. The proof relies on the <a class="reference external" href="https://en.wikipedia.org/wiki/Log_sum_inequality">log sum inequality</a>, which in turns relies on <a class="reference external" href="https://en.wikipedia.org/wiki/Jensen's_inequality">Jensen’s inequality</a> which we met earlier.</p>
+<p>The key insight is that the KL divergence is <a class="reference external" href="https://en.wikipedia.org/wiki/Convex_function">convex</a> in <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{KL}\big(\lambda q_1 + (1-\lambda) q_2\parallel p\big) ~ \le ~
+\lambda\,\text{KL}(q_1\parallel p) + (1-\lambda)\,\text{KL}(q_2\parallel p) \; .
+\]</div>
+<p>since, for any value of <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q\)</span> are just numbers and the integrand</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(q) = q \log q/p
+\]</div>
+<p>is a convex function of <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_convex</span><span class="p">():</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">q</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">qlo</span><span class="p">,</span> <span class="n">qhi</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p=</span><span class="si">{:.1f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">qlo</span><span class="p">,</span> <span class="n">qhi</span><span class="p">],</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">qlo</span><span class="p">,</span><span class="n">p</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">qhi</span><span class="p">,</span><span class="n">p</span><span class="p">)],</span> <span class="s1">&#39;k:&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$q$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$f(q) = q\, log (q/p)$&#39;</span><span class="p">)</span>
+    
+<span class="n">plot_convex</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_KL</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_p</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the KL divergence of q wrt p for single-parameter PDFs.</span>
+
+<span class="sd">    Uses the trapezoid rule for the numerical integration. Integrals are only</span>
+<span class="sd">    calculated over the input theta range, so are not valid when p or q have</span>
+<span class="sd">    significant mass outside this range.</span>
+
+<span class="sd">    Regions where either PDF is zero are handled correctly, although an</span>
+<span class="sd">    integrable singularity due to p=0 will result in a divergent KL because the</span>
+<span class="sd">    inputs are tabulated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log_q : array</span>
+<span class="sd">        Values of log q(theta, s) tabulated on a grid with shape (ns, ntheta)</span>
+<span class="sd">        of s (axis=0) and theta (axis=1).</span>
+<span class="sd">    log_p : array</span>
+<span class="sd">        Values of log p(theta) tabulated on a grid with shape (ntheta) of theta.</span>
+<span class="sd">    theta : array</span>
+<span class="sd">        Values of theta where log_q and log_p are tabulated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Tuple (KL, integrand) where KL is an array of ns divergence values and</span>
+<span class="sd">        integrand is an array with shape (ns, ntheta) of KL integrands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># special handling for q=0.</span>
+    <span class="n">q_log_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">log_q</span><span class="p">)</span>
+    <span class="n">nonzero</span> <span class="o">=</span> <span class="n">log_q</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">q_log_q</span><span class="p">[</span><span class="n">nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_q</span><span class="p">[</span><span class="n">nonzero</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_q</span><span class="p">[</span><span class="n">nonzero</span><span class="p">])</span>
+    <span class="n">integrand</span> <span class="o">=</span> <span class="n">q_log_q</span> <span class="o">-</span> <span class="n">log_p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="n">integrand</span>
+
+
+<span class="k">def</span> <span class="nf">plot_KL</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">p_scale</span><span class="p">,</span> <span class="n">theta_range</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Explanatory plots for the KL divergence.</span>
+
+<span class="sd">    q and p are arbitrary PDFs defined in scipy.stats. q represents a</span>
+<span class="sd">    family of PDFs by allowing its scale factor to vary in some range.</span>
+<span class="sd">    The target pdf p uses a fixed scale factor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : str</span>
+<span class="sd">        Name of a 1D continous random variable defined in scipy.stats.</span>
+<span class="sd">    q_scale_range : list</span>
+<span class="sd">        List [lo, hi] giving the range of scale factors to allow in defining the</span>
+<span class="sd">        q family of PDFs.</span>
+<span class="sd">    p : str</span>
+<span class="sd">        Name of a 1D continous random variable defined in scipy.stats.</span>
+<span class="sd">    p_scale : float</span>
+<span class="sd">        Fixed scale factor to use for the target PDF p.</span>
+<span class="sd">    theta_range : list</span>
+<span class="sd">        List [lo, hi] giving the range to use for plotting and integration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+    <span class="n">log_p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">p_scale</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">log_p</span><span class="p">))</span>
+
+    <span class="n">q_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">q_scale_range</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+    <span class="n">log_q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">q_scale</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+
+    <span class="n">KLs</span><span class="p">,</span> <span class="n">KL_ints</span> <span class="o">=</span> <span class="n">calculate_KL</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_p</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">ibest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">KLs</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+          <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;bright&#39;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">KLs</span><span class="p">))</span><span class="o">.</span><span class="n">as_hex</span><span class="p">()</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_p</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p(</span><span class="se">\\</span><span class="s1">theta)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q_scale</span><span class="p">,</span> <span class="n">KLs</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL$(q(s) \parallel p)$&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">ibest</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$q(</span><span class="se">\\</span><span class="s1">theta;s=</span><span class="si">{:.2f}</span><span class="s1">)$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q_scale</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_q</span><span class="p">[</span><span class="n">idx</span><span class="p">]),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">KL_ints</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">q_scale</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">KLs</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$p(x), q(</span><span class="se">\\</span><span class="s1">theta; s)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;KL$(q \parallel p)$ integrand&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">theta$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$q(</span><span class="se">\\</span><span class="s1">theta;s)$ scale $s$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_ELBO</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_likelihood</span><span class="p">,</span> <span class="n">log_prior</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the ELBO of q for single-parameter PDFs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">KLqP</span><span class="p">,</span> <span class="n">integrand</span> <span class="o">=</span> <span class="n">calculate_KL</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_prior</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">integrand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_q</span><span class="p">)</span> <span class="o">*</span> <span class="n">log_likelihood</span> <span class="o">-</span> <span class="n">integrand</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="n">integrand</span>
+
+
+<span class="k">def</span> <span class="nf">plot_ELBO</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="n">theta_range</span><span class="p">,</span> <span class="n">n_data</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Explanatory plots for the evidence lower bound (ELBO).</span>
+
+<span class="sd">    Data is modeled with a single offset (loc) parameter theta with an arbitrary</span>
+<span class="sd">    likelihood and prior. A random sample of generated data is used to calculate</span>
+<span class="sd">    the posterior, which is approximated by adjusting the scale parameter of</span>
+<span class="sd">    the arbitrary PDF family q.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : str</span>
+<span class="sd">        Name of a 1D continous random variable defined in scipy.stats.</span>
+<span class="sd">    q_scale_range : list</span>
+<span class="sd">        List [lo, hi] giving the range of scale factors to allow in defining the</span>
+<span class="sd">        q family of PDFs.</span>
+<span class="sd">    likelihood : str</span>
+<span class="sd">        Name of a 1D continous random variable defined in scipy.stats.</span>
+<span class="sd">    prior : str</span>
+<span class="sd">        Name of a 1D continous random variable defined in scipy.stats.</span>
+<span class="sd">    theta_range : list</span>
+<span class="sd">        List [lo, hi] giving the range to use for plotting and integration.</span>
+<span class="sd">        The true value of theta used to generate data is (lo + hi) / 2.</span>
+<span class="sd">    n_data : int</span>
+<span class="sd">        Number of data points to generate by sampling from the likelihood with</span>
+<span class="sd">        theta = theta_true.</span>
+<span class="sd">    seed : int</span>
+<span class="sd">        Random number seed to use for reproducible results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">)</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">prior</span><span class="p">)</span>
+
+    <span class="c1"># Generate random data using the midpoint of the theta range as the</span>
+    <span class="c1"># true value of theta for sampling the likelihood.</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+    <span class="n">theta_true</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span>
+        <span class="n">loc</span><span class="o">=</span><span class="n">theta_true</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_data</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">))</span>
+
+    <span class="c1"># Calculate the likelihood and prior for each theta.</span>
+    <span class="n">log_L</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">theta</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">log_P</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the evidence and posterior.</span>
+    <span class="n">log_post</span> <span class="o">=</span> <span class="n">log_L</span> <span class="o">+</span> <span class="n">log_P</span>
+    <span class="n">log_evidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_post</span><span class="p">),</span> <span class="n">theta</span><span class="p">))</span>
+    <span class="n">log_post</span> <span class="o">-=</span> <span class="n">log_evidence</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">log_post</span><span class="p">))</span>
+
+    <span class="n">q_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">q_scale_range</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+    <span class="n">log_q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">q_scale</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+
+    <span class="n">KLs</span><span class="p">,</span> <span class="n">KL_ints</span> <span class="o">=</span> <span class="n">calculate_KL</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_post</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">ibest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">KLs</span><span class="p">)</span>
+
+    <span class="n">ELBOs</span><span class="p">,</span> <span class="n">ELBO_ints</span> <span class="o">=</span> <span class="n">calculate_ELBO</span><span class="p">(</span><span class="n">log_q</span><span class="p">,</span> <span class="n">log_L</span><span class="p">,</span> <span class="n">log_P</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+          <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;bright&#39;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">KLs</span><span class="p">))</span><span class="o">.</span><span class="n">as_hex</span><span class="p">()</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_post</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$P(</span><span class="se">\\</span><span class="s1">theta\mid D)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q_scale</span><span class="p">,</span> <span class="n">KLs</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL$(q(s) \parallel p)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q_scale</span><span class="p">,</span> <span class="n">log_evidence</span> <span class="o">-</span> <span class="n">ELBOs</span><span class="p">,</span> <span class="s1">&#39;k:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\log P(D) - ELBO(q(s))$&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">ibest</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$q(</span><span class="se">\\</span><span class="s1">theta;s=</span><span class="si">{:.2f}</span><span class="s1">)$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q_scale</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_q</span><span class="p">[</span><span class="n">idx</span><span class="p">]),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">KL_ints</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">q_scale</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">KLs</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$p(x), q(</span><span class="se">\\</span><span class="s1">theta; s)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Model parameter $</span><span class="se">\\</span><span class="s1">theta$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;KL$(q \parallel p)$ integrand&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">theta_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Model parameter $</span><span class="se">\\</span><span class="s1">theta$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$q(</span><span class="se">\\</span><span class="s1">theta;s)$ scale $s$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+
+    <span class="n">x_lim</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">D</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">x_lim</span><span class="p">,</span> <span class="o">+</span><span class="n">x_lim</span><span class="p">),</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_lim</span><span class="p">,</span> <span class="o">+</span><span class="n">x_lim</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+    <span class="n">dtheta</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ls</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">theta_true</span> <span class="o">-</span> <span class="n">dtheta</span><span class="p">,</span> <span class="n">theta_true</span><span class="p">,</span> <span class="n">theta_true</span> <span class="o">+</span> <span class="n">dtheta</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)):</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$P(x\mid </span><span class="se">\\</span><span class="s1">theta=</span><span class="si">{:+.2f}</span><span class="s1">)$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Observed sample $x$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">x_lim</span><span class="p">,</span> <span class="o">+</span><span class="n">x_lim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span>
+        <span class="n">left</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+        <span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">theta_{</span><span class="se">\t</span><span class="s1">ext</span><span class="si">{true}</span><span class="s1">}&#39;</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">{:.2f}</span><span class="s1">$ , $\log P(D) = </span><span class="si">{:.1f}</span><span class="s1">$&#39;</span>
+        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">theta_true</span><span class="p">,</span> <span class="n">log_evidence</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">plot_KL</span></code> function above to explore some examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">plot_KL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For our first example, we chose a family <span class="math notranslate nohighlight">\(q\)</span> that includes the target <span class="math notranslate nohighlight">\(p\)</span>. This is generally not feasible but nicely demonstrates our earlier claim that KL<span class="math notranslate nohighlight">\(\ge 0\)</span> with KL<span class="math notranslate nohighlight">\(=0\)</span> when <span class="math notranslate nohighlight">\(q=p\)</span>.</p>
+<p>In this example, we explore the family of PDFs <span class="math notranslate nohighlight">\(q(\theta; s)\)</span> by varying the scale factor <span class="math notranslate nohighlight">\(s\)</span>. More generally, the family can be explored with any (multidimensional) parameterization that is convenient for calculations. We need a parameterization of the family <span class="math notranslate nohighlight">\(q\)</span> in order to use standard optimization algorithms to find the minimum KL divergence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_KL</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">p_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">theta_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note how (in the bottom left panel) the KL integrand has positive and negative regions: the net area is always positive, however, since KL <span class="math notranslate nohighlight">\(\ge 0\)</span>.</p>
+<p>For our next example, we consider the more realistic case where the family <span class="math notranslate nohighlight">\(q\)</span> does not include the target <span class="math notranslate nohighlight">\(p\)</span> so we have to settle for the “closest” approximation, according to the KL divergence:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_KL</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="s1">&#39;laplace&#39;</span><span class="p">,</span> <span class="n">p_scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">theta_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice how the “closest” <span class="math notranslate nohighlight">\(q\)</span> now has KL <span class="math notranslate nohighlight">\(&gt;0\)</span>.  It also avoids regions where <span class="math notranslate nohighlight">\(p \simeq 0\)</span>, since that would blow up the KL integrand.</p>
+<p>The example above showed that a Gaussian PDF with <span class="math notranslate nohighlight">\(s \simeq 1\)</span> gives the best match a Laplacian PDF with <span class="math notranslate nohighlight">\(s = 0.8\)</span>. Now, turn this around and find the closest Laplacian <span class="math notranslate nohighlight">\(q\)</span> to a Gaussian <span class="math notranslate nohighlight">\(p\)</span> with <span class="math notranslate nohighlight">\(s = 1\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_KL</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;laplace&#39;</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">p_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">theta_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The answer is a Laplacian with <span class="math notranslate nohighlight">\(s\simeq 0.74\)</span>, rather than <span class="math notranslate nohighlight">\(0.8\)</span>, so a round trip does not end up back where we started!  However, this shouldn’t surprise us because the KL divergence is not symmetric in <span class="math notranslate nohighlight">\(q\)</span> and <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<hr class="docutils" />
+<p>Note that the KL divergences between Gaussian and Laplacian distributions in the examples above can all be calculated analytically, which is useful for testing but not generally true. The analytic results are summarized below, for reference:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\text{KL}_{qp}[G(s_1)\parallel G(s_2)] &amp;=
+\frac{1}{2} r^2 - \log r - \frac{1}{2} \quad&amp; \quad
+\text{KL}_{qp}[G(s_1)\parallel L(s_2)] &amp;=
+\sqrt{\frac{2}{\pi}} r - \log\left( \sqrt{\frac{\pi}{2}} r\right) - \frac{1}{2} \\
+\text{KL}_{qp}[L(s_1)\parallel G(s_2)] &amp;=
+r^2 - \log\left(\sqrt{\frac{2}{\pi}}r\right) - 1 \quad&amp; \quad
+\text{KL}_{qp}[L(s_1)\parallel L(s_2)] &amp;=
+r - \log r - 1 \; ,
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r \equiv s_1/s_2\)</span> is the ratio of scale parameters.  With <span class="math notranslate nohighlight">\(s_2\)</span> fixed, the corresponding minimum KL divergences are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min \text{KL}_{qp}[G(s_1=s_2)\parallel G(s_2)] &amp;= 0 \quad&amp; \quad
+\min \text{KL}_{qp}[G(s_1=(\pi/2)s_2)\parallel L(s_2)] &amp;=
+\sqrt{\frac{2}{\pi}} -  \frac{1}{2}\log\frac{\pi}{2} - \frac{1}{2} \\
+\min \text{KL}_{qp}[L(s_1=s_2/\sqrt{2})\parallel G(s_2)] &amp;=
+\frac{1}{2}\log\frac{\pi}{2} \quad&amp; \quad
+\min \text{KL}_{qp}[L(s_1=s_2)\parallel L(s_2)] &amp;= 0 \; .
+\end{aligned}
+\end{split}\]</div>
+</section>
+<section id="span-style-color-lightgreen-evidence-lower-bound-span">
+<h2><span style="color:Lightgreen">Evidence Lower Bound</span><a class="headerlink" href="#span-style-color-lightgreen-evidence-lower-bound-span" title="Permalink to this heading">#</a></h2>
+<p>The KL divergence is a generic method to find the parameterized PDF <span class="math notranslate nohighlight">\(q(x,s)\)</span> that “best” approximates some target PDF <span class="math notranslate nohighlight">\(p(x)\)</span>.  For Bayesian inference, the <span class="math notranslate nohighlight">\(p\)</span> we care about is the posterior:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+p(\theta) = P(\theta\mid D) = \frac{P(D\mid \theta)\, P(\theta)}{P(D)} \; ,
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> are the model parameters and <span class="math notranslate nohighlight">\(D\)</span> represents the observed data.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(D\mid \theta)\)</span> is the likelihood of the data assuming parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(\theta)\)</span> is our prior on the parameters.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(D)\)</span> is the “evidence”.</p></li>
+</ul>
+<p>Since we generally cannot calculate the evidence <span class="math notranslate nohighlight">\(P(D)\)</span>, a useful inference method should not require that we know its value.</p>
+<p>The <strong>variational Bayesian inference</strong> method has three steps:</p>
+<ul class="simple">
+<li><p>Define a family of PDFs <span class="math notranslate nohighlight">\(q(\theta; s)\)</span> that approximate the true posterior <span class="math notranslate nohighlight">\(P(\theta\mid D)\)</span>.</p></li>
+<li><p>Use optimization to find the value <span class="math notranslate nohighlight">\(s^\ast\)</span> that, according to the KL divergence, best approximates the true posterior.</p></li>
+<li><p>Use <span class="math notranslate nohighlight">\(q(\theta; s=s^\ast)\)</span> as an approximation of the true posterior for calculating expectation values, etc.</p></li>
+</ul>
+<p>The main tradeoff is in picking the approximate PDF family <span class="math notranslate nohighlight">\(q\)</span>. A more flexible choice will generally do a better job of approximating the true posterior, but also require more difficult calculations.</p>
+<p>Plugging the posterior into the KL definition, we can rewrite:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+\text{KL}(q\parallel p) &amp;= \int d\theta\, q(\theta) \log\left[
+\frac{P(D)\, q(\theta)}{P(D\mid \theta)\, P(\theta)}
+\right] \\
+&amp;= \int d\theta\, q(\theta) \left[\log P(D) +
+\log\frac{q(\theta)}{P(\theta)} - \log P(D\mid\theta) \right] \\
+&amp;= \log P(D) + \text{KL}(q\parallel P) - \int d\theta\, q(\theta) \log P(D\mid\theta) \; .
+\end{aligned}
+\end{split}\]</div>
+<p>The three terms on the right-hand side are:</p>
+<ul class="simple">
+<li><p>The log of the evidence <span class="math notranslate nohighlight">\(P(D)\)</span>.</p></li>
+<li><p>The KL divergence of <span class="math notranslate nohighlight">\(q(\theta)\)</span> with respect to the prior <span class="math notranslate nohighlight">\(P(\theta)\)</span>.</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(q\)</span>-weighted log-likelihood of the data.</p></li>
+</ul>
+<p><em><strong><span style="color:Violet">DISCUSS</span></strong></em>: Describe the <span class="math notranslate nohighlight">\(q(\theta)\)</span> that would minimize the contribution of each term to their sum (assuming a fixed dataset <span class="math notranslate nohighlight">\(D\)</span>).</p>
+<p>Solution:</p>
+<ul class="simple">
+<li><p>The log of the evidence is a constant offset in the sum, independent of <span class="math notranslate nohighlight">\(q\)</span>.\</p></li>
+<li><p>The KL divergence term is minimized when <span class="math notranslate nohighlight">\(q(\theta) = P(\theta)\)</span>, i.e., it drives <span class="math notranslate nohighlight">\(q\)</span> to look like the prior.</p></li>
+<li><p>The log-likelihood term is minimized when <span class="math notranslate nohighlight">\(q(\theta)\)</span> prefers parameters <span class="math notranslate nohighlight">\(\theta\)</span> that explain the data.</p></li>
+</ul>
+<p>The competition between the last two terms is exactly what we need for a useful learning rule that balances prior knowledge with the information gained from new data.</p>
+<hr class="docutils" />
+<p>We can rewrite the expression above in terms of the log-evidence as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log P(D) = \int d\theta\, q(\theta) \log P(D\mid\theta) - \text{KL}(q\parallel P) + \text{KL}(q\parallel p) \; .
+\]</div>
+<p>Since the last term is <span class="math notranslate nohighlight">\(\ge 0\)</span> (since any KL <span class="math notranslate nohighlight">\(\ge 0\)</span>), we find:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log P(D) \ge \int d\theta\, q(\theta) \log P(D\mid\theta) - \text{KL}(q\parallel P) \; ,
+\]</div>
+<p>and call this right-hand side the <em><strong><span style="color:Violet">evidence lower bound</span></strong></em> (ELBO):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{ELBO}(q) \equiv \int d\theta\, q(\theta) \log P(D\mid\theta) - \text{KL}(q\parallel P) \; .
+\]</div>
+<p>Substituting above, we find that</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{KL}(q\parallel p) = \log P(D) - \text{ELBO}(q) \; ,
+\]</div>
+<p>so that the ELBO contains all of the <span class="math notranslate nohighlight">\(q\)</span> dependence of the KL divergence of <span class="math notranslate nohighlight">\(q\)</span> with respect to <span class="math notranslate nohighlight">\(p\)</span>. The crucial insights are that:</p>
+<ul class="simple">
+<li><p>Minimizing <span class="math notranslate nohighlight">\(-\text{ELBO}(q)\)</span> with respect to <span class="math notranslate nohighlight">\(q\)</span> is equivalent to minimizing <span class="math notranslate nohighlight">\(\text{KL}(q\parallel p)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{ELBO}(q)\)</span> is much easier to calculate since it does not depend on the evidence <span class="math notranslate nohighlight">\(P(D)\)</span>.</p></li>
+</ul>
+<p>Note that, as with the KL divergence, the ELBO can be evaluated in terms of expectation values,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{ELBO}(q) = \langle \log P(D\mid\theta)\rangle_q + \langle \log P(\theta)\rangle_q - \langle \log q\rangle_q \; .
+\]</div>
+<p>The practical significance of this fact is that we can estimate the ELBO using averages of known quantities calculated with (finite) samples drawn from <span class="math notranslate nohighlight">\(q\)</span>, which effectively uses Monte Carlo integration with <a class="reference external" href="https://en.wikipedia.org/wiki/Importance_sampling">importance sampling</a>.</p>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">plot_ELBO</span></code> function defined above to explore some examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">plot_ELBO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The example below specifies a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html">Laplacian PDF</a> for observing <span class="math notranslate nohighlight">\(x\)</span> with an unknown offset parameter <span class="math notranslate nohighlight">\(\theta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(x\mid \theta) = \frac{1}{2}\, e^{-|x - \theta|} \; .
+\]</div>
+<p>The resulting likelihood is then:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid\theta) = \prod_i P(x_i\mid\theta) \; .
+\]</div>
+<p>Our prior knowledge of <span class="math notranslate nohighlight">\(\theta\)</span> is specified by a unit Gaussian,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\theta) = (2\pi)^{-1/2}\, e^{-\theta^2/2} \; .
+\]</div>
+<p>The resulting posterior PDF</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\theta\mid D) = \frac{P(D\mid\theta)\, P(\theta)}{P(D)}
+\]</div>
+<p>is no longer a simple distribution since it depends on the random data <span class="math notranslate nohighlight">\(D\)</span> and reflects its statistical fluctuations. However, as shown below, it is roughly Gaussian, so we use a family <span class="math notranslate nohighlight">\(q\)</span> of Gaussians to approximate it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_ELBO</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span> <span class="n">likelihood</span><span class="o">=</span><span class="s1">&#39;laplace&#39;</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span>
+          <span class="n">theta_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.6</span><span class="p">],</span> <span class="n">n_data</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:Violet">DISCUSS</span></strong></em></p>
+<ul class="simple">
+<li><p>Is the offset between the KL divergence and -ELBO significant on the scale of variations shown in the upper-right panel?</p></li>
+<li><p>Is the posterior dominated by the prior or the new data in this example?</p></li>
+<li><p>How do you expect these plots to change when doubling the number of data samples? (think about it before trying it).</p></li>
+</ul>
+<p>The offset equals <span class="math notranslate nohighlight">\(\log P(D) \simeq -145\)</span> so is very significant compared with the variations <span class="math notranslate nohighlight">\(\simeq 0.3\)</span> shown in the upper-right panel.  However, since the offset is constant (with respect to <span class="math notranslate nohighlight">\(s\)</span>) it does not affect the location of the minimum.</p>
+<p>Referring to the top-left panel, the posterior has a standard deviation <span class="math notranslate nohighlight">\(s\simeq 0.1\)</span> but but prior is much wider with <span class="math notranslate nohighlight">\(s = 1\)</span>, so the posterior is dominated by the new data.</p>
+<p>Doubling the number of data samples will make the data even more informative, leading to a narrower posterior. The best-fitting <span class="math notranslate nohighlight">\(q\)</span> will therefore also be narrow, leading to a minimum KL divergence (upper-right panel) at a lower value of <span class="math notranslate nohighlight">\(s\)</span>.</p>
+<p>Re-run the example above with <code class="docutils literal notranslate"><span class="pre">n_data</span></code> changed from 100 to 200 to confirm these predictions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_ELBO</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span> <span class="n">q_scale_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span> <span class="n">likelihood</span><span class="o">=</span><span class="s1">&#39;laplace&#39;</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="s1">&#39;norm&#39;</span><span class="p">,</span>
+          <span class="n">theta_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.6</span><span class="p">],</span> <span class="n">n_data</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-practical-calculations-with-vi-span">
+<h2><span style="color:Orange">Practical Calculations with VI</span><a class="headerlink" href="#span-style-color-orange-practical-calculations-with-vi-span" title="Permalink to this heading">#</a></h2>
+<p>MCMC with Metroplis-Hastings updates can be used as a black box for an arbitrary inference problem that only requires that you can calculate your likelihood <span class="math notranslate nohighlight">\(P(D\mid \theta)\)</span> and prior <span class="math notranslate nohighlight">\(P(\theta)\)</span> for arbitrary parameter values <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>VI, on the other hand, generally requires more work to setup for a particular problem, but is then often more computationally efficient since it replaces sampling with optimization. A necessary step in any VI inference is to select an approximating family <span class="math notranslate nohighlight">\(q\)</span>, and this generally requires knowledge of the particular problem and some judgment on how to tradeoff calculational convenience against approximation error.</p>
+<p>Once you selected a family <span class="math notranslate nohighlight">\(q(\theta; s)\)</span> that is explored by some <span class="math notranslate nohighlight">\(s\)</span>, you need to be able to:</p>
+<ul class="simple">
+<li><p>evaluate the KL divergence of <span class="math notranslate nohighlight">\(q(s)\)</span> with respect to <span class="math notranslate nohighlight">\(p\)</span> for any <span class="math notranslate nohighlight">\(s\)</span>, and</p></li>
+<li><p>find the value of <span class="math notranslate nohighlight">\(s\)</span> that minimizes the KL divergence.</p></li>
+</ul>
+<p>There are standard numerical optimization methods for the second step, which perform best when you can evaluate derivatives of <span class="math notranslate nohighlight">\(q(s)\)</span> with respect to <span class="math notranslate nohighlight">\(s\)</span>.  The first step either requires an analytic integral over <span class="math notranslate nohighlight">\(\theta\)</span> or a sufficiently accurate numerical approximation to the KL integral. A <a class="reference external" href="https://arxiv.org/abs/1401.0118">recent development</a> is to use the expectation form of the KL divergence,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{KL}( q \parallel p ) = \langle \log q(\theta)\rangle_q - \langle \log p(\theta)\rangle_q \; ,
+\]</div>
+<p>to replace the integral with averages. This approach changes our requirements on the family <span class="math notranslate nohighlight">\(q\)</span> from being able to do integrals involving <span class="math notranslate nohighlight">\(q\)</span> to being able to sample from <span class="math notranslate nohighlight">\(q\)</span>, which is generally much easier. Although this method is known as “Black Box Variational Inference”, it still lacks the turn-key convenience of MCMC with MH updates.</p>
+<p>The examples above used a single parameter <span class="math notranslate nohighlight">\(\theta\)</span>, to simplify plotting and allow straightforward numerical integration. More interesting problems generally have many parameters, which makes picking a suitable family <span class="math notranslate nohighlight">\(q\)</span> much harder.  A common approach, known as the <strong>mean field approximation</strong>, is to assume that the posterior can be factored:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\theta_1, \theta_2, \ldots\mid D) = p_1(\theta_1)\, p_2(\theta_2) \ldots
+\]</div>
+<p>This is certainly not true in general, but does break a difficult multidimensional optimization problem into a sequence of simpler 1D optimization problems, so is sometimes necessary.  Note that this approach is not able to capture any correlations between <span class="math notranslate nohighlight">\(\theta_i\)</span> and <span class="math notranslate nohighlight">\(\theta_j\)</span>, so is not a good choice when correlations are expected to be important.</p>
+</section>
+<section id="span-style-color-orange-acknowledgments-span">
+<h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Initial version: Mark Neubauer</p></li>
+</ul>
+<p>© Copyright 2024</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./_sources/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ModelSelection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model Selection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="NormalizingFlows.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Normalizing Flows</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-kullback-leibler-divergence-span"><span style="color:Lightgreen">Kullback-Leibler Divergence</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-evidence-lower-bound-span"><span style="color:Lightgreen">Evidence Lower Bound</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-practical-calculations-with-vi-span"><span style="color:Orange">Practical Calculations with VI</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Mark Neubauer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

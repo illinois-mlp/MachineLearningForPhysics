@@ -1,14 +1,14 @@
-# <span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span>
+# <span style="color: blue;"><b>Reinforcement Learning</b></span>
 
 ## *Overview*
-You will learn the basics of Geometric Deep Learning and Graph Neural Networks
+You will learn the basics of Reinforcement Learning
 
 ## *Goals*
-* Learn about Geometric Deep Learning and Graph Neural Networks
+* Learn about Reinforcement Learning
 
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing)
-* {doc}`lectures/GraphNeuralNetworks`
+* {doc}`lectures/ReinforcementLearning`
 
 ## *Homework Assignment*
 * {doc}`homework/Homework_10`

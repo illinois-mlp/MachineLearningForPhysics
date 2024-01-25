@@ -1,14 +1,17 @@
-# <span style="color: blue;"><b>Artificial Neural Networks</b></span>
+# <span style="color: blue;"><b>Bayesian Statistics I</b></span>
 
 ## *Overview*
-You will learn the basics of Artificial Neural Networks
+You will learn the basics of Bayesian Statistics
 
 ## *Goals*
-* Learn about Artificial Neural Networks
+* Learn about Baysian Statistics
 
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing)
-* {doc}`lectures/ArtificialNeuralNetworks`
+* {doc}`lectures/Statistics`
+* {doc}`lectures/BayesianInference`
+* {doc}`lectures/MarkovChainMonteCarlo`
+* {doc}`lectures/MarkovChains`
 
 ## *Homework Assignment*
 * {doc}`homework/Homework_03`
