@@ -23,35 +23,46 @@ chapters:
   - file: _sources/lectures/ProbabilityDistributions
   - file: _sources/lectures/DensityEstimation
   - file: _sources/homework/Homework_02
-- file: _sources/Week_03 # Artificial Neural Networks
+- file: _sources/Week_03 # Bayesian Statistics I
   sections:
   - url: https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/ArtificialNeuralNetworks
+  - file: _sources/lectures/Statistics
+  - file: _sources/lectures/BayesianInference
+  - file: _sources/lectures/MarkovChainMonteCarlo
+  - file: _sources/lectures/MarkovChains
   - file: _sources/homework/Homework_03
-- file: _sources/Week_04 # Types of Learning from Data
+- file: _sources/Week_04 # Bayesian Statistics II
   sections:
   - url: https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/Learning
+  - file: _sources/lectures/ModelSelection
+  - file: _sources/lectures/VariationalInference
+  - file: _sources/lectures/NormalizingFlows
+  - file: _sources/lectures/SimulationBasedInference
   - file: _sources/homework/Homework_04
-- file: _sources/Week_05 # Bayesian Inference
+- file: _sources/Week_05 # Introduction to Artificial Intelligence and Machine Learning
   sections:
   - url: https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/BayesianInference
+  - file: _sources/lectures/Learning
+  - file: _sources/lectures/Optimization
+  - file: _sources/lectures/CrossValidation
+  - file: _sources/lectures/SupervisedLearning
+  - file: _sources/lectures/ArtificialNeuralNetworks
   - file: _sources/homework/Homework_05
-- file: _sources/Week_06 # Variational Inference and Normalizing Flows
+- file: _sources/Week_06 # Deep Learning and Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/VariationalInferenceNormalizingFlows
+  - file: _sources/lectures/DeepLearning.ipynb
+  - file: _sources/lectures/GenerativeModeling.ipynb
   - file: _sources/homework/Homework_06
-- file: _sources/Week_07 # Simulation-free Inference
+- file: _sources/Week_07 # Convolutional and Recurrent Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/SimulationFreeInference
+  - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
   - file: _sources/homework/Homework_07
 - file: _sources/Project_01 # Project 01
   sections:
@@ -61,35 +72,35 @@ chapters:
   - file: _sources/projects/Project_01_NuclearGeometryQGP
   - file: _sources/projects/Project_01_AberratedImages
   - file: _sources/projects/Project_01_DarkEnergySurvey
-- file: _sources/Week_08 # Generative Models
+- file: _sources/Week_08 # Geometric Deep Learning and Graph Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/GenerativeModels
+  - file: _sources/lectures/GraphNeuralNetworks
   - file: _sources/homework/Homework_08
-- file: _sources/Week_09 # Convolutional and Recurrent Neural Networks
+- file: _sources/Week_09 # Attention Mechanism and Transformers
   sections:
   - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
+  - file: _sources/lectures/AttentionTransformers
   - file: _sources/homework/Homework_09
-- file: _sources/Week_10 # Geometric Deep Learning and Graph Neural Networks
+- file: _sources/Week_10 # Reinforcement Learning
   sections:
   - url: https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/GraphNeuralNetworks
+  - file: _sources/lectures/ReinforcementLearning
   - file: _sources/homework/Homework_10
-- file: _sources/Week_11 # Attention Mechanism and Transformers
+- file: _sources/Week_11 # Uncertainty Quantification and Anomaly Detection
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/AttentionTransformers
+  - file: _sources/lectures/UncertaintyQuantificationAnomalyDetection
   - file: _sources/homework/Homework_11
-- file: _sources/Week_12 # Uncertainty Quantification and Anomaly Detection
+- file: _sources/Week_12 # Physics Informed Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/UncertaintyQuantificationAnomalyDetection
+  - file: _sources/lectures/PhysicsInformedNeuralNetworks
   - file: _sources/homework/Homework_12
 - file: _sources/Project_02 # Project 02
   sections:
@@ -98,15 +109,14 @@ chapters:
   - file: _sources/projects/Project_02_GalaxyZoo
   - file: _sources/projects/Project_02_NuclearGeometryQGP
   - file: _sources/projects/Project_02_AberratedImages
-- file: _sources/Week_13 # Physics Informed Neural Networks
+- file: _sources/Week_13 # Learning from the Machines
   sections:
   - url: https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/PhysicsInformedNeuralNetworks
+  - file: _sources/lectures/LearningPhysicsMachines
   - file: _sources/homework/Homework_13
-- file: _sources/Week_14 # Learning Physics from the Machines
+- file: _sources/Week_14 # Future of Physics: What Lies Ahead?
   sections:
   - url: https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/LearningPhysicsMachines
-  - file: _sources/homework/Homework_14
+  - file: _sources/lectures/LookingForward

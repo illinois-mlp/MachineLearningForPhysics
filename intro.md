@@ -27,7 +27,7 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Apr 08  | {doc}`_sources/Week_11`     | [HW 11](_sources/homework/Homework_11) |                            |
 | Apr 15	| {doc}`_sources/Week_12`     | [HW 12](_sources/homework/Homework_12) | {doc}`_sources/Project_02` |
 | Apr 22	| {doc}`_sources/Week_13`     | [HW 13](_sources/homework/Homework_13) |                            |
-| Apr 29  | {doc}`_sources/Week_14`     | [HW 14](_sources/homework/Homework_14) |                            |
+| Apr 29  | {doc}`_sources/Week_14`     | |                                      |                            |
 
 ## <span style="color:Red">Overview</span>
 
