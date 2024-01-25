@@ -15,11 +15,13 @@ chapters:
   - file: _sources/lectures/Dimensionality
   - file: _sources/lectures/Nonlinear
   - file: _sources/homework/Homework_01
-- file: _sources/Week_02 # Introduction to Artifical Intelligence and Machine Learning
+- file: _sources/Week_02 # Probability Theory and Density Estimation
   sections:
   - url: https://docs.google.com/presentation/d/1o9tM9ppKZWIa9B3WIHy5JDF4myR5NkO02W6WAlyiTSg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/ArtificialIntelligenceMachineLearning
+  - file: _sources/lectures/ProbabilityTheory
+  - file: _sources/lectures/ProbabilityDistributions
+  - file: _sources/lectures/DensityEstimation
   - file: _sources/homework/Homework_02
 - file: _sources/Week_03 # Artificial Neural Networks
   sections:
