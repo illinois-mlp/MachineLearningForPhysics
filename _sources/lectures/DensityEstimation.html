@@ -532,6 +532,36 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: astroML in /usr/local/lib/python3.11/site-packages (1.0.2.post1)
+Requirement already satisfied: scikit-learn&gt;=0.18 in /usr/local/lib/python3.11/site-packages (from astroML) (1.3.0)
+Requirement already satisfied: numpy&gt;=1.13 in /usr/local/lib/python3.11/site-packages (from astroML) (1.23.5)
+Requirement already satisfied: scipy&gt;=0.18 in /usr/local/lib/python3.11/site-packages (from astroML) (1.11.2)
+Requirement already satisfied: matplotlib&gt;=3.0 in /usr/local/lib/python3.11/site-packages (from astroML) (3.7.0)
+Requirement already satisfied: astropy&gt;=3.0 in /usr/local/lib/python3.11/site-packages (from astroML) (5.3.2)
+Requirement already satisfied: pyerfa&gt;=2.0 in /usr/local/lib/python3.11/site-packages (from astropy&gt;=3.0-&gt;astroML) (2.0.0.3)
+Requirement already satisfied: PyYAML&gt;=3.13 in /usr/local/lib/python3.11/site-packages (from astropy&gt;=3.0-&gt;astroML) (6.0.1)
+Requirement already satisfied: packaging&gt;=19.0 in /usr/local/lib/python3.11/site-packages (from astropy&gt;=3.0-&gt;astroML) (23.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (1.0.7)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (4.38.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (9.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (2.8.2)
+Requirement already satisfied: joblib&gt;=1.1.1 in /usr/local/lib/python3.11/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (1.3.2)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /usr/local/lib/python3.11/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (3.2.0)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.0-&gt;astroML) (1.16.0)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
@@ -566,6 +596,28 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/cluster_d_data.hf5’ already there; not retrieving.
+--2024-01-29 22:01:28--  https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/blobs_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 71192 (70K) [application/octet-stream]
+Saving to: ‘./tmp_data/blobs_data.hf5’
+     0K .......... .......... .......... .......... .......... 71% 2.40M 0s
+    50K .......... .........                                  100% 17.3M=0.02s
+2024-01-29 22:01:28 (3.17 MB/s) - ‘./tmp_data/blobs_data.hf5’ saved [71192/71192]
+--2024-01-29 22:01:28--  https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/data/blobs_targets.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 39192 (38K) [application/octet-stream]
+Saving to: ‘./tmp_data/blobs_targets.hf5’
+     0K .......... .......... .......... ........             100% 8.02M=0.005s
+2024-01-29 22:01:28 (8.02 MB/s) - ‘./tmp_data/blobs_targets.hf5’ saved [39192/39192]
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="span-style-color-orange-load-and-examine-data-span">
@@ -590,6 +642,9 @@ document.write(`
 <span class="n">plot_blobs</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">blobs_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/eeb8582a647615e26752f8cb21dfcc874a90a5b464f29b470dd5458c6ef3d356.png" src="../../_images/eeb8582a647615e26752f8cb21dfcc874a90a5b464f29b470dd5458c6ef3d356.png" />
 </div>
 </div>
 </section>
@@ -664,12 +719,18 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d4ed531ef0d8c3e23bdb3dd13845e890c350fcec95b020e2c0d6cfec3a5f8779.png" src="../../_images/d4ed531ef0d8c3e23bdb3dd13845e890c350fcec95b020e2c0d6cfec3a5f8779.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate_density1d</span><span class="p">(</span><span class="n">blobs1d</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2aba98789f670dcda341ffbe96d5f1dcaa67834b7946160b440c54b5e463ffae.png" src="../../_images/2aba98789f670dcda341ffbe96d5f1dcaa67834b7946160b440c54b5e463ffae.png" />
 </div>
 </div>
 <p>These histogram density estimates are not very useful because we have chosen fixed bins that are too small for so few samples.  As an alternative, we can use the data to determine the binning, e.g. with the <a class="reference external" href="https://en.wikipedia.org/wiki/Freedman-Diaconis_rule">Freedman-Diaconnis rule</a> that <code class="docutils literal notranslate"><span class="pre">sns.distplot</span></code> uses when <code class="docutils literal notranslate"><span class="pre">bins=None</span></code>:</p>
@@ -679,6 +740,9 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0cbace4e49de96968d640de4ed41e8bc0945ea99522d681ed535c1a7390723ec.png" src="../../_images/0cbace4e49de96968d640de4ed41e8bc0945ea99522d681ed535c1a7390723ec.png" />
+</div>
 </div>
 <p>This is an improvement, but an even better use of the data is to center the contribution of each sample on the sample itself, which is the key idea of <strong>kernel density estimation</strong>:</p>
 <div class="cell docutils container">
@@ -687,6 +751,9 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f1b0f260df6dd80b979b52d364c397eecbcd5df8b017df7a99128e1edb0c859c.png" src="../../_images/f1b0f260df6dd80b979b52d364c397eecbcd5df8b017df7a99128e1edb0c859c.png" />
+</div>
 </div>
 <p>There is nothing special about the “tophat” shape assigned to each sample, which we call the <strong>kernel</strong>, and other choices are equally valid, e.g.</p>
 <div class="cell docutils container">
@@ -694,6 +761,9 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate_density1d</span><span class="p">(</span><span class="n">blobs1d</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">kernels</span><span class="o">=</span><span class="s1">&#39;tophat,gaussian,cosine&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9b4a3abeecaf6659838b36183a4419600975374b18dba92e86eda2703da992f1.png" src="../../_images/9b4a3abeecaf6659838b36183a4419600975374b18dba92e86eda2703da992f1.png" />
 </div>
 </div>
 <p><strong>NOTE:</strong> this <strong>kernel</strong> is not the same as the <strong>kernel functions</strong> we discussed earlier:</p>
@@ -708,12 +778,18 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/013ae25d5546c12f346920111764adf521bc8c82cb98a9fc7b37a001d516815b.png" src="../../_images/013ae25d5546c12f346920111764adf521bc8c82cb98a9fc7b37a001d516815b.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate_density1d</span><span class="p">(</span><span class="n">blobs1d</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2000</span><span class="p">],</span> <span class="n">kernels</span><span class="o">=</span><span class="s1">&#39;tophat,gaussian,cosine&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c0bebf25439ffef208387817cf95de789cc18f080911db0d54f13634f87f0640.png" src="../../_images/c0bebf25439ffef208387817cf95de789cc18f080911db0d54f13634f87f0640.png" />
 </div>
 </div>
 <p>The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KernelDensity.html">sklearn implementation</a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density estimation (KDE)</a> uses the familiar calling pattern, with two significant hyperparameters:</p>
@@ -732,12 +808,18 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9b4a3abeecaf6659838b36183a4419600975374b18dba92e86eda2703da992f1.png" src="../../_images/9b4a3abeecaf6659838b36183a4419600975374b18dba92e86eda2703da992f1.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate_density1d</span><span class="p">(</span><span class="n">blobs1d</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">kernels</span><span class="o">=</span><span class="s1">&#39;tophat,gaussian,cosine&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f6872517bd39c88b151b0f88f9828ce2a3b227fd0b5c61ea0c5117851d3c86c7.png" src="../../_images/f6872517bd39c88b151b0f88f9828ce2a3b227fd0b5c61ea0c5117851d3c86c7.png" />
 </div>
 </div>
 <p><strong>DISCUSS:</strong> How should the bandwidth be tuned, if at all, to account for:</p>
@@ -759,12 +841,24 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;x0&#39;, ylabel=&#39;Density&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/85d2ff9403383bc0e8aed97ca49646bc81ba8c92403ea4ebf0b5f1e2c26eb84e.png" src="../../_images/85d2ff9403383bc0e8aed97ca49646bc81ba8c92403ea4ebf0b5f1e2c26eb84e.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">blobs_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="n">bw_method</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw_adjust</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;x0&#39;, ylabel=&#39;x1&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/a25a8db7da5b5eb043e017666c9572888fbad2f3d061d799b738b72ffb8ee586.png" src="../../_images/a25a8db7da5b5eb043e017666c9572888fbad2f3d061d799b738b72ffb8ee586.png" />
 </div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">sns.displot</span></code> and <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code> visualizations can also superimpose a KDE in 1D and 2D, although with less convenient control of the hyperparameters, e.g.</p>
@@ -775,6 +869,12 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
               <span class="n">marginal_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">bw_method</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw_adjust</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.JointGrid at 0x168917950&gt;
+</pre></div>
+</div>
+<img alt="../../_images/8d54076b16f80cb4c027692ca9fab3b9a8e50d06676e3174401375f2dac2cbd5.png" src="../../_images/8d54076b16f80cb4c027692ca9fab3b9a8e50d06676e3174401375f2dac2cbd5.png" />
 </div>
 </div>
 <p>For more quantitative applications, first run a <code class="docutils literal notranslate"><span class="pre">KernelDensity</span></code> fit with the usual calling convention:</p>
@@ -792,6 +892,11 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.00495426, 0.00244693, 0.        ])
+</pre></div>
+</div>
+</div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">score_samples()</span></code> returns <span class="math notranslate nohighlight">\(\log P(x)\)</span>, which provides better dynamic range in a fixed-size floating point number, so should be wrapped in <code class="docutils literal notranslate"><span class="pre">np.exp()</span></code> to recover <span class="math notranslate nohighlight">\(P(x)\)</span>.</p>
 <p>Alternatively, you can generate random samples from the estimated <span class="math notranslate nohighlight">\(P(x)\)</span> using, e.g.</p>
@@ -799,6 +904,15 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
 <span class="n">fit</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 4.94902631,  7.41065346, 10.97821932],
+       [ 3.87363289,  3.80451607,  4.50283055],
+       [11.09145063,  1.00812938, 13.29987882],
+       [10.59026763,  2.55629527, 14.14410438],
+       [ 8.9555949 ,  5.35446964,  8.37578739]])
 </pre></div>
 </div>
 </div>
@@ -815,6 +929,12 @@ b_i = x_{\min} + (x_{\max} - x_{\min}) \frac{i}{B} \quad , \quad i = 0, 1, \ldot
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">blobs_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.JointGrid at 0x168fcbc50&gt;
+</pre></div>
+</div>
+<img alt="../../_images/3abb487fe47218c296c1cdb54917ad03f2a95f94c8965149ad1abe42e82d4c56.png" src="../../_images/3abb487fe47218c296c1cdb54917ad03f2a95f94c8965149ad1abe42e82d4c56.png" />
 </div>
 </div>
 <p>The most general Gaussian kernel would have <span class="math notranslate nohighlight">\(D(D+1)/2\)</span> shape parameters (covariance matrix elements) that vary slowly over the <span class="math notranslate nohighlight">\(N\)</span>-dimensional parameter space, instead of a single <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code> parameter.</p>
@@ -870,11 +990,26 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([8.91534159e-03, 2.43144309e-03, 2.90695614e-17])
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">fit</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 9.0877603 ,  5.18614914,  8.4574785 ],
+        [ 5.28533637,  9.77821911,  3.46514107],
+        [ 4.33487451,  5.45480832,  6.40348508],
+        [11.67026099,  5.06293373, 15.01944708],
+        [10.7868612 , -1.14385655, 13.29797882]]),
+ array([0, 1, 1, 2, 2]))
 </pre></div>
 </div>
 </div>
@@ -898,6 +1033,12 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x168903290&gt;
+</pre></div>
+</div>
+<img alt="../../_images/b8ce838431d6569f52353079246ded5b234660da3b352df9450a09972dfc6a15.png" src="../../_images/b8ce838431d6569f52353079246ded5b234660da3b352df9450a09972dfc6a15.png" />
+</div>
 </div>
 <p>Sometimes the individual <span class="math notranslate nohighlight">\(\alpha_i\)</span>, <span class="math notranslate nohighlight">\(\mu_i\)</span> and <span class="math notranslate nohighlight">\(C_i\)</span> parameters of each fitted component are useful.  For example, the parameters of the earlier 3D GMM fit are (do the shapes of each array make sense?):</p>
 <div class="cell docutils container">
@@ -905,6 +1046,25 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">weights_</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">means_</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">covariances_</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.249 0.501 0.25 ]
+[[ 7.916  5.033 10.016]
+ [ 3.928  5.98   4.992]
+ [11.918  1.013 13.981]]
+[[[ 3.871e+00 -1.511e+00 -2.020e-01]
+  [-1.511e+00  1.027e+00 -4.000e-03]
+  [-2.020e-01 -4.000e-03  1.992e+00]]
+
+ [[ 1.028e+00  4.800e-02 -2.700e-02]
+  [ 4.800e-02  2.805e+00 -2.600e-02]
+  [-2.700e-02 -2.600e-02  9.880e-01]]
+
+ [[ 9.260e-01  9.000e-02 -2.000e-03]
+  [ 9.000e-02  3.758e+00  9.890e-01]
+  [-2.000e-03  9.890e-01  1.072e+00]]]
 </pre></div>
 </div>
 </div>
@@ -1069,6 +1229,12 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 23357.804, BIC = 23520.230
+</pre></div>
+</div>
+<img alt="../../_images/d13c9c6403dedb25ca50d2774664843f947627451eed8365a8cb4bc679a9f63c.png" src="../../_images/d13c9c6403dedb25ca50d2774664843f947627451eed8365a8cb4bc679a9f63c.png" />
+</div>
 </div>
 <p>Although GMM is primarily a density estimator, a GMM fit can also be used for clustering, with the advantage that we can calculate the relative probability of cluster membership for borderline samples. However, some care is required to interpret GMM for clustering since, unlike other clustering methods, GMM components can be highly overlapping and a single “visual cluster” is often fit with multiple Gaussians.</p>
 <p><strong>EXERCISE:</strong> Fit the <code class="docutils literal notranslate"><span class="pre">cluster_data</span></code> loaded above, which is example (d) from earlier. Try different numbers of components to get a reasonable fit by eye. How do the printed values of AIC and BIC track the visual “goodness of fit”?</p>
@@ -1078,6 +1244,12 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">GMM_fit</span><span class="p">(</span><span class="n">cluster_data</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 3172.503, BIC = 3421.165
+</pre></div>
+</div>
+<img alt="../../_images/f43e104fe005888cee524cbc786032984492010008819c312c12dd3da7980828.png" src="../../_images/f43e104fe005888cee524cbc786032984492010008819c312c12dd3da7980828.png" />
 </div>
 </div>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a> are different measures of the “goodness of fit” of the GMM to the data.  They both reward small residuals while penalizing extra fit parameters, to provide guidance on how many components to use.  However, both methods are ad-hoc and you should prefer the (more expensive) model selection methods we will see later whenever the answer really matters.</p>
@@ -1096,6 +1268,9 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <span class="n">plot_aic_bic</span><span class="p">(</span><span class="n">cluster_data</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3847131377e8d2e3e65427ae01c7373f1754fb25ce8edf5829e9d4a8b7d54730.png" src="../../_images/3847131377e8d2e3e65427ae01c7373f1754fb25ce8edf5829e9d4a8b7d54730.png" />
 </div>
 </div>
 <p>GMM is closely related to two other algorithms we have already encountered, KMeans and FactorAnalysis:</p>
@@ -1138,6 +1313,13 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.19 s, sys: 1.15 s, total: 3.35 s
+Wall time: 1.18 s
+</pre></div>
+</div>
+<img alt="../../_images/460afaadde29b0024059f8b698e9fbfd01f6e2e17a88a0e9f3742138234c6389.png" src="../../_images/460afaadde29b0024059f8b698e9fbfd01f6e2e17a88a0e9f3742138234c6389.png" />
+</div>
 </div>
 <p>Next, add errors to x0 only, and observe the effect on the scatter of x0 values below. The (x1, x2) projection of the fit is essentially unaffected while the (x0, x1) and (x0, x2) projections demonstrate that the fit is correcting for the added noise, with some expected loss of sensitivity.</p>
 <div class="cell docutils container">
@@ -1146,6 +1328,13 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 18.2 s, sys: 1.08 s, total: 19.3 s
+Wall time: 17.4 s
+</pre></div>
+</div>
+<img alt="../../_images/d2d7c967ae59bba8480840c5ba12cc5465c4ee0625b7dafabec48a7c4ad4490c.png" src="../../_images/d2d7c967ae59bba8480840c5ba12cc5465c4ee0625b7dafabec48a7c4ad4490c.png" />
+</div>
 </div>
 <p>Finally, add more noise to see how far we can push this approach:</p>
 <div class="cell docutils container">
@@ -1153,6 +1342,13 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> weighted_GMM(3, add_noise=(2, 2, 2), limits=[(0,15), (-4,12), (2,18)])
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 18 s, sys: 965 ms, total: 18.9 s
+Wall time: 17.2 s
+</pre></div>
+</div>
+<img alt="../../_images/b9ca9f2153b44974777bde99279100bfe489d0fc00b81699bbc0ae5ff58f9443.png" src="../../_images/b9ca9f2153b44974777bde99279100bfe489d0fc00b81699bbc0ae5ff58f9443.png" />
 </div>
 </div>
 <p>Note that errors slow down the fit substantially (although not with an obvious pattern). If this is an issue, the <a class="reference external" href="https://github.com/jobovy/extreme-deconvolution">original implementation of extreme deconvolution</a> is faster and more flexible, but also more complex to install.</p>

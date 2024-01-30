@@ -555,6 +555,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>102
+</pre></div>
+</div>
+</div>
 </div>
 <p>and a smaller number of <span style="color:violet">1D discrete</span> distributions:</p>
 <div class="cell docutils container">
@@ -563,11 +568,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18
+</pre></div>
+</div>
+</div>
 </div>
 <p>and <span style="color:violet">multidimensional continuous</span> distributions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">_multivariate</span><span class="o">.</span><span class="n">multi_rv_generic</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15
 </pre></div>
 </div>
 </div>
@@ -602,6 +617,9 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pdf_demo</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="n">laplace</span><span class="o">=</span><span class="s1">&#39;scale=1&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;scale=1&#39;</span><span class="p">,</span> <span class="n">cauchy</span><span class="o">=</span><span class="s1">&#39;scale=1&#39;</span><span class="p">,</span> <span class="n">logistic</span><span class="o">=</span><span class="s1">&#39;scale=1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f9891e537560f5118b6e79c913f2446948ef9d5c953dec60948c154af3a518ad.png" src="../../_images/f9891e537560f5118b6e79c913f2446948ef9d5c953dec60948c154af3a518ad.png" />
 </div>
 </div>
 <section id="span-style-color-violet-the-gaussian-distribution-in-1d-and-2d-span">
@@ -638,6 +656,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ac2eeb7d6cba1674eb5f9a92eca07a932d645127c8b4da89bcaef6ed30a7a032.png" src="../../_images/ac2eeb7d6cba1674eb5f9a92eca07a932d645127c8b4da89bcaef6ed30a7a032.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -668,6 +689,9 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/abb64eea3420c9401d1ba8d3519d71a8dee90cb4a591da49617e158fd613521b.png" src="../../_images/abb64eea3420c9401d1ba8d3519d71a8dee90cb4a591da49617e158fd613521b.png" />
 </div>
 </div>
 </section>
@@ -708,6 +732,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/878f975463dd0bb0117eaab8ccc4450046958d0da4cfbb111b7ddd736e7a9138.png" src="../../_images/878f975463dd0bb0117eaab8ccc4450046958d0da4cfbb111b7ddd736e7a9138.png" />
+</div>
 </div>
 <p>The Breit-Wigner probability distribution has a peculiar feature, as a consequence of its long-range tails: the empirical average and empirical RMS are ill-defined (their variance increase with the size of the samples), and cannot be used as estimators of the Breit-Wigner parameters. The truncated mean and
 interquartile range, which are obtained by removing events in the low and high ends of the sample, are
@@ -719,6 +746,9 @@ safer estimators of the Breit-Wigner parameters</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pdf_demo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">crystalball</span><span class="o">=</span><span class="s1">&#39;beta=1,m=3,loc=6;beta=10,m=3,loc=6&#39;</span><span class="p">,</span> <span class="n">argus</span><span class="o">=</span><span class="s1">&#39;chi=0.5,loc=5,scale=2;chi=1.5,loc=5,scale=2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/65b077cbd8ed2c2a92325d0da351deb0d33cdffb2fa96c33a2b6273504b9175c.png" src="../../_images/65b077cbd8ed2c2a92325d0da351deb0d33cdffb2fa96c33a2b6273504b9175c.png" />
 </div>
 </div>
 </section>
@@ -744,6 +774,9 @@ f(x; \alpha, n, \mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma}\left\{
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pdf_demo</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;a=1;a=2&#39;</span><span class="p">,</span> <span class="n">lognorm</span><span class="o">=</span><span class="s1">&#39;s=0.5;s=1.5&#39;</span><span class="p">,</span> <span class="n">chi2</span><span class="o">=</span><span class="s1">&#39;df=2;df=3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3a1a4c236f5023476365da60aad036b16c738d4e6e7056434590e33077c97758.png" src="../../_images/3a1a4c236f5023476365da60aad036b16c738d4e6e7056434590e33077c97758.png" />
 </div>
 </div>
 </section>
@@ -794,11 +827,21 @@ f(x;\lambda) =
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.68268949, 0.39346934])
+</pre></div>
+</div>
+</div>
 </div>
 <p>To find the number of sigmas required to enclose a specific integrated probability (aka “confidence level (CL)”) in D dimensions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CL_to_nsigmas</span><span class="p">(</span><span class="n">CL</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.95996398, 2.44774683])
 </pre></div>
 </div>
 </div>
@@ -811,6 +854,9 @@ f(x;\lambda) =
          <span class="n">uniform</span><span class="o">=</span><span class="s1">&#39;scale=1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a6eda30ce25cf2c047e8eb0501c026f6a0c9662c285043782139e9dc26f7f4e0.png" src="../../_images/a6eda30ce25cf2c047e8eb0501c026f6a0c9662c285043782139e9dc26f7f4e0.png" />
 </div>
 </div>
 <p>All of the 1D continuous distributions share the same API (via a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_continuous.html">common base class</a>), and allow you to perform useful operations including:</p>
@@ -855,12 +901,24 @@ f(x;\lambda) =
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;g&gt; = 0.21420671411482053
+</pre></div>
+</div>
+<img alt="../../_images/374b05e7afa100072abd540c6e625b811910b5c61ea2ebf0af1482b1da1624fb.png" src="../../_images/374b05e7afa100072abd540c6e625b811910b5c61ea2ebf0af1482b1da1624fb.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rv_continuous_demo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;g&gt; = 0.8840573776020221
+</pre></div>
+</div>
+<img alt="../../_images/179fbc3cd0fdb6341af840414c8e90d7351648708647e0e20fd621f4a4319a65.png" src="../../_images/179fbc3cd0fdb6341af840414c8e90d7351648708647e0e20fd621f4a4319a65.png" />
 </div>
 </div>
 </section>
@@ -900,6 +958,9 @@ f(x;\lambda) =
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/178ce0662e4a3a68238731d8844cf2007562d52f2bc0235527f6e3f0336e3ce3.png" src="../../_images/178ce0662e4a3a68238731d8844cf2007562d52f2bc0235527f6e3f0336e3ce3.png" />
+</div>
 </div>
 </section>
 <section id="span-style-color-violet-the-poisson-distribution-span">
@@ -915,6 +976,9 @@ variable <span class="math notranslate nohighlight">\(k\)</span> follows the <a 
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pmf_demo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="s1">&#39;mu=2;mu=3;mu=4&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9aea94cef10f996514d38ca8eb76b4124fed405a17fb06c450c9220f90c4190b.png" src="../../_images/9aea94cef10f996514d38ca8eb76b4124fed405a17fb06c450c9220f90c4190b.png" />
 </div>
 </div>
 <p>Poisson distribution is used to model the number of events occuring in the future, In comparison to the previously described Exponential and Gamma distributions, the Exponential distribution is used to predict the wait time until the very first event, and Gamma distribution is used to predict the wait time until the <span class="math notranslate nohighlight">\(\alpha\)</span>-th event.</p>
@@ -971,6 +1035,9 @@ variable <span class="math notranslate nohighlight">\(k\)</span> follows the <a 
 <span class="n">central_limit_demo</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">nsample</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fc2db6c9a9be17c731f6c88e40a3d92031ee9db16e76cde9fa321e1922b1f9cf.png" src="../../_images/fc2db6c9a9be17c731f6c88e40a3d92031ee9db16e76cde9fa321e1922b1f9cf.png" />
 </div>
 </div>
 <p>Here is a nicer <a class="reference external" href="http://students.brown.edu/seeing-theory/probability-distributions/index.html#section3">interactive demonstration</a> you can experiment with.</p>
