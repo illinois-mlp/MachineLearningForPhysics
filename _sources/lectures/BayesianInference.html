@@ -608,7 +608,7 @@ P(D, \Theta_M, M)
 </section>
 <section id="span-style-color-orange-likelihood-span">
 <h2><span style="color:Orange">Likelihood</span><a class="headerlink" href="#span-style-color-orange-likelihood-span" title="Permalink to this heading">#</a></h2>
-<p>The <strong>likelihood</strong> <span class="math notranslate nohighlight">\({\cal L}_M(\Theta_M, D)\)</span> is a function of model parameters <span class="math notranslate nohighlight">\(\Theta_M\)</span> (given hyperparameters <span class="math notranslate nohighlight">\(M\)</span>) and data features <span class="math notranslate nohighlight">\(D\)</span>, and measures the probability (density) of observing the data <span class="math notranslate nohighlight">\(\vec{x}\)</span> given the model.  For example, a Gaussian mixture model has the likelihood function:</p>
+<p>The <span style="color:violet">likelihood</span> <span class="math notranslate nohighlight">\({\cal L}_M(\Theta_M, D)\)</span> is a function of model parameters <span class="math notranslate nohighlight">\(\Theta_M\)</span> (given hyperparameters <span class="math notranslate nohighlight">\(M\)</span>) and data features <span class="math notranslate nohighlight">\(D\)</span>, and measures the probability (density) of observing the data <span class="math notranslate nohighlight">\(\vec{x}\)</span> given the model.  For example, a Gaussian mixture model has the likelihood function:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 {\cal L}_M\left(\mathbf{\Theta}_M, \vec{x} \right) = \sum_{k=1}^{K}\, \omega_k G(\vec{x} ; \vec{\mu}_k, C_k) \; ,
@@ -665,7 +665,7 @@ P(D\mid M) \rightarrow \sum_k\, P(D\mid \Theta_{M,k}, M)\, P(\Theta_{M,k}\mid M)
 <li><p>Assigning the relevant likelihoods and prior probabilities (terms 2 and 3 above).</p></li>
 <li><p>Calculating the resulting LHS of the generalized Baye’s rule above.</p></li>
 </ul>
-<p>Solution:</p>
+<p><span style="color:LightGreen">Solution</span>:</p>
 <ul class="simple">
 <li><p>Define the <em><strong><span style="color:violet">data</span></strong></em> <span class="math notranslate nohighlight">\(D\)</span> as the observation that the person is wearing an “England” t-shirt.</p></li>
 <li><p>Define the <em><strong><span style="color:violet">model</span></strong></em> to have a single parameter, the person’s nationality <span class="math notranslate nohighlight">\(\Theta \in \{ \text{English}, \text{!English}\}\)</span>.</p></li>
@@ -892,19 +892,19 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em>:</p>
-<p><strong>Q1:</strong> Think of a question in your research area where this inference problem applies.</p>
-<p><strong>Q2:</strong> Infer <span class="math notranslate nohighlight">\(\theta\)</span> from 2 observations with 1 passing, using hyperparameters <span class="math notranslate nohighlight">\((a=1,b=1)\)</span>.</p>
+<p><span style="color:LightGreen">Q1</span>: Think of a question in your research area where this inference problem applies.</p>
+<p><span style="color:LightGreen">Q2</span>: Infer <span class="math notranslate nohighlight">\(\theta\)</span> from 2 observations with 1 passing, using hyperparameters <span class="math notranslate nohighlight">\((a=1,b=1)\)</span>.</p>
 <ul class="simple">
 <li><p>Explain why the posterior is reasonable given the observed data.</p></li>
 <li><p>What values of <span class="math notranslate nohighlight">\(\theta\)</span> are absolutely ruled out by this data? Does this make sense?</p></li>
 <li><p>How are the three quantities plotted normalized?</p></li>
 </ul>
-<p><strong>Q3:</strong> Infer <span class="math notranslate nohighlight">\(\theta\)</span> from the same 2 observations with 1 passing, using instead <span class="math notranslate nohighlight">\((a=10,b=5)\)</span>.</p>
+<p><span style="color:LightGreen">Q3</span>: Infer <span class="math notranslate nohighlight">\(\theta\)</span> from the same 2 observations with 1 passing, using instead <span class="math notranslate nohighlight">\((a=10,b=5)\)</span>.</p>
 <ul class="simple">
 <li><p>Is the posterior still reasonable given the observed data?  Explain your reasoning.</p></li>
 <li><p>How might you choose between these two subjective priors?</p></li>
 </ul>
-<p><strong>Q4:</strong> Use each of the priors above with different data: 100 trials with 60 passing.</p>
+<p><span style="color:LightGreen">Q4</span>: Use each of the priors above with different data: 100 trials with 60 passing.</p>
 <ul class="simple">
 <li><p>How does the relative importance of the prior and likelihood change with better data?</p></li>
 <li><p>Why are the likelihood values so much smaller now?</p></li>
@@ -965,7 +965,7 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 <h2><span style="color:Orange">So, Why Isn’t Everyone a Bayesian?</span><a class="headerlink" href="#span-style-color-orange-so-why-isn-t-everyone-a-bayesian-span" title="Permalink to this heading">#</a></h2>
 <p>The answer is more complicated than this, but two primary reasons are often cited:</p>
 <ol class="arabic simple">
-<li><p>The calculations needed for Bayesian statistics can be overwhelming for practical applications. However, this is becoming increasing manageable with modern computers. Also, the advent of numerical methods for approximate inference, especially Markov chain Monte Carlo (MCMC) the we will introduce in the next lecture, have tranformed probabilstic data inference.</p></li>
+<li><p>The calculations needed for Bayesian statistics can be overwhelming for practical applications. However, this is becoming increasing manageable with modern computers. Also, the advent of numerical methods for approximate inference, especially <span style="color:violet">Markov chain Monte Carlo</span> (MCMC) the we will introduce in the next lecture, have tranformed probabilstic data inference.</p></li>
 <li><p>The structure requires a prior distribution (the “prior”) on the parameter of interest. If you use a different
 prior you will obtain different results and this “lack of objectivity” makes some people uncomfortable. However, we showed how some problems with sufficiant data can be relatively insensitive to choice of prior.</p></li>
 </ol>
