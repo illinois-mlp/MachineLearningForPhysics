@@ -693,7 +693,7 @@ document.write(`
 </div>
 <section id="span-style-color-orange-bayesian-model-selection-span">
 <h2><span style="color:Orange">Bayesian Model Selection</span><a class="headerlink" href="#span-style-color-orange-bayesian-model-selection-span" title="Permalink to this heading">#</a></h2>
-<p>We <span class="xref myst">originally stated</span> Bayes’ learning rule as:</p>
+<p>We <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/BayesianInference.html">originally stated</a> Bayes’ learning rule as:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 P(\Theta_M\mid D, M) = \frac{P(D\mid \Theta_M, M)\,P(\Theta_M\mid M)}{P(D\mid M)}
@@ -706,7 +706,7 @@ P(\Theta_M\mid D, M) = \frac{P(D\mid \Theta_M, M)\,P(\Theta_M\mid M)}{P(D\mid M)
 <li><p><em><strong><span style="color:Violet">Evidence</span></strong></em>: <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> is the probability of the data given the hyperparameters and <em>marginalized over all possible parameter values given the hyperparameters</em>.</p></li>
 </ol>
 <p>We often omit the model <span class="math notranslate nohighlight">\(M\)</span> in our notation when we are only considering a single model. However, unless there is only one possible model, then we still have to solve a meta-inference problem of comparing possible models. Although this step is often referred to as “<span style="color:Violet">model selection</span>”, it is better to think of it as  <em><strong><span style="color:Violet">model comparison</span></strong></em>, since it can only assign relative probabilities to different models.</p>
-<p>Recalling <span style="color:Violet">Bayes’ Rule</span> (see <a class="reference external" href="https://nbviewer.jupyter.org/github/illinois-mla/syllabus/blob/master/notebooks/Probability.ipynb">Probability</a>), The posterior probability of a model <span class="math notranslate nohighlight">\(M\)</span> given the observed data <span class="math notranslate nohighlight">\(D\)</span> is:</p>
+<p>Recalling <span style="color:Violet">Bayes’ Rule</span> (see <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/ProbabilityTheory.html">Probability</a>), The posterior probability of a model <span class="math notranslate nohighlight">\(M\)</span> given the observed data <span class="math notranslate nohighlight">\(D\)</span> is:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 P(M\mid D) = \frac{P(D\mid M)\,P(M)}{P(D)} \; ,
