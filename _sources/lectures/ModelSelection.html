@@ -821,6 +821,9 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/907afa090b1a69b5578e5f4966fbac13ec75634208ad6827d74ada1bcd66dceb.png" src="../../_images/907afa090b1a69b5578e5f4966fbac13ec75634208ad6827d74ada1bcd66dceb.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -828,12 +831,18 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f6395022dc74f1b02f7463a89c0107ac2d27dc1bbdef23798086e78aa532e533.png" src="../../_images/f6395022dc74f1b02f7463a89c0107ac2d27dc1bbdef23798086e78aa532e533.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Dc</span> <span class="o">=</span> <span class="n">generate_mix</span><span class="p">(</span><span class="n">n_gen</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/48e6c91b1f4a1eb39c05922707c248c792d4160784213db201672a5bfd6b0056.png" src="../../_images/48e6c91b1f4a1eb39c05922707c248c792d4160784213db201672a5bfd6b0056.png" />
 </div>
 </div>
 <p>Note that each sample has an integer number of entries drawn from each Gaussian, so the true <code class="docutils literal notranslate"><span class="pre">frac1</span></code> is only realized on average.</p>
@@ -1010,6 +1019,9 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2ea9c61a73ad065d60d1ea8a757d4fd485739e980388a27703c804d6af06c5a3.png" src="../../_images/2ea9c61a73ad065d60d1ea8a757d4fd485739e980388a27703c804d6af06c5a3.png" />
+</div>
 </div>
 <p>In the left-hand plot above, the solid black contours show the shape of the un-normalized posterior and the dashed red contours show the GMM density model fit to the MCMC samples. These do not need to agree exactly, but better agreement will lead to a more accurate estimate of the evidence <span class="math notranslate nohighlight">\(P(Da\mid M1)\)</span>.  In this example, we are using a GMM with a single component but the posterior is slightly non-Gaussian, so we could try increasing the number of MCMC samples and adding another GMM component.</p>
 <p>The right-hand plot shows many independent estimates of the evidence, calculated as the ratio of the un-normalized posterior (solid black contours) and GMM density model (dashed red contours) on a uniform 2D grid of <span class="math notranslate nohighlight">\((\mu, \sigma)\)</span> points.  To combine these independent estimates, we take the median of the green values, where the posterior probability is largest (so this procedure should be more accurate). Review the <a class="reference external" href="https://illinois-ipaml.github.io/MachineLearningForPhysics/_sources/lectures/MCMC.html">MCMC notebook</a> for a simpler 1D example of evidence estimation with the same approach.</p>
@@ -1019,12 +1031,18 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/633a495047b20c987ec9d6389de11c44239d530b85ccf43e7644715350996ec7.png" src="../../_images/633a495047b20c987ec9d6389de11c44239d530b85ccf43e7644715350996ec7.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Dc_M1</span> <span class="o">=</span> <span class="n">calculate_M1_evidence</span><span class="p">(</span><span class="n">Dc</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/928ea613361149f9913d4452fba810244fa50b35a3fba88287b83f3ac0b4b83f.png" src="../../_images/928ea613361149f9913d4452fba810244fa50b35a3fba88287b83f3ac0b4b83f.png" />
 </div>
 </div>
 <p>The calculation of the evidence for D assuming model M2 is very similar, but now in the 3D parameter space (mu, t1, t2):</p>
@@ -1153,6 +1171,9 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8e497eeafc3f2a7f5ad462c1d24533892170f96bf035d2e35e2bc46f7f8831f6.png" src="../../_images/8e497eeafc3f2a7f5ad462c1d24533892170f96bf035d2e35e2bc46f7f8831f6.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1160,12 +1181,18 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7bdf344d7016dbe3a706d2a18602c182a598f1f5100185851b8d305fa255bd0f.png" src="../../_images/7bdf344d7016dbe3a706d2a18602c182a598f1f5100185851b8d305fa255bd0f.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Dc_M2</span> <span class="o">=</span> <span class="n">calculate_M2_evidence</span><span class="p">(</span><span class="n">Dc</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8dca2f822c154d06abfb5dc5f5097a06e11c58de1517dc71bebb34d54293b8d3.png" src="../../_images/8dca2f822c154d06abfb5dc5f5097a06e11c58de1517dc71bebb34d54293b8d3.png" />
 </div>
 </div>
 <p>Each of these involved calculations provides a single number, the estimated log of the evidence for <span class="math notranslate nohighlight">\(D\)</span> given <span class="math notranslate nohighlight">\(M\)</span>,</p>
@@ -1203,6 +1230,56 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>logM1</th>
+      <th>logM2</th>
+      <th>log10(Bayes)</th>
+      <th>log10(Odds)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Da</th>
+      <td>-139.9</td>
+      <td>-142.7</td>
+      <td>1.2</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <th>Db</th>
+      <td>-81.5</td>
+      <td>-39.6</td>
+      <td>-18.2</td>
+      <td>-18.2</td>
+    </tr>
+    <tr>
+      <th>Dc</th>
+      <td>-143.3</td>
+      <td>-141.6</td>
+      <td>-0.7</td>
+      <td>-0.7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>To summarize in words:</p>
 <ul class="simple">
@@ -1217,6 +1294,56 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>logM1</th>
+      <th>logM2</th>
+      <th>log10(Bayes)</th>
+      <th>log10(Odds)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Da</th>
+      <td>-139.9</td>
+      <td>-142.7</td>
+      <td>1.2</td>
+      <td>2.2</td>
+    </tr>
+    <tr>
+      <th>Db</th>
+      <td>-81.5</td>
+      <td>-39.6</td>
+      <td>-18.2</td>
+      <td>-17.2</td>
+    </tr>
+    <tr>
+      <th>Dc</th>
+      <td>-143.3</td>
+      <td>-141.6</td>
+      <td>-0.7</td>
+      <td>0.3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="span-style-color-orange-acknowledgments-span">

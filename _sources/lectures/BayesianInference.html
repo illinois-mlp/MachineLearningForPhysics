@@ -739,6 +739,11 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;English&#39;: 0.5, &#39;!English&#39;: 0.5}
+</pre></div>
+</div>
+</div>
 </div>
 <p>Note that the (posterior) output from one learning update can be the (prior) input to the next update. For example, how should we update our knowledge if the person wears an “England” t-shirt the next day also?</p>
 <div class="cell docutils container">
@@ -746,6 +751,11 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">post1</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
 <span class="n">post2</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">post1</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">post2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;English&#39;: 0.8, &#39;!English&#39;: 0.2}
 </pre></div>
 </div>
 </div>
@@ -794,6 +804,48 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>English</th>
+      <th>!English</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PRIOR</th>
+      <td>0.2</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <th>D=t-shirt</th>
+      <td>0.5</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>D=t-shirt</th>
+      <td>0.8</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg" style="width: 400px;" /></a></img><br></p>
 <p>      <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Dice_(typical_role_playing_game_dice).jpg">https://commons.wikimedia.org/wiki/File:Dice_(typical_role_playing_game_dice).jpg</a></p>
@@ -835,6 +887,68 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>12</th>
+      <th>20</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PRIOR</th>
+      <td>0.2</td>
+      <td>0.200</td>
+      <td>0.200</td>
+      <td>0.200</td>
+      <td>0.200</td>
+    </tr>
+    <tr>
+      <th>D=6</th>
+      <td>0.0</td>
+      <td>0.392</td>
+      <td>0.294</td>
+      <td>0.196</td>
+      <td>0.118</td>
+    </tr>
+    <tr>
+      <th>D=4</th>
+      <td>0.0</td>
+      <td>0.526</td>
+      <td>0.296</td>
+      <td>0.131</td>
+      <td>0.047</td>
+    </tr>
+    <tr>
+      <th>D=5</th>
+      <td>0.0</td>
+      <td>0.635</td>
+      <td>0.268</td>
+      <td>0.079</td>
+      <td>0.017</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Somewhat surprisingly, this toy problem has a practical application with historical significance!</p>
 <p>Imagine a factory that has made <span class="math notranslate nohighlight">\(N\)</span> items, each with a serial number 1–<span class="math notranslate nohighlight">\(N\)</span>. If you randomly select items and read their serial numbers, the problem of estimating <span class="math notranslate nohighlight">\(N\)</span> is analogous to our dice problem, but with many more models to consider. This approach was successfully used in World-War II by the Allied Forces to <a class="reference external" href="https://en.wikipedia.org/wiki/German_tank_problem">estimate the production rate of German tanks</a> at a time when most academic statisticians rejected Bayesian methods.</p>
@@ -915,6 +1029,9 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/16363ee4b376c0c38bd12277c667445cf3114c777906f137c418532fca39ef5a.png" src="../../_images/16363ee4b376c0c38bd12277c667445cf3114c777906f137c418532fca39ef5a.png" />
+</div>
 </div>
 <ul class="simple">
 <li><p>The posterior peaks at the mean observed pass rate, 1/2, which is reasonable. It is very broad because we have only made two observations.</p></li>
@@ -927,6 +1044,9 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/270f7de6f266a1ab3c970260ca709ac65c2a855de120fb597a7bf1f0c8bb0f52.png" src="../../_images/270f7de6f266a1ab3c970260ca709ac65c2a855de120fb597a7bf1f0c8bb0f52.png" />
+</div>
 </div>
 <ul class="simple">
 <li><p>The posterior now peaks away from the mean observed pass rate of 1/2.  This is reasonable if we believe our prior information since, with relatively uninformative data, Bayes’ rule tells us that it should dominate our knowledge of <span class="math notranslate nohighlight">\(\theta\)</span>.  On the other hand, if we cannot justify why this prior is more believable than the earlier flat prior, then we must conclude that the value of <span class="math notranslate nohighlight">\(\theta\)</span> is unknown and that our data has not helped.</p></li>
@@ -938,12 +1058,18 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4234024ca410ae3fe84fa727ff884211c4f028b06f4c82bf4ffa3c51b7369e81.png" src="../../_images/4234024ca410ae3fe84fa727ff884211c4f028b06f4c82bf4ffa3c51b7369e81.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binomial_learn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/60a7f190254634300da03e32f2b994893c83309a8e518594e50f93c13068b542.png" src="../../_images/60a7f190254634300da03e32f2b994893c83309a8e518594e50f93c13068b542.png" />
 </div>
 </div>
 <ul class="simple">

@@ -547,6 +547,9 @@ f(z) = \begin{cases}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1d333fb2ca93ffce7fb7e8f77836d3ef8279a439d5449609e448ec8b55b78233.png" src="../../_images/1d333fb2ca93ffce7fb7e8f77836d3ef8279a439d5449609e448ec8b55b78233.png" />
+</div>
 </div>
 <p>However, the normalization integral cannot be evaluated analytically (it is related to the <a class="reference external" href="https://en.wikipedia.org/wiki/Elliptic_integral#Complete_elliptic_integral_of_the_first_kind">complete elliptic integral of the first kind</a>), so this is a good candidate for MCMC sampling using the <code class="docutils literal notranslate"><span class="pre">MCMC_sample</span></code> function (which wraps <a class="reference external" href="http://dfm.io/emcee/">emcee</a>):</p>
 <div class="cell docutils container">
@@ -745,6 +748,52 @@ f(z) = \begin{cases}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.062330</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.047944</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.229985</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.061017</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.181863</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>The generated samples are (approximately) drawn from the normalized <span class="math notranslate nohighlight">\(P(z)\)</span> corresponding to the <span class="math notranslate nohighlight">\(f(z)\)</span> provided:</p>
 <div class="cell docutils container">
@@ -752,6 +801,9 @@ f(z) = \begin{cases}
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">],</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b6e631490194034b22991c6def55e83fc50e930c2099ac0baca03decffd96058.png" src="../../_images/b6e631490194034b22991c6def55e83fc50e930c2099ac0baca03decffd96058.png" />
 </div>
 </div>
 <p>What are MCMC samples good for? They allow us to estimate the expectation value of an arbitrary <span class="math notranslate nohighlight">\(g(z)\)</span> using <a class="reference external" href="https://en.wikipedia.org/wiki/Importance_sampling">importance sampling</a>:</p>
@@ -768,11 +820,21 @@ f(z) = \begin{cases}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2729666505147651
+</pre></div>
+</div>
+</div>
 </div>
 <p>Expectation values of more complex functions are equally easy, for example, <span class="math notranslate nohighlight">\(g(z) = \sin(\pi z)^2\)</span>,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5414157152385632
 </pre></div>
 </div>
 </div>
@@ -805,6 +867,16 @@ f(z) = \begin{cases}
 <span class="n">plotfit</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.11/site-packages/sklearn/base.py:464: UserWarning: X does not have valid feature names, but KernelDensity was fitted with feature names
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean P(z)/f(z) = 1.761
+</pre></div>
+</div>
+<img alt="../../_images/e2f634aae7bcdfcebb355fe6e3e898a12b386a9cdd10f854cf5f3b42215d6fb8.png" src="../../_images/e2f634aae7bcdfcebb355fe6e3e898a12b386a9cdd10f854cf5f3b42215d6fb8.png" />
 </div>
 </div>
 <p>The estimated <span class="math notranslate nohighlight">\(P(z)\)</span> does not look great, but since it is just a scaled version of the smooth un-normalized <span class="math notranslate nohighlight">\(f(z)\)</span>, their ratio at each <span class="math notranslate nohighlight">\(z\)</span> is an estimate of the integral:</p>
@@ -850,6 +922,58 @@ f(\vec{z}, \vec{z}_0, r) =
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.343921</td>
+      <td>-2.596768</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.343921</td>
+      <td>-2.596768</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.343921</td>
+      <td>-2.596768</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.053736</td>
+      <td>-2.205938</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.066128</td>
+      <td>-2.605273</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>A scatter plot shows a 2D Gaussian distribution clipped to a circle and offset from its center, as expected:</p>
 <div class="cell docutils container">
@@ -860,6 +984,9 @@ f(\vec{z}, \vec{z}_0, r) =
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1be64672017b52223bbf0c0881467d8b307c291888a03904ead3ef9b30327166.png" src="../../_images/1be64672017b52223bbf0c0881467d8b307c291888a03904ead3ef9b30327166.png" />
 </div>
 </div>
 <p>With multidimensional samples, we can estimate expectation values of marginal PDFs just as easily as the full joint PDF.  In our 2D example, the marginal PDFs are:</p>
@@ -877,6 +1004,11 @@ P_X(x) = \int dy\, P(x, y) \quad , \quad P_Y(y) = \int dx\, P(x, y) \; .
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8471855433562676
 </pre></div>
 </div>
 </div>
@@ -903,6 +1035,9 @@ P_X(x) = \int dy\, P(x, y) \quad , \quad P_Y(y) = \int dx\, P(x, y) \; .
 <span class="n">plotfitXY</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/267a089870c46e4f932cac55d41eb77319c97604fb06b1db7f4a9ade548afe0f.png" src="../../_images/267a089870c46e4f932cac55d41eb77319c97604fb06b1db7f4a9ade548afe0f.png" />
 </div>
 </div>
 </section>
@@ -965,6 +1100,9 @@ P(\vec{x}_1, \vec{x}_2, \ldots\mid \Theta_M, M) = \prod_{i=1}^N\, P(\vec{x}_i\mi
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f5d8465d9ff11b1e8981cf6959602c410eed26d5fef1d213cfb6cb2a8249ace7.png" src="../../_images/f5d8465d9ff11b1e8981cf6959602c410eed26d5fef1d213cfb6cb2a8249ace7.png" />
+</div>
 </div>
 <p>Next, define the log-likelihood function:</p>
 <div class="cell docutils container">
@@ -1002,6 +1140,9 @@ P(b,m\mid \sigma_y) = 1
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8fb0355cbf53fc7120c9c56926ff276fea39db27a7dcc049c57f937d7cbdfc8b.png" src="../../_images/8fb0355cbf53fc7120c9c56926ff276fea39db27a7dcc049c57f937d7cbdfc8b.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1009,6 +1150,63 @@ P(b,m\mid \sigma_y) = 1
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>m</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10000.000000</td>
+      <td>10000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.531518</td>
+      <td>-0.163364</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.074150</td>
+      <td>0.032178</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.277887</td>
+      <td>-0.271737</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.533564</td>
+      <td>-0.162615</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.799155</td>
+      <td>-0.039917</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em> We always require a starting point to generate MCMC samples. In this example, we used the true parameter values as starting points:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="o">=</span><span class="p">[</span><span class="n">m_true</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="n">b_true</span><span class="p">]</span>
@@ -1029,6 +1227,63 @@ P(b,m\mid \sigma_y) = 1
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>m</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10000.000000</td>
+      <td>10000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.526889</td>
+      <td>-0.164017</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.071437</td>
+      <td>0.033185</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.287060</td>
+      <td>-0.263188</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.524377</td>
+      <td>-0.164970</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.800168</td>
+      <td>-0.051169</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1044,6 +1299,63 @@ P(b,m\mid \sigma_y) = 1
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>m</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10000.000000</td>
+      <td>10000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.526197</td>
+      <td>-0.163166</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.073906</td>
+      <td>0.032095</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.287884</td>
+      <td>-0.272038</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.525020</td>
+      <td>-0.163915</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.811648</td>
+      <td>-0.042163</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>The changes are small compared with the offsets (<span class="math notranslate nohighlight">\(\pm 0.1\)</span>) and the standard deviations in each parameter.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">MCMC_sample</span></code> function can apply independent (i.e., factorized) priors on each parameter:</p>
@@ -1085,6 +1397,9 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2ba8bc116952afda63944eec00e082eb3682372482185842cdd3c1e2fa0955fd.png" src="../../_images/2ba8bc116952afda63944eec00e082eb3682372482185842cdd3c1e2fa0955fd.png" />
+</div>
 </div>
 <p>We can also add a prior on <span class="math notranslate nohighlight">\(b\)</span>.  For example, suppose a previous measurement found <span class="math notranslate nohighlight">\(b = -0.20 \pm 0.02\)</span> (in which case, the new data is not adding much information about <span class="math notranslate nohighlight">\(b\)</span>):</p>
 <div class="cell docutils container">
@@ -1100,6 +1415,9 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.0</span><span class="p">));</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1cc7b4d4ae126db06521e14ec91fd6bf086ce2574b0b390bb9878bac06c9446f.png" src="../../_images/1cc7b4d4ae126db06521e14ec91fd6bf086ce2574b0b390bb9878bac06c9446f.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em> Suppose we know that all <span class="math notranslate nohighlight">\(y_i\)</span> values have the same error <span class="math notranslate nohighlight">\(\sigma_y\)</span> but we do not know its value.</p>
@@ -1123,6 +1441,9 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/88de83ae79c77bfa196e3711dc5b6f0f96658abb550ca61b082c0fddf048cf42.png" src="../../_images/88de83ae79c77bfa196e3711dc5b6f0f96658abb550ca61b082c0fddf048cf42.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1137,6 +1458,9 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">samples</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f02852497ca525d759c5f8e696ec36e93c3e487b05406b9ea6e4a029f08b7f91.png" src="../../_images/f02852497ca525d759c5f8e696ec36e93c3e487b05406b9ea6e4a029f08b7f91.png" />
 </div>
 </div>
 <p>For a more in-depth case study of the many subtleties in fitting a straight line, read this 55-page <a class="reference external" href="https://arxiv.org/abs/1008.4686">article by Hogg, Bovy and Lang</a>.</p>

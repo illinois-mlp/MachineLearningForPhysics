@@ -806,12 +806,18 @@ x_0, x_1, x_2, \ldots
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7a6e6e1e1f6a919a65700a3843b502937fdbf7dd02294258e6b9a07862afdc00.png" src="../../_images/7a6e6e1e1f6a919a65700a3843b502937fdbf7dd02294258e6b9a07862afdc00.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">StochasticExample</span><span class="p">()</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">nsamples_per_run</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nruns</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">x0cut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0da824d68d1048d631a7419a7d236a79d1e74dbefddfb57dd8e201ef15a29fc3.png" src="../../_images/0da824d68d1048d631a7419a7d236a79d1e74dbefddfb57dd8e201ef15a29fc3.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em>  For each panel of the pairplot above:</p>
@@ -901,12 +907,18 @@ P(X_n\mid X_{n-1}) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/67e2da54b777ecb01c10c613db657fece49c57b70467e7ff381d23df84f1dde9.png" src="../../_images/67e2da54b777ecb01c10c613db657fece49c57b70467e7ff381d23df84f1dde9.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">StationaryMarkovExample</span><span class="p">()</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">nsamples_per_run</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nruns</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">x0cut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/70e4fa3a2911e0cda351cb465537c00865d372e08efa1919496e7024ea1f1f02.png" src="../../_images/70e4fa3a2911e0cda351cb465537c00865d372e08efa1919496e7024ea1f1f02.png" />
 </div>
 </div>
 <p>The pairplot above demonstrates that <span class="math notranslate nohighlight">\(X_n\)</span> and <span class="math notranslate nohighlight">\(X_0\)</span> are still dependent,</p>
@@ -962,6 +974,9 @@ P(X_n\mid X_{n-1}) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ad305c7b93e0ec2fe1a0b29336027823c705dfc61413e74f685c0366f2fa0da7.png" src="../../_images/ad305c7b93e0ec2fe1a0b29336027823c705dfc61413e74f685c0366f2fa0da7.png" />
+</div>
 </div>
 <p>The blue line shows the mean <span class="math notranslate nohighlight">\(X_1\)</span> at each <span class="math notranslate nohighlight">\(X_0\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -997,6 +1012,9 @@ P(X_n\mid X_{n-1}) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/eb82102a4e13491deb63f63b6360c8c307bdc25ebe7c42b6cb119c15e0e5493b.png" src="../../_images/eb82102a4e13491deb63f63b6360c8c307bdc25ebe7c42b6cb119c15e0e5493b.png" />
+</div>
 </div>
 <p><em><strong><span style="color:Violet">NOTE: </span>:</strong></em> A stationary Markov chain eventually reaches an equilibrium <span class="math notranslate nohighlight">\(P(X_n\mid X_0) \rightarrow \tilde{P}(X_n)\)</span> that does not depend on <span class="math notranslate nohighlight">\(X_0\)</span>.**</p>
 <p>We saw earlier how, in general, <span class="math notranslate nohighlight">\(X_n\)</span> and <span class="math notranslate nohighlight">\(X_0\)</span> are dependent, but we now learn that stationarity tames this behavior and guarantees that <span class="math notranslate nohighlight">\(X_n\)</span> and <span class="math notranslate nohighlight">\(X_0\)</span> are independent for sufficiently large <span class="math notranslate nohighlight">\(n\)</span>.</p>
@@ -1019,6 +1037,9 @@ P(X_n\mid X_{n-1}) \; .
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">StationaryMarkovExample2</span><span class="p">()</span><span class="o">.</span><span class="n">plot_conditionals</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/abf6a68abec50e5d93505ce83a85732348e95e9cd21f36ab04c758a440c10f2f.png" src="../../_images/abf6a68abec50e5d93505ce83a85732348e95e9cd21f36ab04c758a440c10f2f.png" />
 </div>
 </div>
 <p>For practical applications, there are two issues to deal with:</p>
@@ -1048,6 +1069,9 @@ P(X_n\mid X_{n-1}) \; .
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ReversibleMarkovExample</span><span class="p">()</span><span class="o">.</span><span class="n">plot_conditionals</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9fa3c2f0f5744881815220d97bc485ea8684d874fda57ddaac12e97c544a1db3.png" src="../../_images/9fa3c2f0f5744881815220d97bc485ea8684d874fda57ddaac12e97c544a1db3.png" />
 </div>
 </div>
 <p>Note that we can use the diagonal symmetry of the first plot to confirm that this is a reversible chain.</p>
@@ -1103,6 +1127,9 @@ P(X_n\mid X_{n-1}) \; .
 <span class="n">plot_proposals</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/613b23b9cc3fc6a326d7ea80a0754beb3e351750a107d062187599e6844d1de8.png" src="../../_images/613b23b9cc3fc6a326d7ea80a0754beb3e351750a107d062187599e6844d1de8.png" />
 </div>
 </div>
 <p>During each update we evaluate a proposed move to <span class="math notranslate nohighlight">\(x_{n+1}\)</span> by calculating the <strong>Hastings ratio</strong>,</p>
@@ -1200,6 +1227,9 @@ r(x_{n+1}, x_n) = \frac{\tilde{P}(x_{n+1})}{\tilde{P}(x_n)}\, \frac{Q(x_n\mid x_
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/72169a4ef848da1802655e5c31e8a124352616d3618d51522180f8619ee93639.png" src="../../_images/72169a4ef848da1802655e5c31e8a124352616d3618d51522180f8619ee93639.png" />
+</div>
 </div>
 <p>Note that the unique points in the sample do cover the square uniformly and there is no obvious imprint of the Gaussian proposal distribution. However, there are also many repetitions and, more generally, successive points are highly correlated with each other.</p>
 <p>The example above worked out reasonably well, but there are many pitfalls with the MH algorithm, some obvious and others more subtle:</p>
@@ -1209,12 +1239,18 @@ r(x_{n+1}, x_n) = \frac{\tilde{P}(x_{n+1})}{\tilde{P}(x_n)}\, \frac{Q(x_n\mid x_
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/da8f93ecb4b29ee90daefe20f491cfe87ae30fd35cb75667c952fad609c7e7eb.png" src="../../_images/da8f93ecb4b29ee90daefe20f491cfe87ae30fd35cb75667c952fad609c7e7eb.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_square</span><span class="p">(</span><span class="n">MetropolisHastings</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">logP</span><span class="p">,</span> <span class="s1">&#39;random_walk&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e32c131561e086516bc5257e688d1bd173e66fb420ea24ecb1179401ef5a15eb.png" src="../../_images/e32c131561e086516bc5257e688d1bd173e66fb420ea24ecb1179401ef5a15eb.png" />
 </div>
 </div>
 <p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Study the two examples above and describe how and why they are failing to sample the desired target distribution. Do the locations of repeated samples make sense?</p>
