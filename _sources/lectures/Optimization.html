@@ -62,11 +62,13 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/Optimization';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Cross Validation" href="CrossValidation.html" />
-    <link rel="prev" title="Learning" href="Learning.html" />
+    <link rel="prev" title="Artificial Intelligence and Machine Learning" href="Learning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -208,7 +210,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence and Macnhine Learning</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing">Slides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Learning.html">Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Learning.html">Artificial Intelligence and Machine Learning</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CrossValidation.html">Cross Validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SupervisedLearning.html">Supervised Learning</a></li>
@@ -481,6 +483,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-derivatives-span"><span style="color:Orange">Derivatives</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-optimization-in-machine-learning-span"><span style="color:Orange">Optimization in Machine Learning</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-optimization-methods-span"><span style="color:Orange">Optimization Methods</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-stochastic-optimization-span"><span style="color:Orange">Stochastic Optimization</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -495,12 +502,823 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="optimization">
 <h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p><span style="color:Violet">Optimization</span> solves the following problem: given a scalar-valued function <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> defined in the multidimensional space of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, find the value <span class="math notranslate nohighlight">\(\mathbf{x}=\mathbf{x}^\ast\)</span> where <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is minimized, or, in more formal language:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{\mathbf{x}^\ast = \underset{\mathbf{x}}{\mathrm{argmin}}\, f(\mathbf{x})
+}
+\]</div>
+<p>This statement of the problem is more general that it first appears, since:</p>
+<ul class="simple">
+<li><p>Minimizing <span class="math notranslate nohighlight">\(-f\)</span> is equivalent to maximizing <span class="math notranslate nohighlight">\(f\)</span>.</p></li>
+<li><p>A vector-valued function can also be optimized by defining a suitable norm, <span class="math notranslate nohighlight">\(f = |\vec{f}|\)</span>.</p></li>
+<li><p>Constraints on the allowed values of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> can be encoded in <span class="math notranslate nohighlight">\(f\)</span> by having it return <span class="math notranslate nohighlight">\(\infty\)</span> in illegal regions.</p></li>
+</ul>
+<p>This is conceptually a straightforward problem, but efficient numerical methods are challenging, especially in high dimensions.</p>
+<p>The simplest method is an exhaustive grid search. In 1D, this boils down to making a plot and reading off the lowest value.  For example (note the useful <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.argmin.html">np.argmin</a>):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x) = x^2 - 10 e^{-10000 (x - \pi)^2} 
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">10000</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;min f(x) at x =&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Study the example above and explain why it fails to find the true minimum of <span class="math notranslate nohighlight">\(f(x)\)</span>. Make a different plot that does find the true minimum.</p>
+<p>A search using a grid with spacing <span class="math notranslate nohighlight">\(\Delta x\)</span> can completely miss features narrower than <span class="math notranslate nohighlight">\(\Delta x\)</span>, so is only reliable when you have some prior knowledge that your <span class="math notranslate nohighlight">\(f(x)\)</span> does not have features narrower than some limit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The main computational cost of optimization is usually the evaluation of <span class="math notranslate nohighlight">\(f\)</span>, so an important metric for any optimizer is the number of times it evaluates <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>In <span class="math notranslate nohighlight">\(D\)</span> dimensions, a grid search requires <span class="math notranslate nohighlight">\(f\)</span> to be evaluated at <span class="math notranslate nohighlight">\(n^D\)</span> different locations, which becomes prohibitive for large <span class="math notranslate nohighlight">\(D\)</span>. Fortunately, there are much better methods when <span class="math notranslate nohighlight">\(f\)</span> satisfies two conditions:</p>
+<ul class="simple">
+<li><p>It is reasonably smooth, so that local derivatives reliably point “downhill”.</p></li>
+<li><p>It has a single global minimum.</p></li>
+</ul>
+<p>The general approach of these methods is to simulate a ball moving downhill until it can go no further.</p>
+<p>The first condition allows us to calculate the gradient <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})\)</span> at the ball’s current location, <span class="math notranslate nohighlight">\(\mathbf{x}_n\)</span>, and then move in the downhill direction:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{\mathbf{x}_{n+1} = \mathbf{x}_n - \eta \nabla f(\mathbf{x}_n) \;
+}
+\]</div>
+<p>This <span style="color:Violet">gradient descent</span> method uses a parameter <span class="math notranslate nohighlight">\(\eta\)</span> to control the size of each step: the ball might overshoot if this is too large, but too small values make unnecessary evaluations. In machine learning contexts, <span class="math notranslate nohighlight">\(\eta\)</span> is often referred to as the <span style="color:Violet">learning rate</span>. There are different strategies for adjusting <span class="math notranslate nohighlight">\(\eta\)</span> on the fly, but no universal best compromise between robustness and efficiency.</p>
+<p>The second condition is necessary to avoid getting trapped in the false minimum at <span class="math notranslate nohighlight">\(x=0\)</span> in the example above. We often cannot guarantee the second condition but all is not lost: the first condition still allows us to reliably find a <em>local minimum</em>, but we can never know if it is also the global minimum. A practical workaround is to simulate many balls starting from different locations and hope that at least one of them falls into the global minimum.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Convex_function">Convex functions</a> are special since they are guaranteed to meet the second condition. We have already seen that the KL divergence is convex and discussed <a class="reference external" href="https://en.wikipedia.org/wiki/Jensen's_inequality">Jensen’s inequality</a> which applies to convex functions.  Convex functions are extremely important in optimization but rare in the wild: unless you know that your function has a single global minimum, you should generally assume that it has many local minima, especially in many dimensions.</p>
+</section>
+<section id="span-style-color-orange-derivatives-span">
+<h2><span style="color:Orange">Derivatives</span><a class="headerlink" href="#span-style-color-orange-derivatives-span" title="Permalink to this heading">#</a></h2>
+<p>Derivatives of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> are very useful for optimization and can be calculated several ways. The first method is to work out the derivatives by hand and code them up, for example:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x) = \frac{\cos(e^x)}{x^2}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[ \Large
+f^\prime (x) = -2 \frac{\cos(e^x)}{x^3} - e^x \frac{\sin(e^x)}{x^2}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f(x)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f^{~\prime}(x)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Derivatives can also be calculated numerically using <a class="reference external" href="https://en.wikipedia.org/wiki/Finite_difference">finite difference equations</a> such as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\frac{\partial}{\partial x_i} f(\mathbf{x}) = 
+\frac{f(\mathbf{x} + \delta \mathbf{e}_i) - f(\mathbf{x} - \delta \mathbf{e}_i)}{2\delta}
++ {\cal O}(\delta^2) \; .
+\]</div>
+<p>For example, with <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.gradient.html">np.gradient</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp_numeric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">fp_numeric</span> <span class="o">-</span> <span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;absolute error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">fp_numeric</span> <span class="o">-</span> <span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;relative error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is also a third hybrid approach that has proven very useful in machine learning, especially for training deep neural networks: <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a>. This requires that a small set of primitive functions (sin, cos, exp, log, …) are handled analytically, and then composition of these primitives is handled by applying the rules of differentiation (chain rule, product rule, etc) directly to the code that evaluates <code class="docutils literal notranslate"><span class="pre">f(x)</span></code>.</p>
+<p>For example, using the <a class="reference external" href="https://github.com/HIPS/autograd/blob/master/docs/tutorial.md">autograd package</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">elementwise_grad</span>
+<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>and the same function <span class="math notranslate nohighlight">\(f{x}\)</span> we had before</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f_auto</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp_auto</span> <span class="o">=</span> <span class="n">elementwise_grad</span><span class="p">(</span><span class="n">f_auto</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, the automatic derivates are identical to the exact results up to round-off errors (note the <code class="docutils literal notranslate"><span class="pre">1e-16</span></code> multiplier on the y axis):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fp_auto</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that automatic differentiation cannot perform miracles.  For example, the following implementation of</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\mathrm{sinc}(x) \equiv \frac{\sin{x}}{x}
+\]</div>
+<p>cannot be evaluated at <span class="math notranslate nohighlight">\(x = 0\)</span>, so neither can its automatic derivative:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sinc</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">(</span><span class="n">sinc</span><span class="p">)(</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>EXERCISE:</strong> Modify the implementation of <code class="docutils literal notranslate"><span class="pre">sinc</span></code> above to cure both of these problems. Hint: <code class="docutils literal notranslate"><span class="pre">grad</span></code> can automatically differentiate through control flow structures (<code class="docutils literal notranslate"><span class="pre">if</span></code>, <code class="docutils literal notranslate"><span class="pre">while</span></code>, etc).</p>
+<p>The simplest fix is to return 1 whenever <span class="math notranslate nohighlight">\(x\)</span> is zero:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">sinc</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gives the correct derivative but still generates a warning because <span class="math notranslate nohighlight">\(x = 0\)</span> is treated as an isolated point:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">(</span><span class="n">sinc</span><span class="p">)(</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A better solution is to use a Taylor expansion for <span class="math notranslate nohighlight">\(|x| \lt \epsilon\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.001</span> <span class="k">else</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">6</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">sinc</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">grad</span><span class="p">(</span><span class="n">sinc</span><span class="p">)(</span><span class="mf">0.</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will see automatic differentiation again soon in other contexts.</p>
+</section>
+<section id="span-style-color-orange-optimization-in-machine-learning-span">
+<h2><span style="color:Orange">Optimization in Machine Learning</span><a class="headerlink" href="#span-style-color-orange-optimization-in-machine-learning-span" title="Permalink to this heading">#</a></h2>
+<p>Most ML algorithms involve some sort of optimization (although MCMC sampling is an important exception). For example, the <a class="reference external" href="http://scikit-learn.org/stable/modules/clustering.html#k-means">K-means clustering algorithm</a> minimizes</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sum_{i=1}^n\, \sum_{c_j = i}\, \left| x_j - \mu_i\right|^2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(c_j = 1\)</span> if sample <span class="math notranslate nohighlight">\(j\)</span> is assigned to cluster <span class="math notranslate nohighlight">\(i\)</span> or otherwise <span class="math notranslate nohighlight">\(c_j = 0\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\mu_i = \sum_{c_j = i}\, x_j
+\]</div>
+<p>is the mean of samples assigned to cluster <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Optimization is also useful in Bayesian inference. In particular, it allows us to locate the most probable point in the parameter space, known as the <span style="color:Violet">maximum a-posteriori (MAP) point estimate</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{MAP \equiv \underset{\mathbf{\theta}}{\mathrm{argmin}}\, [-\log P(\theta\mid D)] \;
+}
+\]</div>
+<p>You can also locate the point that is most probable according to just your likelihood, known as the <span style="color:Violet">maximum likelihood (ML) point estimate</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{ML \equiv \underset{\mathbf{\theta}}{\mathrm{argmin}}\, [-\log P(D\mid \theta)] \;
+}
+\]</div>
+<p>Frequentists who do not believe in priors generally focuses on ML, but MAP is the fundamental point estimate in Bayesian inference. Note that the log above reduces round-off errors when the optimizer needs to explore a large dynamic range (as is often true) and the minus sign converts a maximum probability into a minimum function value.</p>
+<p>Note that a point estimate is not very useful on its own since it provides no information on what range of <span class="math notranslate nohighlight">\(\theta\)</span> is consistent with the data, otherwise known as the parameter uncertainty!  Point estimates are still useful, however, to provide a good starting point for MCMC chains or when followed by an exploration of the surrounding posterior to estimate uncertainties.</p>
+<p>Variational inference is another important application of optimization, where it allows us to find the “closest” approximating PDF <span class="math notranslate nohighlight">\(q(\theta; \lambda)\)</span> to the true posterior PDF <span class="math notranslate nohighlight">\(P(\theta\mid D)\)</span> by optimizing with respect to variables <span class="math notranslate nohighlight">\(\lambda\)</span> that explore the approximating family <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{VI \equiv \underset{\mathbf{\lambda}}{\mathrm{argmin}}\,
+[-\mathrm{ELBO}(q(\theta; \lambda) \parallel P(\theta\mid D)] \;}
+\]</div>
+<p>Finally, training a neural network is essentially an optimization task, as we will shall see soon.</p>
+</section>
+<section id="span-style-color-orange-optimization-methods-span">
+<h2><span style="color:Orange">Optimization Methods</span><a class="headerlink" href="#span-style-color-orange-optimization-methods-span" title="Permalink to this heading">#</a></h2>
+<p>To compare different methods, we will use the <a class="reference external" href="https://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock function</a>, which is smooth but sufficiently non-linear to be a good challenge:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
+\]</div>
+<p>Most implementations need a function that takes all components of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in a single array argument:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rosenbrock</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is a helper function to demonstarate optimization with the Rosenbrock function called <code class="docutils literal notranslate"><span class="pre">plot_rosenbrock</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_rosenbrock</span><span class="p">(</span><span class="n">xrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">yrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                    <span class="n">shaded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_calls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the Rosenbrock function with some optional decorations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xrange : tuple</span>
+<span class="sd">        Tuple (xlo, xhi) with the x range to plot.</span>
+<span class="sd">    yrange : tuple</span>
+<span class="sd">        Tuple (ylo, yhi) with the y range to plot.</span>
+<span class="sd">    ngrid : int</span>
+<span class="sd">        Number of grid points along x and y to use.</span>
+<span class="sd">    shaded : bool</span>
+<span class="sd">        Draw a shaded background using a log scale for the colormap.</span>
+<span class="sd">    path : array or None</span>
+<span class="sd">        Array of shape (npath,2) with (x,y) coordinates along a path to draw.</span>
+<span class="sd">        A large &quot;X&quot; will mark the starting point.</span>
+<span class="sd">    all_calls : array or None</span>
+<span class="sd">        Array of shape (ncall,2) with (x,y) coordinates of additional calls to</span>
+<span class="sd">        indicate on the plot. Only points not in path will be visually distinct.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Tabulate the Rosenbrock function on the specified grid.</span>
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">xrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">y_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">yrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x_grid</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_grid</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_grid</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="c1"># Plot the function.</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">shaded</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">xrange</span><span class="p">,</span> <span class="o">*</span><span class="n">yrange</span><span class="p">],</span>
+                   <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">],</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0g</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x_0$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">all_calls</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_calls</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xrange</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">*</span><span class="n">yrange</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xrange</span><span class="p">,</span> <span class="n">yrange</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function has a curved valley with a shallow minimum at <span class="math notranslate nohighlight">\((x,y) = (1,1)\)</span> and steeply rising sides:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_rosenbrock</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Is the Rosenbrock function convex?  In other words, does a straight line between any two points on its surface always lie above the surface?</p>
+<p>The Rosenbrock function is not convex. Take, for example, the line <span class="math notranslate nohighlight">\(x_1 = 1\)</span> shown above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">rosenbrock</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]));</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a> module implements a suite of standard general-purpose algorithms that are accessible via its <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">minimize</a> function. For example, to find the minimum of the Rosenbrock function starting from <span class="math notranslate nohighlight">\((-1,0)\)</span> and using the robust <a class="reference external" href="https://en.wikipedia.org/wiki/Nelder-Mead_method">Nelder-Mead</a> algorithm (aka <i>downhill simplex method</i> or <i>amoeba method</i>), which does not use derivatives:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">tol</span></code> (tolerance) parameter roughly corresponds to the desired accuracy in each coordinate.</p>
+<p>Most methods accept an optional <code class="docutils literal notranslate"><span class="pre">jac</span></code> (for <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a>) argument to pass a function that calculates partial derivatives along each coordinate.  For our Rosenbrock example, we can construct a suitable function using automatic differentiation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rosenbrock_grad</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is an example of optimizing using derivatives with the <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">conjugate-gradient (CG) method</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">rosenbrock_grad</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A method using derivatives will generally require fewer calls to <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> but might still be slower due to the additional partial derivative evaluations. Some (but not all) methods that use partial derivatives will estimate them numerically, with additional calls to <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>, if a <code class="docutils literal notranslate"><span class="pre">jac</span></code> function is not provided.</p>
+<p>The function below uses wrappers to track and display the optimizer’s progress, and also displays the running time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+    
+    <span class="n">all_calls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">rosenbrock_wrapped</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">all_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rosenbrock</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">)]</span>
+    <span class="k">def</span> <span class="nf">track</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">jac</span> <span class="o">=</span> <span class="n">rosenbrock_grad</span> <span class="k">if</span> <span class="n">use_grad</span> <span class="k">else</span> <span class="kc">False</span>
+    
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock_wrapped</span><span class="p">,</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jac</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">track</span><span class="p">)</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">nfev</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_calls</span><span class="p">)</span>
+    <span class="n">njev</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;njev&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is (</span><span class="si">{:+.2g}</span><span class="s1">,</span><span class="si">{:+.2g}</span><span class="s1">) after </span><span class="si">{}</span><span class="s1"> iterations making </span><span class="si">{}</span><span class="s1">+</span><span class="si">{}</span><span class="s1"> calls in </span><span class="si">{:.2f}</span><span class="s1"> ms.&#39;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">opt</span><span class="o">.</span><span class="n">nit</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">nfev</span><span class="p">,</span> <span class="n">njev</span><span class="p">,</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)))</span>    
+
+    <span class="n">xrange</span><span class="p">,</span> <span class="n">yrange</span> <span class="o">=</span> <span class="n">plot_rosenbrock</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">all_calls</span><span class="o">=</span><span class="n">all_calls</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Black points show the progress after each iteration of the optimizer and cyan points show additional auxiliary calls to <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, we found the true minimum with an error below <span class="math notranslate nohighlight">\(10^{-4}\)</span> in each coordinate (as requested) using about 150 calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>, but an exhaustive grid search would have required more than <span class="math notranslate nohighlight">\(10^{8}\)</span> calls to achieve comparable accuracy!</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">conjugate-gradient (CG) method</a> uses gradient derivatives to always move downhill:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>CG can follow essentially the same path using numerical estimates of the gradient derivatives, which requires more evaluations of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> but is still faster in this case:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Newton's_method_in_optimization">Newton’s CG method</a> requires analytic derivatives and makes heavy use of them to measure and exploit the curvature of the local surface:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;Newton-CG&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Powell's_method">Powell’s method</a> does not use derivatives but requires many auxiliary evaluations of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;Powell&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, the <a class="reference external" href="https://en.wikipedia.org/wiki/Broyden-Fletcher-Goldfarb-Shanno_algorithm">BFGS method</a> is a good all-around default choice, with or without derivatives:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The choice of initial starting point can have a big effect on the optimization cost, as measured by the number of calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>.  For example, compare:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">1.20</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Predict which initial starting points would require the most calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> for the Rosenbrock function?  Does your answer depend on the optimization method?</p>
+<p>The cost can be very sensitive to the initial conditions in ways that are difficult to predict. Different methods will have different sensitivities but, generally, the slower more robust methods should be less sensitive with more predictable costs.</p>
+<p>The function below maps the cost as a function of the starting point:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost_map</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">xrange</span><span class="p">,</span> <span class="n">yrange</span> <span class="o">=</span> <span class="n">plot_rosenbrock</span><span class="p">(</span><span class="n">shaded</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">x0_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">xrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">y0_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">yrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ngrid</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x0_vec</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">y0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y0_vec</span><span class="p">):</span>
+            <span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+            <span class="n">cost</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">nfev</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">xrange</span><span class="p">,</span> <span class="o">*</span><span class="n">yrange</span><span class="p">],</span>
+               <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;magma&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Number of calls&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The BFGS “racehorse” exhibits some surprising discontinuities in its cost function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cost_map</span><span class="p">(</span><span class="s1">&#39;BFGS&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Nelder-Mead “ox”, in contrast, is more expensive overall (both plots use the same color scale), but has a smoother cost function (but there are still some isolated “hot spots”):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cost_map</span><span class="p">(</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When the function you are optimizing is derived from a likelihood (which includes a chi-squared likelihood for binned data), there are some other optimization packages that you might find useful:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://cars9.uchicago.edu/software/python/lmfit/">lmfit</a>: a more user-friendly front-end to <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code>.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/MINUIT">minuit</a>: a favorite in the particle physics community that is generally more robust and provides tools to estimate (frequentist) parameter uncertainties.</p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-stochastic-optimization-span">
+<h2><span style="color:Orange">Stochastic Optimization</span><a class="headerlink" href="#span-style-color-orange-stochastic-optimization-span" title="Permalink to this heading">#</a></h2>
+<p>In machine-learning applications, the function being optimized often involves an inner loop over data samples. For example, in Bayesian inference, this enters via the likelihood,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log P(D\mid \theta) = \sum_i \log P(x_i\mid \theta) \; ,
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(x_i\)</span> are the individual data samples.  With a large number of samples, this iteration can be prohibitively slow, but <span style="color:Violet">stochastic optimization</span> provides a neat solution.</p>
+<p>For example, generate some data from a Gaussian likelihood:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">+</span><span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The corresponding negative-log-likelihood (NLL) function of the <code class="docutils literal notranslate"><span class="pre">loc</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> parameters is then (we write it out explicitly using autograd numpy calls so we can perform automatic differentiation later):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLL</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+    <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">theta</span>
+    <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Add (un-normalized) flat priors on <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\log\sigma\)</span> (these are the “natural” un-informative priors for additive and multiplicative constants, respectively):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLP</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">theta</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="k">if</span> <span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="n">anp</span><span class="o">.</span><span class="n">inf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLpost</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">NLL</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">NLP</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function we want optimize is then the negative-log-posterior:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(\theta) = -\log P(\theta\mid D) \; .
+\]</div>
+<p>Here is a helper function called <code class="docutils literal notranslate"><span class="pre">plot_posterior</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">sigma_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                   <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">VI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">MC</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a posterior with optional algorithm results superimposed.</span>
+
+<span class="sd">    Assumes a Gaussian likelihood with parameters (mu, sigma) and flat</span>
+<span class="sd">    priors in mu and t=log(sigma).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    D : array</span>
+<span class="sd">        Dataset to use for the true posterior.</span>
+<span class="sd">    mu_range : tuple</span>
+<span class="sd">        Limits (lo, hi) of mu to plot</span>
+<span class="sd">    sigma_range : tuple</span>
+<span class="sd">        Limits (lo, hi) of sigma to plot.</span>
+<span class="sd">    ngrid : int</span>
+<span class="sd">        Number of grid points to use for tabulating the true posterior.</span>
+<span class="sd">    path : array or None</span>
+<span class="sd">        An array of shape (npath, 2) giving the path used to find the MAP.</span>
+<span class="sd">    VI : array or None</span>
+<span class="sd">        Values of the variational parameters (s0, s1, s2, s3) to use to</span>
+<span class="sd">        display the closest variational approximation.</span>
+<span class="sd">    MC : tuple</span>
+<span class="sd">        Tuple (mu, sigma) of 1D arrays with the same length, consisting of</span>
+<span class="sd">        MCMC samples of the posterior to display.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a grid covering the (mu, sigma) parameter space.</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">mu_range</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">sigma_range</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
+    <span class="n">sigma_</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">log_sigma_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the true -log(posterior) up to a constant.</span>
+    <span class="n">NLL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">sigma_</span><span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+                 <span class="n">log_sigma_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Apply uniform priors on mu and log(sigma)</span>
+    <span class="n">NLP</span> <span class="o">=</span> <span class="n">NLL</span> <span class="o">-</span> <span class="n">log_sigma_</span>
+    <span class="n">NLP</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">NLP</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">VI</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span> <span class="o">=</span> <span class="n">VI</span>
+        <span class="c1"># Calculate the VI approximate -log(posterior) up to a constant.</span>
+        <span class="n">NLQ</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">s0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+               <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">log_sigma_</span> <span class="o">-</span> <span class="n">s2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">NLQ</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">NLQ</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">NLP</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">mu_range</span><span class="p">,</span> <span class="o">*</span><span class="n">sigma_range</span><span class="p">],</span>
+               <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis_r&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">NLP</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0g</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;w-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;true posterior&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MAP optimization&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">VI</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">NLQ</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+                    <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;VI approximation&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">MC</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">MC</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MC samples&#39;</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">get_texts</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Offset parameter $\mu$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Scale parameter $\sigma$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">*</span><span class="n">mu_range</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">*</span><span class="n">sigma_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:Violet">DISCUSS</strong></em></span>: Why is <span class="math notranslate nohighlight">\(f(\theta)\)</span> not centered at the true value <span class="math notranslate nohighlight">\((\mu, \sigma) = (0, 1)\)</span>?</p>
+<p>There are two reasons:</p>
+<ul class="simple">
+<li><p>Statistical fluctuations in the randomly generated data will generally offset the maximum likelihood contours. The expected size of this shift is referred to as the <em><strong><span style="color:Violet">statistical uncertainty</span></strong></em>.</p></li>
+<li><p>The priors favor a lower value of <span class="math notranslate nohighlight">\(\sigma\)</span>, which pulls these contours down. The size of this shift will be negligible for an informative experiment, and significant when there is insufficient data.</p></li>
+</ul>
+<hr class="docutils" />
+<p><em><strong><span style="color:Violet">DISCUSS</span></strong></em>: How do you expect the plot above to change if only half of the data is used?  How would using the first or second half change the plot?</p>
+<p>Using half of the data will increase the statistical uncertainty, resulting in larger contours. Independent subsets of the data will have uncorrelated shifts due to the statistical uncertainty.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">[:</span><span class="mi">100</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="mi">100</span><span class="p">:]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will optimize this function using a simple gradient descent with a fixed learning rate <span class="math notranslate nohighlight">\(\eta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\mathbf{\theta}_{n+1} = \mathbf{\theta}_n - \frac{\eta}{N} \nabla f(\mathbf{\theta}_n) \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples in <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<p>Use automatic differentiation to calculate the gradient of <span class="math notranslate nohighlight">\(f(\theta)\)</span> with respect to the components of <span class="math notranslate nohighlight">\(\theta\)</span> (<span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NLpost_grad</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">NLpost</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">NLpost_grad</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">])]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">,</span> <span class="n">eta</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The resulting path rolls “downhill”, just as we would expect.  Note that a constant learning rate does not translate to a constant step size. (Why?)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">GradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">sigma0</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <span style="color:Violet">stochastic gradient</span> method uses a random subset of the data, called a <span style="color:Violet">minibatch</span>, during each iteration. Only small changes to <code class="docutils literal notranslate"><span class="pre">StochasticGradient</span></code> above are required to implement this scheme (and no changes are needed to <code class="docutils literal notranslate"><span class="pre">step</span></code>):</p>
+<ul class="simple">
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter for reproducible random subsets.</p></li>
+<li><p>Specify the minibatch size <code class="docutils literal notranslate"><span class="pre">n_minibatch</span></code> and use <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.choice.html">np.random.choice</a> to select it during each iteration.</p></li>
+<li><p>Reduce the learning rate after each iteration by <code class="docutils literal notranslate"><span class="pre">eta_factor</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">StochasticGradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">])]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+        <span class="n">minibatch</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">minibatch</span><span class="p">,</span> <span class="n">eta</span><span class="p">))</span>
+        <span class="n">eta</span> <span class="o">*=</span> <span class="n">eta_factor</span>
+    <span class="k">return</span> <span class="n">path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using half of the data on each iteration (<code class="docutils literal notranslate"><span class="pre">n_minibatch=100</span></code>) means that the gradient is calculated from a different surface each time, with larger contours and random shifts.  We have effectively added some noise to the gradient, but it still converges reasonably well:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">StochasticGradientDescent</span><span class="p">(</span>
+    <span class="n">mu0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">sigma0</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the learning-rate decay is essential to prevent the optimizer wandering aimlessly once it gets close to the minimum:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">StochasticGradientDescent</span><span class="p">(</span>
+    <span class="n">mu0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">sigma0</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remarkably, <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent (SGD)</a> works with even smaller minibatches, with some careful tuning of the hyperparameters, although it might converge to a slightly different minimum. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">StochasticGradientDescent</span><span class="p">(</span>
+    <span class="n">mu0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">sigma0</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">75</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Comparing this example with our <code class="docutils literal notranslate"><span class="pre">GradientDescent</span></code> above, we find that the number of steps has increased 5x while the amount of data used during each iteration has decreased 10x, so roughly a net factor of 2 improvement in overall performance.</p>
+<p>SGD has been used very successfully in training deep neural networks, where it solves two problems:</p>
+<ul class="simple">
+<li><p>Deep learning requires massive training datasets which are then slow to optimize, so any gains in performance are welcome.</p></li>
+<li><p>The noise introduced by SGD helps prevent “over-learning” of the training data and improves the resulting ability to generalize to data outside the training set. We will revisit this theme soon.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Initial version: Mark Neubauer</p></li>
 </ul>
-<p>© Copyright 2024</p>
+<p>© Copyright 2023</p>
 </section>
 </section>
 
@@ -540,7 +1358,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Learning</p>
+        <p class="prev-next-title">Artificial Intelligence and Machine Learning</p>
       </div>
     </a>
     <a class="right-next"
@@ -567,6 +1385,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-derivatives-span"><span style="color:Orange">Derivatives</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-optimization-in-machine-learning-span"><span style="color:Orange">Optimization in Machine Learning</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-optimization-methods-span"><span style="color:Orange">Optimization Methods</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-stochastic-optimization-span"><span style="color:Orange">Stochastic Optimization</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
