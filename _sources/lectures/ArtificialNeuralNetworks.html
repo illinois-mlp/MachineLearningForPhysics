@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/ArtificialNeuralNetworks';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -481,6 +483,26 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-mathematical-perspective-span"><span style="color:Orange">Mathematical Perspective</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-building-block-span"><span style="color:LightGreen">Building Block</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-activation-functions-span"><span style="color:LightGreen">Activation Functions</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-network-layer-span"><span style="color:LightGreen">Network Layer</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-network-graph-span"><span style="color:LightGreen">Network Graph</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-visual-perspective-span"><span style="color:Orange">Visual Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-flow-perspective-span"><span style="color:Orange">Data Flow Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-pytorch-primer-span"><span style="color:Orange">PyTorch Primer</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-statistical-perspective-span"><span style="color:Orange">Statistical Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-loss-functions-span"><span style="color:Orange">Loss Functions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-regression-loss-span"><span style="color:LightGreen">Regression Loss</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-binary-classification-loss-span"><span style="color:LightGreen">Binary Classification Loss</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multi-category-classification-loss-span"><span style="color:LightGreen">Multi-category Classification Loss</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -495,6 +517,1137 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="artificial-neural-networks">
 <h1>Artificial Neural Networks<a class="headerlink" href="#artificial-neural-networks" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below we inlucde a set of helper functions to visualize the calculations for illustration purposes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">vlim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vlim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fx</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span>
+              <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">,</span> <span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">],</span>
+              <span class="n">vmin</span><span class="o">=-</span><span class="n">vlim</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=+</span><span class="n">vlim</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="n">x0</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">nn_unit_draw2d</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a single network unit or layer with 2D input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    w : array</span>
+<span class="sd">        1D array of weight values to use.</span>
+<span class="sd">    b : float or array</span>
+<span class="sd">        scalar (unit) or 1D array (layer) of bias values to use.</span>
+<span class="sd">    phi : callable</span>
+<span class="sd">        Activation function to use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">x_i</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+    <span class="n">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">vlim</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">nn_graph_draw2d</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the response of a neural network with 2D input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    *layers : tuple</span>
+<span class="sd">        Each layer is specified as a tuple (W, b, phi).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">,</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="n">layer_in</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">x_i</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">layer_out</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+    <span class="n">layer_s</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span>
+    <span class="n">n_max</span><span class="p">,</span> <span class="n">vlim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers</span><span class="p">):</span>
+        <span class="n">WT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">W</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">n_out</span><span class="p">,</span> <span class="n">n_in</span> <span class="o">=</span> <span class="n">WT</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">n_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_max</span><span class="p">,</span> <span class="n">n_out</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">layer_in</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_in</span><span class="p">,</span> <span class="n">n_grid</span> <span class="o">**</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;LYR</span><span class="si">{}</span><span class="s1">: number of rows in W (</span><span class="si">{}</span><span class="s1">) does not match layer input size (</span><span class="si">{}</span><span class="s1">).&#39;</span>
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_in</span><span class="p">,</span> <span class="n">layer_in</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_out</span><span class="p">,):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;LYR</span><span class="si">{}</span><span class="s1">: number of columns in W (</span><span class="si">{}</span><span class="s1">) does not match size of b (</span><span class="si">{}</span><span class="s1">).&#39;</span>
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_out</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">WT</span><span class="p">,</span> <span class="n">layer_in</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layer_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">layer_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="n">layer_in</span> <span class="o">=</span> <span class="n">layer_out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">vlim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">vlim</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">layer_in</span><span class="p">))</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_max</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">depth</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n_max</span><span class="p">),</span>
+                         <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers</span><span class="p">):</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_max</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">layer_out</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;LYR</span><span class="si">{}</span><span class="s1">-NODE</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="p">[:,</span><span class="n">j</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">layer_out</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_grid</span><span class="p">,</span> <span class="n">n_grid</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                      <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">vlim</span><span class="o">=</span><span class="n">vlim</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="n">x_range</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n_bins</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">layer_s</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">s_min</span><span class="p">,</span> <span class="n">s_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x_range</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">s_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">s_max</span> <span class="o">-</span> <span class="n">s_min</span><span class="p">)</span> <span class="o">-</span> <span class="n">x_range</span>
+                <span class="n">rhs</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+                <span class="n">hist</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
+                    <span class="n">t</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="n">x_range</span><span class="p">),</span>
+                    <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+                <span class="n">s_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">s_min</span><span class="p">,</span> <span class="n">s_max</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+                <span class="n">t_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+                <span class="n">phi_grid</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
+                <span class="n">phi_min</span><span class="p">,</span> <span class="n">phi_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">phi_grid</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi_grid</span><span class="p">)</span>
+                <span class="n">z_grid</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">phi_grid</span> <span class="o">-</span> <span class="n">phi_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">phi_max</span> <span class="o">-</span> <span class="n">phi_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">hist</span><span class="p">))</span>
+                <span class="n">rhs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">rhs</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span> <span class="o">*</span> <span class="p">(</span><span class="n">s_max</span> <span class="o">+</span> <span class="n">s_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">s_max</span> <span class="o">-</span> <span class="n">s_min</span><span class="p">),</span>
+                            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">rhs</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">x_range</span><span class="p">,</span> <span class="o">+</span><span class="n">x_range</span><span class="p">)</span>
+                <span class="n">rhs</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span>
+                        <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sizes_as_string</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tensors</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">tensors</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">trace_forward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the module forward hook API.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input : tuple or tensor</span>
+<span class="sd">        Input tensor(s) to this module. We save a detached</span>
+<span class="sd">        copy to this module&#39;s `input` attribute.</span>
+<span class="sd">    output : tuple or tensor</span>
+<span class="sd">        Output tensor(s) to this module. We save a detached</span>
+<span class="sd">        copy to this module&#39;s `output` attribute.        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="p">[</span><span class="n">I</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="k">for</span> <span class="n">I</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">O</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">output</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: IN </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="si">}</span><span class="s1"> OUT </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">output</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">trace_backward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">grad_in</span><span class="p">,</span> <span class="n">grad_out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the module backward hook API.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grad_in : tuple or tensor</span>
+<span class="sd">        Gradient tensor(s) for each input to this module.</span>
+<span class="sd">        These are the *outputs* from backwards propagation and we</span>
+<span class="sd">        ignore them.</span>
+<span class="sd">    grad_out : tuple or tensor</span>
+<span class="sd">        Gradient tensor(s) for each output to this module.</span>
+<span class="sd">        Theser are the *inputs* to backwards propagation and</span>
+<span class="sd">        we save detached views to the module&#39;s `grad` attribute.</span>
+<span class="sd">        If grad_out is a tuple with only one entry, which is usually</span>
+<span class="sd">        the case, save the tensor directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grad_out</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">O</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">grad_out</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">grad_out</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: GRAD </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">trace</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;_trace_hooks&#39;</span><span class="p">):</span>
+        <span class="c1"># Remove all previous tracing hooks.</span>
+        <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">_trace_hooks</span><span class="p">:</span>
+            <span class="n">hook</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">active</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">_trace_hooks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">submodule</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">named_modules</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">submodule</span> <span class="ow">is</span> <span class="n">module</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">_trace_hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">submodule</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span>
+            <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">trace_forward</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)))</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">_trace_hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">submodule</span><span class="o">.</span><span class="n">register_full_backward_hook</span><span class="p">(</span>
+            <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">trace_backward</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">get_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
+    <span class="n">lr_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">grp</span> <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_grps</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has no parameter called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr_grps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has multiple parameters called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lr_grps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">set_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
+    <span class="n">lr_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">grp</span> <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_grps</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has no parameter called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr_grps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has multiple parameters called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+    <span class="n">lr_grps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="c1"># Add get_lr, set_lr methods to all Optimizer subclasses.</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">get_lr</span> <span class="o">=</span> <span class="n">get_lr</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">set_lr</span> <span class="o">=</span> <span class="n">set_lr</span>
+
+<span class="k">def</span> <span class="nf">lr_scan</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">lr_start</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">lr_stop</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">lr_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the learning-rate scan described in Smith 2015.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="c1"># Save the model and optimizer states before scanning.</span>
+    <span class="n">model_save</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+    <span class="n">optim_save</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+    <span class="c1"># Schedule learning rate to increase in logarithmic steps.</span>
+    <span class="n">lr_schedule</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lr_start</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lr_stop</span><span class="p">),</span> <span class="n">lr_steps</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">scanning</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">scanning</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x_in</span><span class="p">,</span> <span class="n">y_tgt</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">set_lr</span><span class="p">(</span><span class="n">lr_schedule</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)])</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_in</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_tgt</span><span class="p">)</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">==</span> <span class="n">lr_steps</span> <span class="ow">or</span> <span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">losses</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">scanning</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="c1"># Restore the model and optimizer state.</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">model_save</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">optim_save</span><span class="p">)</span>
+    <span class="c1"># Plot the scan results.</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lr_schedule</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)],</span> <span class="n">losses</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">losses</span><span class="p">),</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">losses</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Learning rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+    <span class="c1"># Return an optimizer with set_lr/get_lr methods, and lr set to half of the best value found.</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+    <span class="n">lr_set</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">lr_schedule</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Recommended lr=</span><span class="si">{</span><span class="n">lr_set</span><span class="si">:</span><span class="s1">.3g</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">set_lr</span><span class="p">(</span><span class="n">lr_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p>From a user’s perspective, a neural network (NN) is a class of models</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+X_\text{out} = N(X_\text{in}; \Theta)
+\]</div>
+<p>that are:</p>
+<ul class="simple">
+<li><p><span style="color:Violet">Generic</span>: they are not tailored to any particular application.</p></li>
+<li><p><span style="color:Violet">Flexible:</span> they can accurately represent a wide range of non-linear <span class="math notranslate nohighlight">\(X_\text{in}\rightarrow X_\text{out}\)</span> mappings with a suitable choice of parameters <span class="math notranslate nohighlight">\(\Theta\)</span>.</p></li>
+<li><p><span style="color:Violet">Trainable:</span> a robust optimization algorithm (backpropagation) can learn parameters <span class="math notranslate nohighlight">\(\Theta\)</span> given enough training data <span class="math notranslate nohighlight">\(D = (X_\text{in},Y_\text{tgt})\)</span>.</p></li>
+<li><p><span style="color:Violet">Modular:</span> it is straightforward to scale the model complexity (and number of parameters) to match the available training data.</p></li>
+<li><p><span style="color:Violet">Efficient:</span> most of the internal computations are linear and amenable to parallel computation and hardware acceleration.</p></li>
+</ul>
+<p>The “neural” aspect of a NN is tenuous. Their design mimics some aspects of biological neurons, but also differs in fundamental ways.</p>
+<p>In this notebook, we will explore NNs from several different perspectives:</p>
+<ul class="simple">
+<li><p><span style="color:Violet">Mathematical</span>: What equations describe a network?</p></li>
+<li><p><span style="color:Violet">Visual</span>: What does the network graph look like? How is the input space mapped through the network?</p></li>
+<li><p><span style="color:Violet">Data Flow</span>: What are the tensors that parameterize and flow (forwards and backwards) through a network?</p></li>
+<li><p><span style="color:Violet">Statistical</span>: What are typical distributions of tensor values?</p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-mathematical-perspective-span">
+<h2><span style="color:Orange">Mathematical Perspective</span><a class="headerlink" href="#span-style-color-orange-mathematical-perspective-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-lightgreen-building-block-span">
+<h3><span style="color:LightGreen">Building Block</span><a class="headerlink" href="#span-style-color-lightgreen-building-block-span" title="Permalink to this heading">#</a></h3>
+<p>The internal structure of a NN is naturally described by a computation graph that connects simple building blocks. The basic building-block unit is a function of <span class="math notranslate nohighlight">\(D\)</span> input features <span class="math notranslate nohighlight">\(x_i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(D+1\)</span> parameters consisting of <span class="math notranslate nohighlight">\(D\)</span> <span style="color:Violet">weights</span> <span class="math notranslate nohighlight">\(w_i\)</span> and a single <span style="color:Violet">bias</span> <span class="math notranslate nohighlight">\(b\)</span>. The corresponding <a class="reference external" href="http://alexlenail.me/NN-SVG/index.html">graph</a> (with <span class="math notranslate nohighlight">\(D=8\)</span>) is:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_unit.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_unit.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_unit.png" style="width: 400px;" /></a></img><br></p>
+<p>where the left nodes correspond to the elements of the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, the edges correspond to the elements of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> (thickness ~ strength, red/blue are pos/neg values), and the right node is the output value <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>. The recipe for obtaining the output value is then:</p>
+<ul class="simple">
+<li><p>propagate each input value <span class="math notranslate nohighlight">\(x_i\)</span> with a strength <span class="math notranslate nohighlight">\(w_i\)</span>,</p></li>
+<li><p>sum the values <span class="math notranslate nohighlight">\(x_i w_i\)</span>,</p></li>
+<li><p>add a bias value <span class="math notranslate nohighlight">\(b\)</span></p></li>
+<li><p>apply the activation <span class="math notranslate nohighlight">\(\phi\)</span>.</p></li>
+</ul>
+<p>Note that this building block is mostly linear, except for the <span style="color:Violet">activation function</span> <span class="math notranslate nohighlight">\(\phi(s)\)</span>. This is an application of the kernel trick that we met <a class="reference internal" href="Nonlinear.html"><span class="doc std std-doc">earlier</span></a>, and allows us to implicitly work in a higher dimensional space where non-linear structure in data is easier to model.</p>
+<p>The building-block equation is straightfoward to implement as code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">phi</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, with a 3D input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, the weight vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> should also be 3D:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">w</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">b</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9640275800758169
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-activation-functions-span">
+<h3><span style="color:LightGreen">Activation Functions</span><a class="headerlink" href="#span-style-color-lightgreen-activation-functions-span" title="Permalink to this heading">#</a></h3>
+<p>The activation function <span class="math notranslate nohighlight">\(\phi\)</span> argument <span class="math notranslate nohighlight">\(s\)</span> is always a scalar and, by convention, activation functions are always defined in a standard form, without any parameters (since <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> already provide enough learning flexibility).</p>
+<p>Some popular activations are defined below (using <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions">lambda functions</a>). For the full list supported in PyTorch see <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#non-linear-activations-weighted-sum-nonlinearity">here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">relu</span>     <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="n">elu</span>      <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="c1"># expm1(s) = exp(s) - 1</span>
+<span class="n">softplus</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">sigmoid</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">s</span><span class="p">))</span> <span class="c1"># also known as the &quot;logistic function&quot;</span>
+<span class="n">tanh</span>     <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">softsign</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>These activations divide naturally into two categories depending on their asymptotic behavior as <span class="math notranslate nohighlight">\(s\rightarrow +\infty\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_activations</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">s_range</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">s_range</span><span class="p">,</span> <span class="o">+</span><span class="n">s_range</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">phi</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Activation input $s$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Activation output $\phi(s)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">s_range</span><span class="p">,</span> <span class="o">+</span><span class="n">s_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">y_range</span><span class="p">,</span> <span class="o">+</span><span class="n">y_range</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plot_activations</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;relu,elu,softplus&#39;</span><span class="p">)</span>
+<span class="n">plot_activations</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;sigmoid,tanh,softsign&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b9e45de6257b23c8824c0a1733ef369821459e5d18f7c2ee67400e78323037a6.png" src="../../_images/b9e45de6257b23c8824c0a1733ef369821459e5d18f7c2ee67400e78323037a6.png" />
+</div>
+</div>
+<p>Note that all activations saturate (at -1 or 0) for <span class="math notranslate nohighlight">\(s\rightarrow -\infty\)</span>, but differ in their behavior when <span class="math notranslate nohighlight">\(s\rightarrow +\infty\)</span> (linear vs saturate at +1).</p>
+<p><em><strong><span style="color:Violet">DISCUSS</span></strong></em>:</p>
+<ul class="simple">
+<li><p>Which activation would you expect to be the fastest to compute?</p></li>
+<li><p>Which activations are better suited for a binary classification problem?</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">relu</span></code> activation is the fastest to compute since it does not involve any transcendental function calls (exp, log, …).</p>
+<p>The activations that are bounded on both sides only have a narrow range near <span class="math notranslate nohighlight">\(s=0\)</span> where they distinguish between different input values, and otherwise are essentially saturated at one of two values.  This is desirable for classification, where the aim is to place <span class="math notranslate nohighlight">\(s=0\)</span> close to the “decision boundary” (by learning a suitable bias).</p>
+</section>
+<hr class="docutils" />
+<section id="span-style-color-lightgreen-network-layer-span">
+<h3><span style="color:LightGreen">Network Layer</span><a class="headerlink" href="#span-style-color-lightgreen-network-layer-span" title="Permalink to this heading">#</a></h3>
+<p>What happens if we replace the vectors <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> above with <em>matrices</em>?</p>
+<div class="math notranslate nohighlight">
+\[\Large
+F(X) = \phi\left( X W + \mathbf{b}\right)
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(X\)</span> has shape <span class="math notranslate nohighlight">\((N, D)\)</span> and holds <span class="math notranslate nohighlight">\(N\)</span> samples of <span class="math notranslate nohighlight">\(D\)</span> features, then <span class="math notranslate nohighlight">\(W\)</span> must have shape <span class="math notranslate nohighlight">\((D, M)\)</span> so <span class="math notranslate nohighlight">\(F(X)\)</span> converts the <span class="math notranslate nohighlight">\(D\)</span> input features into <span class="math notranslate nohighlight">\(M\)</span> output features for each sample. We say that <span class="math notranslate nohighlight">\(F\)</span> represents a linear network <span style="color:Violet">layer</span> with <span class="math notranslate nohighlight">\(D\)</span> input nodes and <span class="math notranslate nohighlight">\(M\)</span> output nodes. Note that the bias is now a vector of <span class="math notranslate nohighlight">\(M\)</span> bias values, one for each output value.</p>
+<p>We cannot really add a vector <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> to the matrix <span class="math notranslate nohighlight">\(X W\)</span> but we are using the “broadcasting” convention that this means add the same vector to each row (sample) of <span class="math notranslate nohighlight">\(X W\)</span>.  We also cannot apply <span class="math notranslate nohighlight">\(\phi(s)\)</span> to a matrix, but we are using the “elementwise” convention that this means apply <span class="math notranslate nohighlight">\(\phi\)</span> separately to each element of the matrix.</p>
+<p>To connect this matrix version with our earlier vector version, notice that <span class="math notranslate nohighlight">\(F(X)\)</span> transforms a single input sample <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> (row of <span class="math notranslate nohighlight">\(X\)</span>) into <span class="math notranslate nohighlight">\(M\)</span> different outputs, <span class="math notranslate nohighlight">\(f_m(\mathbf{x}_i)\)</span> each with their own weight vector and bias value:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+f_m(\mathbf{x}_i) = \phi\left(\mathbf{x}_i\cdot \mathbf{w}_m + b_m\right) \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w}_m\)</span> is the <span class="math notranslate nohighlight">\(m\)</span>-th column of <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(b_m\)</span> is the <span class="math notranslate nohighlight">\(m\)</span>-th element of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>.</p>
+<p>The corresponding graph (with <span class="math notranslate nohighlight">\(D=8\)</span> and <span class="math notranslate nohighlight">\(M=4\)</span>) is:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_layer.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_layer.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_layer.png" style="width: 400px;" /></a></img><br></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nn_unit</span></code> function we defined above already implements a layer if we pass it matrices <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(W\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">w</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">phi</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.73105858, 0.5       , 0.81757448],
+       [0.5       , 0.88079708, 0.5       ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>A layer with <span class="math notranslate nohighlight">\(n_{in}\)</span> inputs and <span class="math notranslate nohighlight">\(n_{out}\)</span> outputs has a total of <span class="math notranslate nohighlight">\((n_{in} + 1) ~n_{out}\)</span> parameters. These can add up quickly when building useful networks!</p>
+</section>
+<section id="span-style-color-lightgreen-network-graph-span">
+<h3><span style="color:LightGreen">Network Graph</span><a class="headerlink" href="#span-style-color-lightgreen-network-graph-span" title="Permalink to this heading">#</a></h3>
+<p>Finally, we can build a simple <span style="color:Violet">fully connected graph</span> by stacking layers horizontally, which corresponds to nested calls of each layer’s function. For example, with 3 layers computed by <span class="math notranslate nohighlight">\(F\)</span>, <span class="math notranslate nohighlight">\(G\)</span>, <span class="math notranslate nohighlight">\(H\)</span> stacked (left to right), the overall graph computation is:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+N(X) = H\left(G\left(F(X)\right)\right) \; ,
+\]</div>
+<p>with a corresponding graph:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_graph.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_graph.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-nn_graph.png" style="width: 900px;" /></a></img><br></p>
+<p>Nodes between the input (leftmost) and output (rightmost) nodes are known as <span style="color:Violet">hidden nodes</span>.</p>
+<p>The corresponding code for arbitrary layers is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_graph</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">layers</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">nn_unit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, here is a three-layer network with the same architecture as the graph above. Note how the output dimension of one layer must match the input dimension of the next layer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_graph</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+    <span class="p">([</span>
+        <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">34</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">41</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">44</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">51</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">54</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">61</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">71</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">74</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">81</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">84</span><span class="p">],</span>
+    <span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">tanh</span><span class="p">),</span>    <span class="c1"># LYR1: n_in=8, n_out=4</span>
+    <span class="p">([</span>
+        <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">41</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">],</span>
+    <span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">relu</span><span class="p">),</span>       <span class="c1"># LYR2: n_in=4, n_out=3</span>
+    <span class="p">([</span>
+        <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+    <span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">sigmoid</span><span class="p">)</span>        <span class="c1"># LYR3: n_in=3, n_out=2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The weight and bias values are chosen to make the tensors easier to read, but would not make sense for a real network. As a result, the final output of <code class="docutils literal notranslate"><span class="pre">[1.,</span> <span class="pre">1.]</span></code> is not surprising given how the sigmoid activation saturates for input outside a narrow range.</p>
+</section>
+</section>
+<section id="span-style-color-orange-visual-perspective-span">
+<h2><span style="color:Orange">Visual Perspective</span><a class="headerlink" href="#span-style-color-orange-visual-perspective-span" title="Permalink to this heading">#</a></h2>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-activation_maps.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-activation_maps.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-activation_maps.png" style="width: 900px;" /></a></img><br></p>
+<p><em><strong><span style="color:Violet">EXERCISE</span>:</strong></em> Identify which activation function was used to make each plot above, which shows the building block</p>
+<div class="math notranslate nohighlight">
+\[\Large
+f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
+\]</div>
+<p>for a 2D <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> with the same <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> used in each plot. Red and blue indicate positive and negative values, respectively, with zero displayed as white. For calibration, (a) shows a “linear” activation which passes its input straight through.</p>
+<ul class="simple">
+<li><p>(a) linear</p></li>
+<li><p>(b) tanh</p></li>
+<li><p>(c) relu</p></li>
+<li><p>(d) softsign</p></li>
+<li><p>(e) sigmoid</p></li>
+<li><p>(f) elu</p></li>
+</ul>
+<p>To distinguish between (b) and (d), note that both go asymptotically to constant negative and positive values (so sigmoid is ruled out), but the white transition region is narrower for (d).</p>
+<p>To distinguish between (c) and (f), note that (c) goes asymptotically to zero (white) in the top-left corner, while (e) goes asymptotically to a constant negative value (blue).</p>
+<hr class="docutils" />
+<p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Experiment with the following function to determine how the displayed arrow relates to the three model parameters <span class="math notranslate nohighlight">\(w_0, w_1, b\)</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nn_unit_draw2d</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">b</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">tanh</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The arrow has the direction and magnitude of the 2D vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>, with its origin at <span class="math notranslate nohighlight">\(\mathbf{x} = -b \mathbf{w}\, / \, |\mathbf{w}|^2\)</span> where <span class="math notranslate nohighlight">\(s = 0\)</span>. The line <span class="math notranslate nohighlight">\(s=0\)</span> is perpendicular to the arrow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_unit_draw2d</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">tanh</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/05727b4fb4f37cd5ee4e25bda9948db5e1b1958264de674ec4129e9ecd0ac107.png" src="../../_images/05727b4fb4f37cd5ee4e25bda9948db5e1b1958264de674ec4129e9ecd0ac107.png" />
+</div>
+</div>
+<p>Study the plots below which show the hidden (left) and output (right) node values for a network with 2 + 2 + 1 nodes. Each graph shows the node value as a function of the 2D input value.</p>
+<p>Note how the hidden nodes divide the input space into two halves, with a dividing line determined by their <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> values. The output layer then mixes these halves and can therefore “select” any of the four quadrants with an appropriate choice of its <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_graph_draw2d</span><span class="p">(</span>
+    <span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">tanh</span><span class="p">),</span> <span class="c1"># LYR1</span>
+    <span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tanh</span><span class="p">)</span>          <span class="c1"># LYR2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/10a1389953ada7d6217f241ee2c77badf804f7a3de99d1627d4d859f2004b106.png" src="../../_images/10a1389953ada7d6217f241ee2c77badf804f7a3de99d1627d4d859f2004b106.png" />
+</div>
+</div>
+<p>The histogram on the second layer plot shows the distribution of</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+s = X W  + b
+\]</div>
+<p>feeding its activation function (shown as the dashed curve). Note how the central histogram peak is higher because both the lower-right and upper-left quadrants of <span class="math notranslate nohighlight">\((x_1, x_2)\)</span> have <span class="math notranslate nohighlight">\(Y W \simeq 0\)</span>. The vertical white line shows how our choice of bias <span class="math notranslate nohighlight">\(b = -0.5\)</span> places these quadrants in the “rejected” (blue) category with <span class="math notranslate nohighlight">\(s &lt; 0\)</span>.</p>
+<p>Generalizing this example, a layer with <span class="math notranslate nohighlight">\(n\)</span> inputs can “select” a different <span class="math notranslate nohighlight">\(n\)</span>-sided (soft-edged) polygon with each of its outputs. To see this in action, try <a class="reference external" href="https://cs.stanford.edu/people/karpathy/convnetjs/demo/classify2d.html">this demo</a>.</p>
+</section>
+<section id="span-style-color-orange-data-flow-perspective-span">
+<h2><span style="color:Orange">Data Flow Perspective</span><a class="headerlink" href="#span-style-color-orange-data-flow-perspective-span" title="Permalink to this heading">#</a></h2>
+<p>The diagram below show the tensors flowing forward (left to right) in a typical fully connected graph. The main flow consists of <span class="math notranslate nohighlight">\(N\)</span> input samples flowing from <span class="math notranslate nohighlight">\(X_0\)</span> to <span class="math notranslate nohighlight">\(X_4\)</span> with a number of features that varies between layers.</p>
+<p>The computation of each layer’s output is parameterized by the weight and bias tensors shown: note how their shapes are determined by the number of input and output features for each layer. The parameter tensors are usually randomly initialized (more on this soon) so only the input <span class="math notranslate nohighlight">\(X_0\)</span> and target <span class="math notranslate nohighlight">\(Y\)</span> are needed to drive the calculation (and so must be copied to GPU memory when using hardware acceleration).</p>
+<p>The final output <span class="math notranslate nohighlight">\(X_4\)</span> is compared with the target values <span class="math notranslate nohighlight">\(Y\)</span> to calculate a “loss” <span class="math notranslate nohighlight">\(\ell(X_4, Y)\)</span> that decreases as <span class="math notranslate nohighlight">\(X_4\)</span> becomes more similar to <span class="math notranslate nohighlight">\(Y\)</span> (more on this soon).</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-forward_flow.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-forward_flow.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-forward_flow.png" style="width: 1000px;" /></a></img><br></p>
+<p>The diagram below shows the gradient (partial derivative) tensors flowing backwards (“backpropagation”) through the same graph using the chain rule:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\frac{\partial \ell}{\partial X_n} = \frac{\partial \ell}{\partial X_{n+1}} \frac{\partial X_{n+1}}{\partial X_n}
+\quad, \quad
+\frac{\partial \ell}{\partial W_{n+1}} = \frac{\partial \ell}{\partial X_{n+1}} \frac{\partial X_{n+1}}{\partial W_{n+1}} \; .
+\]</div>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-backward_flow.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-backward_flow.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NeuralNetworks-backward_flow.png" style="width: 1000px;" /></a></img><br></p>
+<p>Note that these gradient tensors are just numbers, not functions. All of these tensors occupy the (limited) GPU memory when using hardware acceleration but, in most applications, only the final output and the parameter gradients are stored (with 32-bit floating point precision).</p>
+<p>When working with large datasets, the <span class="math notranslate nohighlight">\(N\)</span> input samples are usually broken up into fixed-size randomly subsampled “minibatches”. Optimiztion with the resulting parameter gradients leads to the “stochastic gradient descent” (SGD) algorithm.</p>
+</section>
+<section id="span-style-color-orange-pytorch-primer-span">
+<h2><span style="color:Orange">PyTorch Primer</span><a class="headerlink" href="#span-style-color-orange-pytorch-primer-span" title="Permalink to this heading">#</a></h2>
+<p>A fully connected network can be created with a few lines in PyTorch (for a similar high-level API in Tensorflow checkout <a class="reference external" href="https://www.tensorflow.org/guide/keras">Keras</a>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="n">net</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1">#0</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>    <span class="c1">#1</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="c1">#2</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>    <span class="c1">#3</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1">#4</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As each <code class="docutils literal notranslate"><span class="pre">Linear</span></code> layer is created, its weight and bias tensors are automatically initialized with random values, so we initially set the torch random seed for reproducible results.</p>
+<p>This construction breaks each layer into separate linear and activation “modules”. Each module can be accessed via its index (0-4 in this example):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Linear(in_features=8, out_features=4, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=4, out_features=3, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=3, out_features=2, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter containing:
+tensor([[-0.4228, -0.1435, -0.3521,  0.0331],
+        [-0.0934, -0.2682, -0.0455,  0.4737],
+        [-0.0394,  0.0159, -0.0780,  0.0786]], requires_grad=True)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter containing:
+tensor([0.4928, 0.0345], requires_grad=True)
+</pre></div>
+</div>
+</div>
+</div>
+<p>To run our network in the forward direction, we need some data with the expected number of features (<span class="math notranslate nohighlight">\(D=8\)</span> in this example):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">in_features</span>
+<span class="n">Xin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xout</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Xin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The intermediate tensors (<span class="math notranslate nohighlight">\(X_1\)</span>, <span class="math notranslate nohighlight">\(\partial\ell/\partial X_1\)</span>, …) shown in the data flow diagrams above are usually not preserved, but can be useful to help understand how a network is performing and diagnose problems. To cache these intermediate tensors, use:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trace</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xout</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Xin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each submodule now has <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> attributes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">Xin</span><span class="p">,</span> <span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> option to watch the flow of tensors through the network:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trace</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Xout</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Xin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (100, 8) OUT (100, 4)
+1: IN (100, 4) OUT (100, 4)
+2: IN (100, 4) OUT (100, 3)
+3: IN (100, 3) OUT (100, 3)
+4: IN (100, 3) OUT (100, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>To complete the computational graph we need to calculate a (scalar) loss, for example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Xout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.1996, grad_fn=&lt;MeanBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now back propagate gradients of this loss through the network:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4: GRAD (100, 2)
+3: GRAD (100, 3)
+2: GRAD (100, 3)
+1: GRAD (100, 4)
+0: GRAD (100, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The gradients of each layer’s parameters are now computed and stored, ready to “learn” better parameters through (stochastic) gradient descent (or one of its variants):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">grad</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-0.0285, -0.0276, -0.0335,  0.0646])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">trace</span></code> above we have also captured the gradients of the loss with respect to each module’s outputs <span class="math notranslate nohighlight">\(\partial\ell /\partial X_n\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(torch.Size([100, 4]), torch.Size([100, 4]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>These gradients can be useful to study since learning of all upstream parameters effectively stops when they become vanishly small (since they multiply those parameter gradients via the chain rule).</p>
+</section>
+<section id="span-style-color-orange-statistical-perspective-span">
+<h2><span style="color:Orange">Statistical Perspective</span><a class="headerlink" href="#span-style-color-orange-statistical-perspective-span" title="Permalink to this heading">#</a></h2>
+<p>The tensors behind a practical network contain so many values that it is usually not practical to examine them individually. However, we can still gain useful insights if we study their probability distributions.</p>
+<p>Build a network to process a large dataset so we have some distributions to study:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">Xin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+
+<span class="n">net</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">D</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Linear(in_features=100, out_features=200, bias=True)
+  (1): Tanh()
+  (2): Linear(in_features=200, out_features=100, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=100, out_features=10, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that our network ends with a <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module instead of an activation, which is typical for regression problems.</p>
+<p>Perform forward and backward passes to capture some values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trace</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xout</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Xin</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Xout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (500, 100) OUT (500, 200)
+1: IN (500, 200) OUT (500, 200)
+2: IN (500, 200) OUT (500, 100)
+3: IN (500, 100) OUT (500, 100)
+4: IN (500, 100) OUT (500, 10)
+4: GRAD (500, 10)
+3: GRAD (500, 100)
+2: GRAD (500, 100)
+1: GRAD (500, 200)
+0: GRAD (500, 200)
+</pre></div>
+</div>
+</div>
+</div>
+<p>First check that the input to the first module has the expected (unit normal) distribution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/59a7614b63e5869b7c2ce34120a0e5a750a54aa0f3e6045b22db58c96ff846e9.png" src="../../_images/59a7614b63e5869b7c2ce34120a0e5a750a54aa0f3e6045b22db58c96ff846e9.png" />
+</div>
+</div>
+<p>How does torch initialize the parameters (weights and biases) for each layer?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/73bb5b61479bfe4111e239fe9f79c63a02aa77813640817a74e4e769c8e9a400.png" src="../../_images/73bb5b61479bfe4111e239fe9f79c63a02aa77813640817a74e4e769c8e9a400.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d1deafdf7f61850ef53b2bec2bbf9ca7483f60286c555102966817cc3418b314.png" src="../../_images/d1deafdf7f61850ef53b2bec2bbf9ca7483f60286c555102966817cc3418b314.png" />
+</div>
+</div>
+<p>These initial parameter values are sampled from uniform distributions centered on zero with a spread that depends on the number of inputs to the layer:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\left|W_{ij}\right|, \left|b_j\right| \le n_{in}^{-1/2} \; .
+\]</div>
+<p>This default choice is based on <a class="reference external" href="https://arxiv.org/abs/1502.01852">empirical studies</a> of image classification problems where the input features (RGB pixel values) were preprocessed to have zero mean and unit variance.</p>
+<p>With this choice of weights, the first <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module mixes up its input values (<span class="math notranslate nohighlight">\(X_0\)</span>) but generally preserves Gaussian shape while slightly reducing its variance (which helps prevent the subsequent activation module from saturating):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fd43c5c211683d8c98a2b34031a6cd3b8968694ad32809faa17e996b5e8dde62.png" src="../../_images/fd43c5c211683d8c98a2b34031a6cd3b8968694ad32809faa17e996b5e8dde62.png" />
+</div>
+</div>
+<p>A scatter plot of the the first <code class="docutils literal notranslate"><span class="pre">Tanh</span></code> activation function’s input and output values just traces out function since it is applied element wise.  Note how most of input values do not saturate, which is generally desirable for efficient learning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a7686972f59b2060f08bc26f693a1c3bdb709300c237b67da8eb6ea280661318.png" src="../../_images/a7686972f59b2060f08bc26f693a1c3bdb709300c237b67da8eb6ea280661318.png" />
+</div>
+</div>
+<p>The non-linear activation distorts and clips the output so it no longer resembles a Gaussian:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bd1a5ead2a44de75179a3e40b30efb60f85d98fc3dac031962c4632aca0f90a8.png" src="../../_images/bd1a5ead2a44de75179a3e40b30efb60f85d98fc3dac031962c4632aca0f90a8.png" />
+</div>
+</div>
+<p>However, the next <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module restores the Gaussian distribution!  How does this happen when neither its inputs nor its parameters have a Gaussian distribution? (Answer: the <a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a> which we briefly covered <a class="reference external" href="https://nbviewer.jupyter.org/github/dkirkby/MachineLearningStatistics/blob/master/notebooks/Statistics.ipynb">earlier</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0067571f4ea19de30ef4491b4c7e9c4557eacbcd00843a697660272a24af8cba.png" src="../../_images/0067571f4ea19de30ef4491b4c7e9c4557eacbcd00843a697660272a24af8cba.png" />
+</div>
+</div>
+<p>The next activation is <code class="docutils literal notranslate"><span class="pre">ReLU</span></code>, which effectively piles up all negative values from the previous <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module into the zero bin:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/298d7475bbf12bb494904485677b8cb8fe6695f8deaa9a3e7307ea2f4bea7c1c.png" src="../../_images/298d7475bbf12bb494904485677b8cb8fe6695f8deaa9a3e7307ea2f4bea7c1c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/81f9217c19a5955fa210d6a4661aca19dd4c30df6b86475f9be15dd844080df4.png" src="../../_images/81f9217c19a5955fa210d6a4661aca19dd4c30df6b86475f9be15dd844080df4.png" />
+</div>
+</div>
+<p>The final linear layer’s output is again roughly Gaussian, thanks to the central limit theorem:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/aac81df58f8b93f4a335752b8eee49897b5bd0dc85e7d52eb9b641f5ba7851dd.png" src="../../_images/aac81df58f8b93f4a335752b8eee49897b5bd0dc85e7d52eb9b641f5ba7851dd.png" />
+</div>
+</div>
+<p>So far we have only looked at distributions of the tensors involved in the forward pass, but there is also a lot to learn from the backwards gradient tensors that we do not have time to delve in to.  For example, this scatter plot offers some insight into a suitable learning rate for the second <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module’s weight parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/248fe296dff7d2951439ea6f11f2f449b955b8da628a92747562f1d6d20039b0.png" src="../../_images/248fe296dff7d2951439ea6f11f2f449b955b8da628a92747562f1d6d20039b0.png" />
+</div>
+</div>
+<p>Note that the normalization of the loss function feeds directly into these gradients, so needs to be considered when setting the learning rate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xout</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">Xin</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Xout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (500, 100) OUT (500, 200)
+1: IN (500, 200) OUT (500, 200)
+2: IN (500, 200) OUT (500, 100)
+3: IN (500, 100) OUT (500, 100)
+4: IN (500, 100) OUT (500, 10)
+4: GRAD (500, 10)
+3: GRAD (500, 100)
+2: GRAD (500, 100)
+1: GRAD (500, 200)
+0: GRAD (500, 200)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9914a379b9bf003cf46a357d18951813f9e08004c033485308dcebaf72369235.png" src="../../_images/9914a379b9bf003cf46a357d18951813f9e08004c033485308dcebaf72369235.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-loss-functions-span">
+<h2><span style="color:Orange">Loss Functions</span><a class="headerlink" href="#span-style-color-orange-loss-functions-span" title="Permalink to this heading">#</a></h2>
+<p>In order discover a good set of parameters using optimization, we need to specify a loss function to optimize.</p>
+<p>The loss function <span class="math notranslate nohighlight">\(\ell(X_\text{out}, Y_\text{tgt})\)</span> compares the actual network output <span class="math notranslate nohighlight">\(X_\text{out}\)</span> with a corresponding target value <span class="math notranslate nohighlight">\(Y_\text{tgt}\)</span> and approaches some minimum value as their agreement improves.</p>
+<p>A loss function must be scalar valued since we need a single gradient for each parameter to implement gradient descent,
+$<span class="math notranslate nohighlight">\(\Large
+\theta \rightarrow \theta_i - \eta\,\frac{\partial\ell}{\partial\theta} \; .
+\)</span><span class="math notranslate nohighlight">\(
+Note that the loss normalization is degenerate with the learning rate \)</span>\eta$.</p>
+<p>Our choice of loss function is primarily driven by the type of problem we are solving: regression or classification. We introduce the most obvious choices below but there are lots of reasonable variations (see <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#id51">here</a> for the complete PyTorch list).</p>
+<section id="span-style-color-lightgreen-regression-loss-span">
+<h3><span style="color:LightGreen">Regression Loss</span><a class="headerlink" href="#span-style-color-lightgreen-regression-loss-span" title="Permalink to this heading">#</a></h3>
+<p>For regression, the <span class="math notranslate nohighlight">\(L_2\)</span> norm is a popular choice,</p>
+<div class="math notranslate nohighlight">
+\[\Large
+L_2 = \frac{1}{2}\, \left|
+X_\text{out} - Y_\text{tgt}\right|^2 \; .
+\]</div>
+<p>Optimizing the <span class="math notranslate nohighlight">\(L_2\)</span> norm is equivalent to finding the maximum-likelihood (ML) point estimate for the network parameters (weights and biases) if we assume that the uncertainties in <span class="math notranslate nohighlight">\(Y_\text{tgt}\)</span> are “homoscedastic” (drawn from the same Gaussian distribution).</p>
+<p>In PyTorch, the <span class="math notranslate nohighlight">\(L_2\)</span> norm is implemented as <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#mseloss">torch.nn.MSELoss</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Xout</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">Xout</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In case you actually have a reasonable estimate <span class="math notranslate nohighlight">\(\sigma_Y^i\)</span> of the <span class="math notranslate nohighlight">\(i\)</span>-th sample’s target uncertainty, a better loss function is the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\chi^2 = \sum_{i=1}^N\, \left( \frac{X_\text{out}^i - Y_\text{tgt}^i}{\sigma_Y^i}\right)^2 \; .
+\]</div>
+<section id="span-style-color-lightgreen-binary-classification-loss-span">
+<h4><span style="color:LightGreen">Binary Classification Loss</span><a class="headerlink" href="#span-style-color-lightgreen-binary-classification-loss-span" title="Permalink to this heading">#</a></h4>
+<p>For binary classification problems, the L2 norm can also be used but the binary <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">cross entropy</a> between the target and output probability distributions is often a better choice:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\text{BCE} \equiv -\sum_{i=1}^N\, \left[
+Y_{tgt}^i ~\log \phi_S(X_\text{out}^i) + (1 - Y_\text{tgt}^i) ~\log (1 - \phi_S(X_\text{out}^i)) \right]
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi_S\)</span> is the sigmoid (aka logistic) activation function used to coerce arbitrary real values into the range <span class="math notranslate nohighlight">\([0,1]\)</span> required for a probability. An input real value used with sigmoid like this is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">logit</a>.</p>
+<p>The equivalent PyTorch code uses <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#bceloss">torch.nn.BCELoss</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xout</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCELoss</span><span class="p">()(</span><span class="n">Xout</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The cross entropy is inspired by information theory and closely related to the KL divergence we met <span class="xref myst">earlier</span>. With this approach, our assumptions are that:</p>
+<ul class="simple">
+<li><p>The target values in <span class="math notranslate nohighlight">\(Y_{tgt}\)</span> are all either 0 or 1.</p></li>
+<li><p>The network output values in <span class="math notranslate nohighlight">\(X_{out}\)</span> are continuous and <span class="math notranslate nohighlight">\(\phi_S(y^{out}_i)\)</span> is interpreted as the corresponding probability that the output is 1.</p></li>
+</ul>
+<p>Note that <em>something</em> like the second assumption is necessary to reconcile the different domains of the data and prediction.</p>
+<p>With these assumptions, the likelihood is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Large
+P(Y_\text{tgt}\mid X_\text{out}) = \begin{cases}
+\phi_S(X_\text{out}) &amp; Y_\text{tgt} = 1 \\
+1 - \phi_S(X_\text{out}) &amp; Y_\text{tgt} = 0
+\end{cases}
+\end{split}\]</div>
+<p>Take a minute to convince yourself that the following expression is equivalent (the case <span class="math notranslate nohighlight">\(\phi_S(X_\text{out}(\Theta)) = Y_\text{tgt} = 0\)</span> requires some care since <span class="math notranslate nohighlight">\(0^0\)</span> is indeterminate):</p>
+<div class="math notranslate nohighlight">
+\[\Large
+P(Y_\text{tgt}\mid X_\text{out}(\Theta)) = \left[\phi_S(X_\text{out}(\Theta))\right]^{Y_\text{tgt}}\,
+\left[1 - \phi_S(X_\text{out}(\Theta))\right]^{1-Y_\text{tgt}} \; .
+\]</div>
+<p>Using this form, you can show that the cross entropy loss equals the negative-log-likelihood of the <span class="math notranslate nohighlight">\(N\)</span> samples of training data so optimizing BCE is equivalent to finding the ML point estimate of the network parameters under the assumptions above.</p>
+<p>For fixed training data, optimizing BCE is also equivalent to minimizing the KL divergence of the network’s predicted discrete probability distribution with respect to the empirical discrete probability distribution of the training data. Therefore, training a binary classification network using the cross-entropy loss is effectively performing a variational inference (VI) to find the network probabilities that are closest to the empirical training probabilities.</p>
+</section>
+</section>
+<section id="span-style-color-lightgreen-multi-category-classification-loss-span">
+<h3><span style="color:LightGreen">Multi-category Classification Loss</span><a class="headerlink" href="#span-style-color-lightgreen-multi-category-classification-loss-span" title="Permalink to this heading">#</a></h3>
+<p>How can we generalize the binary classification cross-entropy loss to problems with more than two categories?  The usual approach is to increase the number of output nodes from 1 to the number of categories <span class="math notranslate nohighlight">\(C\)</span>,
+but we can not directly interpret their values as category probabilities since there is no way to ensure that they sum to one. We could simply require that they are all non-negative and renormalize, but a more more robust approach is to convert the vector of output values <span class="math notranslate nohighlight">\(X_\text{out}\)</span> to a corresponding vector of probabilities <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> for category <span class="math notranslate nohighlight">\(j = 1, 2, \ldots, C\)</span> using the <span style="color:Violet">softmax function</span>,</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\mathbf{p}(X_\text{out}) \equiv \frac{1}{\sum_{k=1}^C\, \exp(X_\text{out}^k)}\,
+[ \exp(X_\text{out}^1), ~\exp(X_\text{out}^2), \ldots, ~\exp(X_\text{out}^C) ] \; ,
+\]</div>
+<p>which works fine with positive or negative outputs <span class="math notranslate nohighlight">\(X_\text{out}^j\)</span>. Note that softmax generalizes the sigmoid function <span class="math notranslate nohighlight">\(\phi_S\)</span> in the following sense:</p>
+<div class="math notranslate nohighlight">
+\[\Large
+\mathbf{p}([y_1, y_2]) = [\,\phi_S(y_1-y_2)\,,\, ~1 - \phi_S(y_1-y_2)\,] \; .
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="c1"># subtract out max(y) improve the numerical accuracy</span>
+    <span class="n">expy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">expy</span> <span class="o">/</span> <span class="n">expy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">softmax</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.26538793, 0.01321289, 0.72139918])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The softmax function effectively implements a <span style="color:Violet">winner takes all</span> policy, similar to the sigmoid activation <span class="math notranslate nohighlight">\(\phi_S\)</span>, as illustrated in the plot below where:</p>
+<ul class="simple">
+<li><p>the color scale indicates, from left to right, <span class="math notranslate nohighlight">\(p_1, p_2\)</span> and <span class="math notranslate nohighlight">\(p_3\)</span> for three categories,</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_1\)</span> and <span class="math notranslate nohighlight">\(y_2\)</span> are varied over the same range, and</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_3\)</span> is fixed to the middle of this range.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_softmax</span><span class="p">(</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">y_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">y3</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">ylo</span> <span class="o">+</span> <span class="n">yhi</span><span class="p">)</span>
+    <span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">softmax</span><span class="p">([</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">])</span> <span class="k">for</span> <span class="n">y1</span> <span class="ow">in</span> <span class="n">y_grid</span> <span class="k">for</span> <span class="n">y2</span> <span class="ow">in</span> <span class="n">y_grid</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p_grid</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">])</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$y_1$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$y_2$&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">y3</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y3</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">],</span> <span class="p">[</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    
+<span class="n">plot_softmax</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/668db1046237d75fb4a52acf13b2608bf7394012121a25010626158675b5f803.png" src="../../_images/668db1046237d75fb4a52acf13b2608bf7394012121a25010626158675b5f803.png" />
+</div>
+</div>
+<p>The example above assumed output activations that can be large and positive, such as <code class="docutils literal notranslate"><span class="pre">relu</span></code> or <code class="docutils literal notranslate"><span class="pre">elu</span></code>. However, the strength of the <em>winner takes all</em> effect depends on how the outputs are scaled, and is relatively weak for output activations that saturate on both sides, such as <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code> or <code class="docutils literal notranslate"><span class="pre">tanh</span></code>, which is why these are generally not used for classification outputs:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1dfee54e4e2069b5298af2087d275bdffaea15196735a153033739d095a83c2c.png" src="../../_images/1dfee54e4e2069b5298af2087d275bdffaea15196735a153033739d095a83c2c.png" />
+</div>
+</div>
+<p>Note that we assume <span style="color:Violet">one-hot encoding</span> of the vector target values <span class="math notranslate nohighlight">\(\mathbf{y}^{out}\)</span>, which is not very efficient (unless using sparse-optimized data structures) compared to a single integer target value <span class="math notranslate nohighlight">\(y^{train} = 0, 1, \ldots, C-1\)</span>. However, sklearn has a <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html">convenient utility</a> to convert integers to one-hot encoded vectors (use <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code> to return vectors in an efficient <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy sparse array</a>).</p>
+</section>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -567,6 +1720,26 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-mathematical-perspective-span"><span style="color:Orange">Mathematical Perspective</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-building-block-span"><span style="color:LightGreen">Building Block</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-activation-functions-span"><span style="color:LightGreen">Activation Functions</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-network-layer-span"><span style="color:LightGreen">Network Layer</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-network-graph-span"><span style="color:LightGreen">Network Graph</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-visual-perspective-span"><span style="color:Orange">Visual Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-flow-perspective-span"><span style="color:Orange">Data Flow Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-pytorch-primer-span"><span style="color:Orange">PyTorch Primer</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-statistical-perspective-span"><span style="color:Orange">Statistical Perspective</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-loss-functions-span"><span style="color:Orange">Loss Functions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-regression-loss-span"><span style="color:LightGreen">Regression Loss</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-binary-classification-loss-span"><span style="color:LightGreen">Binary Classification Loss</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multi-category-classification-loss-span"><span style="color:LightGreen">Multi-category Classification Loss</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>

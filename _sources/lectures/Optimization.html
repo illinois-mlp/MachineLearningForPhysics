@@ -552,6 +552,12 @@ f(x) = x^2 - 10 e^{-10000 (x - \pi)^2}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min f(x) at x = 0.0
+</pre></div>
+</div>
+<img alt="../../_images/ad933fae96513eefce3ac32beaf89efcc0aae7a889fa196c63dc34f6d3b04f7c.png" src="../../_images/ad933fae96513eefce3ac32beaf89efcc0aae7a889fa196c63dc34f6d3b04f7c.png" />
+</div>
 </div>
 <p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Study the example above and explain why it fails to find the true minimum of <span class="math notranslate nohighlight">\(f(x)\)</span>. Make a different plot that does find the true minimum.</p>
 <p>A search using a grid with spacing <span class="math notranslate nohighlight">\(\Delta x\)</span> can completely miss features narrower than <span class="math notranslate nohighlight">\(\Delta x\)</span>, so is only reliable when you have some prior knowledge that your <span class="math notranslate nohighlight">\(f(x)\)</span> does not have features narrower than some limit.</p>
@@ -561,6 +567,9 @@ f(x) = x^2 - 10 e^{-10000 (x - \pi)^2}
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6706556152825265f3110fbe286cf464d8f7a6cee069b47f22b01e9fb20206e3.png" src="../../_images/6706556152825265f3110fbe286cf464d8f7a6cee069b47f22b01e9fb20206e3.png" />
 </div>
 </div>
 <p>The main computational cost of optimization is usually the evaluation of <span class="math notranslate nohighlight">\(f\)</span>, so an important metric for any optimizer is the number of times it evaluates <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -616,6 +625,9 @@ f^\prime (x) = -2 \frac{\cos(e^x)}{x^3} - e^x \frac{\sin(e^x)}{x^2}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0c0ad4f0082cee47d37e68a4b8d8db0096834d617ff5c4540e0bbd2856097c1e.png" src="../../_images/0c0ad4f0082cee47d37e68a4b8d8db0096834d617ff5c4540e0bbd2856097c1e.png" />
+</div>
 </div>
 <p>Derivatives can also be calculated numerically using <a class="reference external" href="https://en.wikipedia.org/wiki/Finite_difference">finite difference equations</a> such as:</p>
 <div class="math notranslate nohighlight">
@@ -639,6 +651,9 @@ f^\prime (x) = -2 \frac{\cos(e^x)}{x^3} - e^x \frac{\sin(e^x)}{x^2}
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4d060e08f0a89ac73b6d40e2d200c0421c3a1cf90b509b7a10155638ecadbf87.png" src="../../_images/4d060e08f0a89ac73b6d40e2d200c0421c3a1cf90b509b7a10155638ecadbf87.png" />
 </div>
 </div>
 <p>There is also a third hybrid approach that has proven very useful in machine learning, especially for training deep neural networks: <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a>. This requires that a small set of primitive functions (sin, cos, exp, log, …) are handled analytically, and then composition of these primitives is handled by applying the rules of differentiation (chain rule, product rule, etc) directly to the code that evaluates <code class="docutils literal notranslate"><span class="pre">f(x)</span></code>.</p>
@@ -678,6 +693,9 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/625af6041add38cf4a47ebe568bb8e7673b242374bf61b03f06b0c0c10446ffc.png" src="../../_images/625af6041add38cf4a47ebe568bb8e7673b242374bf61b03f06b0c0c10446ffc.png" />
+</div>
 </div>
 <p>Note that automatic differentiation cannot perform miracles.  For example, the following implementation of</p>
 <div class="math notranslate nohighlight">
@@ -699,10 +717,32 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_25663/2490666034.py:2: RuntimeWarning: invalid value encountered in double_scalars
+  return anp.sin(x) / x
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nan
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">(</span><span class="n">sinc</span><span class="p">)(</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.11/site-packages/autograd/tracer.py:48: RuntimeWarning: invalid value encountered in divide
+  return f_raw(*args, **kwargs)
+/usr/local/lib/python3.11/site-packages/autograd/numpy/numpy_vjps.py:52: RuntimeWarning: divide by zero encountered in divide
+  defvjp(anp.true_divide, lambda ans, x, y : unbroadcast_f(x, lambda g: g / y),
+/usr/local/lib/python3.11/site-packages/autograd/numpy/numpy_vjps.py:53: RuntimeWarning: invalid value encountered in double_scalars
+  lambda ans, x, y : unbroadcast_f(y, lambda g: - g * x / y**2))
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nan
 </pre></div>
 </div>
 </div>
@@ -728,6 +768,15 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">(</span><span class="n">sinc</span><span class="p">)(</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.11/site-packages/autograd/tracer.py:14: UserWarning: Output seems independent of input.
+  warnings.warn(&quot;Output seems independent of input.&quot;)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(0.)
 </pre></div>
 </div>
 </div>
@@ -871,6 +920,9 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8271b17d1622208a501128fd4dc9625f8bb501364ddcbc6fea10e029b499f53d.png" src="../../_images/8271b17d1622208a501128fd4dc9625f8bb501364ddcbc6fea10e029b499f53d.png" />
+</div>
 </div>
 <p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Is the Rosenbrock function convex?  In other words, does a straight line between any two points on its surface always lie above the surface?</p>
 <p>The Rosenbrock function is not convex. Take, for example, the line <span class="math notranslate nohighlight">\(x_1 = 1\)</span> shown above:</p>
@@ -881,12 +933,20 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6e635f6521486c7f32bbde53201a230ff5b01af4dbd7501a5cc88f7db68bb117.png" src="../../_images/6e635f6521486c7f32bbde53201a230ff5b01af4dbd7501a5cc88f7db68bb117.png" />
+</div>
 </div>
 <p>The <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a> module implements a suite of standard general-purpose algorithms that are accessible via its <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">minimize</a> function. For example, to find the minimum of the Rosenbrock function starting from <span class="math notranslate nohighlight">\((-1,0)\)</span> and using the robust <a class="reference external" href="https://en.wikipedia.org/wiki/Nelder-Mead_method">Nelder-Mead</a> algorithm (aka <i>downhill simplex method</i> or <i>amoeba method</i>), which does not use derivatives:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully. [1.00000935 1.00001571]
 </pre></div>
 </div>
 </div>
@@ -905,6 +965,11 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rosenbrock</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">rosenbrock_grad</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully. [0.99999634 0.99999279]
 </pre></div>
 </div>
 </div>
@@ -947,6 +1012,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (+9.4e-06,+1.6e-05) after 83 iterations making 153+0 calls in 3.43 ms.
+</pre></div>
+</div>
+<img alt="../../_images/5442130363ce3e847bdecc0f7c43fbc3b33afeba7501d1b00ccb5a90752ee733.png" src="../../_images/5442130363ce3e847bdecc0f7c43fbc3b33afeba7501d1b00ccb5a90752ee733.png" />
+</div>
 </div>
 <p>In this example, we found the true minimum with an error below <span class="math notranslate nohighlight">\(10^{-4}\)</span> in each coordinate (as requested) using about 150 calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>, but an exhaustive grid search would have required more than <span class="math notranslate nohighlight">\(10^{8}\)</span> calls to achieve comparable accuracy!</p>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">conjugate-gradient (CG) method</a> uses gradient derivatives to always move downhill:</p>
@@ -956,6 +1027,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-3.7e-06,-7.2e-06) after 20 iterations making 43+43 calls in 9.89 ms.
+</pre></div>
+</div>
+<img alt="../../_images/48721f3e10e4e6bac5e11378c9ff532395b8e5f9a3e91ea3496c66075ebe2ba2.png" src="../../_images/48721f3e10e4e6bac5e11378c9ff532395b8e5f9a3e91ea3496c66075ebe2ba2.png" />
+</div>
 </div>
 <p>CG can follow essentially the same path using numerical estimates of the gradient derivatives, which requires more evaluations of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> but is still faster in this case:</p>
 <div class="cell docutils container">
@@ -963,6 +1040,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-7.4e-06,-1.5e-05) after 20 iterations making 129+43 calls in 6.17 ms.
+</pre></div>
+</div>
+<img alt="../../_images/b6de57f6ea9507ab7fc8da09eabd576b851e09dce102d326185f06049f5fe52d.png" src="../../_images/b6de57f6ea9507ab7fc8da09eabd576b851e09dce102d326185f06049f5fe52d.png" />
 </div>
 </div>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Newton's_method_in_optimization">Newton’s CG method</a> requires analytic derivatives and makes heavy use of them to measure and exploit the curvature of the local surface:</p>
@@ -972,6 +1055,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-1.2e-06,-2.3e-06) after 38 iterations making 51+129 calls in 26.81 ms.
+</pre></div>
+</div>
+<img alt="../../_images/2799c594d5c86309dc4700b417a9095480bd114d2d986d73751a8da12cbc02ab.png" src="../../_images/2799c594d5c86309dc4700b417a9095480bd114d2d986d73751a8da12cbc02ab.png" />
+</div>
 </div>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Powell's_method">Powell’s method</a> does not use derivatives but requires many auxiliary evaluations of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>:</p>
 <div class="cell docutils container">
@@ -979,6 +1068,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;Powell&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-2.2e-16,-5.6e-16) after 15 iterations making 383+0 calls in 5.39 ms.
+</pre></div>
+</div>
+<img alt="../../_images/95d9575072a899ef01388a4637fd297918d7d6c57555ee50005925b765c3b8e1.png" src="../../_images/95d9575072a899ef01388a4637fd297918d7d6c57555ee50005925b765c3b8e1.png" />
 </div>
 </div>
 <p>Finally, the <a class="reference external" href="https://en.wikipedia.org/wiki/Broyden-Fletcher-Goldfarb-Shanno_algorithm">BFGS method</a> is a good all-around default choice, with or without derivatives:</p>
@@ -988,6 +1083,12 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-7.2e-06,-1.4e-05) after 25 iterations making 99+33 calls in 4.65 ms.
+</pre></div>
+</div>
+<img alt="../../_images/6c5b0ebad26359fa6839ebc19480e92c4a168d03b9ab2748f336c695f7f0f4a6.png" src="../../_images/6c5b0ebad26359fa6839ebc19480e92c4a168d03b9ab2748f336c695f7f0f4a6.png" />
+</div>
 </div>
 <p>The choice of initial starting point can have a big effect on the optimization cost, as measured by the number of calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>.  For example, compare:</p>
 <div class="cell docutils container">
@@ -996,12 +1097,24 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-5.7e-06,-1.2e-05) after 15 iterations making 54+18 calls in 3.90 ms.
+</pre></div>
+</div>
+<img alt="../../_images/33b9ef507d43c6dde6235175f0d0539c7f01abbef9b76776671f0258fad80102.png" src="../../_images/33b9ef507d43c6dde6235175f0d0539c7f01abbef9b76776671f0258fad80102.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">1.20</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error is (-4.5e-06,-8.9e-06) after 34 iterations making 123+41 calls in 7.22 ms.
+</pre></div>
+</div>
+<img alt="../../_images/7a53fda35f56b2de3389bc9188668cfce9085b3b4819b35b29a573d3c295c0c4.png" src="../../_images/7a53fda35f56b2de3389bc9188668cfce9085b3b4819b35b29a573d3c295c0c4.png" />
 </div>
 </div>
 <p><em><strong><span style="color:Violet">EXERCISE</span></strong></em>: Predict which initial starting points would require the most calls to evaluate <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> for the Rosenbrock function?  Does your answer depend on the optimization method?</p>
@@ -1032,6 +1145,9 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e4b2297ec58b475190165da460a14ea4500a21f99e0a126e8b5ec6a2941d4fad.png" src="../../_images/e4b2297ec58b475190165da460a14ea4500a21f99e0a126e8b5ec6a2941d4fad.png" />
+</div>
 </div>
 <p>The Nelder-Mead “ox”, in contrast, is more expensive overall (both plots use the same color scale), but has a smoother cost function (but there are still some isolated “hot spots”):</p>
 <div class="cell docutils container">
@@ -1039,6 +1155,9 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cost_map</span><span class="p">(</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fb742f0f8ffe5e1976b2f4ba6b91d53efaf8c60aa2b8217fb2fb24cb8233561b.png" src="../../_images/fb742f0f8ffe5e1976b2f4ba6b91d53efaf8c60aa2b8217fb2fb24cb8233561b.png" />
 </div>
 </div>
 <p>When the function you are optimizing is derived from a likelihood (which includes a chi-squared likelihood for binned data), there are some other optimization packages that you might find useful:</p>
@@ -1071,6 +1190,9 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c13669308b69ce895230092bcfa44f26daefdc2924d276ac9a0b6ad372c36e80.png" src="../../_images/c13669308b69ce895230092bcfa44f26daefdc2924d276ac9a0b6ad372c36e80.png" />
 </div>
 </div>
 <p>The corresponding negative-log-likelihood (NLL) function of the <code class="docutils literal notranslate"><span class="pre">loc</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> parameters is then (we write it out explicitly using autograd numpy calls so we can perform automatic differentiation later):</p>
@@ -1193,6 +1315,9 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0cf87d9f51ef65d18e112d4e4122e08839433439c5b4b017aab762b4da7f53d2.png" src="../../_images/0cf87d9f51ef65d18e112d4e4122e08839433439c5b4b017aab762b4da7f53d2.png" />
+</div>
 </div>
 <p><em><strong><span style="color:Violet">DISCUSS</strong></em></span>: Why is <span class="math notranslate nohighlight">\(f(\theta)\)</span> not centered at the true value <span class="math notranslate nohighlight">\((\mu, \sigma) = (0, 1)\)</span>?</p>
 <p>There are two reasons:</p>
@@ -1209,12 +1334,18 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/40b216222f9966c446ff05844bc9d9ca9906f724ad9cd0f36bc0e035e131fc04.png" src="../../_images/40b216222f9966c446ff05844bc9d9ca9906f724ad9cd0f36bc0e035e131fc04.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="mi">100</span><span class="p">:]);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ede1b24e783449d61e9f8e2bf8a2b531efbcd43ce26428011309869595da678a.png" src="../../_images/ede1b24e783449d61e9f8e2bf8a2b531efbcd43ce26428011309869595da678a.png" />
 </div>
 </div>
 <p>We will optimize this function using a simple gradient descent with a fixed learning rate <span class="math notranslate nohighlight">\(\eta\)</span>:</p>
@@ -1257,6 +1388,9 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0b056a3f6ed81a288b3b35b6f3c6bfc9a6e0563852246f6c5a1467d0a0e67f47.png" src="../../_images/0b056a3f6ed81a288b3b35b6f3c6bfc9a6e0563852246f6c5a1467d0a0e67f47.png" />
+</div>
 </div>
 <p>The <span style="color:Violet">stochastic gradient</span> method uses a random subset of the data, called a <span style="color:Violet">minibatch</span>, during each iteration. Only small changes to <code class="docutils literal notranslate"><span class="pre">StochasticGradient</span></code> above are required to implement this scheme (and no changes are needed to <code class="docutils literal notranslate"><span class="pre">step</span></code>):</p>
 <ul class="simple">
@@ -1286,6 +1420,9 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7585d4b96889fe635393d97bdb7687987778e92200510f0189e9e73337f98516.png" src="../../_images/7585d4b96889fe635393d97bdb7687987778e92200510f0189e9e73337f98516.png" />
+</div>
 </div>
 <p>Note that the learning-rate decay is essential to prevent the optimizer wandering aimlessly once it gets close to the minimum:</p>
 <div class="cell docutils container">
@@ -1295,6 +1432,9 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cd0d8bb7637e2bd3afb3fb041322b7183d75c7087a72212721b22ea78efd9038.png" src="../../_images/cd0d8bb7637e2bd3afb3fb041322b7183d75c7087a72212721b22ea78efd9038.png" />
+</div>
 </div>
 <p>Remarkably, <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent (SGD)</a> works with even smaller minibatches, with some careful tuning of the hyperparameters, although it might converge to a slightly different minimum. For example:</p>
 <div class="cell docutils container">
@@ -1303,6 +1443,9 @@ f(\theta) = -\log P(\theta\mid D) \; .
     <span class="n">mu0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">sigma0</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">75</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/83dea33c1be88c89c58378856e7bbaf28c58247a3d8b0bdbdcf4b7f966d22cc6.png" src="../../_images/83dea33c1be88c89c58378856e7bbaf28c58247a3d8b0bdbdcf4b7f966d22cc6.png" />
 </div>
 </div>
 <p>Comparing this example with our <code class="docutils literal notranslate"><span class="pre">GradientDescent</span></code> above, we find that the number of steps has increased 5x while the amount of data used during each iteration has decreased 10x, so roughly a net factor of 2 improvement in overall performance.</p>
