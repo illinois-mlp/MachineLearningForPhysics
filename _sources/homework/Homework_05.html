@@ -575,9 +575,10 @@ document.write(`
 <li><p>4 hidden nodes with sigmoid activation</p></li>
 <li><p>1 output node with sigmoid activation</p></li>
 </ul>
-<p>The corresponding mathematical function is:
-$<span class="math notranslate nohighlight">\( \Large
-\begin{align}
+<p>The corresponding mathematical function is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{align*}
 y^{out}(\mathbf{x},\Theta)
 &amp;= \phi\left([u_1, u_2, u_3, u_4]\cdot \mathbf{G}(x_1, x_2) + a \right) \\
 \mathbf{G}(x_1, x_2) &amp;= \phi\left(
@@ -589,10 +590,13 @@ v_{41} &amp; v_{42}
 \end{bmatrix} \cdot \begin{bmatrix}x_1 \\ x_2\end{bmatrix} +
 \begin{bmatrix}b_1 \\ b_2 \\ b_3 \\ b_4\end{bmatrix}
 \right)
-\end{align} \\
+\end{align*} \\
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[ \Large
 \phi(s) = \frac{1}{1 + e^{-s}}
-\)</span>$
-In the function, we pack all the parameters into a single array to simplify the later steps.</p>
+\]</div>
+<p>In the function, we pack all the parameters into a single array to simplify the later steps.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">network</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
