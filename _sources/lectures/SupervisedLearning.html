@@ -613,10 +613,11 @@ Saving to: ‘./tmp_data/line_targets.csv’
 \[ \Large
 P(Y'\mid X,Y,X',M) \; .
 \]</div>
-<p>Stated differently, our goal is, given a training set of random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> (i.e. <span class="math notranslate nohighlight">\(D\)</span>), to learn a function
-$<span class="math notranslate nohighlight">\( \Large
+<p>Stated differently, our goal is, given a training set of random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> (i.e. <span class="math notranslate nohighlight">\(D\)</span>), to learn a function</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 h(x) : X \to Y
-\)</span>$</p>
+\]</div>
 <p>so that <span class="math notranslate nohighlight">\(h(x)\)</span> is a “good” predictor for the corresponding value of <span class="math notranslate nohighlight">\(y\)</span>. For historical reasons, this function h is called a <span style="color:Violet">hypothesis</span>.</p>
 <p>When the target variable that we are trying to predict is continuous, we call the learning problem a regression** problem. When Y can take on only a small number of discrete values, we call it a <span style="color:Violet">classification</span> problem.</p>
 <p>Unfortunately, most sklearn algorithms give only limited information about this distribution, since they only return an estimate of its central tendency (mean / median / mode / …):</p>
@@ -1165,15 +1166,17 @@ a \\ b
 y = A x_1^a x_2^b \; ,
 \]</div>
 <p>would it be valid to transform <span class="math notranslate nohighlight">\(y \rightarrow \log y\)</span> and treat this as a linear regression problem?</p>
-<p>Since
-$<span class="math notranslate nohighlight">\(
+<p>Since</p>
+<div class="math notranslate nohighlight">
+\[
 \log y = \log A + a \log x_1 + b \log x_2 \; ,
-\)</span><span class="math notranslate nohighlight">\(
-we could use
-\)</span><span class="math notranslate nohighlight">\(
+\]</div>
+<p>we could use</p>
+<div class="math notranslate nohighlight">
+\[
 Z = \log X
-\)</span><span class="math notranslate nohighlight">\(
-and solve for \)</span>a<span class="math notranslate nohighlight">\( and \)</span>b<span class="math notranslate nohighlight">\( as linear-regression coefficients.  This is a useful trick, but with an important caveat: the linear regression solution assumes Gaussian uncertainties in \)</span>y<span class="math notranslate nohighlight">\(, but after this transform you would need Gaussian uncertainties in \)</span>\log y<span class="math notranslate nohighlight">\(.  In particular, if your original uncertainties in \)</span>y<span class="math notranslate nohighlight">\( were Gaussian, they will not be Gaussian in \)</span>\log y$.</p>
+\]</div>
+<p>and solve for <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> as linear-regression coefficients.  This is a useful trick, but with an important caveat: the linear regression solution assumes Gaussian uncertainties in <span class="math notranslate nohighlight">\(y\)</span>, but after this transform you would need Gaussian uncertainties in <span class="math notranslate nohighlight">\(\log y\)</span>.  In particular, if your original uncertainties in <span class="math notranslate nohighlight">\(y\)</span> were Gaussian, they will not be Gaussian in <span class="math notranslate nohighlight">\(\log y\)</span>.</p>
 <p>Note that the uncertainties are not an issue when we only transform <span class="math notranslate nohighlight">\(X\)</span> since we assume <span class="math notranslate nohighlight">\(X\)</span> is noise free.</p>
 </section>
 </section>
