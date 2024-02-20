@@ -1496,11 +1496,12 @@ tensor([0.4928, 0.0345], requires_grad=True)
 <h2><span style="color:Orange">Loss Functions</span><a class="headerlink" href="#span-style-color-orange-loss-functions-span" title="Permalink to this heading">#</a></h2>
 <p>In order discover a good set of parameters using optimization, we need to specify a loss function to optimize.</p>
 <p>The loss function <span class="math notranslate nohighlight">\(\ell(X_\text{out}, Y_\text{tgt})\)</span> compares the actual network output <span class="math notranslate nohighlight">\(X_\text{out}\)</span> with a corresponding target value <span class="math notranslate nohighlight">\(Y_\text{tgt}\)</span> and approaches some minimum value as their agreement improves.</p>
-<p>A loss function must be scalar valued since we need a single gradient for each parameter to implement gradient descent,
-$<span class="math notranslate nohighlight">\(\Large
+<p>A loss function must be scalar valued since we need a single gradient for each parameter to implement gradient descent,</p>
+<div class="math notranslate nohighlight">
+\[\Large
 \theta \rightarrow \theta_i - \eta\,\frac{\partial\ell}{\partial\theta} \; .
-\)</span><span class="math notranslate nohighlight">\(
-Note that the loss normalization is degenerate with the learning rate \)</span>\eta$.</p>
+\]</div>
+<p>Note that the loss normalization is degenerate with the learning rate <span class="math notranslate nohighlight">\(\eta\)</span>.</p>
 <p>Our choice of loss function is primarily driven by the type of problem we are solving: regression or classification. We introduce the most obvious choices below but there are lots of reasonable variations (see <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#id51">here</a> for the complete PyTorch list).</p>
 <section id="span-style-color-lightgreen-regression-loss-span">
 <h3><span style="color:LightGreen">Regression Loss</span><a class="headerlink" href="#span-style-color-lightgreen-regression-loss-span" title="Permalink to this heading">#</a></h3>
