@@ -1127,12 +1127,13 @@ Z_1 = X e^{-X^2}  \quad, \quad Z_2 = \sin X^2 \; ,
 \[ \Large
 Y = X W
 \]</div>
-<p>with
-$<span class="math notranslate nohighlight">\( \Large
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
 W = \begin{bmatrix}
 a \\ b
 \end{bmatrix} \; .
-\)</span>$</p>
+\end{split}\]</div>
 <p>The new features <span class="math notranslate nohighlight">\(Z_1\)</span> and <span class="math notranslate nohighlight">\(Z_2\)</span> are known as <span style="color:Violet">basis functions</span> and this approach is called <span style="color:Violet">basis function regression</span>. Sklearn has built-in support for <a class="reference external" href="http://scikit-learn.org/stable/modules/linear_model.html#polynomial-regression-extending-linear-models-with-basis-functions">polynomial basis functions</a> but it is easy to apply the transformations yourself for arbitrary basis functions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
