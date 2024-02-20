@@ -1385,7 +1385,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 </section>
 <section id="span-style-color-lightgreen-hyperparameter-grid-search-span">
 <h3><span style="color:Lightgreen">Hyperparameter Grid Search</span><a class="headerlink" href="#span-style-color-lightgreen-hyperparameter-grid-search-span" title="Permalink to this heading">#</a></h3>
-<p>The <span class="xref myst">GridSearchCV</span> function puts all the pieces together to scan a grid of one or more hyperparameters for a family of models.  For example, the polynomial degree <span class="math notranslate nohighlight">\(P\)</span> corresponds to a pipeline <code class="docutils literal notranslate"><span class="pre">poly__degree</span></code> parameter, which we vary from 0 to 5 below.</p>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> function puts all the pieces together to scan a grid of one or more hyperparameters for a family of models.  For example, the polynomial degree <span class="math notranslate nohighlight">\(P\)</span> corresponds to a pipeline <code class="docutils literal notranslate"><span class="pre">poly__degree</span></code> parameter, which we vary from 0 to 5 below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cv_summary</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
