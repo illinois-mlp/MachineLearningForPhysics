@@ -822,7 +822,7 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 <li><p>add a bias value <span class="math notranslate nohighlight">\(b\)</span></p></li>
 <li><p>apply the activation <span class="math notranslate nohighlight">\(\phi\)</span>.</p></li>
 </ul>
-<p>Note that this building block is mostly linear, except for the <span style="color:Violet">activation function</span> <span class="math notranslate nohighlight">\(\phi(s)\)</span>. This is an application of the kernel trick that we met <a class="reference internal" href="Nonlinear.html"><span class="doc std std-doc">earlier</span></a>, and allows us to implicitly work in a higher dimensional space where non-linear structure in data is easier to model.</p>
+<p>Note that this building block is mostly linear, except for the <span style="color:Violet">activation function</span> <span class="math notranslate nohighlight">\(\phi(s)\)</span>. This is an application of the kernel trick that we met <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/Nonlinear.html">earlier</a>, and allows us to implicitly work in a higher dimensional space where non-linear structure in data is easier to model.</p>
 <p>The building-block equation is straightfoward to implement as code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1544,7 +1544,7 @@ Y_{tgt}^i ~\log \phi_S(X_\text{out}^i) + (1 - Y_\text{tgt}^i) ~\log (1 - \phi_S(
 </div>
 </div>
 </div>
-<p>The cross entropy is inspired by information theory and closely related to the KL divergence we met <span class="xref myst">earlier</span>. With this approach, our assumptions are that:</p>
+<p>The cross entropy is inspired by information theory and closely related to the KL divergence we met <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/VariationalInference.html">earlier</a>. With this approach, our assumptions are that:</p>
 <ul class="simple">
 <li><p>The target values in <span class="math notranslate nohighlight">\(Y_{tgt}\)</span> are all either 0 or 1.</p></li>
 <li><p>The network output values in <span class="math notranslate nohighlight">\(X_{out}\)</span> are continuous and <span class="math notranslate nohighlight">\(\phi_S(y^{out}_i)\)</span> is interpreted as the corresponding probability that the output is 1.</p></li>
