@@ -547,6 +547,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-02-22 11:54:49.246999: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Below we inlucde a set of helper functions to visualize the calculations for illustration purposes:</p>
 <div class="cell docutils container">
@@ -856,6 +862,11 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9640275800758169
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="span-style-color-lightgreen-activation-functions-span">
@@ -897,6 +908,9 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b9e45de6257b23c8824c0a1733ef369821459e5d18f7c2ee67400e78323037a6.png" src="../../_images/b9e45de6257b23c8824c0a1733ef369821459e5d18f7c2ee67400e78323037a6.png" />
+</div>
 </div>
 <p>Note that all activations saturate (at -1 or 0) for <span class="math notranslate nohighlight">\(s\rightarrow -\infty\)</span>, but differ in their behavior when <span class="math notranslate nohighlight">\(s\rightarrow +\infty\)</span> (linear vs saturate at +1).</p>
 <p><em><strong><span style="color:Violet">DISCUSS</span></strong></em>:</p>
@@ -929,6 +943,12 @@ f_m(\mathbf{x}_i) = \phi\left(\mathbf{x}_i\cdot \mathbf{w}_m + b_m\right) \; ,
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">w</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">phi</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.73105858, 0.5       , 0.81757448],
+       [0.5       , 0.88079708, 0.5       ]])
 </pre></div>
 </div>
 </div>
@@ -985,6 +1005,11 @@ N(X) = H\left(G\left(F(X)\right)\right) \; ,
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1.])
+</pre></div>
+</div>
+</div>
 </div>
 <p>The weight and bias values are chosen to make the tensors easier to read, but would not make sense for a real network. As a result, the final output of <code class="docutils literal notranslate"><span class="pre">[1.,</span> <span class="pre">1.]</span></code> is not surprising given how the sigmoid activation saturates for input outside a narrow range.</p>
 </section>
@@ -1020,6 +1045,9 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/05727b4fb4f37cd5ee4e25bda9948db5e1b1958264de674ec4129e9ecd0ac107.png" src="../../_images/05727b4fb4f37cd5ee4e25bda9948db5e1b1958264de674ec4129e9ecd0ac107.png" />
+</div>
 </div>
 <p>Study the plots below which show the hidden (left) and output (right) node values for a network with 2 + 2 + 1 nodes. Each graph shows the node value as a function of the 2D input value.</p>
 <p>Note how the hidden nodes divide the input space into two halves, with a dividing line determined by their <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span> values. The output layer then mixes these halves and can therefore “select” any of the four quadrants with an appropriate choice of its <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
@@ -1031,6 +1059,9 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/10a1389953ada7d6217f241ee2c77badf804f7a3de99d1627d4d859f2004b106.png" src="../../_images/10a1389953ada7d6217f241ee2c77badf804f7a3de99d1627d4d859f2004b106.png" />
 </div>
 </div>
 <p>The histogram on the second layer plot shows the distribution of</p>
@@ -1136,6 +1167,12 @@ More information on this method of creating a neural network with <code class="d
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: [[0.5488135  0.71518937]]
+Result: [[0.50497514]]
+</pre></div>
+</div>
+</div>
 </div>
 <p>If we wanted to put in many samples of size 2 and see all of their outputs at the same time, we could write:</p>
 <div class="cell docutils container">
@@ -1145,6 +1182,22 @@ More information on this method of creating a neural network with <code class="d
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Samples: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">samples</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Results: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">samples</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Samples: 
+[[0.60276338 0.54488318]
+ [0.4236548  0.64589411]
+ [0.43758721 0.891773  ]
+ [0.96366276 0.38344152]
+ [0.79172504 0.52889492]]
+Results: 
+[[0.38953546]
+ [0.47595912]
+ [0.60580003]
+ [0.23124357]
+ [0.3555    ]]
 </pre></div>
 </div>
 </div>
@@ -1210,6 +1263,9 @@ We use the mean squared error loss and the gradient descenet algorithm <code cla
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f2232635f5ce4fbdb42ee8bd9bf96958", "version_major": 2, "version_minor": 0}</script><img alt="../../_images/18f1ee8251958f819ad5452cd12addd761dba39825f8fba4e1eb53f535e98b05.png" src="../../_images/18f1ee8251958f819ad5452cd12addd761dba39825f8fba4e1eb53f535e98b05.png" />
+</div>
 </div>
 <p>Not bad!
 Using automatic differentiation and gradient descent, the neural network weights and biases have been adjusted to make the neural network approximate the function <span class="math notranslate nohighlight">\(\sin(t)\cos(t)\)</span>.
@@ -1243,6 +1299,17 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Linear(in_features=8, out_features=4, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=4, out_features=3, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=3, out_features=2, bias=True)
+)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1250,10 +1317,24 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter containing:
+tensor([[-0.4228, -0.1435, -0.3521,  0.0331],
+        [-0.0934, -0.2682, -0.0455,  0.4737],
+        [-0.0394,  0.0159, -0.0780,  0.0786]], requires_grad=True)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter containing:
+tensor([0.4928, 0.0345], requires_grad=True)
 </pre></div>
 </div>
 </div>
@@ -1297,10 +1378,20 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
@@ -1313,12 +1404,26 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (100, 8) OUT (100, 4)
+1: IN (100, 4) OUT (100, 4)
+2: IN (100, 4) OUT (100, 3)
+3: IN (100, 3) OUT (100, 3)
+4: IN (100, 3) OUT (100, 2)
+</pre></div>
+</div>
+</div>
 </div>
 <p>To complete the computational graph we need to calculate a (scalar) loss, for example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Xout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.1996, grad_fn=&lt;MeanBackward0&gt;)
 </pre></div>
 </div>
 </div>
@@ -1330,6 +1435,15 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4: GRAD (100, 2)
+3: GRAD (100, 3)
+2: GRAD (100, 3)
+1: GRAD (100, 4)
+0: GRAD (100, 4)
+</pre></div>
+</div>
+</div>
 </div>
 <p>The gradients of each layer’s parameters are now computed and stored, ready to “learn” better parameters through (stochastic) gradient descent (or one of its variants):</p>
 <div class="cell docutils container">
@@ -1338,11 +1452,21 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-0.0285, -0.0276, -0.0335,  0.0646])
+</pre></div>
+</div>
+</div>
 </div>
 <p>Using <code class="docutils literal notranslate"><span class="pre">trace</span></code> above we have also captured the gradients of the loss with respect to each module’s outputs <span class="math notranslate nohighlight">\(\partial\ell /\partial X_n\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(torch.Size([100, 4]), torch.Size([100, 4]))
 </pre></div>
 </div>
 </div>
@@ -1371,6 +1495,17 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Linear(in_features=100, out_features=200, bias=True)
+  (1): Tanh()
+  (2): Linear(in_features=200, out_features=100, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=100, out_features=10, bias=True)
+)
+</pre></div>
+</div>
+</div>
 </div>
 <p>Note that our network ends with a <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module instead of an activation, which is typical for regression problems.</p>
 <p>Perform forward and backward passes to capture some values:</p>
@@ -1389,6 +1524,20 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (500, 100) OUT (500, 200)
+1: IN (500, 200) OUT (500, 200)
+2: IN (500, 200) OUT (500, 100)
+3: IN (500, 100) OUT (500, 100)
+4: IN (500, 100) OUT (500, 10)
+4: GRAD (500, 10)
+3: GRAD (500, 100)
+2: GRAD (500, 100)
+1: GRAD (500, 200)
+0: GRAD (500, 200)
+</pre></div>
+</div>
+</div>
 </div>
 <p>First check that the input to the first module has the expected (unit normal) distribution:</p>
 <div class="cell docutils container">
@@ -1396,6 +1545,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/59a7614b63e5869b7c2ce34120a0e5a750a54aa0f3e6045b22db58c96ff846e9.png" src="../../_images/59a7614b63e5869b7c2ce34120a0e5a750a54aa0f3e6045b22db58c96ff846e9.png" />
 </div>
 </div>
 <p>How does torch initialize the parameters (weights and biases) for each layer?</p>
@@ -1405,12 +1557,18 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/73bb5b61479bfe4111e239fe9f79c63a02aa77813640817a74e4e769c8e9a400.png" src="../../_images/73bb5b61479bfe4111e239fe9f79c63a02aa77813640817a74e4e769c8e9a400.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d1deafdf7f61850ef53b2bec2bbf9ca7483f60286c555102966817cc3418b314.png" src="../../_images/d1deafdf7f61850ef53b2bec2bbf9ca7483f60286c555102966817cc3418b314.png" />
 </div>
 </div>
 <p>These initial parameter values are sampled from uniform distributions centered on zero with a spread that depends on the number of inputs to the layer:</p>
@@ -1426,6 +1584,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fd43c5c211683d8c98a2b34031a6cd3b8968694ad32809faa17e996b5e8dde62.png" src="../../_images/fd43c5c211683d8c98a2b34031a6cd3b8968694ad32809faa17e996b5e8dde62.png" />
+</div>
 </div>
 <p>A scatter plot of the the first <code class="docutils literal notranslate"><span class="pre">Tanh</span></code> activation function’s input and output values just traces out function since it is applied element wise.  Note how most of input values do not saturate, which is generally desirable for efficient learning.</p>
 <div class="cell docutils container">
@@ -1433,6 +1594,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a7686972f59b2060f08bc26f693a1c3bdb709300c237b67da8eb6ea280661318.png" src="../../_images/a7686972f59b2060f08bc26f693a1c3bdb709300c237b67da8eb6ea280661318.png" />
 </div>
 </div>
 <p>The non-linear activation distorts and clips the output so it no longer resembles a Gaussian:</p>
@@ -1442,6 +1606,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bd1a5ead2a44de75179a3e40b30efb60f85d98fc3dac031962c4632aca0f90a8.png" src="../../_images/bd1a5ead2a44de75179a3e40b30efb60f85d98fc3dac031962c4632aca0f90a8.png" />
+</div>
 </div>
 <p>However, the next <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module restores the Gaussian distribution!  How does this happen when neither its inputs nor its parameters have a Gaussian distribution? (Answer: the <a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a> which we briefly covered <a class="reference external" href="https://nbviewer.jupyter.org/github/dkirkby/MachineLearningStatistics/blob/master/notebooks/Statistics.ipynb">earlier</a>).</p>
 <div class="cell docutils container">
@@ -1449,6 +1616,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0067571f4ea19de30ef4491b4c7e9c4557eacbcd00843a697660272a24af8cba.png" src="../../_images/0067571f4ea19de30ef4491b4c7e9c4557eacbcd00843a697660272a24af8cba.png" />
 </div>
 </div>
 <p>The next activation is <code class="docutils literal notranslate"><span class="pre">ReLU</span></code>, which effectively piles up all negative values from the previous <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module into the zero bin:</p>
@@ -1458,12 +1628,18 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/298d7475bbf12bb494904485677b8cb8fe6695f8deaa9a3e7307ea2f4bea7c1c.png" src="../../_images/298d7475bbf12bb494904485677b8cb8fe6695f8deaa9a3e7307ea2f4bea7c1c.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/81f9217c19a5955fa210d6a4661aca19dd4c30df6b86475f9be15dd844080df4.png" src="../../_images/81f9217c19a5955fa210d6a4661aca19dd4c30df6b86475f9be15dd844080df4.png" />
 </div>
 </div>
 <p>The final linear layer’s output is again roughly Gaussian, thanks to the central limit theorem:</p>
@@ -1473,6 +1649,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/aac81df58f8b93f4a335752b8eee49897b5bd0dc85e7d52eb9b641f5ba7851dd.png" src="../../_images/aac81df58f8b93f4a335752b8eee49897b5bd0dc85e7d52eb9b641f5ba7851dd.png" />
+</div>
 </div>
 <p>So far we have only looked at distributions of the tensors involved in the forward pass, but there is also a lot to learn from the backwards gradient tensors that we do not have time to delve in to.  For example, this scatter plot offers some insight into a suitable learning rate for the second <code class="docutils literal notranslate"><span class="pre">Linear</span></code> module’s weight parameters:</p>
 <div class="cell docutils container">
@@ -1480,6 +1659,9 @@ We could increase the number of <code class="docutils literal notranslate"><span
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/248fe296dff7d2951439ea6f11f2f449b955b8da628a92747562f1d6d20039b0.png" src="../../_images/248fe296dff7d2951439ea6f11f2f449b955b8da628a92747562f1d6d20039b0.png" />
 </div>
 </div>
 <p>Note that the normalization of the loss function feeds directly into these gradients, so needs to be considered when setting the learning rate:</p>
@@ -1491,12 +1673,29 @@ We could increase the number of <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: IN (500, 100) OUT (500, 200)
+1: IN (500, 200) OUT (500, 200)
+2: IN (500, 200) OUT (500, 100)
+3: IN (500, 100) OUT (500, 100)
+4: IN (500, 100) OUT (500, 10)
+4: GRAD (500, 10)
+3: GRAD (500, 100)
+2: GRAD (500, 100)
+1: GRAD (500, 200)
+0: GRAD (500, 200)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">net</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9914a379b9bf003cf46a357d18951813f9e08004c033485308dcebaf72369235.png" src="../../_images/9914a379b9bf003cf46a357d18951813f9e08004c033485308dcebaf72369235.png" />
 </div>
 </div>
 </section>
@@ -1607,6 +1806,11 @@ but we can not directly interpret their values as category probabilities since t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.26538793, 0.01321289, 0.72139918])
+</pre></div>
+</div>
+</div>
 </div>
 <p>The softmax function effectively implements a <span style="color:Violet">winner takes all</span> policy, similar to the sigmoid activation <span class="math notranslate nohighlight">\(\phi_S\)</span>, as illustrated in the plot below where:</p>
 <ul class="simple">
@@ -1634,6 +1838,9 @@ but we can not directly interpret their values as category probabilities since t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/668db1046237d75fb4a52acf13b2608bf7394012121a25010626158675b5f803.png" src="../../_images/668db1046237d75fb4a52acf13b2608bf7394012121a25010626158675b5f803.png" />
+</div>
 </div>
 <p>The example above assumed output activations that can be large and positive, such as <code class="docutils literal notranslate"><span class="pre">relu</span></code> or <code class="docutils literal notranslate"><span class="pre">elu</span></code>. However, the strength of the <em>winner takes all</em> effect depends on how the outputs are scaled, and is relatively weak for output activations that saturate on both sides, such as <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code> or <code class="docutils literal notranslate"><span class="pre">tanh</span></code>, which is why these are generally not used for classification outputs:</p>
 <div class="cell docutils container">
@@ -1641,6 +1848,9 @@ but we can not directly interpret their values as category probabilities since t
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1dfee54e4e2069b5298af2087d275bdffaea15196735a153033739d095a83c2c.png" src="../../_images/1dfee54e4e2069b5298af2087d275bdffaea15196735a153033739d095a83c2c.png" />
 </div>
 </div>
 <p>Note that we assume <span style="color:Violet">one-hot encoding</span> of the vector target values <span class="math notranslate nohighlight">\(\mathbf{y}^{out}\)</span>, which is not very efficient (unless using sparse-optimized data structures) compared to a single integer target value <span class="math notranslate nohighlight">\(y^{train} = 0, 1, \ldots, C-1\)</span>. However, sklearn has a <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html">convenient utility</a> to convert integers to one-hot encoded vectors (use <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code> to return vectors in an efficient <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy sparse array</a>).</p>
