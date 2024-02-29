@@ -222,7 +222,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeepLearning.html">Deep Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GenerativeModeling.html">Generative Modeling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -704,6 +704,9 @@ This is a “many-to-one” case.</p>
 <script type="application/vnd.jupyter.widget-view+json">{"model_id": "f27eb3e426ca4d1982c29fa0fc693318", "version_major": 2, "version_minor": 0}</script><img alt="../../_images/0f51fb1bfd88526356690f4f633d5ee23137b7f2ba7a84623923238e4a80cc24.png" src="../../_images/0f51fb1bfd88526356690f4f633d5ee23137b7f2ba7a84623923238e4a80cc24.png" />
 </div>
 </div>
+<p>Similar to the feedforward neural network, the recurrent architecture was able to roughly approximate the curve!
+Although it is not very noticeable in this case, the recurrent model can also uses less weights and biases (because it has the looping behavior built in) making it less computationally expensive and easier to train!
+This has made the recurrent architecture very popular for time series like applications for real world problems (in fact, modern transformers such as ChatGPT are built on the same concepts as RNNs).</p>
 </section>
 </section>
 <section id="span-style-color-orange-convolutional-networks-span">
