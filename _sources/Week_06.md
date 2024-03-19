@@ -12,7 +12,7 @@ You will learn the basics of Deep Learning and Generative Modeling
 * {doc}`lectures/GenerativeModeling`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_06`
+* None
 
 ## *Supplemental Readings*
 * None

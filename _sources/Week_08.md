@@ -11,7 +11,7 @@ You will learn the basics of Geometric Deep Learning and Graph Neural Networks
 * {doc}`lectures/GraphNeuralNetworks`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_08`
+* None
 
 ## *Supplemental Readings*
 * None

@@ -5,3 +5,4 @@ __pycache__
 *.tsv
 tfs
 tmp_data
+.ipynb_checkpoints

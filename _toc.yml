@@ -57,13 +57,12 @@ chapters:
     title: Slides
   - file: _sources/lectures/DeepLearning.ipynb
   - file: _sources/lectures/GenerativeModeling.ipynb
-  - file: _sources/homework/Homework_06
 - file: _sources/Week_07 # Convolutional and Recurrent Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
-  - file: _sources/homework/Homework_07
+  - file: _sources/homework/Homework_06
 - file: _sources/Project_01 # Project 01
   sections:
   - file: _sources/projects/Project_01_HiggsTauTau
@@ -77,31 +76,36 @@ chapters:
   - url: https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/GraphNeuralNetworks
-  - file: _sources/homework/Homework_08
 - file: _sources/Week_09 # Attention Mechanism and Transformers
   sections:
   - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AttentionTransformers
-  - file: _sources/homework/Homework_09
+  - file: _sources/homework/Homework_07
 - file: _sources/Week_10 # Reinforcement Learning
   sections:
   - url: https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/ReinforcementLearning
-  - file: _sources/homework/Homework_10
-- file: _sources/Week_11 # Uncertainty Quantification and Anomaly Detection
+  - file: _sources/homework/Homework_08
+- file: _sources/Week_11 # AI Explainability and Uncertainty Quantification
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/UncertaintyQuantificationAnomalyDetection
-  - file: _sources/homework/Homework_11
-- file: _sources/Week_12 # Physics Informed Neural Networks
+  - file: _sources/lectures/AIExplainabilityUncertaintyQuantification
+  - file: _sources/homework/Homework_09
+- file: _sources/Week_12 # Unsupervised Learning and Anomaly Detection
+  sections:
+  - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/UnsupervisedLearningAnomalyDetection
+  - file: _sources/homework/Homework_10
+- file: _sources/Week_13 # Physics Informed Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/PhysicsInformedNeuralNetworks
-  - file: _sources/homework/Homework_12
+  - file: _sources/homework/Homework_11
 - file: _sources/Project_02 # Project 02
   sections:
   - file: _sources/projects/Project_02_HiggsTauTau
@@ -109,13 +113,13 @@ chapters:
   - file: _sources/projects/Project_02_GalaxyZoo
   - file: _sources/projects/Project_02_NuclearGeometryQGP
   - file: _sources/projects/Project_02_AberratedImages
-- file: _sources/Week_13 # Learning from the Machines
+- file: _sources/Week_14 # Learning from the Machines
   sections:
   - url: https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/LearningPhysicsMachines
-  - file: _sources/homework/Homework_13
-- file: _sources/Week_14 # Future of Physics: What Lies Ahead?
+  - file: _sources/homework/Homework_12
+- file: _sources/Week_15 # Future of Physics: What Lies Ahead?
   sections:
   - url: https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing
     title: Slides

@@ -1,17 +1,17 @@
-# <span style="color: blue;"><b>Future of AI and Physics: What Lies Ahead?</b></span>
+# <span style="color: blue;"><b>Learning from the Machines</b></span>
 
 ## *Overview*
-You will discuss the future of AI and physics, and what lies ahead
+You will learn the basics of Learning from the Machines
 
 ## *Goals*
-* Discuss the future of AI and physics, and what lies ahead
+* Learn about Learning from the Machines
 
 ## *Lecture Materials*
-* [Slides](https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing)
-* {doc}`lectures/LookingForward`
+* [Slides](https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing)
+* {doc}`lectures/LearningPhysicsMachines`
 
 ## *Homework Assignment*
-* None
+* {doc}`homework/Homework_12`
 
 ## *Supplemental Readings*
 * None
