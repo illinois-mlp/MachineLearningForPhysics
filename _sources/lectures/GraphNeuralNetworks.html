@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/GraphNeuralNetworks';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -240,6 +242,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Geometric Deep Learning and Graph Neural Networks</a></li>
+
+
+
+
+
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_09.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -485,8 +492,38 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Geometric Deep Learning and Graph Neural Networks</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-to-graph-data-span"><span style="color:Orange">Introduction to Graph Data</span></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-graph-classification-span"><span style="color:Orange">Graph Classification</span></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exploring-graph-data-with-pytorch-geometric-span"><span style="color:Orange">Exploring graph data with Pytorch Geometric</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-implementing-a-graph-neural-network-span"><span style="color:LightBlue">Implementing a Graph Neural Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-training-the-model-span"><span style="color:LightBlue">Training the model</span></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span"><span style="color:Orange">Deep Sets</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-data-loader-span"><span style="color:LightBlue">Data Loader</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-deep-sets-network-span"><span style="color:LightBlue">Deep Sets Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-define-the-training-loop-span"><span style="color:LightBlue">Define the training loop</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-define-training-validation-testing-data-generators-span"><span style="color:LightBlue">Define training, validation, testing data generators</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-train-span"><span style="color:LightBlue">Train</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-evaluate-on-test-data-span"><span style="color:LightBlue">Evaluate on Test Data</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-auc-and-roc-curves-span"><span style="color:LightGreen">AUC and ROC Curves</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-interaction-network-span"><span style="color:Orange">Interaction Network</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-graph-datasets-span"><span style="color:LightBlue">Graph Datasets</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-graph-neural-network-span"><span style="color:LightBlue">Graph Neural Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span style="color:LightBlue">Define the training loop</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span style="color:LightBlue">Define training, validation, testing data generators</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color:LightBlue">Train</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color:LightBlue">Evaluate on Test Data</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -499,10 +536,1751 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="geometric-deep-learning-and-graph-neural-networks">
 <h1>Geometric Deep Learning and Graph Neural Networks<a class="headerlink" href="#geometric-deep-learning-and-graph-neural-networks" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TORCH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="c1">#ensure that the PyTorch and the PyG are the same version</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>torch-scatter<span class="w"> </span>-f<span class="w"> </span>https://data.pyg.org/whl/torch-<span class="si">${</span><span class="nv">TORCH</span><span class="si">}</span>.html
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>torch-sparse<span class="w"> </span>-f<span class="w"> </span>https://data.pyg.org/whl/torch-<span class="si">${</span><span class="nv">TORCH</span><span class="si">}</span>.html
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>git+https://github.com/pyg-team/pytorch_geometric.git
+
+<span class="kn">import</span> <span class="nn">torch_geometric</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0.0.dev20230212
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-introduction-to-graph-data-span">
+<h1><span style="color:Orange">Introduction to Graph Data</span><a class="headerlink" href="#span-style-color-orange-introduction-to-graph-data-span" title="Permalink to this heading">#</a></h1>
+<p>Graphs can be seen as a system or language for modeling systems that are complex and linked together.
+A graph is a data type that is modelled as a set of objects which can be represented as a node or vertex and their relationships which is called edges. A graph data can also be seen as a network data where there are points connected together.</p>
+<p>A <span style="color:Violet">node</span> (vertex) of a graph is point in a graph while an <span style="color:Violet">edge</span> is a component that joins edges together in a graph. Graphs can be used to represent data from a lot of domains like biology, physics, social science, chemistry and others.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-GraphExample.jpeg"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-GraphExample.jpeg" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-GraphExample.jpeg" style="width: 800px;" /></a></img><br></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-graph-classification-span">
+<h1><span style="color:Orange">Graph Classification</span><a class="headerlink" href="#span-style-color-orange-graph-classification-span" title="Permalink to this heading">#</a></h1>
+<p>Graphs can be classified into different categories <span style="color:Violet">directed/undirected graphs</span>, <span style="color:Violet">weighted/binary graphs</span> and <span style="color:Violet">homogenous/heterogenous graphs</span>.</p>
+<ul class="simple">
+<li><p><span style="color:Violet">Directed/Undirected graphs</span>: Directed graphs are the ones that all the edges have directtions while in undirected graphs, the edges are does not have directions</p></li>
+<li><p><span style="color:Violet">Weighted/Binary graphs</span>: Weighted graphs is a type of graph that each of the edges are assigned with a value while binary graphs are the ones that the edges does not have an assigned value.</p></li>
+<li><p><span style="color:Violet">Homogenous/Heterogenous graphs</span>: Homogenous graphs are the ones that all the nodes and/or edges are of the same type (e.g. friendship graph) while heterogenous graphs are graphs where the nodes and/or edges are of different types (e.g. knowledge graph).</p></li>
+</ul>
+<p>Traditional graph analysis methods requires using searching algorithms, clustering spanning tree algorithms and so on. A major downside to using these methods for analysis of graph data is that you require a prior knowledge of the graph to be able to apply these algorithms.</p>
+<p>Based on the structure of the graph data, traditional machine learning system will not be able to properly interprete the graph data and thus the advent of the <span style="color:Violet">Graph Neural Network</span> (GNN). Graph neural network is a domain of deep learning that is mostly concerned with deep learning operations on graph datasets.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-exploring-graph-data-with-pytorch-geometric-span">
+<h1><span style="color:Orange">Exploring graph data with Pytorch Geometric</span><a class="headerlink" href="#span-style-color-orange-exploring-graph-data-with-pytorch-geometric-span" title="Permalink to this heading">#</a></h1>
+<p>Now we will explore graph and graph neural networks using the PyTorch Geometric (PyG) package (already loaded)</p>
+<p>Let’s create a function that will help us visualize a graph data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">visualize_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">node_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Set2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>PyG provides access to a couple of graph datasets. For this notebook, we are going to use <a class="reference external" href="https://en.wikipedia.org/wiki/Zachary%27s_karate_club">Zachary’s karate club</a> network <a class="reference external" href="https://karateclub.readthedocs.io/en/latest/modules/dataset.html">dataset</a>.</p>
+<p>Zachary’s karate club is a great example of social relationships within a small group. This set of data indicated the interactions of club members outside of the club. This dataset also documented the conflict between the instructor, Mr.Hi, and the club president, John because of course price. In the end, half of the members formed a new club around Mr.Hi, and the other half either stayed at the old karate club or gave up karate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch_geometric.datasets</span> <span class="kn">import</span> <span class="n">KarateClub</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">KarateClub</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have imported a graph dataset, let’s look at some of the properties of a graph dataset. We will look at some of the properties at the level of the dataset and then select a graph in the dataset to explore it’s properties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataset properties&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==============================================================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Dataset: </span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#This prints the name of the dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of graphs in the dataset: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of features: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_features</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Number of features each node in the dataset has</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of classes: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Number of classes that a node can be classified into</span>
+
+<span class="c1"># Since we have one graph in the dataset, we will select the graph and explore it&#39;s properties</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Graph properties&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==============================================================&#39;</span><span class="p">)</span>
+
+<span class="c1"># Gather some statistics about the graph.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of nodes: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num_nodes</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Number of nodes in the graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of edges: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num_edges</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Number of edges in the graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average node degree: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num_edges</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">data</span><span class="o">.</span><span class="n">num_nodes</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># Average number of nodes in the graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Contains isolated nodes: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">has_isolated_nodes</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Does the graph contains nodes that are not connected</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Contains self-loops: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">has_self_loops</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Does the graph contains nodes that are linked to themselves</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Is undirected: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">is_undirected</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Is the graph an undirected graph</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset properties
+==============================================================
+Dataset: KarateClub()
+Number of graphs in the dataset: 1
+Number of features: 34
+Number of classes: 4
+Graph properties
+==============================================================
+Number of nodes: 34
+Number of edges: 156
+Average node degree: 4.59
+Contains isolated nodes: False
+Contains self-loops: False
+Is undirected: True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s visualize the graph using the function that we created earlier. But first, we will convert the graph to <code class="docutils literal notranslate"><span class="pre">networkx</span></code> graph</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch_geometric.utils</span> <span class="kn">import</span> <span class="n">to_networkx</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">to_networkx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">to_undirected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">visualize_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7bf492b64fd5be5f0c3fe8b6537e130033988e19908cdce338daa3e0365e0957.png" src="../../_images/7bf492b64fd5be5f0c3fe8b6537e130033988e19908cdce338daa3e0365e0957.png" />
+</div>
+</div>
+<section id="span-style-color-lightblue-implementing-a-graph-neural-network-span">
+<h2><span style="color:LightBlue">Implementing a Graph Neural Network</span><a class="headerlink" href="#span-style-color-lightblue-implementing-a-graph-neural-network-span" title="Permalink to this heading">#</a></h2>
+<p>For this notebook, we will use a simple GNN which is the <a class="reference external" href="https://towardsdatascience.com/graph-convolutional-networks-introduction-to-gnns-24b3f60d6c95">Graph Convolution Network</a> (GCN) layer.</p>
+<ul class="simple">
+<li><p>GCN is a specific type of GNN that uses convolutional operations to propagate information between nodes in a graph.</p></li>
+<li><p>GCNs leverage a localized aggregation of neighboring node features to update the representations of the nodes.</p></li>
+<li><p>GCNs are based on the convolutional operation commonly used in image processing, adapted to the graph domain.</p></li>
+<li><p>The layers in a GCN typically apply a graph convolution operation followed by non-linear activation functions.</p></li>
+<li><p>GCNs have been successful in tasks such as node classification, where nodes are labeled based on their features and graph structure.</p></li>
+</ul>
+<p>Our GNN is defined by stacking three graph convolution layers, which corresponds to aggregating 3-hop neighborhood information around each node (all nodes up to 3 “hops” away). In addition, the GCNConv layers reduce the node feature dimensionality to 2, i.e., <code class="docutils literal notranslate"><span class="pre">34→4→4→2</span></code>. Each GCNConv layer is enhanced by a <code class="docutils literal notranslate"><span class="pre">tanh</span></code> non-linearity. We then apply a linear layer which acts as a classifier to map the nodes to 1 out of the 4 possible classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Linear</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">GCNConv</span>
+
+
+<span class="k">class</span> <span class="nc">GCN</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GCN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">GCNConv</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_features</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">GCNConv</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">GCNConv</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">tanh</span><span class="p">()</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">tanh</span><span class="p">()</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">tanh</span><span class="p">()</span>  <span class="c1"># Final GNN embedding space.</span>
+        
+        <span class="c1"># Apply a final (linear) classifier.</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">h</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">GCN</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GCN(
+  (conv1): GCNConv(34, 4)
+  (conv2): GCNConv(4, 4)
+  (conv3): GCNConv(4, 2)
+  (classifier): Linear(in_features=2, out_features=4, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-training-the-model-span">
+<h2><span style="color:LightBlue">Training the model</span><a class="headerlink" href="#span-style-color-lightblue-training-the-model-span" title="Permalink to this heading">#</a></h2>
+<p>To train the network, we will use the <span style="color:Violet">CrossEntropyLoss</span> for the loss function and <span style="color:Violet">Adam</span> as the gradient optimizer</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">GCN</span><span class="p">()</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>  <span class="c1">#Initialize the CrossEntropyLoss function.</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>  <span class="c1"># Initialize the Adam optimizer.</span>
+
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>  <span class="c1"># Clear gradients.</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span><span class="p">)</span>  <span class="c1"># Perform a single forward pass.</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">train_mask</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">train_mask</span><span class="p">])</span>  <span class="c1"># Compute the loss solely based on the training nodes.</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Derive gradients.</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>  <span class="c1"># Update parameters based on gradients.</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">h</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">401</span><span class="p">):</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+   
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Loss: 1.414404273033142
+Epoch: 1, Loss: 1.4079036712646484
+Epoch: 2, Loss: 1.4017865657806396
+Epoch: 3, Loss: 1.3959277868270874
+Epoch: 4, Loss: 1.3902204036712646
+Epoch: 5, Loss: 1.3845514059066772
+Epoch: 6, Loss: 1.3788156509399414
+Epoch: 7, Loss: 1.372924566268921
+Epoch: 8, Loss: 1.3668041229248047
+Epoch: 9, Loss: 1.3603920936584473
+Epoch: 10, Loss: 1.3536322116851807
+Epoch: 11, Loss: 1.346463680267334
+Epoch: 12, Loss: 1.3388220071792603
+Epoch: 13, Loss: 1.3306517601013184
+Epoch: 14, Loss: 1.321907877922058
+Epoch: 15, Loss: 1.3125460147857666
+Epoch: 16, Loss: 1.3025131225585938
+Epoch: 17, Loss: 1.2917399406433105
+Epoch: 18, Loss: 1.2801496982574463
+Epoch: 19, Loss: 1.267681360244751
+Epoch: 20, Loss: 1.2542929649353027
+Epoch: 21, Loss: 1.2399559020996094
+Epoch: 22, Loss: 1.224645733833313
+Epoch: 23, Loss: 1.2083479166030884
+Epoch: 24, Loss: 1.1910830736160278
+Epoch: 25, Loss: 1.172907829284668
+Epoch: 26, Loss: 1.1538856029510498
+Epoch: 27, Loss: 1.1340937614440918
+Epoch: 28, Loss: 1.113678216934204
+Epoch: 29, Loss: 1.0928146839141846
+Epoch: 30, Loss: 1.071663737297058
+Epoch: 31, Loss: 1.0504322052001953
+Epoch: 32, Loss: 1.0293234586715698
+Epoch: 33, Loss: 1.0085136890411377
+Epoch: 34, Loss: 0.9882092475891113
+Epoch: 35, Loss: 0.9685617685317993
+Epoch: 36, Loss: 0.9497098326683044
+Epoch: 37, Loss: 0.9317660927772522
+Epoch: 38, Loss: 0.9147973656654358
+Epoch: 39, Loss: 0.8988679051399231
+Epoch: 40, Loss: 0.8839972615242004
+Epoch: 41, Loss: 0.8701907992362976
+Epoch: 42, Loss: 0.8574356436729431
+Epoch: 43, Loss: 0.8456954956054688
+Epoch: 44, Loss: 0.8349326252937317
+Epoch: 45, Loss: 0.8250938057899475
+Epoch: 46, Loss: 0.8161190748214722
+Epoch: 47, Loss: 0.8079493045806885
+Epoch: 48, Loss: 0.8005207180976868
+Epoch: 49, Loss: 0.7937697768211365
+Epoch: 50, Loss: 0.7876371145248413
+Epoch: 51, Loss: 0.78206467628479
+Epoch: 52, Loss: 0.7769970893859863
+Epoch: 53, Loss: 0.7723835706710815
+Epoch: 54, Loss: 0.7681776881217957
+Epoch: 55, Loss: 0.7643368244171143
+Epoch: 56, Loss: 0.7608219981193542
+Epoch: 57, Loss: 0.7575987577438354
+Epoch: 58, Loss: 0.7546370625495911
+Epoch: 59, Loss: 0.7519098520278931
+Epoch: 60, Loss: 0.7493933439254761
+Epoch: 61, Loss: 0.7470666170120239
+Epoch: 62, Loss: 0.7449116706848145
+Epoch: 63, Loss: 0.7429123520851135
+Epoch: 64, Loss: 0.7410544157028198
+Epoch: 65, Loss: 0.7393249869346619
+Epoch: 66, Loss: 0.7377125024795532
+Epoch: 67, Loss: 0.7362067699432373
+Epoch: 68, Loss: 0.7347980737686157
+Epoch: 69, Loss: 0.7334779500961304
+Epoch: 70, Loss: 0.7322388291358948
+Epoch: 71, Loss: 0.7310730814933777
+Epoch: 72, Loss: 0.7299746870994568
+Epoch: 73, Loss: 0.7289379239082336
+Epoch: 74, Loss: 0.727957546710968
+Epoch: 75, Loss: 0.7270289659500122
+Epoch: 76, Loss: 0.7261483669281006
+Epoch: 77, Loss: 0.7253118753433228
+Epoch: 78, Loss: 0.7245160341262817
+Epoch: 79, Loss: 0.7237582206726074
+Epoch: 80, Loss: 0.7230353355407715
+Epoch: 81, Loss: 0.7223449945449829
+Epoch: 82, Loss: 0.7216848134994507
+Epoch: 83, Loss: 0.7210525274276733
+Epoch: 84, Loss: 0.7204459309577942
+Epoch: 85, Loss: 0.7198634743690491
+Epoch: 86, Loss: 0.7193030118942261
+Epoch: 87, Loss: 0.7187634110450745
+Epoch: 88, Loss: 0.7182430028915405
+Epoch: 89, Loss: 0.7177403569221497
+Epoch: 90, Loss: 0.7172543406486511
+Epoch: 91, Loss: 0.716783881187439
+Epoch: 92, Loss: 0.7163279056549072
+Epoch: 93, Loss: 0.7158852815628052
+Epoch: 94, Loss: 0.7154552340507507
+Epoch: 95, Loss: 0.7150367498397827
+Epoch: 96, Loss: 0.7146288156509399
+Epoch: 97, Loss: 0.7142307758331299
+Epoch: 98, Loss: 0.713841438293457
+Epoch: 99, Loss: 0.7134604454040527
+Epoch: 100, Loss: 0.7130865454673767
+Epoch: 101, Loss: 0.7127190828323364
+Epoch: 102, Loss: 0.7123571038246155
+Epoch: 103, Loss: 0.7120000720024109
+Epoch: 104, Loss: 0.7116469144821167
+Epoch: 105, Loss: 0.7112966179847717
+Epoch: 106, Loss: 0.7109485864639282
+Epoch: 107, Loss: 0.7106014490127563
+Epoch: 108, Loss: 0.7102541327476501
+Epoch: 109, Loss: 0.7099055051803589
+Epoch: 110, Loss: 0.7095539569854736
+Epoch: 111, Loss: 0.7091981768608093
+Epoch: 112, Loss: 0.7088361978530884
+Epoch: 113, Loss: 0.7084661722183228
+Epoch: 114, Loss: 0.708085834980011
+Epoch: 115, Loss: 0.7076926827430725
+Epoch: 116, Loss: 0.7072839736938477
+Epoch: 117, Loss: 0.7068567276000977
+Epoch: 118, Loss: 0.7064076662063599
+Epoch: 119, Loss: 0.7059327960014343
+Epoch: 120, Loss: 0.7054286599159241
+Epoch: 121, Loss: 0.7048908472061157
+Epoch: 122, Loss: 0.7043149471282959
+Epoch: 123, Loss: 0.7036959528923035
+Epoch: 124, Loss: 0.7030287981033325
+Epoch: 125, Loss: 0.7023081183433533
+Epoch: 126, Loss: 0.7015291452407837
+Epoch: 127, Loss: 0.700687050819397
+Epoch: 128, Loss: 0.6997777819633484
+Epoch: 129, Loss: 0.6987966895103455
+Epoch: 130, Loss: 0.6977395415306091
+Epoch: 131, Loss: 0.696602463722229
+Epoch: 132, Loss: 0.695381760597229
+Epoch: 133, Loss: 0.6940730810165405
+Epoch: 134, Loss: 0.6926735043525696
+Epoch: 135, Loss: 0.6911810040473938
+Epoch: 136, Loss: 0.6895937323570251
+Epoch: 137, Loss: 0.6879096031188965
+Epoch: 138, Loss: 0.6861276030540466
+Epoch: 139, Loss: 0.6842458248138428
+Epoch: 140, Loss: 0.6822646856307983
+Epoch: 141, Loss: 0.6801841855049133
+Epoch: 142, Loss: 0.678005039691925
+Epoch: 143, Loss: 0.6757267713546753
+Epoch: 144, Loss: 0.6733517646789551
+Epoch: 145, Loss: 0.670880913734436
+Epoch: 146, Loss: 0.6683160066604614
+Epoch: 147, Loss: 0.6656591892242432
+Epoch: 148, Loss: 0.662912905216217
+Epoch: 149, Loss: 0.6600789427757263
+Epoch: 150, Loss: 0.6571605801582336
+Epoch: 151, Loss: 0.6541601419448853
+Epoch: 152, Loss: 0.6510804891586304
+Epoch: 153, Loss: 0.647924542427063
+Epoch: 154, Loss: 0.6446951627731323
+Epoch: 155, Loss: 0.6413953304290771
+Epoch: 156, Loss: 0.6380279660224915
+Epoch: 157, Loss: 0.6346004009246826
+Epoch: 158, Loss: 0.6311676502227783
+Epoch: 159, Loss: 0.6280736923217773
+Epoch: 160, Loss: 0.6247416138648987
+Epoch: 161, Loss: 0.6204184293746948
+Epoch: 162, Loss: 0.6175937056541443
+Epoch: 163, Loss: 0.6130721569061279
+Epoch: 164, Loss: 0.6099883913993835
+Epoch: 165, Loss: 0.6056156754493713
+Epoch: 166, Loss: 0.6024593710899353
+Epoch: 167, Loss: 0.5980790853500366
+Epoch: 168, Loss: 0.5947374105453491
+Epoch: 169, Loss: 0.5904760360717773
+Epoch: 170, Loss: 0.5870139598846436
+Epoch: 171, Loss: 0.582822859287262
+Epoch: 172, Loss: 0.5791879892349243
+Epoch: 173, Loss: 0.5751645565032959
+Epoch: 174, Loss: 0.5713585019111633
+Epoch: 175, Loss: 0.567484438419342
+Epoch: 176, Loss: 0.5635411739349365
+Epoch: 177, Loss: 0.5597836375236511
+Epoch: 178, Loss: 0.5557853579521179
+Epoch: 179, Loss: 0.5520825386047363
+Epoch: 180, Loss: 0.5481284856796265
+Epoch: 181, Loss: 0.5443800091743469
+Epoch: 182, Loss: 0.5405675172805786
+Epoch: 183, Loss: 0.5367638468742371
+Epoch: 184, Loss: 0.5330841541290283
+Epoch: 185, Loss: 0.5293054580688477
+Epoch: 186, Loss: 0.5256626605987549
+Epoch: 187, Loss: 0.5220222473144531
+Epoch: 188, Loss: 0.5183926820755005
+Epoch: 189, Loss: 0.5148745775222778
+Epoch: 190, Loss: 0.5113506317138672
+Epoch: 191, Loss: 0.5078821182250977
+Epoch: 192, Loss: 0.5045010447502136
+Epoch: 193, Loss: 0.5011410117149353
+Epoch: 194, Loss: 0.49784329533576965
+Epoch: 195, Loss: 0.4946274161338806
+Epoch: 196, Loss: 0.49145352840423584
+Epoch: 197, Loss: 0.4883362650871277
+Epoch: 198, Loss: 0.4852979779243469
+Epoch: 199, Loss: 0.4823189973831177
+Epoch: 200, Loss: 0.47939279675483704
+Epoch: 201, Loss: 0.4765353798866272
+Epoch: 202, Loss: 0.47374674677848816
+Epoch: 203, Loss: 0.47101518511772156
+Epoch: 204, Loss: 0.46834152936935425
+Epoch: 205, Loss: 0.46573275327682495
+Epoch: 206, Loss: 0.46318715810775757
+Epoch: 207, Loss: 0.4606989622116089
+Epoch: 208, Loss: 0.4582676887512207
+Epoch: 209, Loss: 0.45589637756347656
+Epoch: 210, Loss: 0.45358556509017944
+Epoch: 211, Loss: 0.45133209228515625
+Epoch: 212, Loss: 0.44913429021835327
+Epoch: 213, Loss: 0.4469928443431854
+Epoch: 214, Loss: 0.4449085295200348
+Epoch: 215, Loss: 0.44288063049316406
+Epoch: 216, Loss: 0.44090723991394043
+Epoch: 217, Loss: 0.4389871656894684
+Epoch: 218, Loss: 0.43712010979652405
+Epoch: 219, Loss: 0.43530601263046265
+Epoch: 220, Loss: 0.43354326486587524
+Epoch: 221, Loss: 0.4318305552005768
+Epoch: 222, Loss: 0.43016621470451355
+Epoch: 223, Loss: 0.42854925990104675
+Epoch: 224, Loss: 0.42697861790657043
+Epoch: 225, Loss: 0.4254530668258667
+Epoch: 226, Loss: 0.42397117614746094
+Epoch: 227, Loss: 0.4225310683250427
+Epoch: 228, Loss: 0.42113178968429565
+Epoch: 229, Loss: 0.41977158188819885
+Epoch: 230, Loss: 0.4184495806694031
+Epoch: 231, Loss: 0.41716426610946655
+Epoch: 232, Loss: 0.41591429710388184
+Epoch: 233, Loss: 0.4146982431411743
+Epoch: 234, Loss: 0.41351503133773804
+Epoch: 235, Loss: 0.4123631417751312
+Epoch: 236, Loss: 0.41124171018600464
+Epoch: 237, Loss: 0.4101494550704956
+Epoch: 238, Loss: 0.4090851843357086
+Epoch: 239, Loss: 0.40804779529571533
+Epoch: 240, Loss: 0.40703630447387695
+Epoch: 241, Loss: 0.4060494899749756
+Epoch: 242, Loss: 0.4050863981246948
+Epoch: 243, Loss: 0.4041459560394287
+Epoch: 244, Loss: 0.40322721004486084
+Epoch: 245, Loss: 0.40232914686203003
+Epoch: 246, Loss: 0.4014507234096527
+Epoch: 247, Loss: 0.4005908966064453
+Epoch: 248, Loss: 0.39974868297576904
+Epoch: 249, Loss: 0.39892318844795227
+Epoch: 250, Loss: 0.3981132507324219
+Epoch: 251, Loss: 0.3973178267478943
+Epoch: 252, Loss: 0.3965359330177307
+Epoch: 253, Loss: 0.39576637744903564
+Epoch: 254, Loss: 0.3950079679489136
+Epoch: 255, Loss: 0.39425957202911377
+Epoch: 256, Loss: 0.39351969957351685
+Epoch: 257, Loss: 0.3927871584892273
+Epoch: 258, Loss: 0.39206013083457947
+Epoch: 259, Loss: 0.3913373351097107
+Epoch: 260, Loss: 0.39061659574508667
+Epoch: 261, Loss: 0.38989609479904175
+Epoch: 262, Loss: 0.38917356729507446
+Epoch: 263, Loss: 0.388446569442749
+Epoch: 264, Loss: 0.3877125084400177
+Epoch: 265, Loss: 0.3869687616825104
+Epoch: 266, Loss: 0.3862120509147644
+Epoch: 267, Loss: 0.385439395904541
+Epoch: 268, Loss: 0.38464784622192383
+Epoch: 269, Loss: 0.38383424282073975
+Epoch: 270, Loss: 0.38299548625946045
+Epoch: 271, Loss: 0.38212850689888
+Epoch: 272, Loss: 0.3812297582626343
+Epoch: 273, Loss: 0.3802952170372009
+Epoch: 274, Loss: 0.37932053208351135
+Epoch: 275, Loss: 0.3783015012741089
+Epoch: 276, Loss: 0.3772348165512085
+Epoch: 277, Loss: 0.3761177659034729
+Epoch: 278, Loss: 0.3749470114707947
+Epoch: 279, Loss: 0.37371814250946045
+Epoch: 280, Loss: 0.3724268674850464
+Epoch: 281, Loss: 0.3710700273513794
+Epoch: 282, Loss: 0.36964452266693115
+Epoch: 283, Loss: 0.36814582347869873
+Epoch: 284, Loss: 0.3665703237056732
+Epoch: 285, Loss: 0.36491674184799194
+Epoch: 286, Loss: 0.3631839156150818
+Epoch: 287, Loss: 0.36136889457702637
+Epoch: 288, Loss: 0.35947149991989136
+Epoch: 289, Loss: 0.35749104619026184
+Epoch: 290, Loss: 0.3554253578186035
+Epoch: 291, Loss: 0.35327666997909546
+Epoch: 292, Loss: 0.3510452210903168
+Epoch: 293, Loss: 0.3487322926521301
+Epoch: 294, Loss: 0.34633979201316833
+Epoch: 295, Loss: 0.3438686728477478
+Epoch: 296, Loss: 0.34132301807403564
+Epoch: 297, Loss: 0.33870524168014526
+Epoch: 298, Loss: 0.3360193967819214
+Epoch: 299, Loss: 0.33326831459999084
+Epoch: 300, Loss: 0.3304571807384491
+Epoch: 301, Loss: 0.3275907337665558
+Epoch: 302, Loss: 0.32467275857925415
+Epoch: 303, Loss: 0.3217098116874695
+Epoch: 304, Loss: 0.3187068700790405
+Epoch: 305, Loss: 0.3156689405441284
+Epoch: 306, Loss: 0.3126027584075928
+Epoch: 307, Loss: 0.3095141649246216
+Epoch: 308, Loss: 0.30640846490859985
+Epoch: 309, Loss: 0.3032921552658081
+Epoch: 310, Loss: 0.3001706600189209
+Epoch: 311, Loss: 0.2970506548881531
+Epoch: 312, Loss: 0.2939375638961792
+Epoch: 313, Loss: 0.2908394932746887
+Epoch: 314, Loss: 0.28776970505714417
+Epoch: 315, Loss: 0.28478091955184937
+Epoch: 316, Loss: 0.28216126561164856
+Epoch: 317, Loss: 0.2806890606880188
+Epoch: 318, Loss: 0.281312495470047
+Epoch: 319, Loss: 0.27288466691970825
+Epoch: 320, Loss: 0.27456799149513245
+Epoch: 321, Loss: 0.27207839488983154
+Epoch: 322, Loss: 0.2669985592365265
+Epoch: 323, Loss: 0.26659494638442993
+Epoch: 324, Loss: 0.25929903984069824
+Epoch: 325, Loss: 0.2601289749145508
+Epoch: 326, Loss: 0.254558801651001
+Epoch: 327, Loss: 0.2547817528247833
+Epoch: 328, Loss: 0.249167338013649
+Epoch: 329, Loss: 0.24909116327762604
+Epoch: 330, Loss: 0.2447076141834259
+Epoch: 331, Loss: 0.24408449232578278
+Epoch: 332, Loss: 0.2399887889623642
+Epoch: 333, Loss: 0.23915280401706696
+Epoch: 334, Loss: 0.2357933521270752
+Epoch: 335, Loss: 0.2346203625202179
+Epoch: 336, Loss: 0.231528177857399
+Epoch: 337, Loss: 0.2302950769662857
+Epoch: 338, Loss: 0.22760164737701416
+Epoch: 339, Loss: 0.22624777257442474
+Epoch: 340, Loss: 0.22371965646743774
+Epoch: 341, Loss: 0.22239263355731964
+Epoch: 342, Loss: 0.22007593512535095
+Epoch: 343, Loss: 0.2187439650297165
+Epoch: 344, Loss: 0.21652215719223022
+Epoch: 345, Loss: 0.21523401141166687
+Epoch: 346, Loss: 0.21314474940299988
+Epoch: 347, Loss: 0.21188393235206604
+Epoch: 348, Loss: 0.20987601578235626
+Epoch: 349, Loss: 0.20864510536193848
+Epoch: 350, Loss: 0.20675095915794373
+Epoch: 351, Loss: 0.2055433839559555
+Epoch: 352, Loss: 0.20373988151550293
+Epoch: 353, Loss: 0.20253685116767883
+Epoch: 354, Loss: 0.20084065198898315
+Epoch: 355, Loss: 0.1996387541294098
+Epoch: 356, Loss: 0.1980428397655487
+Epoch: 357, Loss: 0.19682282209396362
+Epoch: 358, Loss: 0.1953372359275818
+Epoch: 359, Loss: 0.1940995752811432
+Epoch: 360, Loss: 0.1927228569984436
+Epoch: 361, Loss: 0.19146019220352173
+Epoch: 362, Loss: 0.19018493592739105
+Epoch: 363, Loss: 0.18890531361103058
+Epoch: 364, Loss: 0.1877131164073944
+Epoch: 365, Loss: 0.1864350140094757
+Epoch: 366, Loss: 0.1853000968694687
+Epoch: 367, Loss: 0.18404754996299744
+Epoch: 368, Loss: 0.18294095993041992
+Epoch: 369, Loss: 0.18173813819885254
+Epoch: 370, Loss: 0.18063828349113464
+Epoch: 371, Loss: 0.17949633300304413
+Epoch: 372, Loss: 0.17839308083057404
+Epoch: 373, Loss: 0.17731067538261414
+Epoch: 374, Loss: 0.17621085047721863
+Epoch: 375, Loss: 0.1751726269721985
+Epoch: 376, Loss: 0.17409324645996094
+Epoch: 377, Loss: 0.1730785220861435
+Epoch: 378, Loss: 0.17203523218631744
+Epoch: 379, Loss: 0.1710285097360611
+Epoch: 380, Loss: 0.170027494430542
+Epoch: 381, Loss: 0.1690281182527542
+Epoch: 382, Loss: 0.16806179285049438
+Epoch: 383, Loss: 0.16708001494407654
+Epoch: 384, Loss: 0.1661340892314911
+Epoch: 385, Loss: 0.16518047451972961
+Epoch: 386, Loss: 0.16424526274204254
+Epoch: 387, Loss: 0.16332247853279114
+Epoch: 388, Loss: 0.16239924728870392
+Epoch: 389, Loss: 0.16149979829788208
+Epoch: 390, Loss: 0.16059643030166626
+Epoch: 391, Loss: 0.15971118211746216
+Epoch: 392, Loss: 0.15883225202560425
+Epoch: 393, Loss: 0.1579587608575821
+Epoch: 394, Loss: 0.15710139274597168
+Epoch: 395, Loss: 0.15624427795410156
+Epoch: 396, Loss: 0.15540161728858948
+Epoch: 397, Loss: 0.154564768075943
+Epoch: 398, Loss: 0.15373432636260986
+Epoch: 399, Loss: 0.15291598439216614
+Epoch: 400, Loss: 0.1521005630493164
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is much more analysis that can be done with GNNs on the Karate Club dataseet. See <a class="reference external" href="https://www.linkedin.com/pulse/community-detection-social-networks-case-study-zacharys-marin/">here</a> for examples. Our goal in this lecture was to use it an way to introduce the implementation and use of GNNs within the Pytorch framework.</p>
+<p>We will now turn to examples using simulated open data from the CMS experiment at the LHC.  The algorithms’ inputs are features of the reconstructed charged particles in a jet and the secondary vertices associated with them. Describing the jet shower as a combination of particle-to-particle and particle-to-vertex interactions, the model is trained to learn a jet representation on which the classification problem isoptimized.</p>
+<p>We show below an example using a community model called “DeepSets” and then compare to an Interaction Model GNN.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-deep-sets-span">
+<h1><span style="color:Orange">Deep Sets</span><a class="headerlink" href="#span-style-color-orange-deep-sets-span" title="Permalink to this heading">#</a></h1>
+<p>We will start by looking at Deep Sets networks using PyTorch. The architecture is based on the following paper: <a class="reference external" href="https://papers.nips.cc/paper/2017/file/f22e4747da1aa27e363d86d40ff442fe-Paper.pdf">DeepSets</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>wget
+<span class="kn">import</span> <span class="nn">wget</span>
+
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>PyYAML
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>uproot
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>awkward
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mplhep
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: wget in /usr/local/lib/python3.11/site-packages (3.2)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: PyYAML in /usr/local/lib/python3.11/site-packages (6.0.1)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: uproot in /usr/local/lib/python3.11/site-packages (5.0.11)
+Requirement already satisfied: awkward&gt;=2.0.0 in /usr/local/lib/python3.11/site-packages (from uproot) (2.4.1)
+Requirement already satisfied: numpy in /usr/local/lib/python3.11/site-packages (from uproot) (1.23.5)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from uproot) (23.0)
+Requirement already satisfied: awkward-cpp==23 in /usr/local/lib/python3.11/site-packages (from awkward&gt;=2.0.0-&gt;uproot) (23)
+Requirement already satisfied: importlib-metadata&gt;=4.13.0 in /usr/local/lib/python3.11/site-packages (from awkward&gt;=2.0.0-&gt;uproot) (6.8.0)
+Requirement already satisfied: zipp&gt;=0.5 in /usr/local/lib/python3.11/site-packages (from importlib-metadata&gt;=4.13.0-&gt;awkward&gt;=2.0.0-&gt;uproot) (3.16.2)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: awkward in /usr/local/lib/python3.11/site-packages (2.4.1)
+Requirement already satisfied: awkward-cpp==23 in /usr/local/lib/python3.11/site-packages (from awkward) (23)
+Requirement already satisfied: importlib-metadata&gt;=4.13.0 in /usr/local/lib/python3.11/site-packages (from awkward) (6.8.0)
+Requirement already satisfied: numpy&gt;=1.18.0 in /usr/local/lib/python3.11/site-packages (from awkward) (1.23.5)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from awkward) (23.0)
+Requirement already satisfied: zipp&gt;=0.5 in /usr/local/lib/python3.11/site-packages (from importlib-metadata&gt;=4.13.0-&gt;awkward) (3.16.2)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+Requirement already satisfied: mplhep in /usr/local/lib/python3.11/site-packages (0.3.28)
+Requirement already satisfied: matplotlib&gt;=3.4 in /usr/local/lib/python3.11/site-packages (from mplhep) (3.7.0)
+Requirement already satisfied: mplhep-data in /usr/local/lib/python3.11/site-packages (from mplhep) (0.0.3)
+Requirement already satisfied: numpy&gt;=1.16.0 in /usr/local/lib/python3.11/site-packages (from mplhep) (1.23.5)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from mplhep) (23.0)
+Requirement already satisfied: uhi&gt;=0.2.0 in /usr/local/lib/python3.11/site-packages (from mplhep) (0.3.3)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (1.0.7)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (4.38.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (9.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.11/site-packages (from matplotlib&gt;=3.4-&gt;mplhep) (2.8.2)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.4-&gt;mplhep) (1.16.0)
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="c1"># WGET for colab</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;definitions_lorentz.yml&quot;</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/definitions_lorentz.yml&quot;</span>
+    <span class="n">definitionsFile</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;definitions_lorentz.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="c1"># The FullLoader parameter handles the conversion from YAML</span>
+    <span class="c1"># scalar values to Python the dictionary format</span>
+    <span class="n">definitions</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
+<span class="n">spectators</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;spectators&quot;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+
+<span class="n">nfeatures</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nfeatures&quot;</span><span class="p">]</span>
+<span class="n">nspectators</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nspectators&quot;</span><span class="p">]</span>
+<span class="n">nlabels</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nlabels&quot;</span><span class="p">]</span>
+<span class="n">ntracks</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;ntracks&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightblue-data-loader-span">
+<h2><span style="color:LightBlue">Data Loader</span><a class="headerlink" href="#span-style-color-lightblue-data-loader-span" title="Permalink to this heading">#</a></h2>
+<p>Here we have to define the dataset loader.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If in colab</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;GraphDataset.py&quot;</span><span class="p">):</span>
+    <span class="n">urlDSD</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/DeepSetsDataset.py&quot;</span>
+    <span class="n">DSD</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlDSD</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;utils.py&quot;</span><span class="p">):</span>
+    <span class="n">urlUtils</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/utils.py&quot;</span>
+    <span class="n">utils</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlUtils</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">DeepSetsDataset</span> <span class="kn">import</span> <span class="n">DeepSetsDataset</span>
+
+<span class="c1"># For colab</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;ntuple_merged_90.root&quot;</span><span class="p">):</span>
+    <span class="n">urlFILE</span> <span class="o">=</span> <span class="s2">&quot;http://opendata.cern.ch/eos/opendata/cms/datascience/HiggsToBBNtupleProducerTool/HiggsToBBNTuple_HiggsToBB_QCD_RunII_13TeV_MC/train/ntuple_merged_90.root&quot;</span>
+    <span class="n">dataFILE</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlFILE</span><span class="p">)</span>
+<span class="n">train_files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ntuple_merged_90.root&quot;</span><span class="p">]</span>
+
+<span class="n">train_generator</span> <span class="o">=</span> <span class="n">DeepSetsDataset</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">,</span>
+    <span class="n">spectators</span><span class="p">,</span>
+    <span class="n">start_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">stop_event</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+    <span class="n">npad</span><span class="o">=</span><span class="n">ntracks</span><span class="p">,</span>
+    <span class="n">file_names</span><span class="o">=</span><span class="n">train_files</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">train_generator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="n">test_generator</span> <span class="o">=</span> <span class="n">DeepSetsDataset</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">,</span>
+    <span class="n">spectators</span><span class="p">,</span>
+    <span class="n">start_event</span><span class="o">=</span><span class="mi">10001</span><span class="p">,</span>
+    <span class="n">stop_event</span><span class="o">=</span><span class="mi">14001</span><span class="p">,</span>
+    <span class="n">npad</span><span class="o">=</span><span class="n">ntracks</span><span class="p">,</span>
+    <span class="n">file_names</span><span class="o">=</span><span class="n">train_files</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">test_generator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c415d4ab061646f0ab0d7c633b599ba0", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "68f8e9948a1a4265adb1700a21971abb", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="span-style-color-lightblue-deep-sets-network-span">
+<h2><span style="color:LightBlue">Deep Sets Network</span><a class="headerlink" href="#span-style-color-lightblue-deep-sets-network-span" title="Permalink to this heading">#</a></h2>
+<p>Deep Sets models are designed to be explicitly permutation invariant. At their core they are composed of two networks, <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span>, such that the total network <span class="math notranslate nohighlight">\(f\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\begin{align}
+    f &amp;= \rho\left(\Sigma_{\mathbf{x}_i\in\mathcal{X}} ~ \phi(\mathbf{x}_i)\right)
+\end{align}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> are the features for the <span class="math notranslate nohighlight">\(i\)</span>-th element in the input sequence <span class="math notranslate nohighlight">\(\mathcal{X}\)</span>.</p>
+<p>We will define a DeepSets model that will take as input up to 60 of the tracks (with 48 features) with zero-padding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Sequential</span> <span class="k">as</span> <span class="n">Seq</span><span class="p">,</span>
+    <span class="n">Linear</span> <span class="k">as</span> <span class="n">Lin</span><span class="p">,</span>
+    <span class="n">ReLU</span><span class="p">,</span>
+    <span class="n">BatchNorm1d</span><span class="p">,</span>
+    <span class="n">AvgPool1d</span><span class="p">,</span>
+    <span class="n">Sigmoid</span><span class="p">,</span>
+    <span class="n">Conv1d</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">torch_scatter</span> <span class="kn">import</span> <span class="n">scatter_mean</span>
+
+<span class="c1"># ntracks = 60</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">hidden1</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">hidden2</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">hidden3</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">classify1</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">class</span> <span class="nc">DeepSets</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeepSets</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Conv1d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">hidden1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden1</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">Conv1d</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">hidden2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden2</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">Conv1d</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">hidden3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden3</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">hidden3</span><span class="p">,</span> <span class="n">classify1</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">classify1</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">classify1</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span>
+            <span class="n">Sigmoid</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">scatter_mean</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ntracks</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DeepSets</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----------&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">({</span><span class="n">l</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()})</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DeepSets</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DeepSets(
+  (phi): Sequential(
+    (0): Conv1d(6, 64, kernel_size=(1,), stride=(1,))
+    (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Conv1d(64, 32, kernel_size=(1,), stride=(1,))
+    (4): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Conv1d(32, 16, kernel_size=(1,), stride=(1,))
+    (7): BatchNorm1d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (rho): Sequential(
+    (0): Linear(in_features=16, out_features=50, bias=True)
+    (1): BatchNorm1d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=50, out_features=2, bias=True)
+    (4): Sigmoid()
+  )
+)
+----------
+{&#39;phi.0.weight&#39;: torch.Size([64, 6, 1]), &#39;phi.0.bias&#39;: torch.Size([64]), &#39;phi.1.weight&#39;: torch.Size([64]), &#39;phi.1.bias&#39;: torch.Size([64]), &#39;phi.1.running_mean&#39;: torch.Size([64]), &#39;phi.1.running_var&#39;: torch.Size([64]), &#39;phi.1.num_batches_tracked&#39;: torch.Size([]), &#39;phi.3.weight&#39;: torch.Size([32, 64, 1]), &#39;phi.3.bias&#39;: torch.Size([32]), &#39;phi.4.weight&#39;: torch.Size([32]), &#39;phi.4.bias&#39;: torch.Size([32]), &#39;phi.4.running_mean&#39;: torch.Size([32]), &#39;phi.4.running_var&#39;: torch.Size([32]), &#39;phi.4.num_batches_tracked&#39;: torch.Size([]), &#39;phi.6.weight&#39;: torch.Size([16, 32, 1]), &#39;phi.6.bias&#39;: torch.Size([16]), &#39;phi.7.weight&#39;: torch.Size([16]), &#39;phi.7.bias&#39;: torch.Size([16]), &#39;phi.7.running_mean&#39;: torch.Size([16]), &#39;phi.7.running_var&#39;: torch.Size([16]), &#39;phi.7.num_batches_tracked&#39;: torch.Size([]), &#39;rho.0.weight&#39;: torch.Size([50, 16]), &#39;rho.0.bias&#39;: torch.Size([50]), &#39;rho.1.weight&#39;: torch.Size([50]), &#39;rho.1.bias&#39;: torch.Size([50]), &#39;rho.1.running_mean&#39;: torch.Size([50]), &#39;rho.1.running_var&#39;: torch.Size([50]), &#39;rho.1.num_batches_tracked&#39;: torch.Size([]), &#39;rho.3.weight&#39;: torch.Size([2, 50]), &#39;rho.3.bias&#39;: torch.Size([2])}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-define-the-training-loop-span">
+<h2><span style="color:LightBlue">Define the training loop</span><a class="headerlink" href="#span-style-color-lightblue-define-the-training-loop-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="n">xentropy</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+
+    <span class="n">sum_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">batch_loss_item</span> <span class="o">=</span> <span class="n">xentropy</span><span class="p">(</span><span class="n">batch_output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">sum_loss</span> <span class="o">+=</span> <span class="n">batch_loss_item</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;loss = </span><span class="si">%.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">batch_loss_item</span><span class="p">))</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  <span class="c1"># to show immediately the update</span>
+
+    <span class="k">return</span> <span class="n">sum_loss</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+    <span class="n">xentropy</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+
+    <span class="n">sum_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">xentropy</span><span class="p">(</span><span class="n">batch_output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">batch_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">batch_loss_item</span> <span class="o">=</span> <span class="n">batch_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;loss = </span><span class="si">%.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">batch_loss_item</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  <span class="c1"># to show immediately the update</span>
+        <span class="n">sum_loss</span> <span class="o">+=</span> <span class="n">batch_loss_item</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">sum_loss</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-define-training-validation-testing-data-generators-span">
+<h2><span style="color:LightBlue">Define training, validation, testing data generators</span><a class="headerlink" href="#span-style-color-lightblue-define-training-validation-testing-data-generators-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">ConcatDataset</span>
+
+<span class="n">train_generator_data</span> <span class="o">=</span> <span class="n">ConcatDataset</span><span class="p">(</span><span class="n">train_generator</span><span class="o">.</span><span class="n">datas</span><span class="p">)</span>
+<span class="n">test_generator_data</span> <span class="o">=</span> <span class="n">ConcatDataset</span><span class="p">(</span><span class="n">test_generator</span><span class="o">.</span><span class="n">datas</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span><span class="p">,</span> <span class="n">DataLoader</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">valid_frac</span> <span class="o">=</span> <span class="mf">0.20</span>
+<span class="n">train_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_generator_data</span><span class="p">)</span>
+<span class="n">valid_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">valid_frac</span> <span class="o">*</span> <span class="n">train_length</span><span class="p">)</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">valid_dataset</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span>
+    <span class="n">train_generator_data</span><span class="p">,</span> <span class="p">[</span><span class="n">train_length</span> <span class="o">-</span> <span class="n">valid_num</span><span class="p">,</span> <span class="n">valid_num</span><span class="p">]</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">return</span> <span class="n">Batch</span><span class="o">.</span><span class="n">from_data_list</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># train_loader.collate_fn = collate</span>
+<span class="n">valid_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># valid_loader.collate_fn = collate</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_generator_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># test_loader.collate_fn = collate</span>
+
+<span class="n">train_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span>
+<span class="n">valid_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_dataset</span><span class="p">)</span>
+<span class="n">test_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_generator_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_length</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">valid_samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9387
+7510
+1877
+3751
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-train-span">
+<h2><span style="color:LightBlue">Train</span><a class="headerlink" href="#span-style-color-lightblue-train-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+
+<span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">stale_epochs</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">best_valid_loss</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">patience</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">train_loader</span><span class="p">,</span>
+        <span class="n">train_samples</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">leave</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">valid_loss</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">valid_loader</span><span class="p">,</span>
+        <span class="n">valid_samples</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">leave</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{:02d}</span><span class="s2">, Training Loss:   </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           Validation Loss: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_loss</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">valid_loss</span> <span class="o">&lt;</span> <span class="n">best_valid_loss</span><span class="p">:</span>
+        <span class="n">best_valid_loss</span> <span class="o">=</span> <span class="n">valid_loss</span>
+        <span class="n">modpath</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;deepsets_best.pth&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New best model saved to:&quot;</span><span class="p">,</span> <span class="n">modpath</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">modpath</span><span class="p">)</span>
+        <span class="n">stale_epochs</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stale epoch&quot;</span><span class="p">)</span>
+        <span class="n">stale_epochs</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">stale_epochs</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping after </span><span class="si">%i</span><span class="s2"> stale epochs&quot;</span> <span class="o">%</span> <span class="n">patience</span><span class="p">)</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "736d179e875344ee9d9f80c03691d130", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ce74c877f4d34446948995afd77cc3a9", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ec3f89d1ccb54a37a2256e6bdaa190ad", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 00, Training Loss:   0.4487
+           Validation Loss: 0.4485
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bfbce70fdbb64a64be5fd82f2e8a6fb8", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b02b1a9e3d224ef09d63e816dbbf4d54", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 01, Training Loss:   0.4403
+           Validation Loss: 0.4482
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2f090cef0b7b4c42b1c4cc97baba5b9e", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8b54354e2cf345b4ad702438f4172bca", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 02, Training Loss:   0.4411
+           Validation Loss: 0.4481
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "951943d4caaa47c48afb2880260568d3", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "62aace2c13ca465b83361e668c4744ef", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 03, Training Loss:   0.4401
+           Validation Loss: 0.4489
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "22949713a8f544a99a77c6efaef8d821", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "1742d8d3d0a74fa8aa3b4f39891ce048", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 04, Training Loss:   0.4398
+           Validation Loss: 0.4489
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "665f8ed5146e4e378d2749b8691dccb6", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "5ef2411c29b04761b1f5e9ef850de219", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 05, Training Loss:   0.4398
+           Validation Loss: 0.4473
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "358a2bf706f841b9871b349bde643264", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "92fac75431034c8a82be4f6cb676e319", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 06, Training Loss:   0.4397
+           Validation Loss: 0.4446
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8cf8e40a1f9343d6856373252e7551a4", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "801682a52f3443788976ae09f612f3b2", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 07, Training Loss:   0.4391
+           Validation Loss: 0.4441
+New best model saved to: deepsets_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "26d07abf032943ca9b0822d4f23c1b41", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c8aedd84b831494ea0ff4a67e9190713", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 08, Training Loss:   0.4397
+           Validation Loss: 0.4489
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d31f4b70057d4ba087aa2e2223211d33", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "85990dff046042d39ca8254e85ec3da5", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 09, Training Loss:   0.4389
+           Validation Loss: 0.4489
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "0fd2e9a1033c4a58862f7cfecc9a5b25", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab4190214a9a44408ea91653c91f085a", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 10, Training Loss:   0.4387
+           Validation Loss: 0.4460
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "63db6c687fcb44aaa2743d19401030f5", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "576f66f0a1424f2ba100721ec51ddc35", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 11, Training Loss:   0.4393
+           Validation Loss: 0.4458
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b093e02b0223471e872d60ce5c709739", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "39ea48014b3b4e7d81b47bc3726df1a8", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 12, Training Loss:   0.4386
+           Validation Loss: 0.4442
+Stale epoch
+Early stopping after 5 stale epochs
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-evaluate-on-test-data-span">
+<h2><span style="color:LightBlue">Evaluate on Test Data</span><a class="headerlink" href="#span-style-color-lightblue-evaluate-on-test-data-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In case you need to load the model from a pth file</span>
+<span class="c1"># Trained on 4 vectors (as above in notebook)</span>
+<span class="c1"># urlPTH = &quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/deepsets_best_4vec.pth&quot;</span>
+<span class="c1"># pthFile = wget.download(urlPTH)</span>
+<span class="c1"># model.load_state_dict(torch.load(&quot;deepsets_best_4vec.pth&quot;))</span>
+<span class="c1"># Trained on all possible inputs (a different configuration)</span>
+<span class="c1"># urlPTH = &quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/deepsets_best_AllTraining.pth&quot;</span>
+<span class="c1"># pthFile = wget.download(urlPTH)</span>
+<span class="c1"># model.load_state_dict(torch.load(&quot;deepsets_best_AllTraining.pth&quot;))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">test_samples</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">track_pt</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">track_pt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y_predict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_output</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">y_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">track_pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">track_pt</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_predict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "42ec7209b49d4d5c81079c203d43803b", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">track_pt</span><span class="p">[</span><span class="n">y_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sig&quot;</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">track_pt</span><span class="p">[</span><span class="n">y_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;bkg&quot;</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+<img alt="../../_images/561ed8bb1b3f50deb49a0b50fedf4aa841e980fd650ca3c813ad8fbbc46ce5a6.png" src="../../_images/561ed8bb1b3f50deb49a0b50fedf4aa841e980fd650ca3c813ad8fbbc46ce5a6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
+<span class="kn">import</span> <span class="nn">mplhep</span> <span class="k">as</span> <span class="nn">hep</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">hep</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">ROOT</span><span class="p">)</span>
+<span class="c1"># create ROC curves</span>
+<span class="n">fpr_deepset</span><span class="p">,</span> <span class="n">tpr_deepset</span><span class="p">,</span> <span class="n">threshold_deepset</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;deepset_roc.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fpr_deepset</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">tpr_deepset</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">threshold_deepset</span><span class="p">)</span>
+
+<span class="c1"># plot ROC curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">tpr_deepset</span><span class="p">,</span>
+    <span class="n">fpr_deepset</span><span class="p">,</span>
+    <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DeepSet, AUC = </span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr_deepset</span><span class="p">,</span> <span class="n">tpr_deepset</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;True positive rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;False positive rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/794d6000ec4b8756371145c81cece9ad17d008326ab13739124bc3767611deec.png" src="../../_images/794d6000ec4b8756371145c81cece9ad17d008326ab13739124bc3767611deec.png" />
+</div>
+</div>
+<section id="span-style-color-lightgreen-auc-and-roc-curves-span">
+<h3><span style="color:LightGreen">AUC and ROC Curves</span><a class="headerlink" href="#span-style-color-lightgreen-auc-and-roc-curves-span" title="Permalink to this heading">#</a></h3>
+<p>To better understand this curve, let define the <span style="color:Violet">confusion matrix</span>:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ConfusionMatrix.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ConfusionMatrix.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ConfusionMatrix.png" style="width: 400px;" /></a></img><br></p>
+<p><span style="color:Violet">True Positive Rate</span> (TPR) is a synonym for recall/sensitivity and is therefore defined as follows:
+$<span class="math notranslate nohighlight">\( \Large
+TPR = \frac{TP}{TP + FN}
+\)</span>$
+TPR tells us what proportion of the positive class got correctly classified. A simple example would be determining what proportion of the actual sick people were correctly detected by the model.</p>
+<p><span style="color:Violet">False Negative Rate</span> (FNR) is defined as follows:
+$<span class="math notranslate nohighlight">\( \Large
+FNR = \frac{FN}{TP + FN}
+\)</span>$
+FNR tells us what proportion of the positive class got incorrectly classified by the classifier. A higher TPR and a lower FNR are desirable since we want to classify the positive class correctly.</p>
+<p><span style="color:Violet">True Negative Rate</span> (TNR) is a synonym for specificity and is defined as follows:
+$<span class="math notranslate nohighlight">\( \Large
+TNR = \frac{TN}{TN + FP}
+\)</span>$
+Specificity tells us what proportion of the negative class got correctly classified. Taking the same example as in Sensitivity, Specificity would mean determining the proportion of healthy people who were correctly identified by the model.</p>
+<p><span style="color:Violet">False Positive Rate</span> (FPR) is defined as follows:
+$<span class="math notranslate nohighlight">\( \Large
+TPR = \frac{FP}{FP + TN}
+\)</span>$
+FPR tells us what proportion of the negative class got incorrectly classified by the classifier. A higher TNR and a lower FPR are desirable since we want to classify the negative class correctly.</p>
+<p>A <span style="color:Violet">ROC curve</span> (receiver operating characteristic curve) is a graph showing the performance of a classification model at all classification thresholds. This curve plots two parameters:</p>
+<ul class="simple">
+<li><p>True Positive Rate</p></li>
+<li><p>False Positive Rate</p></li>
+</ul>
+<p>An ROC curve plots TPR vs. FPR at different classification thresholds. Lowering the classification threshold classifies more items as positive, thus increasing both False Positives and True Positives. The following figure shows a typical ROC curve.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ROC.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ROC.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ROC.png" style="width: 400px;" /></a></img><br></p>
+<p><span style="color:Violet">AUC</span> stands for “Area under the ROC Curve.” That is, AUC measures the entire two-dimensional area underneath the entire ROC curve (think integral calculus) from (0,0) to (1,1). AUC provides an aggregate measure of performance across all possible classification thresholds.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-AUC.png"><img alt="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-AUC.png" class="align-left" src="https://raw.githubusercontent.com/illinois-ipaml/MachineLearningForPhysics/main/img/GraphNeuralNetworks-AUC.png" style="width: 400px;" /></a></img><br></p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-interaction-network-span">
+<h1><span style="color:Orange">Interaction Network</span><a class="headerlink" href="#span-style-color-orange-interaction-network-span" title="Permalink to this heading">#</a></h1>
+<p>Now we will look at graph neural networks using the PyTorch Geometric library: <a class="reference external" href="https://pytorch-geometric.readthedocs.io/">https://pytorch-geometric.readthedocs.io/</a>. See <span id="id1">[]</span> for more details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="c1"># WGET for colab</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;definitions.yml&quot;</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/definitions.yml&quot;</span>
+    <span class="n">definitionsFile</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;definitions.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="c1"># The FullLoader parameter handles the conversion from YAML</span>
+    <span class="c1"># scalar values to Python the dictionary format</span>
+    <span class="n">definitions</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+
+
+<span class="c1"># You can test with using only 4-vectors by using:</span>
+<span class="c1"># if not os.path.exists(&quot;definitions_lorentz.yml&quot;):</span>
+<span class="c1">#    url = &quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/definitions_lorentz.yml&quot;</span>
+<span class="c1">#    definitionsFile = wget.download(url)</span>
+<span class="c1"># with open(&#39;definitions_lorentz.yml&#39;) as file:</span>
+<span class="c1">#    # The FullLoader parameter handles the conversion from YAML</span>
+<span class="c1">#    # scalar values to Python the dictionary format</span>
+<span class="c1">#    definitions = yaml.load(file, Loader=yaml.FullLoader)</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
+<span class="n">spectators</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;spectators&quot;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+
+<span class="n">nfeatures</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nfeatures&quot;</span><span class="p">]</span>
+<span class="n">nspectators</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nspectators&quot;</span><span class="p">]</span>
+<span class="n">nlabels</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;nlabels&quot;</span><span class="p">]</span>
+<span class="n">ntracks</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;ntracks&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightblue-graph-datasets-span">
+<h2><span style="color:LightBlue">Graph Datasets</span><a class="headerlink" href="#span-style-color-lightblue-graph-datasets-span" title="Permalink to this heading">#</a></h2>
+<p>Here we have to define the graph dataset. We do this in a separate class following this example: <a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html#creating-larger-datasets">https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html#creating-larger-datasets</a></p>
+<p>Formally, a graph is represented by a triplet <span class="math notranslate nohighlight">\(\mathcal G = (\mathbf{u}, V, E)\)</span>, consisting of a graph-level, or <em>global</em>, feature vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, a set of <span class="math notranslate nohighlight">\(N^v\)</span> nodes <span class="math notranslate nohighlight">\(V\)</span>, and a set of <span class="math notranslate nohighlight">\(N^e\)</span> edges <span class="math notranslate nohighlight">\(E\)</span>.
+The nodes are given by <span class="math notranslate nohighlight">\(V = \{\mathbf{v}_i\}_{i=1:N^v}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> represents the <span class="math notranslate nohighlight">\(i\)</span>th node’s attributes.
+The edges connect pairs of nodes and are given by <span class="math notranslate nohighlight">\(E = \{\left(\mathbf{e}_k, r_k, s_k\right)\}_{k=1:N^e}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{e}_k\)</span> represents the <span class="math notranslate nohighlight">\(k\)</span>th edge’s attributes, and <span class="math notranslate nohighlight">\(r_k\)</span> and <span class="math notranslate nohighlight">\(s_k\)</span> are the indices of the “receiver” and
+“sender” nodes, respectively, connected by the <span class="math notranslate nohighlight">\(k\)</span>th edge (from the sender node to the receiver node).
+The receiver and sender index vectors are an alternative way of encoding the directed adjacency matrix.</p>
+<a class="reference internal image-reference" href="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/attributes.png"><img alt="attributes" src="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/attributes.png" style="width: 1000px;" /></a>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If in colab</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;GraphDataset.py&quot;</span><span class="p">):</span>
+    <span class="n">urlDSD</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/GraphDataset.py&quot;</span>
+    <span class="n">DSD</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlDSD</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;utils.py&quot;</span><span class="p">):</span>
+    <span class="n">urlUtils</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/utils.py&quot;</span>
+    <span class="n">utils</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlUtils</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">GraphDataset</span> <span class="kn">import</span> <span class="n">GraphDataset</span>
+
+<span class="c1"># For Colab</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;ntuple_merged_90.root&quot;</span><span class="p">):</span>
+    <span class="n">urlFILE</span> <span class="o">=</span> <span class="s2">&quot;http://opendata.cern.ch/eos/opendata/cms/datascience/HiggsToBBNtupleProducerTool/HiggsToBBNTuple_HiggsToBB_QCD_RunII_13TeV_MC/train/ntuple_merged_90.root&quot;</span>
+    <span class="n">dataFILE</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlFILE</span><span class="p">)</span>
+<span class="n">file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ntuple_merged_90.root&quot;</span><span class="p">]</span>
+
+<span class="n">graph_dataset</span> <span class="o">=</span> <span class="n">GraphDataset</span><span class="p">(</span>
+    <span class="s2">&quot;gdata_train&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">,</span>
+    <span class="n">spectators</span><span class="p">,</span>
+    <span class="n">start_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">stop_event</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span>
+    <span class="n">n_events_merge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">file_names</span><span class="o">=</span><span class="n">file_names</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">GraphDataset</span><span class="p">(</span>
+    <span class="s2">&quot;gdata_test&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">,</span>
+    <span class="n">spectators</span><span class="p">,</span>
+    <span class="n">start_event</span><span class="o">=</span><span class="mi">8001</span><span class="p">,</span>
+    <span class="n">stop_event</span><span class="o">=</span><span class="mi">10001</span><span class="p">,</span>
+    <span class="n">n_events_merge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">file_names</span><span class="o">=</span><span class="n">file_names</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightblue-graph-neural-network-span">
+<h2><span style="color:LightBlue">Graph Neural Network</span><a class="headerlink" href="#span-style-color-lightblue-graph-neural-network-span" title="Permalink to this heading">#</a></h2>
+<p>Here, we recapitulate the “graph network” (GN) formalism described in this <a class="reference external" href="https://arxiv.org/abs/1612.00222">paper</a>, which generalizes various GNNs and other similar methods.</p>
+<p>GNs are graph-to-graph mappings, whose output graphs have the same node and edge structure as the input. Formally, a GN block contains three “update” functions, <span class="math notranslate nohighlight">\(\phi\)</span>, and three “aggregation” functions, <span class="math notranslate nohighlight">\(\rho\)</span>. The stages of processing in a single GN block are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    \mathbf{e}'_k &amp;= \phi^e\left(\mathbf{e}_k, \mathbf{v}_{r_k}, \mathbf{v}_{s_k}, \mathbf{u} \right) &amp; \mathbf{\bar{e}}'_i &amp;= \rho^{e \rightarrow v}\left(E'_i\right) &amp; \text{(Edge block),} \\
+    \mathbf{v}'_i &amp;= \phi^v\left(\mathbf{\bar{e}}'_i, \mathbf{v}_i, \mathbf{u}\right) &amp; 
+    \mathbf{\bar{e}}' &amp;= \rho^{e \rightarrow u}\left(E'\right) &amp;  \text{(Node block),} \\
+    \mathbf{u}' &amp;= \phi^u\left(\mathbf{\bar{e}}', \mathbf{\bar{v}}', \mathbf{u}\right) &amp; 
+    \mathbf{\bar{v}}' &amp;= \rho^{v \rightarrow u}\left(V'\right) &amp;\text{(Global block).}
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(E'_i = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{r_k=i,\; k=1:N^e}\)</span> contains the updated edge features for edges whose receiver node is the <span class="math notranslate nohighlight">\(i^\text{th}\)</span> node, <span class="math notranslate nohighlight">\(E' = \bigcup_i E_i' = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{k=1:N^e}\)</span> is the set of updated edges, and <span class="math notranslate nohighlight">\(V'=\left\{\mathbf{v}'_i\right\}_{i=1:N^v}\)</span> is the set of updated nodes.</p>
+<a class="reference internal image-reference" href="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/GN-full-block.png"><img alt="GN full block" src="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/GN-full-block.png" style="width: 1000px;" /></a>
+<p>We will define an interaction network model similar to this <a class="reference external" href="https://arxiv.org/abs/1909.12285">paper</a>, but just modeling the particle-particle interactions. It will take as input all of the tracks (with 48 features) without truncating or zero-padding. Another modification is the use of batch normalization <span id="id2">[]</span> layers to improve the stability of the training.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch_geometric.transforms</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">EdgeConv</span><span class="p">,</span> <span class="n">global_mean_pool</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Sequential</span> <span class="k">as</span> <span class="n">Seq</span><span class="p">,</span> <span class="n">Linear</span> <span class="k">as</span> <span class="n">Lin</span><span class="p">,</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">BatchNorm1d</span>
+<span class="kn">from</span> <span class="nn">torch_scatter</span> <span class="kn">import</span> <span class="n">scatter_mean</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">MetaLayer</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="mi">48</span>
+<span class="n">hidden</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">class</span> <span class="nc">EdgeBlock</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">EdgeBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_mlp</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span> <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden</span><span class="p">),</span> <span class="n">ReLU</span><span class="p">(),</span> <span class="n">Lin</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_mlp</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">NodeBlock</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NodeBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_mlp_1</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_mlp_2</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+            <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">edge_index</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="n">edge_attr</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_mlp_1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">scatter_mean</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_mlp_2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">GlobalBlock</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GlobalBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_mlp</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+            <span class="n">Lin</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span> <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden</span><span class="p">),</span> <span class="n">ReLU</span><span class="p">(),</span> <span class="n">Lin</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">scatter_mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_mlp</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">InteractionNetwork</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">InteractionNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interactionnetwork</span> <span class="o">=</span> <span class="n">MetaLayer</span><span class="p">(</span><span class="n">EdgeBlock</span><span class="p">(),</span> <span class="n">NodeBlock</span><span class="p">(),</span> <span class="n">GlobalBlock</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bn</span> <span class="o">=</span> <span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactionnetwork</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">InteractionNetwork</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2><span style="color:LightBlue">Define the training loop</span><a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="n">xentropy</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+
+    <span class="n">sum_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">batch_loss_item</span> <span class="o">=</span> <span class="n">xentropy</span><span class="p">(</span><span class="n">batch_output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">sum_loss</span> <span class="o">+=</span> <span class="n">batch_loss_item</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;loss = </span><span class="si">%.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">batch_loss_item</span><span class="p">))</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  <span class="c1"># to show immediately the update</span>
+
+    <span class="k">return</span> <span class="n">sum_loss</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+    <span class="n">xentropy</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+
+    <span class="n">sum_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">xentropy</span><span class="p">(</span><span class="n">batch_output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">batch_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">batch_loss_item</span> <span class="o">=</span> <span class="n">batch_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;loss = </span><span class="si">%.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">batch_loss_item</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  <span class="c1"># to show immediately the update</span>
+        <span class="n">sum_loss</span> <span class="o">+=</span> <span class="n">batch_loss_item</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">sum_loss</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2><span style="color:LightBlue">Define training, validation, testing data generators</span><a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">DataListLoader</span><span class="p">,</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span>
+
+
+<span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">return</span> <span class="n">Batch</span><span class="o">.</span><span class="n">from_data_list</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">valid_frac</span> <span class="o">=</span> <span class="mf">0.20</span>
+<span class="n">full_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph_dataset</span><span class="p">)</span>
+<span class="n">valid_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">valid_frac</span> <span class="o">*</span> <span class="n">full_length</span><span class="p">)</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">valid_dataset</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span>
+    <span class="n">graph_dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">full_length</span> <span class="o">-</span> <span class="n">valid_num</span><span class="p">,</span> <span class="n">valid_num</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataListLoader</span><span class="p">(</span>
+    <span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">train_loader</span><span class="o">.</span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">collate</span>
+<span class="n">valid_loader</span> <span class="o">=</span> <span class="n">DataListLoader</span><span class="p">(</span>
+    <span class="n">valid_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">valid_loader</span><span class="o">.</span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">collate</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataListLoader</span><span class="p">(</span>
+    <span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">test_loader</span><span class="o">.</span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">collate</span>
+
+
+<span class="n">train_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span>
+<span class="n">valid_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_dataset</span><span class="p">)</span>
+<span class="n">test_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">full_length</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">valid_samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7501
+6001
+1500
+1886
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2><span style="color:LightBlue">Train</span><a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+
+<span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">stale_epochs</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">best_valid_loss</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="n">patience</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">train_loader</span><span class="p">,</span>
+        <span class="n">train_samples</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">leave</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">valid_loss</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">valid_loader</span><span class="p">,</span>
+        <span class="n">valid_samples</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">leave</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{:02d}</span><span class="s2">, Training Loss:   </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           Validation Loss: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_loss</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">valid_loss</span> <span class="o">&lt;</span> <span class="n">best_valid_loss</span><span class="p">:</span>
+        <span class="n">best_valid_loss</span> <span class="o">=</span> <span class="n">valid_loss</span>
+        <span class="n">modpath</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;interactionnetwork_best.pth&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New best model saved to:&quot;</span><span class="p">,</span> <span class="n">modpath</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">modpath</span><span class="p">)</span>
+        <span class="n">stale_epochs</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stale epoch&quot;</span><span class="p">)</span>
+        <span class="n">stale_epochs</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">stale_epochs</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping after </span><span class="si">%i</span><span class="s2"> stale epochs&quot;</span> <span class="o">%</span> <span class="n">patience</span><span class="p">)</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1a6af453882a455b8a4bdc95a47f3bc1", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7ebfa54ed82f47eab6dba0a0da6117ee", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "012f6725d5e7435fbc48e0958e14a7d7", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 00, Training Loss:   0.2306
+           Validation Loss: 0.1614
+New best model saved to: interactionnetwork_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dd02581e84644355a0df58dd81cade1d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "928c91eda4e44d8696e87f6f5aa16f44", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 01, Training Loss:   0.1688
+           Validation Loss: 0.1328
+New best model saved to: interactionnetwork_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab7e345b0630455fb03f65bcf5da5895", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6d96af4b027b4c66ba592c1369c5904c", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 02, Training Loss:   0.1638
+           Validation Loss: 0.1307
+New best model saved to: interactionnetwork_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9c7880e064df48e39cdcc989d268b88f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8fa7006e8f9746078a025c6906daff05", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 03, Training Loss:   0.1482
+           Validation Loss: 0.1558
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "18eeb525027c46bdbc6c4855b9d87eaa", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "3471d1250420408aa47a631b6bad5370", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 04, Training Loss:   0.1479
+           Validation Loss: 0.1069
+New best model saved to: interactionnetwork_best.pth
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "227f4e9d0ff641b78b60b643de3cf5e3", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f39577fd65644c8080fdbb198a3f401d", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 05, Training Loss:   0.1415
+           Validation Loss: 0.1417
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "25ec76cfb4f34226907eac24a6c5bf5a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab65c46d1d6b4b9ba6d881edbeab7afb", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 06, Training Loss:   0.1480
+           Validation Loss: 0.1338
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bf87648b8d514415a23842b7cc148537", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "408a5042b5db44daa94a22453795b864", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 07, Training Loss:   0.1387
+           Validation Loss: 0.1198
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "aa76b7de913a45eb9af4cc52c1d1d7b5", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7fd7796475c24cb0b1c90e14ccebcfeb", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 08, Training Loss:   0.1394
+           Validation Loss: 0.1224
+Stale epoch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2ef67f8df9b74e16863ed2ad5cef22ce", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "670a445b6e174491a0803fd2c90d4dc6", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 09, Training Loss:   0.1290
+           Validation Loss: 0.1045
+New best model saved to: interactionnetwork_best.pth
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2><span style="color:LightBlue">Evaluate on Test Data</span><a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In case you need to load the model from a pth file</span>
+<span class="c1"># Trained on all possible inputs (as above in notebook)</span>
+<span class="c1"># urlPTH = &quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/interactionnetwork_best_Aug1_AllTraining.pth&quot;</span>
+<span class="c1"># pthFile = wget.download(urlPTH)</span>
+<span class="c1"># model.load_state_dict(torch.load(&quot;interactionnetwork_best_Aug1_AllTraining.pth&quot;))</span>
+<span class="c1"># Trained on 4 vector input (different setup)</span>
+<span class="c1"># urlPTH = &quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/interactionnetwork_best_Aug1_4vec.pth&quot;</span>
+<span class="c1"># pthFile = wget.download(urlPTH)</span>
+<span class="c1"># model.load_state_dict(torch.load(&quot;interactionnetwork_best_Aug1_4vec.pth&quot;))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">test_samples</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">batch_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+    <span class="n">y_predict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_output</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">y_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_predict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c023c676f7f14c92b476f161b7d948c0", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">mplhep</span> <span class="k">as</span> <span class="nn">hep</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">hep</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">ROOT</span><span class="p">)</span>
+<span class="c1"># create ROC curves</span>
+<span class="n">fpr_gnn</span><span class="p">,</span> <span class="n">tpr_gnn</span><span class="p">,</span> <span class="n">threshold_gnn</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">y_predict</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;gnn_roc.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fpr_gnn</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">tpr_gnn</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">threshold_gnn</span><span class="p">)</span>
+
+
+<span class="c1"># For colab:</span>
+<span class="c1">#if not os.path.exists(&quot;deepset_roc.py&quot;):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;/Users/msn/repos/jmduarte/iaifi-summer-school/book/deepset_roc.npy&quot;</span><span class="p">):</span>
+    <span class="n">urlROC</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/jmduarte/iaifi-summer-school/main/book/deepset_roc.npy&quot;</span>
+    <span class="n">rocFile</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">urlROC</span><span class="p">)</span>
+
+<span class="c1">#with open(&quot;deepset_roc.npy&quot;, &quot;rb&quot;) as f:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/Users/msn/repos/jmduarte/iaifi-summer-school/book/deepset_roc.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">fpr_deepset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">tpr_deepset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">threshold_deepset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># plot ROC curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">tpr_deepset</span><span class="p">,</span>
+    <span class="n">fpr_deepset</span><span class="p">,</span>
+    <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DeepSet, AUC = </span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr_deepset</span><span class="p">,</span> <span class="n">tpr_deepset</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">tpr_gnn</span><span class="p">,</span>
+    <span class="n">fpr_gnn</span><span class="p">,</span>
+    <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;GNN, AUC = </span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr_gnn</span><span class="p">,</span> <span class="n">tpr_gnn</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;True positive rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;False positive rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1bc313059b2ec8ffa31e4099ece2d3474b4e95284d53d3c6d5e589909b68cb3d.png" src="../../_images/1bc313059b2ec8ffa31e4099ece2d3474b4e95284d53d3c6d5e589909b68cb3d.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Initial version: Mark Neubauer</p></li>
+<li><p>Initial version: Mark Neubauer</p>
+<ul>
+<li><p>Materials from:</p>
+<ul>
+<li><p><a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html">https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html</a></p></li>
+<li><p><a class="reference external" href="https://jduarte.physics.ucsd.edu/iaifi-summer-school/1.4_gnn_in.html">https://jduarte.physics.ucsd.edu/iaifi-summer-school/1.4_gnn_in.html</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p>© Copyright 2024</p>
 </section>
@@ -571,8 +2349,38 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Geometric Deep Learning and Graph Neural Networks</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-to-graph-data-span"><span style="color:Orange">Introduction to Graph Data</span></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-graph-classification-span"><span style="color:Orange">Graph Classification</span></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exploring-graph-data-with-pytorch-geometric-span"><span style="color:Orange">Exploring graph data with Pytorch Geometric</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-implementing-a-graph-neural-network-span"><span style="color:LightBlue">Implementing a Graph Neural Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-training-the-model-span"><span style="color:LightBlue">Training the model</span></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span"><span style="color:Orange">Deep Sets</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-data-loader-span"><span style="color:LightBlue">Data Loader</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-deep-sets-network-span"><span style="color:LightBlue">Deep Sets Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-define-the-training-loop-span"><span style="color:LightBlue">Define the training loop</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-define-training-validation-testing-data-generators-span"><span style="color:LightBlue">Define training, validation, testing data generators</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-train-span"><span style="color:LightBlue">Train</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-evaluate-on-test-data-span"><span style="color:LightBlue">Evaluate on Test Data</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-auc-and-roc-curves-span"><span style="color:LightGreen">AUC and ROC Curves</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-interaction-network-span"><span style="color:Orange">Interaction Network</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-graph-datasets-span"><span style="color:LightBlue">Graph Datasets</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-graph-neural-network-span"><span style="color:LightBlue">Graph Neural Network</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span style="color:LightBlue">Define the training loop</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span style="color:LightBlue">Define training, validation, testing data generators</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color:LightBlue">Train</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color:LightBlue">Evaluate on Test Data</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>
