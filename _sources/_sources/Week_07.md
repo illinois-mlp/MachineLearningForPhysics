@@ -11,7 +11,7 @@ You will learn the basics of Convolutional and Recurrent Neural Networks
 * {doc}`lectures/ConvolutionalRecurrentNeuralNetworks`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_07`
+* {doc}`homework/Homework_06`
 
 ## *Supplemental Readings*
 * None

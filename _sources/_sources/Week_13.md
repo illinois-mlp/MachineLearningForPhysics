@@ -1,17 +1,17 @@
-# <span style="color: blue;"><b>Learning from the Machines</b></span>
+# <span style="color: blue;"><b>Physics Informed Neural Networks</b></span>
 
 ## *Overview*
-You will learn the basics of Learning from the Machines
+You will learn about Physics Informed Neural Networks
 
 ## *Goals*
-* Learn about Learning from the Machines
+* Learn about Physics Informed Neural Networks
 
 ## *Lecture Materials*
-* [Slides](https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing)
-* {doc}`lectures/LearningPhysicsMachines`
+* [Slides](https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing)
+* {doc}`lectures/PhysicsInformedNeuralNetworks`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_13`
+* {doc}`homework/Homework_11`
 
 ## *Supplemental Readings*
 * None
