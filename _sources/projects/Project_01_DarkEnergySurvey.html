@@ -493,6 +493,21 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-importing-and-setup-span"><span style="color:Orange">Importing and Setup</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-span"><span style="color:LightGreen">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-span"><span style="color:LightGreen">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-span"><span style="color:LightGreen">Question 03</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-accessing-data-from-data-lab-span"><span style="color:Orange">Accessing Data from Data Lab</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-span"><span style="color:LightGreen">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-span"><span style="color:LightGreen">Question 05</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-span"><span style="color:LightGreen">Question 06</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-07-span"><span style="color:LightGreen">Question 07</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
 </ul>
@@ -515,6 +530,156 @@ document.write(`
 <p>The Dark Energy Survey (DES) is an internationally collaborative large sky survey to map hundreds of millions of galaxies, detect thousands of supernovae, and find patterns of cosmic structure to better understand dark energy and the measure the cosmic acceleration of our expanding universe with high precision.</p>
 <p>The instrument used by DES is the Dark Energy Camera (DECam), which is mounted on the Victor M. Blanco 4-meter Telescope at the Cerro Tololo Inter-American Observatory (CTIO) in the Chilean Andes. DECam has several major components: five optical lenses, a Hexapod positioning and alignment system, a shutter, a set of color filters, and a digital imager.</p>
 </section>
+<section id="span-style-color-orange-data-sources-span">
+<h2><span style="color:Orange">Data Sources</span><a class="headerlink" href="#span-style-color-orange-data-sources-span" title="Permalink to this heading">#</a></h2>
+<p>This project is based on the Data Release 1 (DR1) of the DES. We will use the <code class="docutils literal notranslate"><span class="pre">des_dr1.main</span></code> table directly from NOIRLAB’s Astro Data Lab server which catalogs the DES data releases.</p>
+<p>NOIRLAB’s Astro Data Lab: <a class="reference external" href="https://datalab.noirlab.edu/des/access.php">https://datalab.noirlab.edu/des/access.php</a></p>
+</section>
+<section id="span-style-color-orange-importing-and-setup-span">
+<h2><span style="color:Orange">Importing and Setup</span><a class="headerlink" href="#span-style-color-orange-importing-and-setup-span" title="Permalink to this heading">#</a></h2>
+<p>You will need to install and import the <code class="docutils literal notranslate"><span class="pre">astro-datalab</span></code> module for data acquisition.</p>
+<p>Please note, you will have to restart runtime to run your code after pip installing the <code class="docutils literal notranslate"><span class="pre">astro-datalab</span></code> module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install --ignore-installed --no-cache-dir astro-datalab
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cluster</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="c1"># Data Lab imports</span>
+<span class="kn">from</span> <span class="nn">dl</span> <span class="kn">import</span> <span class="n">queryClient</span> <span class="k">as</span> <span class="n">qc</span><span class="p">,</span> <span class="n">storeClient</span> <span class="k">as</span> <span class="n">sc</span>
+<span class="kn">from</span> <span class="nn">dl.helpers.utils</span> <span class="kn">import</span> <span class="n">convert</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-questions-span">
+<h2><span style="color:Orange">Questions</span><a class="headerlink" href="#span-style-color-orange-questions-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-lightgreen-question-01-span">
+<h3><span style="color:LightGreen">Question 01</span><a class="headerlink" href="#span-style-color-lightgreen-question-01-span" title="Permalink to this heading">#</a></h3>
+<p>What is the Dark Energy Survey? What are it’s main goals? What part of the night sky does the DES cover?</p>
+</section>
+<section id="span-style-color-lightgreen-question-02-span">
+<h3><span style="color:LightGreen">Question 02</span><a class="headerlink" href="#span-style-color-lightgreen-question-02-span" title="Permalink to this heading">#</a></h3>
+<p>Read the DES DR1 paper <a class="reference external" href="https://urldefense.com/v3/__https://arxiv.org/abs/1801.03181__;!!DZ3fjg!-VVx5uQqQ6ZzOgr-EjFgoLc8lr9NMhNBQvahQLwOY5HAZ8lWfzbxhbpxn8e7OlM44QFoWvd5J20qch77Aqg$">[1]</a>. What are the four completementary measurements that DES does to probe the universe? To achieve these goals, what surveys in which wave bands does DES conduct?</p>
+</section>
+<section id="span-style-color-lightgreen-question-03-span">
+<h3><span style="color:LightGreen">Question 03</span><a class="headerlink" href="#span-style-color-lightgreen-question-03-span" title="Permalink to this heading">#</a></h3>
+<p>What is variable or feature of the data does DES use to classify its’ objects  morphologically (stars or galaxies), as described in the DR1 paper <a class="reference external" href="https://arxiv.org/abs/1801.03181">[1]</a></p>
+</section>
+</section>
+<section id="span-style-color-orange-accessing-data-from-data-lab-span">
+<h2><span style="color:Orange">Accessing Data from Data Lab</span><a class="headerlink" href="#span-style-color-orange-accessing-data-from-data-lab-span" title="Permalink to this heading">#</a></h2>
+<p>Below is a sample query statement to acquire the relevant data of the <code class="docutils literal notranslate"><span class="pre">des_dr1.main</span></code> table from Astro Data Lab <a class="reference external" href="https://urldefense.com/v3/__https://github.com/astro-datalab/notebooks-latest/blob/master/03_ScienceExamples/StarGalQSOSeparation/StarGalQsoDESDR1.ipynb__;!!DZ3fjg!-VVx5uQqQ6ZzOgr-EjFgoLc8lr9NMhNBQvahQLwOY5HAZ8lWfzbxhbpxn8e7OlM44QFoWvd5J20qD2flJpc$">[2]</a> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Write query statement (sql) as a string</span>
+<span class="c1"># NOTE: triple quotes allow us to break the string on multiple lines</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        SELECT mag_auto_g as gmag, mag_auto_r as rmag, mag_auto_z as zmag,</span>
+<span class="s2">               mag_auto_i as imag, mag_auto_y as ymag,</span>
+<span class="s2">               kron_radius, spread_model_g, class_star_g, spread_model_r, class_star_r,</span>
+<span class="s2">               spread_model_z, class_star_z,</span>
+<span class="s2">               snr_g, snr_r, snr_z, ra, dec</span>
+<span class="s2">        FROM des_dr1.main</span>
+<span class="s2">        WHERE (fluxerr_auto_g&gt;0 and fluxerr_auto_r&gt;0 and fluxerr_auto_z&gt;0)</span>
+<span class="s2">        LIMIT 1000&quot;&quot;&quot;</span>
+
+<span class="c1"># mag_auto_g,r,i,z,y = AB magnitudes in DECam g,r,i,z,y bands</span>
+<span class="c1"># kron_radius        = Kron radius from SExtractor (pixels)</span>
+<span class="c1"># spread_model_g,r,z = star/galaxy classifier quantifying light profile relative to PSF</span>
+<span class="c1"># class_star_g,r,z   = star/extended source classifier (from 0 to 1)</span>
+<span class="c1"># snr_g,r,z          = computed signal-to-noise ratios (S/N) in g,r,z bands</span>
+<span class="c1"># ra,dec             = celestial coordinates</span>
+<span class="c1">#</span>
+<span class="c1"># WHERE: requirement that error&gt;0 (to avoid dividing by zero) in g,r,z bands</span>
+<span class="c1"># LIMIT: returns 1,000 rows that satisfy the query</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Execute the query synchronously, if short (e.g., LIMIT&lt;=300,000)</span>
+<span class="c1"># We then convert the returned result, a CSV-formatted string, to a Pandas data frame,</span>
+<span class="c1"># making sure that any potential &#39;Infinity&#39; values are converted to NaN.</span>
+<span class="n">sample_res</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="n">sample_df</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">sample_res</span><span class="p">,</span><span class="s1">&#39;pandas&#39;</span><span class="p">,</span><span class="n">na_values</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Infinity&#39;</span><span class="p">,</span><span class="s1">&#39;-Infinity&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-question-04-span">
+<h3><span style="color:LightGreen">Question 04</span><a class="headerlink" href="#span-style-color-lightgreen-question-04-span" title="Permalink to this heading">#</a></h3>
+<p>Write a query to get the following data from the <code class="docutils literal notranslate"><span class="pre">des_dr1.main</span></code> table:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mag_auto_g,r,i,z,y</span></code> = AB magnitudes in DECam g,r,i,z,y bands</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kron_radius</span></code>        = Kron radius from SExtractor (pixels)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spread_model_g,r,z</span></code> = star/galaxy classifier quantifying light profile relative to PSF</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_star_g,r,z</span></code>   = star/extended source classifier (from 0 to 1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snr_g,r,z</span></code>          = computed signal-to-noise ratios (S/N) in g,r,z bands</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ra</span></code>,<code class="docutils literal notranslate"><span class="pre">dec</span></code>             = celestial coordinates</p></li>
+</ul>
+<p>Apply the following conditions and limit your query results to 100,000 samples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fluxerr_auto_X</span></code> &gt; 0 for X in g, r, and z bands</p></li>
+<li><p>-50 &lt;= <code class="docutils literal notranslate"><span class="pre">snr_X</span></code> &lt;= 50 for X in g, r, and z bands</p></li>
+</ul>
+<p>Convert the acquired data into a Pandas data frame.</p>
+</section>
+<section id="span-style-color-lightgreen-question-05-span">
+<h3><span style="color:LightGreen">Question 05</span><a class="headerlink" href="#span-style-color-lightgreen-question-05-span" title="Permalink to this heading">#</a></h3>
+<p>The images produced by DES are used to distinguish between stars (point sources), galaxies (resolved, if not too distant), and QSOs (which may have both point-like and resolved components).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kron_radius</span></code>: Kron radius in pixels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spread_model_X</span></code>: star-galaxy classifier comparing extended model to PSF model. Value is given for each band X = <em>g, r, i, z, y</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_star_X</span></code>: value ranging from 0.0 (not point-like) to 1.0 (point-like), for each band X = <em>g, r, i, z, y</em></p></li>
+</ul>
+<p>The value of <code class="docutils literal notranslate"><span class="pre">spread_model_X</span></code> is near zero for a point source (star or QSO), positive for an extended source (galaxy), negative for an artifact smaller than the PSF (e.g., bad pixel or cosmic ray).</p>
+<p>Let’s define an object as a star if <code class="docutils literal notranslate"><span class="pre">spread_model_g</span></code>&lt;=0.5, and a galaxy if <code class="docutils literal notranslate"><span class="pre">spread_model_g</span></code> &gt; 0.5. In our sample data, count the number of objects that are stars and the number of objects that are galaxies.</p>
+</section>
+<section id="span-style-color-lightgreen-question-06-span">
+<h3><span style="color:LightGreen">Question 06</span><a class="headerlink" href="#span-style-color-lightgreen-question-06-span" title="Permalink to this heading">#</a></h3>
+<p>Suppose we wish to divide the imaging data observed by the DES into roughly equal subsets of data for more efficient parallel data processing and analysis. We will do so by using K-Means clustering on the data points of the area of the night sky observed by DES.</p>
+<p>In astronomy, RA (right ascension) and Dec (declination) are the coordinates on the sky that correspond to longitude and latitude on Earth and are used to describe the position of an object. Define a subset of the data with two columns: <code class="docutils literal notranslate"><span class="pre">ra</span></code> and <code class="docutils literal notranslate"><span class="pre">dec</span></code>. Using K-Means clustering, fit the data into 2 distinct clusters.</p>
+<p>Here, each cluster will represent a subset of data, so we want the number data points of all clusters to be roughly the same. Display the fit using the helper function <code class="docutils literal notranslate"><span class="pre">display()</span></code>. Is the result what you expected? Is this a suitable method to equally divide our data?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">labels_</span><span class="p">))</span>
+    <span class="c1"># Pick good colors to distinguish the different clusters.</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.colors</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;husl&quot;</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">)</span><span class="o">.</span><span class="n">as_hex</span><span class="p">())</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">fit</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="c1"># Use standard axes to match the plot above.</span>
+<span class="c1">#    plt.xlim(0, 360)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">+</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RA [degrees]&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dec [degrees]&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-question-07-span">
+<h3><span style="color:LightGreen">Question 07</span><a class="headerlink" href="#span-style-color-lightgreen-question-07-span" title="Permalink to this heading">#</a></h3>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">ra</span></code> column such that if <code class="docutils literal notranslate"><span class="pre">ra</span></code> &gt;= 180 deg, we subtract 360 deg from <code class="docutils literal notranslate"><span class="pre">ra</span></code> for our observed sky map to be continuous. Now, change the number of clusters so that each cluster covers roughly equal area of the observed sky? For what <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> does the K-means clustering make the most sense to you?</p>
+<p>However, you shouldn’t increase <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> to an arbitrarily large number just to get equally covered area of the observed sky - each cluster would represent a subset of data we use for parallel processing, and requiring more processors is not always feasible or sensible.</p>
+</section>
+</section>
 <section id="span-style-color-orange-references-span">
 <h2><span style="color:Orange">References</span><a class="headerlink" href="#span-style-color-orange-references-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -524,11 +689,10 @@ document.write(`
 <li><p>Data Lab disclaimer: <a class="reference external" href="https://datalab.noirlab.edu/disclaimers.php">https://datalab.noirlab.edu/disclaimers.php</a></p></li>
 </ul>
 </section>
-<hr class="docutils" />
 <section id="span-style-color-orange-acknowledgements-span">
 <h2><span style="color:Orange">Acknowledgements</span><a class="headerlink" href="#span-style-color-orange-acknowledgements-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Initial version: Ferzem Khan with some guidence from Mark Neubauer</p></li>
+<li><p>Initial version: Ferzem Khan with some guidance from Mark Neubauer</p></li>
 </ul>
 <p>© Copyright 2024</p>
 </section>
@@ -598,6 +762,21 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-importing-and-setup-span"><span style="color:Orange">Importing and Setup</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-span"><span style="color:LightGreen">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-span"><span style="color:LightGreen">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-span"><span style="color:LightGreen">Question 03</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-accessing-data-from-data-lab-span"><span style="color:Orange">Accessing Data from Data Lab</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-span"><span style="color:LightGreen">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-span"><span style="color:LightGreen">Question 05</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-span"><span style="color:LightGreen">Question 06</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-07-span"><span style="color:LightGreen">Question 07</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
 </ul>

@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/projects/Project_01_NuclearGeometryQGP';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -491,6 +493,18 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-span"><span style="color:LightGreen">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-span"><span style="color:LightGreen">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-span"><span style="color:LightGreen">Question 03</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-span"><span style="color:LightGreen">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-span"><span style="color:LightGreen">Question 05</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-span"><span style="color:LightGreen">Question 06</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-07-span"><span style="color:LightGreen">Question 07</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-08-span"><span style="color:LightGreen">Question 08</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
 </ul>
@@ -511,13 +525,86 @@ document.write(`
 <h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
 <p>Collisions between two nuclei at ultra-relativistic energies are used to create the Quark-Gluon Plamsa (QGP)–a novel state of matter.  In this project, you will learn a bit about what the QGP is and how to think about the geometry of collisions between two nuclei.</p>
 </section>
+<section id="span-style-color-orange-data-sources-span">
+<h2><span style="color:Orange">Data Sources</span><a class="headerlink" href="#span-style-color-orange-data-sources-span" title="Permalink to this heading">#</a></h2>
+<p>File URLs</p>
+<p><span class="math notranslate nohighlight">\(b=0\)</span> fm</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b0_10kevents.csv">https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b0_10kevents.csv</a></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(b=6\)</span> fm</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b6_10kevents.csv">https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b6_10kevents.csv</a></p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-questions-span">
+<h2><span style="color:Orange">Questions</span><a class="headerlink" href="#span-style-color-orange-questions-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-lightgreen-question-01-span">
+<h3><span style="color:LightGreen">Question 01</span><a class="headerlink" href="#span-style-color-lightgreen-question-01-span" title="Permalink to this heading">#</a></h3>
+<p>What is the quark-gluon plasma?  Why does it need to be created in collisions of two nuclei?  Make sure to cite any resources you use.</p>
+</section>
+<section id="span-style-color-lightgreen-question-02-span">
+<h3><span style="color:LightGreen">Question 02</span><a class="headerlink" href="#span-style-color-lightgreen-question-02-span" title="Permalink to this heading">#</a></h3>
+<p>The nuclei involved in these collisions are fully stripped of electrons.  The nucleus itself is composed of a number of protons and neutrons (collectively nucleons).  On average, those nucleons are distributed according to a Woods-Saxon distribution with respect to the center of the nucleus, <span class="math notranslate nohighlight">\(r\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\Large \rho(r) = \frac{\rho_0}{1 + exp{((r-c)/z)}}
+\]</div>
+<p>For lead (208 nucleons), <span class="math notranslate nohighlight">\(c = 6.61 fm\)</span> and <span class="math notranslate nohighlight">\(z=0.545 fm\)</span> (a <span class="math notranslate nohighlight">\(fm\)</span> is <span class="math notranslate nohighlight">\(10^{-15}m\)</span>).  Plot the density of nucleons as a function of <span class="math notranslate nohighlight">\(r\)</span> for lead.</p>
+</section>
+<section id="span-style-color-lightgreen-question-03-span">
+<h3><span style="color:LightGreen">Question 03</span><a class="headerlink" href="#span-style-color-lightgreen-question-03-span" title="Permalink to this heading">#</a></h3>
+<p>Two lead nuclei collide with one moving along the positive <span class="math notranslate nohighlight">\(z\)</span> direction and one moving along the negative <span class="math notranslate nohighlight">\(z\)</span> direction.  When they collide, there is a distance <span class="math notranslate nohighlight">\(b\)</span> between the two centers in the <span class="math notranslate nohighlight">\(xy\)</span>-plane.  Assume the nuclei are each spheres with a radius of 6.61fm.  Plot the shape of the overlap of the two spheres in the <span class="math notranslate nohighlight">\(xy\)</span> plane for <span class="math notranslate nohighlight">\(b = 0 fm\)</span> and <span class="math notranslate nohighlight">\(b = 6 fm\)</span>.  Put the center of the overlap region at <span class="math notranslate nohighlight">\(x = y = 0\)</span>.</p>
+</section>
+<section id="span-style-color-lightgreen-question-04-span">
+<h3><span style="color:LightGreen">Question 04</span><a class="headerlink" href="#span-style-color-lightgreen-question-04-span" title="Permalink to this heading">#</a></h3>
+<p>The eccentricity of a distribution can be calculated as:</p>
+<div class="math notranslate nohighlight">
+\[
+\Large \varepsilon_2 = \frac{\sqrt{\langle r^2\cos(2\phi)\rangle^2 + \langle r^2\sin(2\phi)\rangle^2}}{\langle r^2 \rangle}
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span> are the usual polar coordinate variables (everything is in the <span class="math notranslate nohighlight">\(xy-\)</span>plane).  Calculate the eccentricity of the overlap shape for these two cases.</p>
+</section>
+<section id="span-style-color-lightgreen-question-05-span">
+<h3><span style="color:LightGreen">Question 05</span><a class="headerlink" href="#span-style-color-lightgreen-question-05-span" title="Permalink to this heading">#</a></h3>
+<p>The eccentricity defines the shape of the QGP and it drives an asymmetric explosion of the QGP.  Take a look at this video (up through the 29 minute mark: <a class="reference external" href="https://www.youtube.com/watch?v=NTfaIyInhOY">https://www.youtube.com/watch?v=NTfaIyInhOY</a>).  Briefly summerize what we can learn about the QGP from the geometry of nuclear collisions.</p>
 <hr class="docutils" />
+<p>The remaining questions refer to the following data sources:</p>
+<p><span class="math notranslate nohighlight">\(b=0\)</span> fm</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGP/PbPb_b0_10kevents.csv">https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGP/PbPb_b0_10kevents.csv</a></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(b=6\)</span> fm</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b6_10kevents.csv">https://courses.physics.illinois.edu/phys503/fa2023/data/projects/NuclearGeometryQGC/PbPb_b6_10kevents.csv</a></p></li>
+</ul>
+<p>(also linked from above).</p>
+<p>The nucleus is a quantum system and the nucleons are not static inside the nucleus.  Since the nucleus is made up of individual nucleons, it is pairs of nucleons which collide (with one nucleon coming from each nucleus) inside of the smooth distribution from Question 3.</p>
+<p>Each file contains simulations of 10k collisions between two lead nuclei and provides the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> positions of each of the protons and neutrons that hit a nucleon from the other nucleus (units are in <span class="math notranslate nohighlight">\(fm\)</span>).  The files are created using the Monte Carlo Glauber Model (ref <a class="reference external" href="https://arxiv.org/pdf/1710.07098.pdf">[1]</a>)</p>
+</section>
+<section id="span-style-color-lightgreen-question-06-span">
+<h3><span style="color:LightGreen">Question 06</span><a class="headerlink" href="#span-style-color-lightgreen-question-06-span" title="Permalink to this heading">#</a></h3>
+<p>Calculate the <span class="math notranslate nohighlight">\(\varepsilon_2\)</span> values for each of these collisions and compare to what you got in Question 4 (make a plot!).  Note here you will get a different value of <span class="math notranslate nohighlight">\(\varepsilon_2\)</span> for each collision, so you will have 10k values of <span class="math notranslate nohighlight">\(\varepsilon_2\)</span> for each file.  Shift <em>each collision</em> to be centered at the origin by shifting each nucleon collision so that  <span class="math notranslate nohighlight">\(\langle x \rangle = \langle y \rangle = 0\)</span>. Calculate the mean, standard deviation and skewness for both values of <span class="math notranslate nohighlight">\(b\)</span>.</p>
+</section>
+<section id="span-style-color-lightgreen-question-07-span">
+<h3><span style="color:LightGreen">Question 07</span><a class="headerlink" href="#span-style-color-lightgreen-question-07-span" title="Permalink to this heading">#</a></h3>
+<p>Use Kernel Density Esimation to try to take into account that the nucleons have a finite size. Here’s a nice discussion of the proton radius <a class="reference external" href="https://en.wikipedia.org/wiki/Proton_radius_puzzle">https://en.wikipedia.org/wiki/Proton_radius_puzzle</a>; assume the neutron is the same size here (a pretty good assumption).  Explain how you chose the kernel to use and how sensitive you are to the bandwidth.  How does the eccentricity compare to what you found in Question 6 (write a paragraph and make plots to support your conclusions).</p>
+</section>
+<section id="span-style-color-lightgreen-question-08-span">
+<h3><span style="color:LightGreen">Question 08</span><a class="headerlink" href="#span-style-color-lightgreen-question-08-span" title="Permalink to this heading">#</a></h3>
+<p>The effect of fluctuations means that higher order eccentricities can also exist (first discussed in ref <a class="reference external" href="https://arxiv.org/pdf/1003.0194.pdf">[2]</a>).  Calculate:</p>
+<div class="math notranslate nohighlight">
+\[
+\Large \varepsilon_3 = \frac{\sqrt{\langle r^2\cos(3\phi)\rangle^2 + \langle r^2\sin(3\phi)\rangle^2}}{\langle r^2 \rangle}
+\]</div>
+<p>for the same collisions.  In general <span class="math notranslate nohighlight">\(\varepsilon_n\)</span> represents the magnitude of the <span class="math notranslate nohighlight">\(n\phi\)</span> symmetry in the angular distribution.  How do the values of <span class="math notranslate nohighlight">\(\varepsilon_2\)</span> and <span class="math notranslate nohighlight">\(\varepsilon_3\)</span> values vary for the two impact parameters?  What about the width of the distributions?</p>
+</section>
+</section>
 <section id="span-style-color-orange-references-span">
 <h2><span style="color:Orange">References</span><a class="headerlink" href="#span-style-color-orange-references-span" title="Permalink to this heading">#</a></h2>
 <p><strong>[<span style="color:Red">1</span>]</strong> C. Loizides, J. Kamin, D. d’Enterria, “Improved Monte Carlo Glauber predictions at present and future nuclear colliders”, <em>Phys.Rev.C 97 (2018) 5, 054910, Phys.Rev.C 99 (2019) 1, 019901 (erratum)</em>, e-Print: <a class="reference external" href="https://arxiv.org/abs/1710.07098">1710.07098</a> [nucl-ex]</p>
 <p><strong>[<span style="color:Red">2</span>]</strong> B.Alver, G.Roland, “Collision geometry fluctuations and triangular flow in heavy-ion collisions”, <em>Phys.Rev.C 81 (2010) 054905, Phys.Rev.C 82 (2010) 039903 (erratum)</em>, e-Print: <a class="reference external" href="https://arxiv.org/abs/1003.0194">1003.0194</a> [nucl-th]</p>
 </section>
-<hr class="docutils" />
 <section id="span-style-color-orange-acknowledgements-span">
 <h2><span style="color:Orange">Acknowledgements</span><a class="headerlink" href="#span-style-color-orange-acknowledgements-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -591,6 +678,18 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-span"><span style="color:LightGreen">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-span"><span style="color:LightGreen">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-span"><span style="color:LightGreen">Question 03</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-span"><span style="color:LightGreen">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-span"><span style="color:LightGreen">Question 05</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-span"><span style="color:LightGreen">Question 06</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-07-span"><span style="color:LightGreen">Question 07</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-08-span"><span style="color:LightGreen">Question 08</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
 </ul>
