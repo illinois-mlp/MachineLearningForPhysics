@@ -11,7 +11,7 @@ You will learn the basics of Learning from the Machines
 * {doc}`lectures/LearningPhysicsMachines`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_12`
+* None
 
 ## *Supplemental Readings*
 * None

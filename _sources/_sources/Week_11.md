@@ -11,7 +11,7 @@ You will learn the basics of AI Explainability and Uncertainty Quantification
 * {doc}`lectures/AIExplainabilityUncertaintyQuantification`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_09`
+* None
 
 ## *Supplemental Readings*
 * None

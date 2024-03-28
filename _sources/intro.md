@@ -11,8 +11,8 @@
 ## <span style="color:Red">Calendar</span>
 __Note__: *This schedule will evolve throughout the semseter*
 
-| Week          | Topic                 | Homework                               | Projects                   |
-|---------------|-----------------------|----------------------------------------|----------------------------|
+| Week          | Topic                   | Homework                               | Projects                   |
+|---------------|-------------------------|----------------------------------------|----------------------------|
 | Jan 15  | {doc}`_sources/Week_01`       | [HW 01](_sources/homework/Homework_01) |                            |
 | Jan 22  | {doc}`_sources/Week_02`       | [HW 02](_sources/homework/Homework_02) |                            |
 | Jan 29  | {doc}`_sources/Week_03`       | [HW 03](_sources/homework/Homework_03) |                            |
@@ -22,12 +22,12 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Feb 26  | {doc}`_sources/Week_07`       | [HW 06](_sources/homework/Homework_06) | {doc}`_sources/Project_01` |
 | Mar 04  | {doc}`_sources/Week_08`       |                                        |                            |
 | Mar 11  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
-| Mar 18  | {doc}`_sources/Week_09`       | [HW 07](_sources/homework/Homework_07) |                            |
-| Mar 25  | {doc}`_sources/Week_10`       | [HW 08](_sources/homework/Homework_08) |                            |
-| Apr 01  | {doc}`_sources/Week_11`       | [HW 09](_sources/homework/Homework_09) |                            |
-| Apr 08  | {doc}`_sources/Week_12`       | [HW 10](_sources/homework/Homework_10) |                            |
-| Apr 15  | {doc}`_sources/Week_13`       | [HW 11](_sources/homework/Homework_11) | {doc}`_sources/Project_02` |
-| Apr 22  | {doc}`_sources/Week_14`       | [HW 12](_sources/homework/Homework_12) |                            |
+| Mar 18  | {doc}`_sources/Week_09`       |                                        |                            |
+| Mar 25  | {doc}`_sources/Week_10`       | [HW 07](_sources/homework/Homework_07) |                            |
+| Apr 01  | {doc}`_sources/Week_11`       |                                        |                            |
+| Apr 08  | {doc}`_sources/Week_12`       |                                        |                            |
+| Apr 15  | {doc}`_sources/Week_13`       |                                        | {doc}`_sources/Project_02` |
+| Apr 22  | {doc}`_sources/Week_14`       |                                        |                            |
 | Apr 29  | {doc}`_sources/Week_15`       |                                        |                            |
 
 ## <span style="color:Red">Overview</span>
