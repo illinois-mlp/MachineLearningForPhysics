@@ -729,6 +729,7 @@ approximators, we can simply create one and train it to resemble <span class="ma
 for some policy obeys the Bellman equation:</p>
 <div class="math notranslate nohighlight">
 \[Q^{\pi}(s, a) = r + \gamma Q^{\pi}(s', \pi(s'))\]</div>
+<p>The Bellman equations states that the long-term reward in a given action is equal to the reward from the current action combined with the expected reward from the future actions taken at the following time.</p>
 <p>The difference between the two sides of the equality is known as the
 temporal difference error, <span class="math notranslate nohighlight">\(\delta\)</span>:</p>
 <div class="math notranslate nohighlight">
