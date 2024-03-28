@@ -11,7 +11,7 @@ You will learn the basics of Attention Mechanism and Transformers
 * {doc}`lectures/AttentionTransformers`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_07`
+* None
 
 ## *Supplemental Readings*
 * None

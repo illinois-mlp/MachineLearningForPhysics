@@ -11,7 +11,7 @@ You will learn the basics of Reinforcement Learning
 * {doc}`lectures/ReinforcementLearning`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_08`
+* {doc}`homework/Homework_07`
 
 ## *Supplemental Readings*
 * None

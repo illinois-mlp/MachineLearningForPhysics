@@ -11,7 +11,7 @@ You will learn about Physics Informed Neural Networks
 * {doc}`lectures/PhysicsInformedNeuralNetworks`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_11`
+* None
 
 ## *Supplemental Readings*
 * None

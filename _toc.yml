@@ -81,31 +81,28 @@ chapters:
   - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AttentionTransformers
-  - file: _sources/homework/Homework_07
 - file: _sources/Week_10 # Reinforcement Learning
   sections:
   - url: https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/ReinforcementLearning
-  - file: _sources/homework/Homework_08
+  - file: _sources/homework/Homework_07
+
 - file: _sources/Week_11 # AI Explainability and Uncertainty Quantification
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AIExplainabilityUncertaintyQuantification
-  - file: _sources/homework/Homework_09
 - file: _sources/Week_12 # Unsupervised Learning and Anomaly Detection
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/UnsupervisedLearningAnomalyDetection
-  - file: _sources/homework/Homework_10
 - file: _sources/Week_13 # Physics Informed Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/PhysicsInformedNeuralNetworks
-  - file: _sources/homework/Homework_11
 - file: _sources/Project_02 # Project 02
   sections:
   - file: _sources/projects/Project_02_HiggsTauTau
@@ -118,7 +115,6 @@ chapters:
   - url: https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/LearningPhysicsMachines
-  - file: _sources/homework/Homework_12
 - file: _sources/Week_15 # Future of Physics: What Lies Ahead?
   sections:
   - url: https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing
