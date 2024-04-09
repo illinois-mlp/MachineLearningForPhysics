@@ -761,7 +761,7 @@ q_{\phi}(\theta | D) = \sum_{\theta_{i} ∈ ϕ} \alpha_{\theta_{i}} δ_{\theta_{
 </div>
 </div>
 <p>In this plot the benefit of an ensemble approach is not immediately clear. Still on the regions outside the training data each of the trained NN is inaccurate. So, you might ask: “What is the benefit?”</p>
-<p>Well let’s plot the above in a slightly different way: let’s visualize the ensemble’s <strong>uncertainty bands</strong>.</p>
+<p>Well let’s plot the above in a slightly different way: let’s visualize the ensemble’s <em><strong><span style="color:violet">uncertainty bands</span></strong></em>.</p>
 <blockquote>
 <div><p>From a Bayesian perspective we want to quantify the model’s uncertainty on its prediction. This is done via the marginal <span class="math notranslate nohighlight">\(p(y|x, D)\)</span>, which can be computed as:</p>
 </div></blockquote>
@@ -925,7 +925,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 <img alt="../../_images/68b239fef6624965c4d5f8fdda19590b9cc012ac684e3035419ea3c489bd029c.png" src="../../_images/68b239fef6624965c4d5f8fdda19590b9cc012ac684e3035419ea3c489bd029c.png" />
 </div>
 </div>
-<p>We now perform the conformal prediction procedure to obtain our uncertainty bands. In the simplest case, our comparison of predicted and true values on the calibration data is achieved by simply looking at the residuals <span class="math notranslate nohighlight">\(|y-\hat{y}|\)</span>, which form our ___<span style="color:violet">conformity scores</span>. We then compute <span class="math notranslate nohighlight">\(\hat{q}\)</span> as the</p>
+<p>We now perform the conformal prediction procedure to obtain our uncertainty bands. In the simplest case, our comparison of predicted and true values on the calibration data is achieved by simply looking at the residuals <span class="math notranslate nohighlight">\(|y-\hat{y}|\)</span>, which form our <span style="color:violet">conformity scores</span>. We then compute <span class="math notranslate nohighlight">\(\hat{q}\)</span> as the</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 \left\lceil \frac{(n+1)(1-\alpha)}{n} \right\rceil
@@ -1022,11 +1022,15 @@ We can reuse our existing network architecture, the only alteration is that duri
 <p>Mathematically, a Bayesian neural network can be represented as follows:</p>
 <p>Given a set of input data <span class="math notranslate nohighlight">\(x\)</span>, we want to predict the corresponding output <span class="math notranslate nohighlight">\(y\)</span>. The neural network represents this relationship as a function <span class="math notranslate nohighlight">\(f(x, \theta)\)</span>, where <span class="math notranslate nohighlight">\(\theta\)</span> are the weights and biases of the network. In a Bayesian neural network, we represent the weights and biases as probability distributions, so <span class="math notranslate nohighlight">\(f(x, \theta)\)</span> becomes a probability distribution over possible outputs:</p>
 <div class="math notranslate nohighlight">
-\[ p(y|x, \mathcal{D}) = \int p(y|x, \theta)p(\theta|\mathcal{D}) d\theta \]</div>
+\[ \Large
+p(y|x, \mathcal{D}) = \int p(y|x, \theta)p(\theta|\mathcal{D}) d\theta
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(p(y|x, \theta)\)</span> is the likelihood function, which gives the probability of observing <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span>, and <span class="math notranslate nohighlight">\(p(\theta|\mathcal{D})\)</span> is the posterior distribution over the weights and biases given the observed data <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.</p>
 <p>To make predictions, we use the posterior predictive distribution:</p>
 <div class="math notranslate nohighlight">
-\[ p(y^*|x^*, \mathcal{D}) = \int p(y^*|x^*, \theta)p(\theta|\mathcal{D}) d\theta \]</div>
+\[ \Large
+p(y^*|x^*, \mathcal{D}) = \int p(y^*|x^*, \theta)p(\theta|\mathcal{D}) d\theta
+\]</div>
 <p>where <span class="math notranslate nohighlight">\(x^*\)</span> is a new input and <span class="math notranslate nohighlight">\(y^*\)</span> is the corresponding predicted output.</p>
 <p>To estimate the (intractable) posterior distribution <span class="math notranslate nohighlight">\(p(\theta|\mathcal{D})\)</span>, we can use either Markov Chain Monte Carlo (MCMC) or Variational Inference (VI).</p>
 </section>
