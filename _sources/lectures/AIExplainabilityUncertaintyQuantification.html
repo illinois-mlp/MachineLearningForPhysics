@@ -517,6 +517,21 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-getting-started-with-pyro-span"><span style="color:Orange">Getting Started with Pyro</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-neural-network-with-gaussian-prior-and-likelihood-span"><span style="color:Orange">Bayesian Neural Network with Gaussian Prior and Likelihood</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-define-and-run-markov-chain-monte-carlo-sampler-span"><span style="color:Orange">Define and run Markov chain Monte Carlo sampler</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exercise-1-deep-bayesian-neural-network-span"><span style="color:Orange"> Exercise 1: Deep Bayesian Neural Network</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-the-deep-bnn-with-mcmc-span"><span style="color:LightGreen">Train the deep BNN with MCMC</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-compute-predictive-distribution-span"><span style="color:LightGreen">Compute predictive distribution</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-bnns-with-mean-field-variational-inference-span"><span style="color:LightGreen">Train BNNs with mean-field variational inference</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exercise-2-bayesian-updating-with-variational-inference-span"><span style="color:Orange">Exercise 2: Bayesian updating with variational inference</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-bayesian-update-span"><span style="color:LightGreen">Bayesian update</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-implementation-in-pyro-span"><span style="color:LightGreen">Implementation in Pyro</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-1-learn-a-model-on-the-old-observations-span"><span style="color:LightGreen">Exercise 2.1 Learn a model on the old observations</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-2-initialize-a-second-model-with-the-variational-parameters-span"><span style="color:LightGreen">Exercise 2.2 Initialize a second model with the variational parameters</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-3-perform-variational-inference-on-the-new-model-span"><span style="color:LightGreen">Exercise 2.3 Perform variational inference on the new model</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -677,7 +692,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "51a073eae3c4488789214ac1a09f143c", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c64de67a27384b9dad511f6f3b13d276", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="span-style-color-lightgreen-evaluate-span">
@@ -722,7 +737,7 @@ q_{\phi}(\theta | D) = \sum_{\theta_{i} ∈ ϕ} \alpha_{\theta_{i}} δ_{\theta_{
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bcb39c51ddf1482c811e04d48ca5361f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "340d2a8ee25e40e3a64e4ba4bd66f9de", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "de0b0de9163a49e08f092019fa511da8", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2fa19e10873c4371be607178280c703b", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "fccf77eeb1d34d28a61440c358231601", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "98988d215394435f9a1595ceaf10f6d7", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d37ec999080a4c5c9c59972ec4b5cca9", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "cd9e31349dd04570a7d964b45392769f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "28c9a212dede458c9b3dda5ac5e26012", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ccb394bfc96f4679870826889cccdc74", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id2">
@@ -814,7 +829,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "5fcd5b9a5f3c4cc59370a2bdc35f8df4", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "5647b45958024275ba051a5ed605bbf2", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id4">
@@ -898,7 +913,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "0e3a85925b9b4929b6feaf0838af43ac", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "948a5ebdadf448aaa0eeb8a5c64f22ca", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id6">
@@ -1215,7 +1230,7 @@ p(y|x, \mathcal{D}) = \mathbb{E}_{\theta \sim p(\theta|\mathcal{D})}\big[p(y|x,\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [01:51,  1.11s/it, step size=6.24e-04, acc. prob=0.915]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [01:54,  1.14s/it, step size=6.24e-04, acc. prob=0.915]
 </pre></div>
 </div>
 </div>
@@ -1267,6 +1282,367 @@ p(y|x, \mathcal{D}) = \mathbb{E}_{\theta \sim p(\theta|\mathcal{D})}\big[p(y|x,\
 <img alt="../../_images/40e6ffe2f806348a27b68c7aa12e99804e01b51a37774209e0d6ac8c82973334.png" src="../../_images/40e6ffe2f806348a27b68c7aa12e99804e01b51a37774209e0d6ac8c82973334.png" />
 </div>
 </div>
+</section>
+<section id="span-style-color-orange-exercise-1-deep-bayesian-neural-network-span">
+<h2><span style="color:Orange"> Exercise 1: Deep Bayesian Neural Network</span><a class="headerlink" href="#span-style-color-orange-exercise-1-deep-bayesian-neural-network-span" title="Permalink to this heading">#</a></h2>
+<p>We can define a deep Bayesian neural network in a similar fashion, with Gaussian priors on the weights:</p>
+<div class="math notranslate nohighlight">
+\[ \Large 
+p(\theta) = \mathcal{N}(\mathbf{0}, 5\cdot\mathbb{I})
+\]</div>
+<p>The likelihood function is also Gaussian:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+p(y_i| x_i, \theta) = \mathcal{N}\big(NN_{\theta}(x_i), \sigma^2\big)
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\sigma \sim \Gamma(0.5,1)\)</span>.</p>
+<blockquote>
+<div><p>Implement the deep Bayesian neural network and run MCMC to obtain posterior samples.
+Compute and plot the predictive distribution.
+Use the following network architecture: Number of hidden layers: 5, Number of hidden units per layer: 10, Activation function: Tanh, Prior scale: 5.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BNN</span><span class="p">(</span><span class="n">PyroModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hid_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_hid_layers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">prior_scale</span><span class="o">=</span><span class="mf">5.</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>  <span class="c1"># could also be ReLU or LeakyReLU</span>
+        <span class="k">assert</span> <span class="n">in_dim</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">out_dim</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">hid_dim</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n_hid_layers</span> <span class="o">&gt;</span> <span class="mi">0</span>  <span class="c1"># make sure the dimensions are valid</span>
+
+        <span class="c1"># Define the layer sizes and the PyroModule layer list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">in_dim</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_hid_layers</span> <span class="o">*</span> <span class="p">[</span><span class="n">hid_dim</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">out_dim</span><span class="p">]</span>
+        <span class="n">layer_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">PyroModule</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span>
+                      <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">))]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">PyroModule</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">](</span><span class="n">layer_list</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">prior_scale</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]))</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]])</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">prior_scale</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">x</span><span class="p">))</span>  <span class="c1"># input --&gt; hidden</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>  <span class="c1"># hidden --&gt; hidden</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>  <span class="c1"># hidden --&gt; output</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Gamma</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># infer the response noise</span>
+
+        <span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mu</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-train-the-deep-bnn-with-mcmc-span">
+<h3><span style="color:LightGreen">Train the deep BNN with MCMC</span><a class="headerlink" href="#span-style-color-lightgreen-train-the-deep-bnn-with-mcmc-span" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define model and data</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">BNN</span><span class="p">(</span><span class="n">hid_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_hid_layers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">prior_scale</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+
+<span class="c1"># define MCMC sampler</span>
+<span class="n">nuts_kernel</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">jit_compile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mcmc</span> <span class="o">=</span> <span class="n">MCMC</span><span class="p">(</span><span class="n">nuts_kernel</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">mcmc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [05:07,  3.07s/it, step size=1.70e-03, acc. prob=0.515]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-compute-predictive-distribution-span">
+<h3><span style="color:LightGreen">Compute predictive distribution</span><a class="headerlink" href="#span-style-color-lightgreen-compute-predictive-distribution-span" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictive</span> <span class="o">=</span> <span class="n">Predictive</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">posterior_samples</span><span class="o">=</span><span class="n">mcmc</span><span class="o">.</span><span class="n">get_samples</span><span class="p">())</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">predictive</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">plot_predictions</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7d6a73b24619f71ed171267758485ef9ea24d9ce1f96f9188aad2ef4442b4505.png" src="../../_images/7d6a73b24619f71ed171267758485ef9ea24d9ce1f96f9188aad2ef4442b4505.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-train-bnns-with-mean-field-variational-inference-span">
+<h3><span style="color:LightGreen">Train BNNs with mean-field variational inference</span><a class="headerlink" href="#span-style-color-lightgreen-train-bnns-with-mean-field-variational-inference-span" title="Permalink to this heading">#</a></h3>
+<p>We will now move on to variational inference. Since the normalized posterior probability density <span class="math notranslate nohighlight">\(p(\theta|\mathcal{D})\)</span> is intractable, we approximate it with a tractable parametrized density <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span> in a family of probability densities <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span>. The variational parameters are denoted by <span class="math notranslate nohighlight">\(\phi\)</span> and the variational density is called the “guide” in Pyro. The goal is to find the variational probability density that best approximates the posterior by minimizing the KL divergence</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+KL\big(q_{\phi}(\theta)||p(\theta|\mathcal{D})\big)
+\]</div>
+<p>with respect to the variational parameters.</p>
+<p>However, directly minimizing the KL divergence is not tractable because we assume that the posterior density is intractable. To solve this, we use Bayes theorem to obtain</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log p(\mathcal{D}|\theta) = KL\big(q_{\phi}(\theta)||p(\theta|\mathcal{D})\big) + ELBO(q_{\phi}(\theta)),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(ELBO(q_{\phi}(\theta))\)</span> is the <em>Evidence Lower Bound</em>, given by</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+ELBO(q_{\phi}(\theta)) = \mathbb{E}_{\theta \sim q_{\phi}(\theta)}\big[\log p(y|x,\theta) \big] - KL\big(q_{\phi}(\theta) || p(\theta) \big).
+\]</div>
+<p>By maximizing the ELBO, we indirectly minimize the KL divergence between the variational probability density and the posterior density.</p>
+<p>Set up for stochastic variational inference with the variational density <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span> by using a normal probability density with a diagonal covariance matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyro.infer</span> <span class="kn">import</span> <span class="n">SVI</span><span class="p">,</span> <span class="n">Trace_ELBO</span>
+<span class="kn">from</span> <span class="nn">pyro.infer.autoguide</span> <span class="kn">import</span> <span class="n">AutoDiagonalNormal</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">trange</span>
+<span class="n">pyro</span><span class="o">.</span><span class="n">clear_param_store</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">BNN</span><span class="p">(</span><span class="n">hid_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_hid_layers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">prior_scale</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+<span class="n">mean_field_guide</span> <span class="o">=</span> <span class="n">AutoDiagonalNormal</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">({</span><span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+
+<span class="n">svi</span> <span class="o">=</span> <span class="n">SVI</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">mean_field_guide</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">Trace_ELBO</span><span class="p">())</span>
+<span class="n">pyro</span><span class="o">.</span><span class="n">clear_param_store</span><span class="p">()</span>
+
+<span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">25000</span>
+<span class="n">progress_bar</span> <span class="o">=</span> <span class="n">trange</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">svi</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dcaeb436505b4ac4890c2961dfe337ec", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>As before, we compute the predictive distribution sampling from the trained variational density.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictive</span> <span class="o">=</span> <span class="n">Predictive</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">guide</span><span class="o">=</span><span class="n">mean_field_guide</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">predictive</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">plot_predictions</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/212cddb9481b4b69a454c38538cfa803775186a6f83addeee5e4f07c82f87338.png" src="../../_images/212cddb9481b4b69a454c38538cfa803775186a6f83addeee5e4f07c82f87338.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-exercise-2-bayesian-updating-with-variational-inference-span">
+<h2><span style="color:Orange">Exercise 2: Bayesian updating with variational inference</span><a class="headerlink" href="#span-style-color-orange-exercise-2-bayesian-updating-with-variational-inference-span" title="Permalink to this heading">#</a></h2>
+<p>What happens if we obtain new data points, denoted as <span class="math notranslate nohighlight">\(\mathcal{D}'\)</span>, after performing variational inference using the observations <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate new observations</span>
+<span class="n">x_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">y_new</span> <span class="o">=</span> <span class="n">x_new</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_new</span> <span class="o">+</span> <span class="n">noise</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_new</span> <span class="o">+</span> <span class="n">noise</span><span class="p">))</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="c1"># Generate true function</span>
+<span class="n">x_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">x_true</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x_true</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x_true</span><span class="p">)</span>
+
+<span class="c1"># Set axis limits and labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xlims</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ylims</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Plot all datasets</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True function&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;New observations&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_obs</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Old observations&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_67962/1208744758.py:18: UserWarning: color is redundantly defined by the &#39;color&#39; keyword argument and the fmt string &quot;ko&quot; (-&gt; color=&#39;k&#39;). The keyword argument will take precedence.
+  plt.plot(x_new, y_new, &#39;ko&#39;, markersize=4, label=&quot;New observations&quot;, c=&quot;r&quot;)
+</pre></div>
+</div>
+<img alt="../../_images/c97905ae380a8f54eed317bd8021b173147efe68f4ba1c4887aa7148ec92b7e1.png" src="../../_images/c97905ae380a8f54eed317bd8021b173147efe68f4ba1c4887aa7148ec92b7e1.png" />
+</div>
+</div>
+<section id="span-style-color-lightgreen-bayesian-update-span">
+<h3><span style="color:LightGreen">Bayesian update</span><a class="headerlink" href="#span-style-color-lightgreen-bayesian-update-span" title="Permalink to this heading">#</a></h3>
+<p>How can we perform a Bayesian update on the model using variational inference when new observations become available?</p>
+<p>We can use the previously calculated posterior probability density as the new prior and update the posterior with the new observations. Specifically, the updated posterior probability density is given by:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+p(\theta|\mathcal{D}') = \frac{p(\mathcal{D}'|\theta)q_{\phi}(\theta)}{\int p(\mathcal{D}'|\theta)q_{\phi}(\theta)}
+\]</div>
+<p>Note that we want to update our model using only the new observations <span class="math notranslate nohighlight">\(\mathcal{D}'\)</span>, relying on the fact that the variational density used as our new prior carries the necessary information on the old observations <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.</p>
+</section>
+<section id="span-style-color-lightgreen-implementation-in-pyro-span">
+<h3><span style="color:LightGreen">Implementation in Pyro</span><a class="headerlink" href="#span-style-color-lightgreen-implementation-in-pyro-span" title="Permalink to this heading">#</a></h3>
+<p>To implement this in Pyro, we can extract the variational parameters (mean and standard deviation) from the <code class="docutils literal notranslate"><span class="pre">guide</span></code> and use them to initialize the prior in a new model that is similar to the original model used for variational inference.</p>
+<p>From the Gaussian <code class="docutils literal notranslate"><span class="pre">guide</span></code> we can extract the variational parameters (mean and standard deviation) as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">guide</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">guide</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">()</span><span class="o">.</span><span class="n">stddev</span>
+</pre></div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-exercise-2-1-learn-a-model-on-the-old-observations-span">
+<h3><span style="color:LightGreen">Exercise 2.1 Learn a model on the old observations</span><a class="headerlink" href="#span-style-color-lightgreen-exercise-2-1-learn-a-model-on-the-old-observations-span" title="Permalink to this heading">#</a></h3>
+<p>First, as before, we define a model using Gaussian prior <span class="math notranslate nohighlight">\(\mathcal{N}(\mathbf{0}, 10\cdot \mathbb{I})\)</span>.</p>
+<blockquote>
+<div><p>Train a model <code class="docutils literal notranslate"><span class="pre">MyFirstBNN</span></code> on the old observations <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> using variational inference with <code class="docutils literal notranslate"><span class="pre">AutoDiagonalNormal()</span></code> as guide.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyro.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="n">pyro</span><span class="o">.</span><span class="n">set_rng_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">pyro</span><span class="o">.</span><span class="n">clear_param_store</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyFirstBNN</span><span class="p">()</span>
+<span class="n">guide</span> <span class="o">=</span> <span class="n">AutoDiagonalNormal</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">({</span><span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">})</span>
+<span class="n">svi</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">infer</span><span class="o">.</span><span class="n">SVI</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">guide</span><span class="p">,</span> <span class="n">optim</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">Trace_ELBO</span><span class="p">())</span>
+
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">progress_bar</span> <span class="o">=</span> <span class="n">trange</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">svi</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;[iteration </span><span class="si">%04d</span><span class="s2">] loss: </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c98ecec7c6064af59fcf1f820c2ab592", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictive</span> <span class="o">=</span> <span class="n">Predictive</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">guide</span><span class="o">=</span><span class="n">guide</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">predictive</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">plot_predictions</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9f0a3ab6cd7539cf6dd9e5910143fd933348ebe154c011e0fed454bd07c6d1a5.png" src="../../_images/9f0a3ab6cd7539cf6dd9e5910143fd933348ebe154c011e0fed454bd07c6d1a5.png" />
+</div>
+</div>
+<p>Next, we can extract the variational parameters (mean and standard deviation) from the <code class="docutils literal notranslate"><span class="pre">guide</span></code> and use them to initialize the prior in a new model that is similar to the original model used for variational inference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract variational parameters from guide</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">guide</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+<span class="n">stddev</span> <span class="o">=</span> <span class="n">guide</span><span class="o">.</span><span class="n">get_posterior</span><span class="p">()</span><span class="o">.</span><span class="n">stddev</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">pyro</span><span class="o">.</span><span class="n">get_param_store</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AutoDiagonalNormal.loc Parameter containing:
+tensor([ 4.4191,  2.0754,  2.4855,  2.9760, -2.8464, -4.5504, -0.6823,  8.6234,
+         8.4496,  1.4790,  1.2584,  5.1180,  0.9287, -1.8941,  4.3386,  1.2919,
+        -1.0739], requires_grad=True)
+AutoDiagonalNormal.scale tensor([1.4528e-02, 2.4033e-03, 2.2271e+00, 1.6085e+00, 4.6760e-03, 1.4402e-02,
+        1.4623e-03, 1.6398e+00, 8.8755e-01, 2.9022e-03, 6.1746e-03, 9.5324e-03,
+        6.3802e-03, 5.4546e-03, 7.9136e-03, 5.9695e-03, 4.8264e-02],
+       grad_fn=&lt;SoftplusBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-exercise-2-2-initialize-a-second-model-with-the-variational-parameters-span">
+<h3><span style="color:LightGreen">Exercise 2.2 Initialize a second model with the variational parameters</span><a class="headerlink" href="#span-style-color-lightgreen-exercise-2-2-initialize-a-second-model-with-the-variational-parameters-span" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>Define a new model similar to <code class="docutils literal notranslate"><span class="pre">MyFirstBNN(PyroModule)</span></code>, that takes the variational parameters and uses them to initialize the prior.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UpdatedBNN</span><span class="p">(</span><span class="n">PyroModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">stddev</span><span class="p">,</span> <span class="n">in_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hid_dim</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span> <span class="o">=</span> <span class="n">stddev</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span> <span class="o">=</span> <span class="n">PyroModule</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">](</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">hid_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span> <span class="o">=</span> <span class="n">PyroModule</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">](</span><span class="n">hid_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">PyroSample</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">16</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">16</span><span class="p">])</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># 17th parameter is parameter sigma from the Gamma distribution</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Gamma</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mu</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-exercise-2-3-perform-variational-inference-on-the-new-model-span">
+<h3><span style="color:LightGreen">Exercise 2.3 Perform variational inference on the new model</span><a class="headerlink" href="#span-style-color-lightgreen-exercise-2-3-perform-variational-inference-on-the-new-model-span" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="id8">
+<h3><a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>Then perform variational inference on this new model using the new observations and plot the predictive distribution.
+What do you observe? How does the predictive distribution compare to the one obtained in Exercise 2.1?</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train_new</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">y_train_new</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">y_new</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+<span class="n">pyro</span><span class="o">.</span><span class="n">clear_param_store</span><span class="p">()</span>
+<span class="n">new_model</span> <span class="o">=</span> <span class="n">UpdatedBNN</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">stddev</span><span class="p">)</span>
+<span class="n">new_guide</span> <span class="o">=</span> <span class="n">AutoDiagonalNormal</span><span class="p">(</span><span class="n">new_model</span><span class="p">)</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">({</span><span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+<span class="n">svi</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">infer</span><span class="o">.</span><span class="n">SVI</span><span class="p">(</span><span class="n">new_model</span><span class="p">,</span> <span class="n">new_guide</span><span class="p">,</span> <span class="n">optim</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">Trace_ELBO</span><span class="p">())</span>
+
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">progress_bar</span> <span class="o">=</span> <span class="n">trange</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">svi</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">x_train_new</span><span class="p">,</span> <span class="n">y_train_new</span><span class="p">)</span>
+    <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;[iteration </span><span class="si">%04d</span><span class="s2">] loss: </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3cf568b176ea483d868ba95534d33a82", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictive</span> <span class="o">=</span> <span class="n">Predictive</span><span class="p">(</span><span class="n">new_model</span><span class="p">,</span> <span class="n">guide</span><span class="o">=</span><span class="n">new_guide</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">predictive</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">plot_predictions</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/becbdcb22a27fc59d074ce60f166c5feed7a128adefeb0a2dd648a088f32d3a1.png" src="../../_images/becbdcb22a27fc59d074ce60f166c5feed7a128adefeb0a2dd648a088f32d3a1.png" />
+</div>
+</div>
+</section>
 </section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
@@ -1370,6 +1746,21 @@ p(y|x, \mathcal{D}) = \mathbb{E}_{\theta \sim p(\theta|\mathcal{D})}\big[p(y|x,\
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-getting-started-with-pyro-span"><span style="color:Orange">Getting Started with Pyro</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-neural-network-with-gaussian-prior-and-likelihood-span"><span style="color:Orange">Bayesian Neural Network with Gaussian Prior and Likelihood</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-define-and-run-markov-chain-monte-carlo-sampler-span"><span style="color:Orange">Define and run Markov chain Monte Carlo sampler</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exercise-1-deep-bayesian-neural-network-span"><span style="color:Orange"> Exercise 1: Deep Bayesian Neural Network</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-the-deep-bnn-with-mcmc-span"><span style="color:LightGreen">Train the deep BNN with MCMC</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-compute-predictive-distribution-span"><span style="color:LightGreen">Compute predictive distribution</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-bnns-with-mean-field-variational-inference-span"><span style="color:LightGreen">Train BNNs with mean-field variational inference</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-exercise-2-bayesian-updating-with-variational-inference-span"><span style="color:Orange">Exercise 2: Bayesian updating with variational inference</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-bayesian-update-span"><span style="color:LightGreen">Bayesian update</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-implementation-in-pyro-span"><span style="color:LightGreen">Implementation in Pyro</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-1-learn-a-model-on-the-old-observations-span"><span style="color:LightGreen">Exercise 2.1 Learn a model on the old observations</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-2-initialize-a-second-model-with-the-variational-parameters-span"><span style="color:LightGreen">Exercise 2.2 Initialize a second model with the variational parameters</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exercise-2-3-perform-variational-inference-on-the-new-model-span"><span style="color:LightGreen">Exercise 2.3 Perform variational inference on the new model</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
