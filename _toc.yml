@@ -103,6 +103,8 @@ chapters:
   - url: https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/PhysicsInformedNeuralNetworks
+  - file: _sources/lectures/LearningTheSchrodingerEquation
+  - file: _sources/lecture/SymbolicRegression
 - file: _sources/Project_02 # Project 02
   sections:
   - file: _sources/projects/Project_02_NuclearGeometryQGP
