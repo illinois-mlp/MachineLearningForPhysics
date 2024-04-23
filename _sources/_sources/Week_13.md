@@ -9,6 +9,8 @@ You will learn about Physics Informed Neural Networks
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing)
 * {doc}`lectures/PhysicsInformedNeuralNetworks`
+* {doc}`lectures/LearningTheSchrodingerEquation`
+* {doc}`lectures/SymbolicRegression`
 
 ## *Homework Assignment*
 * None
