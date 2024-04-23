@@ -87,12 +87,12 @@ chapters:
     title: Slides
   - file: _sources/lectures/ReinforcementLearning
   - file: _sources/homework/Homework_07
-
 - file: _sources/Week_11 # AI Explainability and Uncertainty Quantification
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AIExplainabilityUncertaintyQuantification
+  - file: _sources/homework/Homework_08
 - file: _sources/Week_12 # Unsupervised Learning and Anomaly Detection
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
