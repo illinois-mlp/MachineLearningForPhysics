@@ -107,7 +107,6 @@ chapters:
   - file: _sources/lectures/SymbolicRegression
 - file: _sources/Project_02 # Project 02
   sections:
-  - file: _sources/projects/Project_02_NuclearGeometryQGP
   - file: _sources/projects/Project_02_AnisotropyQGP
   - file: _sources/projects/Project_02_AberratedImages
   - file: _sources/projects/Project_02_GravitationalWaves
