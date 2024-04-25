@@ -750,26 +750,7 @@ document.write(`
 </section>
 <section id="span-style-color-lightgreen-question-05-span">
 <h3><span style="color:LightGreen">Question 05</span><a class="headerlink" href="#span-style-color-lightgreen-question-05-span" title="Permalink to this heading">#</a></h3>
-<p>With guidance from <a class="reference external" href="https://gwpy.github.io/docs/2.1.3/examples/timeseries/qscan">https://gwpy.github.io/docs/2.1.3/examples/timeseries/qscan</a>, generate the Q-filtered spectrogram for both the LIGO-Hanford and LIGO-Livingston data. Use the same time and frequency ranges as in <a class="reference external" href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102">[2]</a>. Specifically, perform the Q-transform for <span class="math notranslate nohighlight">\(t=0.2\)</span> seconds around the GW event <code class="docutils literal notranslate"><span class="pre">GW150914</span></code> and set the time-axis limits to be <code class="docutils literal notranslate"><span class="pre">-0.17</span> <span class="pre">seconds</span></code> before the event to <code class="docutils literal notranslate"><span class="pre">0.03</span> <span class="pre">seconds</span></code> after the event.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1">#-- Set width of q-transform plot, in seconds</span>
-<span class="n">hq</span> <span class="o">=</span> <span class="n">hfilt</span><span class="o">.</span><span class="n">q_transform</span><span class="p">(</span><span class="n">outseg</span><span class="o">=</span><span class="p">(</span><span class="n">tevent</span><span class="o">-</span><span class="n">dt</span><span class="p">,</span> <span class="n">tevent</span><span class="o">+</span><span class="n">dt</span><span class="p">))</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">hq</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normalised energy&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">tevent</span><span class="o">-</span><span class="mf">0.17</span><span class="p">,</span> <span class="n">tevent</span><span class="o">+</span><span class="mf">0.03</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Q-Transform&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>With guidance from <a class="reference external" href="https://gwpy.github.io/docs/2.1.3/examples/timeseries/qscan">https://gwpy.github.io/docs/2.1.3/examples/timeseries/qscan</a>, generate and display the Q-filtered spectrogram plots for both the LIGO-Hanford and LIGO-Livingston data. Use the same time and frequency ranges as in <a class="reference external" href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102">[2]</a>. Specifically, perform the Q-transform for <span class="math notranslate nohighlight">\(t=0.2\)</span> seconds around the GW event <code class="docutils literal notranslate"><span class="pre">GW150914</span></code> and set the time-axis limits to be <code class="docutils literal notranslate"><span class="pre">-0.17</span> <span class="pre">seconds</span></code> before the event to <code class="docutils literal notranslate"><span class="pre">0.03</span> <span class="pre">seconds</span></code> after the event.</p>
 </section>
 <section id="span-style-color-violet-machine-learning-approaches-to-gravitational-wave-detection-span">
 <h3><span style="color:Violet">Machine Learning Approaches to Gravitational Wave Detection</span><a class="headerlink" href="#span-style-color-violet-machine-learning-approaches-to-gravitational-wave-detection-span" title="Permalink to this heading">#</a></h3>
