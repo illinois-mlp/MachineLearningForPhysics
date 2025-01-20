@@ -517,11 +517,11 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
 </pre></div>
 </div>
 </div>
@@ -723,7 +723,7 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 <p>For problems with a finite number of possible models and observations, the calculations required are simple arithmetic but quickly get cumbersome.  A helper function lets you hide the arithmetic and focus on the logic:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
     <span class="c1"># Calculate the Bayes&#39; rule numerator for each model.</span>
     <span class="n">prob</span> <span class="o">=</span> <span class="p">{</span><span class="n">M</span><span class="p">:</span> <span class="n">prior</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span> <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">prior</span><span class="p">}</span>
     <span class="c1"># Calculate the Bayes&#39; rule denominator.</span>
@@ -739,7 +739,7 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prior</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;!English&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">M</span> <span class="o">==</span> <span class="s1">&#39;English&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">0.4</span> <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="s1">&#39;t-shirt&#39;</span> <span class="k">else</span> <span class="mf">0.6</span>
     <span class="k">else</span><span class="p">:</span>
@@ -773,9 +773,9 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 <p>Below is a helper function <code class="docutils literal notranslate"><span class="pre">Learn</span></code> for these calculations that allows multiple updates with one call and displays the learning process as a pandas table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">IPython.display</span>
 
-<span class="k">def</span> <span class="nf">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Learn from data using Bayesian inference.</span>
 
 <span class="sd">    Assumes that the model and data spaces are discrete.</span>
@@ -881,7 +881,7 @@ P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})
 <p>Define the likelihood assuming that each dice is fair:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">D</span> <span class="o">&lt;=</span> <span class="n">M</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">M</span>
     <span class="k">else</span><span class="p">:</span>
@@ -992,7 +992,7 @@ P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left
 <p>where <span class="math notranslate nohighlight">\(\Gamma\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_function">gamma function</a> related to the factorial <span class="math notranslate nohighlight">\(\Gamma(n) = (n-1)!\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">binomial_learn</span><span class="p">(</span><span class="n">prior_a</span><span class="p">,</span> <span class="n">prior_b</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_pass</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">binomial_learn</span><span class="p">(</span><span class="n">prior_a</span><span class="p">,</span> <span class="n">prior_b</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_pass</span><span class="p">):</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
     <span class="c1"># Calculate and plot the prior on theta.</span>
     <span class="n">prior</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">prior_a</span><span class="p">,</span> <span class="n">prior_b</span><span class="p">)</span>

@@ -515,26 +515,26 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">cluster</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">cluster</span>
 </pre></div>
 </div>
 </div>
@@ -542,7 +542,7 @@ document.write(`
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
@@ -552,7 +552,7 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
       <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -567,7 +567,7 @@ document.write(`
 <p>Implement the function below to calculate the event probabilities <span class="math notranslate nohighlight">\(P(A)\)</span>, <span class="math notranslate nohighlight">\(P(B)\)</span>, <span class="math notranslate nohighlight">\(P(A \cap B)\)</span> and the conditional probabilities <span class="math notranslate nohighlight">\(P(A\mid B)\)</span>, <span class="math notranslate nohighlight">\(P(B\mid A)\)</span> for an arbitrary (finite) probability space specified by each outcome’s probability. <em>Hint: the probability of an event containing a set of outcomes is just the sum of the individual outcome probabilities.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_probabilities</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_probabilities</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate probabilities for an arbitrary probability space.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -627,7 +627,7 @@ document.write(`
 <p>Since the CDF <span class="math notranslate nohighlight">\(y = F_X(x)\)</span> maps from random variable values to the range <span class="math notranslate nohighlight">\([0,1]\)</span>, its inverse <span class="math notranslate nohighlight">\(x = F_X^{-1}(y)\)</span> maps from <span class="math notranslate nohighlight">\([0,1]\)</span> back to the random variable. What distribution of <span class="math notranslate nohighlight">\(y\)</span> values would generate values according to the PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> when transformed by the inverse <span class="math notranslate nohighlight">\(F_X^{-1}(y)\)</span>? The answer is a uniform distribution, as we can demonstrate numerically for an arbitrary random variable:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cdf_hist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cdf_hist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="c1"># Generate n random value from the scipy.stats distribution X.</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
@@ -659,7 +659,7 @@ F_R(r) = \begin{cases}
 Implement the function below to apply \)</span>F_R^{-1}(y)<span class="math notranslate nohighlight">\( to uniformly distributed random values in order to sample \)</span>f_R(x)$:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_disk</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sample_disk</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample random radii for points uniformly distributed on a disk.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -729,7 +729,7 @@ y_{CDF} = 0, \frac{1}{N+1}, \frac{2}{N+1}, \ldots, \frac{N}{N+1}, 1 \; .
 \)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">empirical_cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">empirical_cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tabulate the empirical CDF from samples of an arbitrary random variable.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -805,9 +805,9 @@ y_{CDF} = 0, \frac{1}{N+1}, \frac{2}{N+1}, \ldots, \frac{N}{N+1}, 1 \; .
 <p>For example: if the trials were <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1]</span></code>, the function should return <code class="docutils literal notranslate"><span class="pre">{1:</span> <span class="pre">2,</span> <span class="pre">2:</span> <span class="pre">1}</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
-<span class="k">def</span> <span class="nf">count_runs</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_runs</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Count number of success runs of length k.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -845,7 +845,7 @@ y_{CDF} = 0, \frac{1}{N+1}, \frac{2}{N+1}, \ldots, \frac{N}{N+1}, 1 \; .
 <p>Using <code class="docutils literal notranslate"><span class="pre">count_runs</span></code> above, write a method <code class="docutils literal notranslate"><span class="pre">run_prob</span></code> that returns the probability of observing at least one run of length <code class="docutils literal notranslate"><span class="pre">k</span></code> or more from <code class="docutils literal notranslate"><span class="pre">n</span></code> trials with success probabilty <code class="docutils literal notranslate"><span class="pre">p</span></code> per trial. This probability is estimated from <code class="docutils literal notranslate"><span class="pre">expts</span></code> simulated experinents.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_prob</span><span class="p">(</span><span class="n">expts</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_prob</span><span class="p">(</span><span class="n">expts</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the probability of observing at least one run of length `k` or more from `n` trials with success probabilty `p` per trial. This probability is estimated from `expts` simulated experinents.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -907,7 +907,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 \)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Gaussian_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">Gaussian_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the Gaussian probability density.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -967,7 +967,7 @@ p_{nk} = \frac{\omega_k G(\vec{x}_n; \vec{\mu}_k, C_k)}
 Note that these relative probabilities (also called *responsibilities*) sum to one over components \)</span>k<span class="math notranslate nohighlight">\( for each sample \)</span>n<span class="math notranslate nohighlight">\(.  Also note that we consider the parameters (\)</span>\omega_k<span class="math notranslate nohighlight">\(, \)</span>\vec{\mu}_k<span class="math notranslate nohighlight">\(, \)</span>C_k$) of each component fixed during this step. <em>Hint: use your <code class="docutils literal notranslate"><span class="pre">Gaussian_pdf</span></code> function here.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">E_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">E_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a GMM E-step.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -1066,7 +1066,7 @@ C_k &amp;= \frac{\sum_{n=1}^N\, p_{nk} \left( \vec{x}_n - \vec{\mu}_k\right) \le
 Make sure you understand why the last expression yields a matrix rather than a scalar dot product before jumping into the code. (If you would like a numpy challenge, try implementing this function without any loops, e.g., with <code class="docutils literal notranslate"><span class="pre">np.einsum</span></code>)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a GMM M-step.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -1139,10 +1139,10 @@ Make sure you understand why the last expression yields a matrix rather than a s
 <p>You have now implemented the core of the GMM algorithm. Next you will use KMeans as a means of seeding the GMM model fit. First we include two helpful functions <code class="docutils literal notranslate"><span class="pre">draw_ellipses</span></code> and <code class="docutils literal notranslate"><span class="pre">GMM_parplot</span></code> to help display results. The details of these methods are not important.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">colorConverter</span><span class="p">,</span> <span class="n">ListedColormap</span>
-<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">EllipseCollection</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">colorConverter</span><span class="p">,</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">EllipseCollection</span>
 
-<span class="k">def</span> <span class="nf">draw_ellipses</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">nsigmas</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_ellipses</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">nsigmas</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a collection of ellipses.</span>
 
 <span class="sd">    Uses the low-level EllipseCollection to efficiently draw a large number</span>
@@ -1206,7 +1206,7 @@ Make sure you understand why the last expression yields a matrix rather than a s
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GMM_pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entropy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">GMM_pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entropy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Display 2D projections of a Gaussian mixture model fit.</span>
 
 <span class="sd">    Parameters</span>
@@ -1286,7 +1286,7 @@ Make sure you understand why the last expression yields a matrix rather than a s
 <p>Here is a simple wrapper that uses KMeans to initialize the relative probabilities to all be either zero or one, based on each sample’s cluster assignment:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GMM_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">GMM_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
@@ -1365,7 +1365,7 @@ In this problem you will verify this normalization for KDE using two different n
 <p>First, implement the function below to accept a 1D KDE fit object and estimate its normalization integral using the trapezoid rule with the specified grid. <em>Hint: the <code class="docutils literal notranslate"><span class="pre">np.trapz</span></code> function will be useful.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_grid_normalization</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">check_grid_normalization</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check 1D denstity estimator fit result normlization using grid quadrature.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -1417,7 +1417,7 @@ $<span class="math notranslate nohighlight">\(
 where the \)</span>\vec{x}_j<span class="math notranslate nohighlight">\( are uniformly distributed over the integration domain and \)</span>V<span class="math notranslate nohighlight">\( is the integration domain volume. Note that `trapz` gives more accurate results for a fixed number of \)</span>P(\vec{x})$ evaluations, but MC integration is much easier to generalize to higher dimensions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_mc_normalization</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">nmc</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">check_mc_normalization</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">nmc</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check denstity estimator fit result normlization using MC integration.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>

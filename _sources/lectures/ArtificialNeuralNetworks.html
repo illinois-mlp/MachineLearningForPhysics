@@ -535,13 +535,13 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 </pre></div>
 </div>
 </div>
@@ -549,11 +549,11 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use CPU rather than GPU for keras neural networks</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_DEVICE_ORDER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PCI_BUS_ID&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_VISIBLE_DEVICES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
-<span class="kn">from</span> <span class="nn">tqdm.keras</span> <span class="kn">import</span> <span class="n">TqdmCallback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">TqdmCallback</span>
 </pre></div>
 </div>
 </div>
@@ -567,7 +567,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
 <p>Below we inlucde a set of helper functions to visualize the calculations for illustration purposes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -589,7 +589,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
     <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">nn_unit_draw2d</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nn_unit_draw2d</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a single network unit or layer with 2D input.</span>
 
 <span class="sd">    Parameters</span>
@@ -608,7 +608,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
     <span class="n">nn_map2d</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">vlim</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">nn_graph_draw2d</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nn_graph_draw2d</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the response of a neural network with 2D input.</span>
 
 <span class="sd">    Parameters</span>
@@ -675,13 +675,13 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
     <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span>
                         <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">sizes_as_string</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sizes_as_string</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tensors</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">tensors</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">])</span>
 
-<span class="k">def</span> <span class="nf">trace_forward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_forward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the module forward hook API.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -708,7 +708,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: IN </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="si">}</span><span class="s1"> OUT </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">output</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">trace_backward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">grad_in</span><span class="p">,</span> <span class="n">grad_out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_backward</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">grad_in</span><span class="p">,</span> <span class="n">grad_out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the module backward hook API.</span>
 
 <span class="sd">    Parameters</span>
@@ -733,7 +733,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: GRAD </span><span class="si">{</span><span class="n">sizes_as_string</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">trace</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;_trace_hooks&#39;</span><span class="p">):</span>
         <span class="c1"># Remove all previous tracing hooks.</span>
         <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">_trace_hooks</span><span class="p">:</span>
@@ -750,7 +750,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
             <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">trace_backward</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)))</span>
 
 
-<span class="k">def</span> <span class="nf">get_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
     <span class="n">lr_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">grp</span> <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_grps</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has no parameter called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
@@ -758,7 +758,7 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has multiple parameters called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lr_grps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">set_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">):</span>
     <span class="n">lr_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">grp</span> <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_grps</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizer has no parameter called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
@@ -770,10 +770,10 @@ To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuil
 <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">get_lr</span> <span class="o">=</span> <span class="n">get_lr</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">set_lr</span> <span class="o">=</span> <span class="n">set_lr</span>
 
-<span class="k">def</span> <span class="nf">lr_scan</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">lr_start</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">lr_stop</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">lr_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lr_scan</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">lr_start</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">lr_stop</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">lr_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the learning-rate scan described in Smith 2015.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
     <span class="c1"># Save the model and optimizer states before scanning.</span>
     <span class="n">model_save</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
     <span class="n">optim_save</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
@@ -859,7 +859,7 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 <p>The building-block equation is straightfoward to implement as code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">nn_unit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">phi</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -898,7 +898,7 @@ f(\mathbf{x}) = \phi\left(\mathbf{x}\cdot\mathbf{w} + b\right)
 <p>These activations divide naturally into two categories depending on their asymptotic behavior as <span class="math notranslate nohighlight">\(s\rightarrow +\infty\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_activations</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">s_range</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_activations</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">s_range</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">s_range</span><span class="p">,</span> <span class="o">+</span><span class="n">s_range</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -978,7 +978,7 @@ N(X) = H\left(G\left(F(X)\right)\right) \; ,
 <p>The corresponding code for arbitrary layers is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_graph</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">layers</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">nn_graph</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">layers</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">nn_unit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">X</span>
@@ -1802,7 +1802,7 @@ but we can not directly interpret their values as category probabilities since t
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">softmax</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="c1"># subtract out max(y) improve the numerical accuracy</span>
     <span class="n">expy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">expy</span> <span class="o">/</span> <span class="n">expy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1830,7 +1830,7 @@ but we can not directly interpret their values as category probabilities since t
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_softmax</span><span class="p">(</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_softmax</span><span class="p">(</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">y_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">y3</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">ylo</span> <span class="o">+</span> <span class="n">yhi</span><span class="p">)</span>
     <span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">softmax</span><span class="p">([</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">])</span> <span class="k">for</span> <span class="n">y1</span> <span class="ow">in</span> <span class="n">y_grid</span> <span class="k">for</span> <span class="n">y2</span> <span class="ow">in</span> <span class="n">y_grid</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>

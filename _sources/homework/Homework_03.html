@@ -515,12 +515,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 </pre></div>
 </div>
 </div>
@@ -535,7 +535,7 @@ document.write(`
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
@@ -545,7 +545,7 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
       <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -561,7 +561,7 @@ document.write(`
 <p>Implement the function below using <code class="docutils literal notranslate"><span class="pre">np.random.multivariate_normal</span></code> to generate random samples from an arbitrary multidimensional normal distribution, for a specified random seed:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random samples from a normal distribution.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -611,7 +611,7 @@ document.write(`
 <p>Visualize a generated 3D dataset using:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">visualize_3d</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">visualize_3d</span><span class="p">():</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.</span><span class="p">])</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.9</span>
@@ -632,7 +632,7 @@ document.write(`
 <p>Read about <a class="reference external" href="https://en.wikipedia.org/wiki/Covariance_and_correlation">correlation and covariance</a>, then implement the function below to create a 2x2 covariance matrix given values of <span class="math notranslate nohighlight">\(\sigma_x\)</span>, <span class="math notranslate nohighlight">\(\sigma_y\)</span> and the correlation coefficient <span class="math notranslate nohighlight">\(\rho\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_2d_covariance</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_2d_covariance</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and return the 2x2 covariance matrix specified by the input args.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="p">(</span><span class="n">sigma_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sigma_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;sigmas must be &gt; 0.&#39;</span>
@@ -657,7 +657,7 @@ document.write(`
 <p>Run the following cell that uses your <code class="docutils literal notranslate"><span class="pre">create_2d_covariance</span></code> and <code class="docutils literal notranslate"><span class="pre">generate_normal</span></code> functions to compare the 2D normal distributions with <span class="math notranslate nohighlight">\(\rho = 0\)</span> (blue), <span class="math notranslate nohighlight">\(\rho = +0.9\)</span> (red) and <span class="math notranslate nohighlight">\(\rho = -0.9\)</span> (green):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_rhos</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_rhos</span><span class="p">():</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span>
     <span class="k">for</span> <span class="n">rho</span><span class="p">,</span> <span class="n">cmap</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mf">0.</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="s1">&#39;Reds&#39;</span><span class="p">,</span> <span class="s1">&#39;Greens&#39;</span><span class="p">)):</span>
@@ -700,7 +700,7 @@ document.write(`
 <p>Implement the following function to calculate the likelihood <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> given this information:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate likelihood of data D given model M.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -739,7 +739,7 @@ document.write(`
 <p>Implement the function below to calculate the prior probabilities of each model for an image based on the expected number of objects of each type:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prior</span><span class="p">(</span><span class="n">num_quasars_expected</span><span class="p">,</span> <span class="n">num_galaxies_expected</span><span class="p">,</span> <span class="n">num_stars_expected</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">prior</span><span class="p">(</span><span class="n">num_quasars_expected</span><span class="p">,</span> <span class="n">num_galaxies_expected</span><span class="p">,</span> <span class="n">num_stars_expected</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the prior probability of each model.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -776,9 +776,9 @@ document.write(`
 <p>You have now the code necessary to quantify how well your quasar identification algorithm performs in regions with different densities of stars, using the posterior probability <span class="math notranslate nohighlight">\(P(\text{quasar}\mid \text{True})\)</span>.  For example, if the stellar density increases 3 times (from 200 to 600 per image) with fixed quasar and galaxy densities (100 each), the posterior probability drops from 0.615 to 0.381:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">IPython.display</span>
 
-<span class="k">def</span> <span class="nf">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Learn from data using Bayesian inference.</span>
 
 <span class="sd">    Assumes that the model and data spaces are discrete.</span>
@@ -837,7 +837,7 @@ P(t\mid \lambda) \propto \exp(-\lambda t) \; .
 \)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decay_likelihood</span><span class="p">(</span><span class="n">decay_times</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">decay_likelihood</span><span class="p">(</span><span class="n">decay_times</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the normalized likelihood of measured times assuming a decay rate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -868,9 +868,9 @@ P(\lambda\mid \alpha,\beta) = \frac{\beta^\alpha \lambda^{\alpha-1} e^{-\beta\la
 Implement the function below to evaluate the Gamma distribtion PDF using a numpy expression for the numerator and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.gamma.html">scipy.special.gamma</a> for the denominator:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.special</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy.special</span>
 
-<span class="k">def</span> <span class="nf">gamma_distribution</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gamma_distribution</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the gamma distribution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -883,7 +883,7 @@ Implement the function below to evaluate the Gamma distribtion PDF using a numpy
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A correct solution should pass these tests.</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
 <span class="k">assert</span> <span class="n">gamma_distribution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="k">assert</span> <span class="n">gamma_distribution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
@@ -904,7 +904,7 @@ Use this result to convince yourself that the posterior \)</span>P(\lambda\mid D
 <p>Implement the function below to learn from measured decay times by updating the prior hyperparameters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rate_learn</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">decay_times</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">rate_learn</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">decay_times</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Learn from data to update hyperparameters.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -945,7 +945,7 @@ Use this result to convince yourself that the posterior \)</span>P(\lambda\mid D
 <p>You can use the function below to test your code visually and confirm that better data reduces the influence of the prior:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rate_learn_plot</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">num_decays</span><span class="p">,</span> <span class="n">true_lam</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">rate_learn_plot</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">num_decays</span><span class="p">,</span> <span class="n">true_lam</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Generate some random decays using the true decay rate.</span>
@@ -999,7 +999,7 @@ $<span class="math notranslate nohighlight">\(
 Do not call your `decay_likelihood()` or `gamma_distribution()` functions in your implementation since the result has better accuracy if you apply the logarithm and simplify analytically. Since MCMC sampling only requires a function proportional to the desired PDF, you can drop any factors in \)</span>P(D\mid \lambda)<span class="math notranslate nohighlight">\( or \)</span>P(\lambda\mid \alpha, \beta)<span class="math notranslate nohighlight">\( that do not depend on \)</span>\lambda$.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decay_logf</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">decay_times</span><span class="p">,</span> <span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">decay_logf</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">decay_times</span><span class="p">,</span> <span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate a function proportional to the log-posterior probability density.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -1043,11 +1043,11 @@ Do not call your `decay_likelihood()` or `gamma_distribution()` functions in you
 <p>You can use the function below to test your numerical solution and compare with the posterior found using <code class="docutils literal notranslate"><span class="pre">rate_learn_plot</span></code> above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">emcee</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
 
-<span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare an arbitrary function to use with emcee sampling.</span>
 
 <span class="sd">    Emcee expects its parameters in a single list, but it is sometimes more</span>
@@ -1116,7 +1116,7 @@ Do not call your `decay_likelihood()` or `gamma_distribution()` functions in you
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fixed</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="n">partial</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">fixed</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;expected list of </span><span class="si">{}</span><span class="s1"> values.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="mf">0.</span>
@@ -1134,7 +1134,7 @@ Do not call your `decay_likelihood()` or `gamma_distribution()` functions in you
     <span class="k">return</span> <span class="n">wrapped</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span>
 
 
-<span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">abs_rms</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">abs_rms</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
            <span class="n">frac_rms</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">burnin</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate MCMC samples of the un-normalized PDF func() using emcee.</span>
 
@@ -1191,7 +1191,7 @@ Do not call your `decay_likelihood()` or `gamma_distribution()` functions in you
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">MCMC_sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">MCMC_sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random samples from an un-normalized PDF.</span>
 
 <span class="sd">    See :func:`wrap` and :func:`sample` for details.</span>
@@ -1221,7 +1221,7 @@ Do not call your `decay_likelihood()` or `gamma_distribution()` functions in you
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">MCMC_rate_learn_plot</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">num_decays</span><span class="p">,</span> <span class="n">true_lam</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">MCMC_rate_learn_plot</span><span class="p">(</span><span class="n">prior_alpha</span><span class="p">,</span> <span class="n">prior_beta</span><span class="p">,</span> <span class="n">num_decays</span><span class="p">,</span> <span class="n">true_lam</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="c1"># Generate some random decays using the true decay rate.</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">decay_times</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">expon</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">true_lam</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_decays</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
@@ -1275,7 +1275,7 @@ where \)</span>\mu<span class="math notranslate nohighlight">\( and \)</span>\si
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a dataset with two dependent but uncorrelated features.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>

@@ -520,12 +520,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">model_selection</span><span class="p">,</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">mixture</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">model_selection</span><span class="p">,</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">mixture</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -595,7 +595,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">gen</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
@@ -615,7 +615,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plotXy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">fits</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plotXy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">fits</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -653,7 +653,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>and combining the preprocessing and regression steps into a <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">Pipeline</a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">poly_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
     <span class="n">degree_is_zero</span> <span class="o">=</span> <span class="p">(</span><span class="n">degree</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
         <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span> <span class="n">include_bias</span><span class="o">=</span><span class="n">degree_is_zero</span><span class="p">)),</span>
@@ -684,7 +684,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>The plots below show 20% of the data reserved for testing (red points) with a <span class="math notranslate nohighlight">\(P=2\)</span> fit to the training data superimposed. The primary sklearn test metric for regression problems is the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> <span class="math notranslate nohighlight">\(R^2\)</span>, for which the goal is <span class="math notranslate nohighlight">\(R^2 = 1\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">test_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">test_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_fraction</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
@@ -707,7 +707,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>There is no rigorous procedure for setting an optimum test fraction, and anything between 0.1 and 0.5 would be reasonable (and the sklearn default is 0.25).  A larger test fraction improves the reliability of the test metric but decreases the reliability of the model being tested.  As always, more data always helps and reduces your sensitivity to the training fraction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_fraction_scan</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_fraction_scan</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">test_fractions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">)</span>
     <span class="n">R2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_fractions</span><span class="p">)))</span>
@@ -758,7 +758,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html">cross_validate</a> function automates the k-folding and scoring process, and outputs both train and test <span class="math notranslate nohighlight">\(R^2\)</span> scores, as well as CPU times, for each split:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cross_validate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cross_validate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
         <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">))])</span>
@@ -1398,7 +1398,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>The <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> function puts all the pieces together to scan a grid of one or more hyperparameters for a family of models.  For example, the polynomial degree <span class="math notranslate nohighlight">\(P\)</span> corresponds to a pipeline <code class="docutils literal notranslate"><span class="pre">poly__degree</span></code> parameter, which we vary from 0 to 5 below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cv_summary</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cv_summary</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Summarize the results from a GridSearchCV fit.</span>
 
 <span class="sd">    Summarize a cross-validation grid search in a pandas DataFrame with the</span>
@@ -1447,7 +1447,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_models</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">max_degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_models</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">max_degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">hyper_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly__degree&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
     <span class="n">hyper_model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
         <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">()),</span>
@@ -2142,12 +2142,12 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">import</span> <span class="nn">tensorflow_probability</span> <span class="k">as</span> <span class="nn">tfp</span>
-<span class="kn">import</span> <span class="nn">tensorflow.compat.v2</span> <span class="k">as</span> <span class="nn">tf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow_probability</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tfp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow.compat.v2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
 
 <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/google/edward2
-<span class="kn">import</span> <span class="nn">edward2</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">edward2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ed</span>
 </pre></div>
 </div>
 </div>
@@ -2167,7 +2167,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 <p>The function below estimates the Bayesian evidence for the data <span class="math notranslate nohighlight">\(D=(X,y)\)</span> given a polynomial model of degree <span class="math notranslate nohighlight">\(P\)</span>, using the same MCMC techniques we saw earlier. The evidence calculation requires an additional ingredient that we never specified for cross validation: a prior on the <span class="math notranslate nohighlight">\(P + 1\)</span> polynomial coefficients, which has a similar effect to a regularization term in an sklearn linear regression.  We adopt a Gaussian prior on each coefficient with the same scale, chosen to be large enough that the likelihood will dominate the posterior.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_param_grid</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_param_grid</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a parameter grid from parameter samples.</span>
 
 <span class="sd">    Grids are based on 1D quantiles in each parameter, so are not uniform.</span>
@@ -2197,7 +2197,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
         <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">estimate_log_evidence</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">log_numerator</span><span class="p">,</span> <span class="n">max_components</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_log_evidence</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">log_numerator</span><span class="p">,</span> <span class="n">max_components</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                           <span class="n">grid_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the log evidence using MCMC samples.</span>
 
@@ -2273,7 +2273,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_evidence</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_evidence</span><span class="p">(</span>
     <span class="n">Xdata</span><span class="p">,</span>
     <span class="n">ydata</span><span class="p">,</span>
     <span class="n">degree</span><span class="p">,</span>
@@ -2305,7 +2305,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
         <span class="n">XP</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span> <span class="o">**</span> <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
         <span class="n">XX</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">XP</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;XX&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">x_data</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">x_data</span><span class="p">):</span>
             <span class="n">coef</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="n">P</span><span class="p">,),</span> <span class="n">coef_sigma</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;coef&quot;</span><span class="p">)</span>
             <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
@@ -2313,7 +2313,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 
         <span class="n">log_joint</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">make_log_joint_fn</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">target_log_prob_fn</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">target_log_prob_fn</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Target log-probability as a function of states.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="n">log_joint</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">coef</span><span class="o">=</span><span class="n">coef</span><span class="p">,</span> <span class="n">x_data</span><span class="o">=</span><span class="n">XX</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ydata</span><span class="p">)</span>
 
@@ -2336,7 +2336,7 @@ x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
 
         <span class="c1"># Prepare for MCMC sampling</span>
         <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_shape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">n</span><span class="p">,)</span>
 

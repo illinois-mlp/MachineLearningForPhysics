@@ -515,13 +515,13 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 </pre></div>
 </div>
 </div>
@@ -548,7 +548,7 @@ f(x) = x^2 - 10 e^{-10000 (x - \pi)^2}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">10000</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -608,7 +608,7 @@ f(x) = \frac{\cos(e^x)}{x^2}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -620,7 +620,7 @@ f^\prime (x) = -2 \frac{\cos(e^x)}{x^3} - e^x \frac{\sin(e^x)}{x^2}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -670,8 +670,8 @@ f^\prime (x) = -2 \frac{\cos(e^x)}{x^3} - e^x \frac{\sin(e^x)}{x^2}
 <p>For example, using the <a class="reference external" href="https://github.com/HIPS/autograd/blob/master/docs/tutorial.md">autograd package</a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">elementwise_grad</span>
-<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">autograd</span><span class="w"> </span><span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">elementwise_grad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">autograd.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">anp</span>
 </pre></div>
 </div>
 </div>
@@ -683,7 +683,7 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f_auto</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f_auto</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">anp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -715,7 +715,7 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 <p>cannot be evaluated at <span class="math notranslate nohighlight">\(x = 0\)</span>, so neither can its automatic derivative:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span>
 </pre></div>
 </div>
@@ -761,7 +761,7 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 <p>The simplest fix is to return 1 whenever <span class="math notranslate nohighlight">\(x\)</span> is zero:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.</span>
 </pre></div>
 </div>
@@ -794,7 +794,7 @@ f_{\text{auto}}(x) \equiv f(x) = \frac{\cos(e^x)}{x^2}
 <p>A better solution is to use a Taylor expansion for <span class="math notranslate nohighlight">\(|x| \lt \epsilon\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.001</span> <span class="k">else</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">6</span>
 </pre></div>
 </div>
@@ -861,7 +861,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>Most implementations need a function that takes all components of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in a single array argument:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rosenbrock</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 </pre></div>
@@ -871,7 +871,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>Below is a helper function to demonstarate optimization with the Rosenbrock function called <code class="docutils literal notranslate"><span class="pre">plot_rosenbrock</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_rosenbrock</span><span class="p">(</span><span class="n">xrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">yrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_rosenbrock</span><span class="p">(</span><span class="n">xrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">yrange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                     <span class="n">shaded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_calls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the Rosenbrock function with some optional decorations.</span>
 
@@ -988,15 +988,15 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>The function below uses wrappers to track and display the optimizer’s progress, and also displays the running time:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimize_rosenbrock</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">use_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x0</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
     
     <span class="n">all_calls</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">def</span> <span class="nf">rosenbrock_wrapped</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rosenbrock_wrapped</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="n">all_calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rosenbrock</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     
     <span class="n">path</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">)]</span>
-    <span class="k">def</span> <span class="nf">track</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">track</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="n">jac</span> <span class="o">=</span> <span class="n">rosenbrock_grad</span> <span class="k">if</span> <span class="n">use_grad</span> <span class="k">else</span> <span class="kc">False</span>
@@ -1132,7 +1132,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>The function below maps the cost as a function of the starting point:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost_map</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cost_map</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
     <span class="n">xrange</span><span class="p">,</span> <span class="n">yrange</span> <span class="o">=</span> <span class="n">plot_rosenbrock</span><span class="p">(</span><span class="n">shaded</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">x0_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">xrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
     <span class="n">y0_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">yrange</span><span class="p">,</span> <span class="n">ngrid</span><span class="p">)</span>
@@ -1208,7 +1208,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>The corresponding negative-log-likelihood (NLL) function of the <code class="docutils literal notranslate"><span class="pre">loc</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> parameters is then (we write it out explicitly using autograd numpy calls so we can perform automatic differentiation later):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLL</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">NLL</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
     <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">theta</span>
     <span class="k">return</span> <span class="n">anp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">anp</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
 </pre></div>
@@ -1218,7 +1218,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 <p>Add (un-normalized) flat priors on <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\log\sigma\)</span> (these are the “natural” un-informative priors for additive and multiplicative constants, respectively):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLP</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">NLP</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">theta</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">anp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="k">if</span> <span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="n">anp</span><span class="o">.</span><span class="n">inf</span>
 </pre></div>
@@ -1227,7 +1227,7 @@ f(x_0, x_1) = (1 - x_0)^2 + 100 (x_1 - x_0 ^2)^2 \; .
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NLpost</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">NLpost</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">NLL</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">+</span> <span class="n">NLP</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1241,7 +1241,7 @@ f(\theta) = -\log P(\theta\mid D) \; .
 <p>Here is a helper function called <code class="docutils literal notranslate"><span class="pre">plot_posterior</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">sigma_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_posterior</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">sigma_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">ngrid</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                    <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">VI</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">MC</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a posterior with optional algorithm results superimposed.</span>
 
@@ -1374,7 +1374,7 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">NLpost_grad</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1382,7 +1382,7 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">GradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">):</span>
     <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">])]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
         <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">,</span> <span class="n">eta</span><span class="p">))</span>
@@ -1410,7 +1410,7 @@ f(\theta) = -\log P(\theta\mid D) \; .
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">StochasticGradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">StochasticGradientDescent</span><span class="p">(</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">n_minibatch</span><span class="p">,</span> <span class="n">eta_factor</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu0</span><span class="p">,</span> <span class="n">sigma0</span><span class="p">])]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>

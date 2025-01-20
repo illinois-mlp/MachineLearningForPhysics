@@ -516,13 +516,13 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">manifold</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">manifold</span>
 </pre></div>
 </div>
 </div>
@@ -530,7 +530,7 @@ document.write(`
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
@@ -540,7 +540,7 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
       <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -617,7 +617,7 @@ Saving to: ‘./tmp_data/ess_targets.hf5’
 <p>We already encountered the “curse of dimensionality” in the context of dimensionality reduction, but sometimes a large dimensionality can actually be a cure. As a motivating example, consider the 2D data plotted below which clearly contains two clusters with highly nonlinear shapes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_circles</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_circles</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
@@ -669,9 +669,9 @@ x_2 = x_0^2 + x_1^2 \; .
 <p>By <em>increasing</em> the dimensionality of our data, we have turned a very nonlinear clustering problem into a trivial linear problem!  To see this, plot the data in 3D:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
 
-<span class="k">def</span> <span class="nf">plot_circles_3d</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_3d</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_circles_3d</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_3d</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
@@ -719,7 +719,7 @@ c
 \end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">embed</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="c1"># Embed X using the poly kernel with n=2, c=1 (see p.16 of CS229 SVM notes)</span>
     <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x0&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">]</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
@@ -819,7 +819,7 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <p>We will use the following function to demonstrate the KernelPCA method, which allows you to set the <span class="math notranslate nohighlight">\(\gamma\)</span> hyperparameter:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">kpca_demo</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">circles_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">kpca_demo</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">circles_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     
     <span class="c1"># Use PCA with RBF kernel.</span>
@@ -885,9 +885,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <p>The pairplot is confusing until you see the following plot where, in addition, each point is colored according to its true 1D coordinate along the main direction of the manifold (stored in the ‘y’ column of <code class="docutils literal notranslate"><span class="pre">ess_targets</span></code>):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
 
-<span class="k">def</span> <span class="nf">plot_ess_3d</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_ess_3d</span><span class="p">():</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">ess_data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>

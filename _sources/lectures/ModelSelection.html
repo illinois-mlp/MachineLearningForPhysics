@@ -512,12 +512,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">mixture</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">mixture</span>
 </pre></div>
 </div>
 </div>
@@ -525,11 +525,11 @@ document.write(`
 <p>We will be using MCMC for our Bayesian model evaluations, so we include the MCMC helper functions we had before in our <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/MarkovChainMonteCarlo.html">MCMC notebook</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">emcee</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
 
-<span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare an arbitrary function to use with emcee sampling.</span>
 
 <span class="sd">    Emcee expects its parameters in a single list, but it is sometimes more</span>
@@ -598,7 +598,7 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fixed</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="n">partial</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">fixed</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;expected list of </span><span class="si">{}</span><span class="s1"> values.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="mf">0.</span>
@@ -616,7 +616,7 @@ document.write(`
     <span class="k">return</span> <span class="n">wrapped</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span>
 
 
-<span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">abs_rms</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">abs_rms</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
            <span class="n">frac_rms</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">burnin</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate MCMC samples of the un-normalized PDF func() using emcee.</span>
 
@@ -673,7 +673,7 @@ document.write(`
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">MCMC_sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">MCMC_sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random samples from an un-normalized PDF.</span>
 
 <span class="sd">    See :func:`wrap` and :func:`sample` for details.</span>
@@ -797,7 +797,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>Generate some random samples of a single feature <span class="math notranslate nohighlight">\(x\)</span> drawn from a mixture of two Gaussians:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_mix</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">frac1</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_mix</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">frac1</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="c1"># Assign each sample to one of the peaks.</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">bernoulli</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">frac1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_total</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
@@ -914,7 +914,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>To build this calculation, first define the log-posterior PDFs of both models:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">M1_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M1_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
     <span class="c1"># Perform change of variables.</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="c1"># Apply priors on (mu, sigma)</span>
@@ -928,7 +928,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">M2_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M2_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
     <span class="c1"># Perform change of variables.</span>
     <span class="n">mu1</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">-</span> <span class="mf">0.3</span>
     <span class="n">mu2</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="mf">0.3</span>
@@ -949,7 +949,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>Now we are ready to estimate the evidence for the observed data D assuming model M1:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_M1_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_M1_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Pick intial point for MCMC chains based on the data.</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -1058,7 +1058,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>The calculation of the evidence for D assuming model M2 is very similar, but now in the 3D parameter space (mu, t1, t2):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_M2_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_M2_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Pick starting point for MCMC chains based on the data.</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -1227,7 +1227,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>If we assume that M1 and M2 have equal a-priori weights, then the odds ratio equals the Bayes’ factor:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">summarize</span><span class="p">(</span><span class="n">M1_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">M2_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">M1_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">M2_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s1">&#39;logM1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">E_Da_M1</span><span class="p">,</span> <span class="n">E_Db_M1</span><span class="p">,</span> <span class="n">E_Dc_M1</span><span class="p">],</span>
         <span class="s1">&#39;logM2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">E_Da_M2</span><span class="p">,</span> <span class="n">E_Db_M2</span><span class="p">,</span> <span class="n">E_Dc_M2</span><span class="p">]},</span>

@@ -515,19 +515,19 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span>
 </pre></div>
 </div>
 </div>
@@ -535,7 +535,7 @@ document.write(`
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
@@ -545,7 +545,7 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
       <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -560,7 +560,7 @@ document.write(`
 <p>Use <code class="docutils literal notranslate"><span class="pre">np.einsum</span></code> to evaluate the tensor expression <span class="math notranslate nohighlight">\(g^{il} \Gamma^m_{ki} x^k\)</span> which arises in <a class="reference external" href="https://en.wikipedia.org/wiki/Christoffel_symbols#Covariant_derivatives_of_tensors">contravariant derivatives in General Relativity</a>.  Note we are using the GR convention that repeated indices (k,l) are summed over.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tensor_expr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">Gamma</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tensor_expr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">Gamma</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the tensor expression above.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -611,7 +611,7 @@ document.write(`
 <p>Implement the function below using <code class="docutils literal notranslate"><span class="pre">np.random.multivariate_normal</span></code> to generate random samples from an arbitrary multidimensional normal distribution, for a specified random seed:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random samples from a normal distribution.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -660,7 +660,7 @@ document.write(`
 <p>Visualize a generated 3D dataset using:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">visualize_3d</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">visualize_3d</span><span class="p">():</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.</span><span class="p">])</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.9</span>
@@ -681,7 +681,7 @@ document.write(`
 <p>Read about <a class="reference external" href="https://en.wikipedia.org/wiki/Covariance_and_correlation">correlation and covariance</a>, then implement the function below to create a 2x2 covariance matrix given values of <span class="math notranslate nohighlight">\(\sigma_x\)</span>, <span class="math notranslate nohighlight">\(\sigma_y\)</span> and the correlation coefficient <span class="math notranslate nohighlight">\(\rho\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_2d_covariance</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_2d_covariance</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and return the 2x2 covariance matrix specified by the input args.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="p">(</span><span class="n">sigma_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sigma_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;sigmas must be &gt; 0.&#39;</span>
@@ -705,7 +705,7 @@ document.write(`
 <p>Run the following cell that uses your <code class="docutils literal notranslate"><span class="pre">create_2d_covariance</span></code> and <code class="docutils literal notranslate"><span class="pre">generate_normal</span></code> functions to compare the 2D normal distributions with <span class="math notranslate nohighlight">\(\rho = 0\)</span> (blue), <span class="math notranslate nohighlight">\(\rho = +0.9\)</span> (red) and <span class="math notranslate nohighlight">\(\rho = -0.9\)</span> (green):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_rhos</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_rhos</span><span class="p">():</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span> <span class="o">=</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span>
     <span class="k">for</span> <span class="n">rho</span><span class="p">,</span> <span class="n">cmap</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mf">0.</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="s1">&#39;Reds&#39;</span><span class="p">,</span> <span class="s1">&#39;Greens&#39;</span><span class="p">)):</span>
@@ -729,7 +729,7 @@ document.write(`
 <p>Implement the function below to perform a K-means E-step. Hint: you might find <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html">np.linalg.norm</a> and <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.argmin.html">np.argmin</a> useful.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">E_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">E_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a K-means E-step.</span>
 <span class="sd">    </span>
 <span class="sd">    Assign each sample to the cluster with the nearest center, using the</span>
@@ -782,7 +782,7 @@ document.write(`
 <p>Next, implement the function below to perform a K-means M-step:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M_step</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a K-means M-step.</span>
 <span class="sd">    </span>
 <span class="sd">    Calculate the center of each cluster as the geometric mean of its assigned samples.</span>
@@ -843,7 +843,7 @@ document.write(`
 <p>You have now implemented the core of the K-means algorithm.  Try it out with this simple wrapper, which makes a scatter plot of the first two columns after each iteration. The sklearn wrapper combines the result of several random starting points and has other refinements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">KMeans_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">KMeans_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">assert</span> <span class="n">n_clusters</span> <span class="o">&lt;=</span> <span class="n">N</span>
@@ -869,7 +869,7 @@ document.write(`
 <p>Try it out on some randomly generated 2D data with 3 separate clusters (using the handy <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html">make_blobs</a>):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_blobs</span>
 <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">]],</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">))</span>
@@ -892,7 +892,7 @@ document.write(`
 <h2><span style="color:Orange">Problem 4</span><a class="headerlink" href="#span-style-color-orange-problem-4-span" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span>
 </pre></div>
 </div>
 </div>
@@ -944,7 +944,7 @@ where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</
 <p>Implement the function below to calculate the eigenvectors and eigenvalues of a square input matrix using a suitable function from <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/routines.linalg.html">np.linalg</a>.  The results should be sorted in order of decreasing eigenvalues, as needed by PCA. Hint: <code class="docutils literal notranslate"><span class="pre">M[::-1]</span></code> reverses the rows of a 2D array <code class="docutils literal notranslate"><span class="pre">M</span></code> (more info <a class="reference external" href="https://docs.scipy.org/doc/numpy-dev/user/quickstart.html#indexing-slicing-and-iterating">here</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">eigensolve</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">eigensolve</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate eigenvectors and eigenvalues of a square symmetric matrix.</span>
 <span class="sd">    </span>
 <span class="sd">    Results are sorted by decreasing eigenvalue. The rows (not columns) of the</span>
@@ -975,7 +975,7 @@ where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#A function to check work</span>
-<span class="k">def</span> <span class="nf">checkEigens</span><span class="p">(</span><span class="n">evals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">evecs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">covariance</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">knownEvals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">knownEvecs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">checkEigens</span><span class="p">(</span><span class="n">evals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">evecs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">covariance</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">knownEvals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">knownEvecs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">evecs</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">evals</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">evecs</span><span class="p">)))</span>
     <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
@@ -1024,7 +1024,7 @@ where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</
 <p>Implement the function below to calculate the same quantities using the <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.linalg.svd.html">SVD method</a> directly on <span class="math notranslate nohighlight">\(X\)</span> instead of solving the eigenvalue problem for the sample covariance.  Hint: pay attention to the <code class="docutils literal notranslate"><span class="pre">full_matrices</span></code> parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">svdsolve</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">svdsolve</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate eigenvectors and eigenvalues of the sample covariance of X.</span>
 
 <span class="sd">    Results are sorted by decreasing eigenvalue. The rows (not columns) of the</span>
@@ -1087,7 +1087,7 @@ where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</
 <p>The following simple driver code shows how to build a PCA fit from your functions (but the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">sklearn driver</a> has a lot more options):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">PCA_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">PCA_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
     <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;N,D = </span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
@@ -1161,7 +1161,7 @@ where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</
 <p>Implement the function below to compare clusters found in a full dataset with those found in a reduced dataset (lower-dimension latent space). Use KMeans for clustering and PCA to obtained the reduced dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_clusters</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_clusters</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare clusters in the full vs reduced feature space.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>

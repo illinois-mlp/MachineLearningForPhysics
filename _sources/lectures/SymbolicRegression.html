@@ -518,9 +518,9 @@ document.write(`
 <p>Before we get into the details of the algorithm, we need a dataset. Let’s create a dataframe of various formulae as well as the units used by different physical quantities e.g. ([mass]=kg)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 </pre></div>
 </div>
 </div>
@@ -636,7 +636,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Choose the number of points of data as well the number of the formula and the program will return a matrix with inputs and then the output</span>
-<span class="k">def</span> <span class="nf">DataGenerator</span><span class="p">(</span><span class="n">num_pts</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">DataGenerator</span><span class="p">(</span><span class="n">num_pts</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
   <span class="n">data</span><span class="o">=</span><span class="p">[]</span>
   <span class="n">num_var</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;# variables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
 
@@ -665,9 +665,9 @@ document.write(`
 <p>We can use linear algebra to build an algorithm to do dimensional analysis for us. Let’s first create a dataframe (a matrix with labels) where we can keep track of the units of various physical quantities</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
 
 <span class="n">units</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Variable&#39;</span><span class="p">:[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;V&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span><span class="s1">&#39;x2&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">],</span><span class="s1">&#39;Units&#39;</span><span class="p">:[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span><span class="s1">&#39;Mass&#39;</span><span class="p">,</span><span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span><span class="s1">&#39;Voltage&#39;</span><span class="p">,</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span><span class="s1">&#39;Resistance&#39;</span><span class="p">,</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span><span class="s1">&#39;Spring Constant&#39;</span><span class="p">,</span><span class="s1">&#39;Length&#39;</span><span class="p">,</span><span class="s1">&#39;Length&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Energy&#39;</span><span class="p">],</span><span class="s1">&#39;m&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;s&#39;</span><span class="p">:[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;kg&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;Amp&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
 <span class="c1">#Here we create a dataframe from a python dictionary. This allows us to call the entries by row or by name.</span>
@@ -1000,12 +1000,12 @@ Ex. We can see that Force has the units of mass*acceleration because <span class
 All other powers will be 0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">matrix_rank</span>
-  <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix_rank</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
 
 
 
-  <span class="k">def</span> <span class="nf">getpowers</span><span class="p">(</span><span class="n">input_matrix</span><span class="p">,</span><span class="n">output_vec</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">getpowers</span><span class="p">(</span><span class="n">input_matrix</span><span class="p">,</span><span class="n">output_vec</span><span class="p">):</span>
     <span class="c1">#Number of rows, columns, and rank of input_matrix</span>
     <span class="n">row_num</span><span class="p">,</span> <span class="n">col_num</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_matrix</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">input_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">input_matrix</span><span class="p">)</span>
     <span class="c1">#The possible indices for rows and columns</span>
@@ -1055,12 +1055,12 @@ All other powers will be 0.</p>
 <p><strong>Exercise 2: Use dimensional analysis to find the units of Newton’s constant G, and Coulomb’s constant k</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">symbols</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">symbols</span>
 
-<span class="k">def</span> <span class="nf">variables_to_matrices</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span><span class="n">output_unit</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">variables_to_matrices</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span><span class="n">output_unit</span><span class="p">):</span>
   <span class="c1">#We want to be able to do the above calculation by only passing in variable names e.g. (acceleration, mass, voltage)</span>
   <span class="c1">#We assume input is a list of strings e.g. [&#39;m&#39;,&#39;a&#39;] and output is a lone string &#39;F&#39;. F=ma</span>
-  <span class="k">def</span> <span class="nf">variable_to_array</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">variable_to_array</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
     <span class="c1">#This is hard to read, but the function of the below line is to return the index associated with the i&#39;th element in input</span>
     <span class="n">index</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_units</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">variable</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="c1">#This gives us an array which is the row associated with the quantity e.g. for acceleration we get [1,-2,1,0]</span>
@@ -1085,13 +1085,13 @@ All other powers will be 0.</p>
 <p>Many of the equations of physics are polynomials of relatively low degree e.g. (position as a function of time, energy as a function of position and velocity) so when trying to find the equation that fits our data it makes sense to check if this is the case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span>
 
 
 <span class="c1">#We input the data of our independent variables as well as the data of our dependent variable, while specifying the degree of the polynomial</span>
-<span class="k">def</span> <span class="nf">poly_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">degree</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">poly_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">degree</span><span class="p">):</span>
   <span class="n">independent</span><span class="o">=</span><span class="n">data</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
   <span class="n">dependent</span><span class="o">=</span><span class="n">data</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -1145,7 +1145,7 @@ All other powers will be 0.</p>
 <p>The polynomial fit has correctly identified the acceleration of gravity 9.8 (N.B. that <span class="math notranslate nohighlight">\(\frac{-9.8}{2}=-4.9\)</span>), the y velocity at which the ball was thrown 30 m/s, the height of the hill 200, and the fact that the position of the ball is only a second order polynomial with 0 contributions from 3rd or 4th order terms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1163,49 +1163,49 @@ All other powers will be 0.</p>
 <p>More details of the neural network are in the NeuralNet.ipynb file. In order to test if the function we’re searching for is translationally-invariant or separable we want to be able to evaluate it at data points we didn’t necessarily collect! For example if we want to test how invariant the function is to shifting <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> by the same amount (testing whether it’s a function of <span class="math notranslate nohighlight">\(x_2-x_1\)</span>) we would need many data points where <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> differ by the same amount. A clever way to get these is to “fill-in” the missing data points by using a neural network. To do this we train the network on 80% of our data asking it to predict what result our function would give. Training consists of trying different things to minimize the error between the result it gives and the actual dependent variable data. We then “test” our network by having it predict the result of the last 20% of data and seeing how far away this is from the actual measured dependent variable.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils</span> <span class="kn">import</span> <span class="n">data</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">utils</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">utils</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">bs</span> <span class="o">=</span> <span class="mi">2048</span>
 <span class="n">wd</span> <span class="o">=</span> <span class="mf">1e-2</span>
 
 <span class="n">is_cuda</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
 
-<span class="k">class</span> <span class="nc">MultDataset</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MultDataset</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
         <span class="s1">&#39;Initialization&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s1">&#39;Denotes the total number of samples&#39;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="c1"># Load data and get label</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 
-<span class="k">def</span> <span class="nf">rmse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rmse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
     <span class="n">denom</span> <span class="o">=</span> <span class="n">targ</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">denom</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">denom</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">denom</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">))</span><span class="o">/</span><span class="n">denom</span>
 
-<span class="k">def</span> <span class="nf">NN_train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">N_red_lr</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">pretrained_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">NN_train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">N_red_lr</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">pretrained_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;results/NN_trained_models/&quot;</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
@@ -1241,8 +1241,8 @@ All other powers will be 0.</p>
             <span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
         <span class="n">product</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
 
-        <span class="k">class</span> <span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">):</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
@@ -1250,7 +1250,7 @@ All other powers will be 0.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
             
-            <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -1311,7 +1311,7 @@ All other powers will be 0.</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in file&quot;</span><span class="p">)</span>
         <span class="k">raise</span>
 
-<span class="k">def</span> <span class="nf">evaluate_derivatives</span><span class="p">(</span><span class="n">pathdir</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_derivatives</span><span class="p">(</span><span class="n">pathdir</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">model</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">pathdir</span><span class="o">+</span><span class="n">filename</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">pathdir</span><span class="o">+</span><span class="n">filename</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1334,31 +1334,31 @@ All other powers will be 0.</p>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
 
-<span class="k">class</span> <span class="nc">MultDataset</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MultDataset</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
         <span class="s1">&#39;Initialization&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s1">&#39;Denotes the total number of samples&#39;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="c1"># Load data and get label</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 
-<span class="k">def</span> <span class="nf">rmse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rmse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
     <span class="n">denom</span> <span class="o">=</span> <span class="n">targ</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">denom</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">denom</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">denom</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">targ</span><span class="p">))</span><span class="o">/</span><span class="n">denom</span>
 
 
-<span class="k">def</span> <span class="nf">NN_eval</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">NN_eval</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">n_variables</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
         <span class="n">variables</span><span class="o">=</span><span class="n">data</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1401,8 +1401,8 @@ All other powers will be 0.</p>
             <span class="n">product_val</span> <span class="o">=</span> <span class="n">product_val</span>
         <span class="n">product_val</span> <span class="o">=</span> <span class="n">product_val</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
 
-        <span class="k">class</span> <span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">):</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
@@ -1410,7 +1410,7 @@ All other powers will be 0.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">linear5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -1436,10 +1436,10 @@ All other powers will be 0.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="c1">#Here we generate values for k,x1,x2,F</span>
 
-<span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">array_pos</span><span class="p">,</span><span class="n">num_pts</span><span class="p">,</span><span class="n">percent</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_data</span><span class="p">(</span><span class="n">array_pos</span><span class="p">,</span><span class="n">num_pts</span><span class="p">,</span><span class="n">percent</span><span class="p">):</span>
   <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">DataGenerator</span><span class="p">(</span><span class="n">num_pts</span><span class="p">,</span><span class="n">array_pos</span><span class="p">))</span>
 
 
@@ -1466,7 +1466,7 @@ All other powers will be 0.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
   <span class="c1">#We remove the dependent variable and then convert the numpy array to a pytorch tensor so the NeuralNet can predict its value.</span>
   <span class="k">return</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)))</span>
 </pre></div>
@@ -1525,7 +1525,7 @@ All other powers will be 0.</p>
 <p><strong>Exercise 3: Can you think of 3 equations you’ve learned that have translation symmetry?</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">symmetry</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">symmetry</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
   <span class="c1">#How much we shift the data by</span>
   <span class="n">a</span><span class="o">=</span><span class="mi">1</span>
   <span class="c1">#We shift the data for 2 of the variables by the same amount for each set of 2 variables.</span>
@@ -1597,7 +1597,7 @@ f(x,y)=g(x)+h(y)</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We only test additive separability as it was pointed out in the paper that the log of a multiplicatively separable function is additively separable.</span>
 <span class="c1">#ln(f(x)g(y))=ln(f(x))+ln(g(y))</span>
-<span class="k">def</span> <span class="nf">separability</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">separability</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
   <span class="n">means</span><span class="o">=</span><span class="p">[]</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="n">i</span><span class="p">]))</span>
@@ -1687,7 +1687,7 @@ f(x,y)=g(x)+h(y)</p>
 <p>Let’s assemble the full algorithm now from the flow chart. First we do dimensional analysis and if it doesn’t solve for the equation put things in terms of dimensionless variables. Then we split into training and testing samples. On the training sample we try a polynomial fit,  symmetry, and separability. We apply whichever works best and try them all again. Once the error gets small enough we try our found expression on the test data and output the error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_vars</span><span class="p">(</span><span class="nb">vars</span><span class="p">,</span><span class="n">degree</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">poly_vars</span><span class="p">(</span><span class="nb">vars</span><span class="p">,</span><span class="n">degree</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
   <span class="c1">#need for variable length of variables</span>
   <span class="n">output</span><span class="o">=</span><span class="p">[]</span>
   <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span><span class="p">):</span>
@@ -1707,7 +1707,7 @@ f(x,y)=g(x)+h(y)</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly</span><span class="p">(</span><span class="n">poly_out</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">poly</span><span class="p">(</span><span class="n">poly_out</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
   <span class="n">empt</span><span class="o">=</span><span class="p">[]</span>
   <span class="n">monomials</span><span class="o">=</span><span class="n">poly_vars</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poly_out</span><span class="p">)):</span>
@@ -1723,7 +1723,7 @@ f(x,y)=g(x)+h(y)</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">var_to_names</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">var_to_names</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
   <span class="n">names</span><span class="o">=</span><span class="p">[]</span>
   <span class="n">num_var</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;# variables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
   <span class="n">formula</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Formula&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
@@ -1751,7 +1751,7 @@ f(x,y)=g(x)+h(y)</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tensor_to_float</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tensor_to_float</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
   <span class="n">temp</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
   <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
 </pre></div>
@@ -1760,7 +1760,7 @@ f(x,y)=g(x)+h(y)</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trans_sym</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trans_sym</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
   <span class="n">new_data</span><span class="o">=</span><span class="p">[]</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
     <span class="n">new_row</span><span class="o">=</span><span class="p">[]</span>
@@ -1780,7 +1780,7 @@ f(x,y)=g(x)+h(y)</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">separate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">separate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
   <span class="n">means</span><span class="o">=</span><span class="p">[]</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="n">i</span><span class="p">]))</span>
@@ -1818,7 +1818,7 @@ f(x,y)=g(x)+h(y)</p>
 <p>Now we can put all our functions together!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decompose</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">decompose</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
   <span class="n">names</span><span class="o">=</span><span class="n">var_to_names</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
 

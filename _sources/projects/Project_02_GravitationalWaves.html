@@ -531,14 +531,14 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.mlab</span> <span class="k">as</span> <span class="nn">mlab</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.mlab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mlab</span>
 <span class="c1"># Standard python numerical analysis imports:</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">butter</span><span class="p">,</span> <span class="n">filtfilt</span><span class="p">,</span> <span class="n">iirdesign</span><span class="p">,</span> <span class="n">zpk2tf</span><span class="p">,</span> <span class="n">freqz</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">butter</span><span class="p">,</span> <span class="n">filtfilt</span><span class="p">,</span> <span class="n">iirdesign</span><span class="p">,</span> <span class="n">zpk2tf</span><span class="p">,</span> <span class="n">freqz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -585,7 +585,7 @@ document.write(`
 <p>First we download the raw LIGO-Hanford (H1) strain data from the GWOSC public archive:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gwpy.timeseries</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeries</span>
 <span class="n">hdata</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">fetch_open_data</span><span class="p">(</span><span class="s1">&#39;H1&#39;</span><span class="p">,</span> <span class="mi">1126259446</span><span class="p">,</span> <span class="mi">1126259478</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -595,7 +595,7 @@ document.write(`
 <p>First we import the <code class="docutils literal notranslate"><span class="pre">gwpy.signal.filter_design</span></code> module and create a bandpass() filter to remove both low and high frequency content</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwpy.signal</span> <span class="kn">import</span> <span class="n">filter_design</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gwpy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">filter_design</span>
 <span class="n">bp</span> <span class="o">=</span> <span class="n">filter_design</span><span class="o">.</span><span class="n">bandpass</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">hdata</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -639,7 +639,7 @@ document.write(`
 <p>Finally, we can <code class="docutils literal notranslate"><span class="pre">plot()</span></code> the original and filtered data, adding some code to prettify the figure:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gwpy.plot</span> <span class="kn">import</span> <span class="n">Plot</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gwpy.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plot</span>
 <span class="n">plot</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span><span class="n">hdata</span><span class="p">,</span> <span class="n">hfilt</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">separate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gwpy:ligo-hanford&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">axes</span>

@@ -534,21 +534,21 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pdb</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pdb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span> <span class="k">as</span> <span class="n">ipythondisplay</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span> <span class="k">as</span> <span class="n">ipythondisplay</span>
 </pre></div>
 </div>
 </div>
@@ -562,7 +562,7 @@ document.write(`
 <h2><span style="color:Orange">Problem 1</span><a class="headerlink" href="#span-style-color-orange-problem-1-span" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DQN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DQN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="c1"># YOUR CODE HERE</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 </pre></div>
@@ -571,13 +571,13 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">QNetwork</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">QNetwork</span><span class="p">():</span>
     <span class="c1"># This class essentially defines the network architecture.</span>
     <span class="c1"># It is NOT the PyTorch Q-network model (nn.Module), but a wrapper</span>
     <span class="c1"># The network should take in state of the world as an input,</span>
     <span class="c1"># and output Q values of the actions available to the agent as the output.</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
         <span class="c1"># Define your network architecture here. It is also a good idea to define any training operations</span>
         <span class="c1"># and optimizers here, initialize your variables, or alternately compile your model here.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weights_path</span> <span class="o">=</span> <span class="s1">&#39;models/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;env&#39;</span><span class="p">],</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">_%H-%M-%S&quot;</span><span class="p">))</span>
@@ -592,12 +592,12 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading pretrained model from&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;model_file&#39;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_model_weights</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;model_file&#39;</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">save_model_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_model_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
         <span class="c1"># Helper function to save your model / weights.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_path</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_path</span><span class="p">)</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_path</span><span class="p">,</span> <span class="s1">&#39;model_</span><span class="si">%d</span><span class="s1">.h5&#39;</span> <span class="o">%</span> <span class="n">step</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">load_model_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_file</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_model_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_file</span><span class="p">):</span>
         <span class="c1"># Helper function to load model weights.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">weight_file</span><span class="p">))</span>
 </pre></div>
@@ -609,8 +609,8 @@ document.write(`
 <p>Replay memory or Experience replay is a simple trick used to learn the Q-value network offline. It also ensures the model can learn from past experiences without weighting heavily towards current observations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Replay_Memory</span><span class="p">():</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dim</span><span class="p">,</span> <span class="n">action_dim</span><span class="p">,</span> <span class="n">memory_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">burn_in</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Replay_Memory</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dim</span><span class="p">,</span> <span class="n">action_dim</span><span class="p">,</span> <span class="n">memory_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">burn_in</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
         <span class="c1"># The memory essentially stores transitions recorder from the agent</span>
         <span class="c1"># taking actions in the environment.</span>
 
@@ -628,7 +628,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">burned_in</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">not_full_yet</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">dones</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">dones</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ptr</span><span class="p">]</span> <span class="o">=</span> <span class="n">states</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rewards</span>
@@ -643,7 +643,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">not_full_yet</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">sample_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
         <span class="c1"># This function returns a batch of randomly sampled transitions - i.e. state, action, reward, next state, terminal flag tuples.</span>
         <span class="c1"># You will feed this to your model to train.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_full_yet</span><span class="p">:</span>
@@ -671,8 +671,8 @@ document.write(`
 <h2><span style="color:Orange">Problem 2</span><a class="headerlink" href="#span-style-color-orange-problem-2-span" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DQN_Agent</span><span class="p">():</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DQN_Agent</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="c1"># Create an instance of the network itself, as well as the memory.</span>
         <span class="c1"># Here is also a good place to set environmental parameters,</span>
         <span class="c1"># as well as training parameters - number of episodes / iterations, etc.</span>
@@ -717,18 +717,18 @@ document.write(`
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logdir</span> <span class="o">+</span> <span class="s1">&#39;/hyperparameters.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">),</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
         <span class="c1"># Creating epsilon greedy probabilities to sample from.</span>
 
         <span class="c1"># YOUR CODE HERE</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">):</span>
 
         <span class="c1"># YOUR CODE HERE</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># In this function, we will train our network.</span>
         <span class="c1"># If training without experience replay_memory, then you will interact with the environment</span>
         <span class="c1"># in this function, while also updating your network parameters.</span>
@@ -767,15 +767,15 @@ document.write(`
                 <span class="c1"># test_video(self, self.environment_name, step)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">save_model_weights</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">td_estimate</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">td_estimate</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="c1"># YOUR CODE HERE</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">td_target</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">td_target</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
         <span class="c1"># YOUR CODE HERE</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">train_dqn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_dqn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Sample from the replay buffer.</span>
         <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">sample_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 
@@ -786,10 +786,10 @@ document.write(`
     
         <span class="k">return</span> <span class="n">loss</span>
 
-    <span class="k">def</span> <span class="nf">hard_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hard_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="c1"># Evaluate the performance of your agent over 100 episodes, by calculating cumulative rewards for the 100 episodes.</span>
         <span class="c1"># Here you need to interact with the environment, irrespective of whether you are using a memory.</span>
         <span class="n">cum_reward</span> <span class="o">=</span> <span class="p">[]</span>
@@ -804,14 +804,14 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test Rewards: </span><span class="si">{0}</span><span class="s2"> | TD Error: </span><span class="si">{1:.4f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cum_reward</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">td_error</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cum_reward</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">td_error</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">burn_in_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">burn_in_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Initialize your replay memory with a burn_in number of episodes / transitions.</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">burned_in</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_episode</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon_greedy_policy</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;burn_in&#39;</span><span class="p">,</span>
                 <span class="n">epsilon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">frameskip</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;frameskip&#39;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Burn Complete!&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">generate_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">frameskip</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">frameskip</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Collects one rollout from the policy in an environment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -844,7 +844,7 @@ document.write(`
           <span class="k">return</span> <span class="n">rewards</span><span class="p">,</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">td_error</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots:</span>
 <span class="sd">        1) Avg Cummulative Test Reward over 20 Plots</span>
@@ -868,7 +868,7 @@ document.write(`
         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">epsilon_decay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">final_eps</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">epsilon_decay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">final_eps</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
         <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">&gt;</span> <span class="n">final_eps</span><span class="p">):</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">initial_eps</span> <span class="o">-</span> <span class="n">final_eps</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">-=</span> <span class="n">factor</span>
@@ -883,7 +883,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: if you have problems creating video captures on servers without GUI,</span>
 <span class="c1">#       you could save and relaod model to create videos on your laptop.</span>
-<span class="k">def</span> <span class="nf">test_video</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env_name</span><span class="p">,</span> <span class="n">episodes</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_video</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env_name</span><span class="p">,</span> <span class="n">episodes</span><span class="p">):</span>
     <span class="c1"># Usage:</span>
     <span class="c1">#   you can pass the arguments within agent.train() as:</span>
     <span class="c1">#       if episode % int(self.num_episodes/3) == 0:</span>
@@ -916,7 +916,7 @@ document.write(`
     <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">init_flags</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_flags</span><span class="p">():</span>
 
     <span class="n">flags</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;env&quot;</span><span class="p">:</span> <span class="s2">&quot;CartPole-v0&quot;</span><span class="p">,</span> <span class="c1"># Change to &quot;MountainCar-v0&quot; when needed.</span>
@@ -936,7 +936,7 @@ document.write(`
     <span class="k">return</span> <span class="n">flags</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">init_flags</span><span class="p">()</span>
     <span class="n">args</span><span class="p">[</span><span class="s2">&quot;render&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">render</span>
 
