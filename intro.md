@@ -65,7 +65,7 @@ Upon completion of the course students will be able to:
 
 ## <span style="color:Red">Online Tools</span>
 
-There are several online tools you will need to use as part of this course. 
+There are several online tools you will need to use as part of this course.
 
 ### Campuswire
 We will use [Campuswire](https://campuswire.com) as a class forum, a way to message the course staff and each other, and a means to submit your attendance question.
