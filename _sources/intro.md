@@ -1,6 +1,6 @@
 # <span style="color:Blue">__Machine Learning for Physics__</span>
 
-<font size="6"> __Physics 498 MLP__ &nbsp; *Spring 2024* </font>
+<font size="6"> __Physics 498 MLP__ &nbsp; *Spring 2025* </font>
 * *Instructor:* 
   * Professor [Mark Neubauer](https://marksneubauer.com)
 * *Class Meetings*: 
@@ -13,22 +13,22 @@ __Note__: *This schedule will evolve throughout the semseter*
 
 | Week          | Topic                   | Homework                               | Projects                   |
 |---------------|-------------------------|----------------------------------------|----------------------------|
-| Jan 15  | {doc}`_sources/Week_01`       | [HW 01](_sources/homework/Homework_01) |                            |
-| Jan 22  | {doc}`_sources/Week_02`       | [HW 02](_sources/homework/Homework_02) |                            |
-| Jan 29  | {doc}`_sources/Week_03`       | [HW 03](_sources/homework/Homework_03) |                            |
-| Feb 05  | {doc}`_sources/Week_04`       | [HW 04](_sources/homework/Homework_04) |                            |
-| Feb 12  | {doc}`_sources/Week_05`       | [HW 05](_sources/homework/Homework_05) |                            |
-| Feb 19  | {doc}`_sources/Week_06`       |                                        |                            |
-| Feb 26  | {doc}`_sources/Week_07`       | [HW 06](_sources/homework/Homework_06) | {doc}`_sources/Project_01` |
-| Mar 04  | {doc}`_sources/Week_08`       |                                        |                            |
-| Mar 11  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
-| Mar 18  | {doc}`_sources/Week_09`       |                                        |                            |
-| Mar 25  | {doc}`_sources/Week_10`       | [HW 07](_sources/homework/Homework_07) |                            |
-| Apr 01  | {doc}`_sources/Week_11`       | [HW 08](_sources/homework/Homework_08) |                            |
-| Apr 08  | {doc}`_sources/Week_12`       |                                        |                            |
-| Apr 15  | {doc}`_sources/Week_13`       |                                        | {doc}`_sources/Project_02` |
-| Apr 22  | {doc}`_sources/Week_14`       |                                        |                            |
-| Apr 29  | {doc}`_sources/Week_15`       |                                        |                            |
+| Jan 21  | {doc}`_sources/Week_01`       | HW 01                                  |                            |
+| Jan 28  | {doc}`_sources/Week_02`       | HW 02                                  |                            |
+| Feb 03  | {doc}`_sources/Week_03`       | HW 03                                  |                            |
+| Feb 10  | {doc}`_sources/Week_04`       | HW 04                                  |                            |
+| Feb 17  | {doc}`_sources/Week_05`       | HW 05                                  |                            |
+| Feb 24  | {doc}`_sources/Week_06`       | HW 06                                  |                            |
+| Mar 03  | {doc}`_sources/Week_07`       | HW 07                                  | {doc}`_sources/Project_01` |
+| Mar 10  | {doc}`_sources/Week_08`       |                                        |                            |
+| Mar 17  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
+| Mar 24  | {doc}`_sources/Week_09`       | HW 08                                  |                            |
+| Mar 31  | {doc}`_sources/Week_10`       | HW 09                                  |                            |
+| Apr 07  | {doc}`_sources/Week_11`       | HW 10                                  |                            |
+| Apr 14  | {doc}`_sources/Week_12`       | HW 11                                  |                            |
+| Apr 21  | {doc}`_sources/Week_13`       | HW 12                                  | {doc}`_sources/Project_02` |
+| Apr 28  | {doc}`_sources/Week_14`       |                                        |                            |
+| May 05  | {doc}`_sources/Week_15`       |                                        |                            |
 
 ## <span style="color:Red">Overview</span>
 
