@@ -13,8 +13,8 @@ __Note__: *This schedule will evolve throughout the semseter*
 
 | Week          | Topic                   | Homework                               | Projects                   |
 |---------------|-------------------------|----------------------------------------|----------------------------|
-| Jan 21  | {doc}`_sources/Week_01`       | HW 01                                  |                            |
-| Jan 28  | {doc}`_sources/Week_02`       | HW 02                                  |                            |
+| Jan 20  | {doc}`_sources/Week_01`       | HW 01                                  |                            |
+| Jan 27  | {doc}`_sources/Week_02`       | HW 02                                  |                            |
 | Feb 03  | {doc}`_sources/Week_03`       | HW 03                                  |                            |
 | Feb 10  | {doc}`_sources/Week_04`       | HW 04                                  |                            |
 | Feb 17  | {doc}`_sources/Week_05`       | HW 05                                  |                            |
@@ -54,14 +54,14 @@ Upon completion of the course students will be able to:
 ### Instructor
 * Professor [Mark Neubauer](https://marksneubauer.com)
   * email: msn@illinois.edu
-  * Office Hour: Thursdays at 6:00 pm
-  * Location: [Zoom](https://illinois.zoom.us/j/84972810339?pwd=Ly9yNWYzdnBuR01wZ2lYZTV4L3hPdz09)
+  * Office Hour: TBD
+  * Location: TBD
 
 ### TA
-* Max Gold
-  * email: mjgold2@illinois.edu
-  * Office Hour: Tuesdays at 6:00 pm
-  * Location: 322 Loomis
+* Chun Yu Chow
+  * email: cychow2@illinois.edu
+  * Office Hour: TBD
+  * Location: TBD
 
 ## <span style="color:Red">Online Tools</span>
 
@@ -94,8 +94,8 @@ Each project notebook must be submitted via Gradescope for grading.
 
 ## <span style="color:Red">Grading</span>
 * Class attendence and participation: 5%
-* Homework: 70%
-* Projects: 25%
+* Homework: 65%
+* Projects: 30%
 
 Letter grades will be assigned as follows:
 
