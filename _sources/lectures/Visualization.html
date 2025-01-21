@@ -517,7 +517,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
@@ -597,7 +597,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9cff0353d7df1c04359bc64d7b7fa63c32ffbdd9283a9024201120c7659260f5.png" src="../../_images/9cff0353d7df1c04359bc64d7b7fa63c32ffbdd9283a9024201120c7659260f5.png" />
+<img alt="../../_images/85cb816af8c19ca7155dd094a407ba712529a1047e940fad27fa411e6ccd0d9f.png" src="../../_images/85cb816af8c19ca7155dd094a407ba712529a1047e940fad27fa411e6ccd0d9f.png" />
 </div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.errorbar</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the first 12 rows of <code class="docutils literal notranslate"><span class="pre">line_data</span></code>:</p>
@@ -613,7 +613,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f2b565ab9483b510689bc77199861d30bfb1456bdba09d5f2b9bbd8a0e8d090f.png" src="../../_images/f2b565ab9483b510689bc77199861d30bfb1456bdba09d5f2b9bbd8a0e8d090f.png" />
+<img alt="../../_images/9a601b076b8f992ec52c5c6de8891e076ebd3e350801d7445fa592fbcf106c67.png" src="../../_images/9a601b076b8f992ec52c5c6de8891e076ebd3e350801d7445fa592fbcf106c67.png" />
 </div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.colorbar</span></code> to reproduce the plot below that shows the 2D distribution of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>, color coded by each row’s <span class="math notranslate nohighlight">\(dy\)</span> value. Note how this type of plot reveals correlations between a pair of columns that cannot be deduced from their 1D histograms.</p>
@@ -628,7 +628,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/af1d5117e6bfb328c74bee86b33db51355e15b81c6dc5f900c4f3b4720984c60.png" src="../../_images/af1d5117e6bfb328c74bee86b33db51355e15b81c6dc5f900c4f3b4720984c60.png" />
+<img alt="../../_images/7059d911b1a995915f889fa103002ee32faad88d6fb04e285a23dcae539962c1.png" src="../../_images/7059d911b1a995915f889fa103002ee32faad88d6fb04e285a23dcae539962c1.png" />
 </div>
 </div>
 </section>
@@ -639,27 +639,29 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 <p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.histplot</span></code>, which automatically calculates optimized bins (using the <a class="reference external" href="https://en.wikipedia.org/wiki/Freedman%E2%80%93Diaconis_rule">Freedman-Diaconis rule</a>) and superimposes a smooth estimate of the probability density (using the <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">KDE method</a> - we will learning more about density estimation soon).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/13fa51b51ff702a34d31484bbf8d3a714d0fa00636a3fc9e0479b94bf54c3574.png" src="../../_images/13fa51b51ff702a34d31484bbf8d3a714d0fa00636a3fc9e0479b94bf54c3574.png" />
+<img alt="../../_images/70a9b286cbbc0dec6bd64b40a361fde63922ed2bc7ac969124a04dc081eca391.png" src="../../_images/70a9b286cbbc0dec6bd64b40a361fde63922ed2bc7ac969124a04dc081eca391.png" />
 </div>
 </div>
 <p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code>, which shows 1D histograms along the sides comes in several kinds for displaying the central 2D information, e.g.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/16d4500be7eeb1934fa53c83e51f085e1f77dcb7b6a414a8df26596d8e4c35a8.png" src="../../_images/16d4500be7eeb1934fa53c83e51f085e1f77dcb7b6a414a8df26596d8e4c35a8.png" />
+<img alt="../../_images/0afc40dcf35284da208c4ecb5617e3f8bfb1c145d4186de0916c6854c9cc7cce.png" src="../../_images/0afc40dcf35284da208c4ecb5617e3f8bfb1c145d4186de0916c6854c9cc7cce.png" />
 </div>
 </div>
 <p>Note how the axis labels are generated automatically.</p>
@@ -670,35 +672,38 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 <p>A “jointplot” gives a lot of insight into a pair of columns in a dataset.  A “pairplot” takes this one step further with a grid of jointpoints. (There is also a dedicated python package for pairplots called <a class="reference external" href="http://corner.readthedocs.io/en/latest/">corner</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">line_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">());</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">line_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;hist&#39;</span><span class="p">,</span> <span class="n">diag_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;cornflowerblue&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5d8ec523444a3666d7f0b91151f12104228eabdca3ee809964734298459f2ee7.png" src="../../_images/5d8ec523444a3666d7f0b91151f12104228eabdca3ee809964734298459f2ee7.png" />
+<img alt="../../_images/3764087e2d2204f66741ae85cbc0c8a5d4d4fea10e2f8f17c837f15b0754a289.png" src="../../_images/3764087e2d2204f66741ae85cbc0c8a5d4d4fea10e2f8f17c837f15b0754a289.png" />
 </div>
 </div>
 <p>The resulting grid shows a 2D scatter plot each pair (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) of columns with 1D histograms on the diagonal (<span class="math notranslate nohighlight">\(i\)</span>=<span class="math notranslate nohighlight">\(j\)</span>). Note that the (<span class="math notranslate nohighlight">\(j\)</span>,<span class="math notranslate nohighlight">\(i\)</span>) scatter plot is just (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) transposed, so this format is not very space efficient.</p>
 <p>A pairplot is less practical for a dataset with lots of columns but you can zoom in on any submatrix, for example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">));</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/bdf1159b0ee2a45905f46cb12dedfc7ca3d8d5f19f3a63406b5d9e1ffea49a60.png" src="../../_images/bdf1159b0ee2a45905f46cb12dedfc7ca3d8d5f19f3a63406b5d9e1ffea49a60.png" />
+<img alt="../../_images/51e1e92b02e51659068b086a2b2164b3de43ad130a66d8f5a9f230d368c2244c.png" src="../../_images/51e1e92b02e51659068b086a2b2164b3de43ad130a66d8f5a9f230d368c2244c.png" />
 </div>
 </div>
 <p>The three clusters that appear in each scatter plot suggest that there are three types of observations (rows) in the dataset.  We can confirm this using the combined data+targets dataset and color-coding each row according to each target <code class="docutils literal notranslate"><span class="pre">grp</span></code> value:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;grp&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;grp&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8b8095ea4213922945f353f5600f3ebea2615bbca6725643d69f94727656a6c9.png" src="../../_images/8b8095ea4213922945f353f5600f3ebea2615bbca6725643d69f94727656a6c9.png" />
+<img alt="../../_images/0e2587f8c1a4d605c98ea34b9fcd8707e2b81016658bbdd28e62f9bac7e7cb77.png" src="../../_images/0e2587f8c1a4d605c98ea34b9fcd8707e2b81016658bbdd28e62f9bac7e7cb77.png" />
 </div>
 </div>
 <p>We will soon learn how to automatically assign rows to the clusters you discover during visualization, i.e., without “cheating” with the target <code class="docutils literal notranslate"><span class="pre">grp</span></code> column.</p>
