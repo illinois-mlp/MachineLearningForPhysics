@@ -597,7 +597,7 @@ File ‘./tmp_data/ess_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/00165d84e66e063a6ca37d7709046fe97b2f37fc0118ad1e29f547892cae4680.png" src="../../_images/00165d84e66e063a6ca37d7709046fe97b2f37fc0118ad1e29f547892cae4680.png" />
+<img alt="../../_images/b62cf8d64ead612565fd34101fdc6c9b2ca58bdeaa62b56b93ca79e133afb89b.png" src="../../_images/b62cf8d64ead612565fd34101fdc6c9b2ca58bdeaa62b56b93ca79e133afb89b.png" />
 </div>
 </div>
 <p>The plot above is colored using the true labels stored as column <code class="docutils literal notranslate"><span class="pre">y</span></code> of <code class="docutils literal notranslate"><span class="pre">circles_targets</span></code>.</p>
@@ -610,7 +610,7 @@ File ‘./tmp_data/ess_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6df05004e57975cdc546cb6d443a4c705f0fb34ec635bb930276d5e5487f6e71.png" src="../../_images/6df05004e57975cdc546cb6d443a4c705f0fb34ec635bb930276d5e5487f6e71.png" />
+<img alt="../../_images/e59e2926d6c6af7fddd54e5f441bb39d499fb4ee3e21b04f857ad45712de56f0.png" src="../../_images/e59e2926d6c6af7fddd54e5f441bb39d499fb4ee3e21b04f857ad45712de56f0.png" />
 </div>
 </div>
 <p>The clusters found by KMeans are not what we want, but also not surprising given that KMeans partitions samples with a simple dividing line (or hyperplane in higher dimensions).</p>
@@ -646,7 +646,7 @@ x_2 = x_0^2 + x_1^2 \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/bacd5f77ab40d04be21c4e548ea42962eadac0b13edbd5c27f1e3033efab97e8.png" src="../../_images/bacd5f77ab40d04be21c4e548ea42962eadac0b13edbd5c27f1e3033efab97e8.png" />
+<img alt="../../_images/f5605fb88f68d26ebeb6998a4fcd494db4926e05cd32a6ff41ed93a5599f61a2.png" src="../../_images/f5605fb88f68d26ebeb6998a4fcd494db4926e05cd32a6ff41ed93a5599f61a2.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Finally, fit for two KMeans clusters in your new <code class="docutils literal notranslate"><span class="pre">circles_3d</span></code> data and plot the results, as above. Are the results surprising?</p>
@@ -658,7 +658,7 @@ x_2 = x_0^2 + x_1^2 \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/955349fb2aecf07a1677ef58f536faadaf6f0e8f1d9648eb319b0c9a6b823043.png" src="../../_images/955349fb2aecf07a1677ef58f536faadaf6f0e8f1d9648eb319b0c9a6b823043.png" />
+<img alt="../../_images/0c3e1d3bbe6108765b67b4f6442ea35a77ceeb8bec1183972f383f871e4f8d74.png" src="../../_images/0c3e1d3bbe6108765b67b4f6442ea35a77ceeb8bec1183972f383f871e4f8d74.png" />
 </div>
 </div>
 <p>This is exactly the result we wanted, but not so surprising after seeing the 3D plot above.</p>
@@ -705,7 +705,7 @@ c
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e5eac9c2ca41ed230f3001ed2cd3d3010f0f6a02f70e3f613e91f9cd2cc14f99.png" src="../../_images/e5eac9c2ca41ed230f3001ed2cd3d3010f0f6a02f70e3f613e91f9cd2cc14f99.png" />
+<img alt="../../_images/825733c0eab40387c7dfe1647cf12f37de489cdd64b2fc01239aea36f7136810.png" src="../../_images/825733c0eab40387c7dfe1647cf12f37de489cdd64b2fc01239aea36f7136810.png" />
 </div>
 </div>
 <p>The reason for chosing this peculiar embedding is that it has the following very useful property:</p>
@@ -801,6 +801,14 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
+&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
+/var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_85167/1846596932.py:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
+  plt.text(0.02, 0.92, &#39;$\gamma={:.1f}$&#39;.format(gamma),
+</pre></div>
+</div>
+</div>
 </div>
 <p>The result is spectacular: our nonlinear data is completely linearized when transformed to a 2D latent variable space. Note that, in this example, we are not performing any overall dimensionality reduction: we started with 2 features, implicitly expanded to an infinite number of features using the RBF kernel, then shrank back down to two latent variables.</p>
 <div class="cell docutils container">
@@ -810,7 +818,7 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dcabbab971cb2d23d6f2a14e8b86981dd89a009b6a73a36af5e5e1b25e415695.png" src="../../_images/dcabbab971cb2d23d6f2a14e8b86981dd89a009b6a73a36af5e5e1b25e415695.png" />
+<img alt="../../_images/fe312863d09e3222fcdefff7bd0f2c01d079d409662cf635afec4a7bd03b1951.png" src="../../_images/fe312863d09e3222fcdefff7bd0f2c01d079d409662cf635afec4a7bd03b1951.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: The results above are quite sensitive to the choice of hyperparameters. To explore this, rerun <code class="docutils literal notranslate"><span class="pre">kpca_demo</span></code> with different values of <span class="math notranslate nohighlight">\(\gamma\)</span>.  What do you conclude?</p>
@@ -823,10 +831,10 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1e98e6118fd46fae6695f5f24bb77fe1903b59e6cc33f7d274473a412f9912f3.png" src="../../_images/1e98e6118fd46fae6695f5f24bb77fe1903b59e6cc33f7d274473a412f9912f3.png" />
-<img alt="../../_images/5fd549cde5624c94773460517da3d01c1e8cab70460530cb31c7dc432c6a943a.png" src="../../_images/5fd549cde5624c94773460517da3d01c1e8cab70460530cb31c7dc432c6a943a.png" />
-<img alt="../../_images/575fa3acceb84f57a723478eeda42413bcdf008ba3362bc25c1e10a0a96691b5.png" src="../../_images/575fa3acceb84f57a723478eeda42413bcdf008ba3362bc25c1e10a0a96691b5.png" />
-<img alt="../../_images/a63450f067c51621dcf348bd8c6fed6502b91e8677c1935b2c88721250cb5601.png" src="../../_images/a63450f067c51621dcf348bd8c6fed6502b91e8677c1935b2c88721250cb5601.png" />
+<img alt="../../_images/340f47a5d7e247fc55c9b8d03d60973f656155d9f79fd4981f82beb2d5ba8b21.png" src="../../_images/340f47a5d7e247fc55c9b8d03d60973f656155d9f79fd4981f82beb2d5ba8b21.png" />
+<img alt="../../_images/61ed0a9efbd5e5d7f156380c143f364637962986212ea25dff95c939d9bac08a.png" src="../../_images/61ed0a9efbd5e5d7f156380c143f364637962986212ea25dff95c939d9bac08a.png" />
+<img alt="../../_images/8e0f0ed7ad7a10ab901e70aa05a255df3bdd7adb5498bcd425ea794cd4824abb.png" src="../../_images/8e0f0ed7ad7a10ab901e70aa05a255df3bdd7adb5498bcd425ea794cd4824abb.png" />
+<img alt="../../_images/07190da71706a2f8748d226bcd0bfddc274a0dc29ac8a5bcafaba7af3efd875f.png" src="../../_images/07190da71706a2f8748d226bcd0bfddc274a0dc29ac8a5bcafaba7af3efd875f.png" />
 </div>
 </div>
 <p>The results are finely tuned and small variations in <span class="math notranslate nohighlight">\(\gamma\)</span> can destroy the linear separation. Sensitivity to <span class="math notranslate nohighlight">\(\gamma\)</span> is not too surprising since it is a parameter of the kernel function.  However, KernelPCA results can also change dramatically with a small change to the input data.  See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10530">this github issue</a> for details.</p>
@@ -837,84 +845,13 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <p>First lets look at some 3D data that is clearly 2D, but requires a nonlinear decomposition.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">ess_data</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">StopIteration</span><span class="g g-Whitespace">                             </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">38</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">ess_data</span><span class="p">);</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/seaborn/axisgrid.py:2144,</span> in <span class="ni">pairplot</span><span class="nt">(data, hue, hue_order, palette, vars, x_vars, y_vars, kind, diag_kind, markers, height, aspect, corner, dropna, plot_kws, diag_kws, grid_kws, size)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2142</span> <span class="n">diag_kws</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2143</span> <span class="k">if</span> <span class="n">diag_kind</span> <span class="o">==</span> <span class="s2">&quot;hist&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2144</span>     <span class="n">grid</span><span class="o">.</span><span class="n">map_diag</span><span class="p">(</span><span class="n">histplot</span><span class="p">,</span> <span class="o">**</span><span class="n">diag_kws</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2145</span> <span class="k">elif</span> <span class="n">diag_kind</span> <span class="o">==</span> <span class="s2">&quot;kde&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2146</span>     <span class="n">diag_kws</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/seaborn/axisgrid.py:1507,</span> in <span class="ni">PairGrid.map_diag</span><span class="nt">(self, func, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1505</span>     <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;hue_order&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hue_order</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1506</span>     <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;palette&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_palette</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">1507</span>     <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">vector</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1508</span>     <span class="n">ax</span><span class="o">.</span><span class="n">legend_</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1510</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_axis_labels</span><span class="p">()</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/seaborn/distributions.py:1412,</span> in <span class="ni">histplot</span><span class="nt">(data, x, y, hue, weights, stat, bins, binwidth, binrange, discrete, cumulative, common_bins, common_norm, multiple, element, fill, shrink, kde, kde_kws, line_kws, thresh, pthresh, pmax, cbar, cbar_ax, cbar_kws, palette, hue_order, hue_norm, color, log_scale, legend, ax, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1410</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1411</span>         <span class="n">method</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span>
-<span class="ne">-&gt; </span><span class="mi">1412</span>     <span class="n">color</span> <span class="o">=</span> <span class="n">_default_color</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">hue</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1414</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">has_xy_data</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1415</span>     <span class="k">return</span> <span class="n">ax</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/seaborn/utils.py:144,</span> in <span class="ni">_default_color</span><span class="nt">(method, hue, color, kws)</span>
-<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="n">scout</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span> <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">142</span> 
-<span class="g g-Whitespace">    </span><span class="mi">143</span>     <span class="c1"># bar() needs masked, not empty data, to generate a patch</span>
-<span class="ne">--&gt; </span><span class="mi">144</span>     <span class="n">scout</span><span class="p">,</span> <span class="o">=</span> <span class="n">method</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">145</span>     <span class="n">color</span> <span class="o">=</span> <span class="n">to_rgb</span><span class="p">(</span><span class="n">scout</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">())</span>
-<span class="g g-Whitespace">    </span><span class="mi">146</span>     <span class="n">scout</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/matplotlib/__init__.py:1465,</span> in <span class="ni">_preprocess_data.&lt;locals&gt;.inner</span><span class="nt">(ax, data, *args, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1462</span> <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1463</span> <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1464</span>     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1465</span>         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">sanitize_sequence</span><span class="p">,</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1467</span>     <span class="n">bound</span> <span class="o">=</span> <span class="n">new_sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1468</span>     <span class="n">auto_label</span> <span class="o">=</span> <span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label_namer</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1469</span>                   <span class="ow">or</span> <span class="n">bound</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label_namer</span><span class="p">))</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/matplotlib/axes/_axes.py:2451,</span> in <span class="ni">Axes.bar</span><span class="nt">(self, x, height, width, bottom, align, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2449</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span>
-<span class="g g-Whitespace">   </span><span class="mi">2450</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_xunits</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="ne">-&gt; </span><span class="mi">2451</span> <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_dx</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xunits</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2452</span> <span class="k">if</span> <span class="n">xerr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2453</span>     <span class="n">xerr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_dx</span><span class="p">(</span><span class="n">xerr</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xunits</span><span class="p">)</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/matplotlib/axes/_axes.py:2244,</span> in <span class="ni">Axes._convert_dx</span><span class="nt">(dx, x0, xconv, convert)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2232</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2233</span>     <span class="c1"># attempt to add the width to x0; this works for</span>
-<span class="g g-Whitespace">   </span><span class="mi">2234</span>     <span class="c1"># datetime+timedelta, for instance</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2241</span>     <span class="c1"># removes the units from unit packages like `pint` that</span>
-<span class="g g-Whitespace">   </span><span class="mi">2242</span>     <span class="c1"># wrap numpy arrays.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2243</span>     <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2244</span>         <span class="n">x0</span> <span class="o">=</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_safe_first_finite</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2245</span>     <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2246</span>         <span class="k">pass</span>
-
-<span class="nn">File /usr/local/lib/python3.11/site-packages/matplotlib/cbook/__init__.py:1715,</span> in <span class="ni">_safe_first_finite</span><span class="nt">(obj, skip_nonfinite)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1712</span>     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;matplotlib does not &quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1713</span>                        <span class="s2">&quot;support generators as input&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1714</span> <span class="k">else</span><span class="p">:</span>
-<span class="nn">-&gt; 1715     return next(val for val</span> in <span class="ni">obj if safe_isfinite</span><span class="nt">(val))</span>
-
-<span class="ne">StopIteration</span>: 
-</pre></div>
-</div>
-<img alt="../../_images/f57fa693de74ac54ba3fd9c1f62aab5362e61b72e0f613aa1dc525b770cb1f4c.png" src="../../_images/f57fa693de74ac54ba3fd9c1f62aab5362e61b72e0f613aa1dc525b770cb1f4c.png" />
+<img alt="../../_images/a21df151752a7b28cf78b1d7c99494e448ca76d76b8c7f00253e740fc0fa133b.png" src="../../_images/a21df151752a7b28cf78b1d7c99494e448ca76d76b8c7f00253e740fc0fa133b.png" />
 </div>
 </div>
 <p>The pairplot is confusing until you see the following plot where, in addition, each point is colored according to its true 1D coordinate along the main direction of the manifold (stored in the ‘y’ column of <code class="docutils literal notranslate"><span class="pre">ess_targets</span></code>):</p>
@@ -933,6 +870,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <span class="n">plot_ess_3d</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b130e50745896328aec0218b56422b2489998a4feeaaa4d47b45ed1b9f916a9b.png" src="../../_images/b130e50745896328aec0218b56422b2489998a4feeaaa4d47b45ed1b9f916a9b.png" />
 </div>
 </div>
 <p>LLE takes advantage of the fact that the manifold is “flat” in the neighborhood of each sample, so can be described locally with a linear approximation.  We construct such a local linear approximation to a sample <span class="math notranslate nohighlight">\(\vec{X}_i\)</span> as:</p>
@@ -985,6 +925,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4e97ec2526704beec673d84b1e52e71a48873a545e8b419f23a2eec3e73bb1fb.png" src="../../_images/4e97ec2526704beec673d84b1e52e71a48873a545e8b419f23a2eec3e73bb1fb.png" />
+</div>
 </div>
 <p>Compare this with what a linear PCA finds:</p>
 <div class="cell docutils container">
@@ -994,6 +937,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/466bfd59cd6745871e28b527f14231ab6a24b5e8e4f31a1454d5d1a3cd5f139b.png" src="../../_images/466bfd59cd6745871e28b527f14231ab6a24b5e8e4f31a1454d5d1a3cd5f139b.png" />
 </div>
 </div>
 <p>Or a KernelPCA:</p>
@@ -1005,6 +951,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d8a4cf9b165d98cbc2a1d3cb47c7420f9e361030d96a8b684729c36f46431c0d.png" src="../../_images/d8a4cf9b165d98cbc2a1d3cb47c7420f9e361030d96a8b684729c36f46431c0d.png" />
+</div>
 </div>
 <p>The sklearn LLE class also provides some variants of LLE that can perform even better on this problem, for example (note the larger <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> required - another example fine tuning):</p>
 <div class="cell docutils container">
@@ -1014,6 +963,9 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y4</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y4</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4fbc78d78a1eb756441cdb464df6c038b6726ed5a72e4dae992e986cdd966121.png" src="../../_images/4fbc78d78a1eb756441cdb464df6c038b6726ed5a72e4dae992e986cdd966121.png" />
 </div>
 </div>
 </section>

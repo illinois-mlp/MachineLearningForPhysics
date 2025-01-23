@@ -492,7 +492,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-non-negative-matrix-factorization-span"><span style="color:Lightgreen">Non-negative Matrix Factorization</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-independent-component-analysis-span"><span style="color:Lightgreen">Independent Component Analysis</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-comparisons-of-linear-methods-span"><span style="color:Lightgreen">Comparisons of Linear Methods</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-weighted-pca-span"><span style="color:Lightgreen">Weighted PCA</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
@@ -513,11 +512,13 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -531,27 +532,6 @@ document.write(`
 </div>
 </div>
 <p>This is a module that includes matrix decomposition algorithms, including among others PCA, NMF or ICA. Most of the algorithms of this module can be regarded as dimensionality reduction techniques.</p>
-<p>We will also use the <a class="reference external" href="https://github.com/jakevdp/wpca">wpca package</a>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>wpca
-<span class="kn">import</span><span class="w"> </span><span class="nn">wpca</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-Requirement already satisfied: wpca in /usr/local/lib/python3.11/site-packages (0.1)
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-
-</pre></div>
-</div>
-</div>
-</div>
 <p>Helpers for Getting, Loading and Locating Data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -588,106 +568,11 @@ Requirement already satisfied: wpca in /usr/local/lib/python3.11/site-packages (
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-01-21 18:56:53--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/line_data.csv
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 114763 (112K) [text/plain]
-Saving to: ‘./tmp_data/line_data.csv’
-     0K .......... .......... .......... .......... .......... 44% 3.69M 0s
-    50K .......... .......... .......... .......... .......... 89% 3.79M 0s
-   100K .......... ..                                         100% 43.8M=0.03s
-2024-01-21 18:56:53 (4.15 MB/s) - ‘./tmp_data/line_data.csv’ saved [114763/114763]
---2024-01-21 18:56:53--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 175192 (171K) [application/octet-stream]
-Saving to: ‘./tmp_data/pong_data.hf5’
-     0K .......... .......... .......... .......... .......... 29% 2.80M 0s
-    50K .......... .......... .......... .......... .......... 58% 7.75M 0s
-   100K .......... .......... .......... .......... .......... 87% 3.79M 0s
-   150K .......... .......... .                               100%  165M=0.04s
-2024-01-21 18:56:54 (4.54 MB/s) - ‘./tmp_data/pong_data.hf5’ saved [175192/175192]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/line_data.csv’ already there; not retrieving.
+File ‘./tmp_data/pong_data.hf5’ already there; not retrieving.
 File ‘./tmp_data/cluster_3d_data.hf5’ already there; not retrieving.
---2024-01-21 18:56:54--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cosmo_targets.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 2807192 (2.7M) [application/octet-stream]
-Saving to: ‘./tmp_data/cosmo_targets.hf5’
-     0K .......... .......... .......... .......... ..........  1% 2.68M 1s
-    50K .......... .......... .......... .......... ..........  3% 8.07M 1s
-   100K .......... .......... .......... .......... ..........  5% 4.71M 1s
-   150K .......... .......... .......... .......... ..........  7% 7.89M 1s
-   200K .......... .......... .......... .......... ..........  9% 29.0M 0s
-   250K .......... .......... .......... .......... .......... 10% 6.97M 0s
-   300K .......... .......... .......... .......... .......... 12% 10.6M 0s
-   350K .......... .......... .......... .......... .......... 14% 22.6M 0s
-   400K .......... .......... .......... .......... .......... 16% 43.3M 0s
-   450K .......... .......... .......... .......... .......... 18% 46.2M 0s
-   500K .......... .......... .......... .......... .......... 20% 19.1M 0s
-   550K .......... .......... .......... .......... .......... 21% 11.0M 0s
-   600K .......... .......... .......... .......... .......... 23% 22.9M 0s
-   650K .......... .......... .......... .......... .......... 25% 51.2M 0s
-   700K .......... .......... .......... .......... .......... 27% 5.94M 0s
-   750K .......... .......... .......... .......... .......... 29% 32.8M 0s
-   800K .......... .......... .......... .......... .......... 31% 19.2M 0s
-   850K .......... .......... .......... .......... .......... 32% 28.2M 0s
-   900K .......... .......... .......... .......... .......... 34% 93.7M 0s
-   950K .......... .......... .......... .......... .......... 36% 68.3M 0s
-  1000K .......... .......... .......... .......... .......... 38% 11.5M 0s
-  1050K .......... .......... .......... .......... .......... 40% 77.1M 0s
-  1100K .......... .......... .......... .......... .......... 41% 90.8M 0s
-  1150K .......... .......... .......... .......... .......... 43% 9.76M 0s
-  1200K .......... .......... .......... .......... .......... 45%  147M 0s
-  1250K .......... .......... .......... .......... .......... 47% 69.1M 0s
-  1300K .......... .......... .......... .......... .......... 49% 79.9M 0s
-  1350K .......... .......... .......... .......... .......... 51% 34.6M 0s
-  1400K .......... .......... .......... .......... .......... 52% 5.77M 0s
-  1450K .......... .......... .......... .......... .......... 54% 72.3M 0s
-  1500K .......... .......... .......... .......... .......... 56% 96.9M 0s
-  1550K .......... .......... .......... .......... .......... 58% 9.46M 0s
-  1600K .......... .......... .......... .......... .......... 60% 95.7M 0s
-  1650K .......... .......... .......... .......... .......... 62% 67.8M 0s
-  1700K .......... .......... .......... .......... .......... 63% 77.1M 0s
-  1750K .......... .......... .......... .......... .......... 65% 79.5M 0s
-  1800K .......... .......... .......... .......... .......... 67% 64.1M 0s
-  1850K .......... .......... .......... .......... .......... 69%  102M 0s
-  1900K .......... .......... .......... .......... .......... 71% 46.4M 0s
-  1950K .......... .......... .......... .......... .......... 72% 9.51M 0s
-  2000K .......... .......... .......... .......... .......... 74%  107M 0s
-  2050K .......... .......... .......... .......... .......... 76% 86.1M 0s
-  2100K .......... .......... .......... .......... .......... 78% 41.5M 0s
-  2150K .......... .......... .......... .......... .......... 80%  136M 0s
-  2200K .......... .......... .......... .......... .......... 82% 10.3M 0s
-  2250K .......... .......... .......... .......... .......... 83% 38.9M 0s
-  2300K .......... .......... .......... .......... .......... 85% 30.9M 0s
-  2350K .......... .......... .......... .......... .......... 87% 32.1M 0s
-  2400K .......... .......... .......... .......... .......... 89% 73.9M 0s
-  2450K .......... .......... .......... .......... .......... 91% 21.1M 0s
-  2500K .......... .......... .......... .......... .......... 93%  104M 0s
-  2550K .......... .......... .......... .......... .......... 94% 46.3M 0s
-  2600K .......... .......... .......... .......... .......... 96% 34.1M 0s
-  2650K .......... .......... .......... .......... .......... 98% 22.6M 0s
-  2700K .......... .......... .......... .......... .         100% 72.5M=0.1s
-2024-01-21 18:56:54 (18.8 MB/s) - ‘./tmp_data/cosmo_targets.hf5’ saved [2807192/2807192]
---2024-01-21 18:56:54--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/spectra_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 414744 (405K) [application/octet-stream]
-Saving to: ‘./tmp_data/spectra_data.hf5’
-     0K .......... .......... .......... .......... .......... 12% 3.01M 0s
-    50K .......... .......... .......... .......... .......... 24% 6.24M 0s
-   100K .......... .......... .......... .......... .......... 37% 5.60M 0s
-   150K .......... .......... .......... .......... .......... 49% 7.30M 0s
-   200K .......... .......... .......... .......... .......... 61% 29.8M 0s
-   250K .......... .......... .......... .......... .......... 74% 7.63M 0s
-   300K .......... .......... .......... .......... .......... 86% 42.3M 0s
-   350K .......... .......... .......... .......... .......... 98% 14.9M 0s
-   400K .....                                                 100%  213M=0.05s
-2024-01-21 18:56:54 (7.62 MB/s) - ‘./tmp_data/spectra_data.hf5’ saved [414744/414744]
+File ‘./tmp_data/cosmo_targets.hf5’ already there; not retrieving.
+File ‘./tmp_data/spectra_data.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -799,7 +684,7 @@ Saving to: ‘./tmp_data/spectra_data.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/03f8614844523bce900f3d04625cd524ec2144ff25739692ba6175b608549bae.png" src="../../_images/03f8614844523bce900f3d04625cd524ec2144ff25739692ba6175b608549bae.png" />
+<img alt="../../_images/e13b06304c69f5a34c9f125adac95b5b211c9482cec89d7eaf19ac57981f2b67.png" src="../../_images/e13b06304c69f5a34c9f125adac95b5b211c9482cec89d7eaf19ac57981f2b67.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">DISCUSS</span></strong></em>: Is this data is still 1D if (refer to the plots below):</p>
@@ -825,7 +710,7 @@ Saving to: ‘./tmp_data/spectra_data.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/21393ef06f0371d0d3deb106c9b4e08db3cd505ba3d802b8fc95a4a55280190b.png" src="../../_images/21393ef06f0371d0d3deb106c9b4e08db3cd505ba3d802b8fc95a4a55280190b.png" />
+<img alt="../../_images/cf8542d69a6f64d976fa05f3f31214787e4d084ba12af552aaef42d45665043c.png" src="../../_images/cf8542d69a6f64d976fa05f3f31214787e4d084ba12af552aaef42d45665043c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -841,7 +726,7 @@ Saving to: ‘./tmp_data/spectra_data.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e33c20ed4740981c367e225d81e4bcd997cec6a5b739654b9caaf082707b8950.png" src="../../_images/e33c20ed4740981c367e225d81e4bcd997cec6a5b739654b9caaf082707b8950.png" />
+<img alt="../../_images/6cb07cea7acbc2a8faf3843d749b611282612a5710ff730704747643df5d6fa4.png" src="../../_images/6cb07cea7acbc2a8faf3843d749b611282612a5710ff730704747643df5d6fa4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -854,7 +739,7 @@ Saving to: ‘./tmp_data/spectra_data.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/96eb90485c02c87a10b6c886cb4f33486f42c84f3a819f3273a46eba8d15d0aa.png" src="../../_images/96eb90485c02c87a10b6c886cb4f33486f42c84f3a819f3273a46eba8d15d0aa.png" />
+<img alt="../../_images/9eb2f62121dbb578ba2b6e915877376099cfdea2fe8d1759f96774f72d7b7016.png" src="../../_images/9eb2f62121dbb578ba2b6e915877376099cfdea2fe8d1759f96774f72d7b7016.png" />
 </div>
 </div>
 <p>We will use <code class="docutils literal notranslate"><span class="pre">spectra_data</span></code> below.  Note from the table above that it appears to be severely undersampled with <span class="math notranslate nohighlight">\(N=200\)</span>, <span class="math notranslate nohighlight">\(D=500\)</span>.</p>
@@ -867,7 +752,7 @@ Saving to: ‘./tmp_data/spectra_data.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/13ea752cc2f07d457fcca5ae59bb511de384b732875cd002863c2f45ab0d2a6a.png" src="../../_images/13ea752cc2f07d457fcca5ae59bb511de384b732875cd002863c2f45ab0d2a6a.png" />
+<img alt="../../_images/7506c05d41604067e28256cb5bcea192fa671f6f913d7484c7567f741b7dfc8a.png" src="../../_images/7506c05d41604067e28256cb5bcea192fa671f6f913d7484c7567f741b7dfc8a.png" />
 </div>
 </div>
 <p>Each sample is a graph of a smooth function with some noise added.  The smooth function has three distinct components:</p>
@@ -1013,16 +898,16 @@ X^T X = M^T \Lambda M
 <p>Note that the reconstructed samples are in some sense <em>better</em> than the originals since the original noise was associated with a small eigenvalue that was trimmed!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo</span><span class="p">(</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo</span><span class="p">(</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d3cdab8dcf01032a4e644dd1a459cf3a8eaf16be9e7460a4846f98747acbd0c3.png" src="../../_images/d3cdab8dcf01032a4e644dd1a459cf3a8eaf16be9e7460a4846f98747acbd0c3.png" />
+<img alt="../../_images/7860c5d617cf932382eb8d12b3cb2c67633a3afc1e931d178a7b42db7b5a5379.png" src="../../_images/7860c5d617cf932382eb8d12b3cb2c67633a3afc1e931d178a7b42db7b5a5379.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/bb25a71b6213daeaec79441c3666adc84e585d8d75c34e4a3a49bf1ed345867e.png" src="../../_images/bb25a71b6213daeaec79441c3666adc84e585d8d75c34e4a3a49bf1ed345867e.png" />
+<img alt="../../_images/24802f60cd0c6a5f2cd8e50659505774387800113c661c6fa5434debcd9dd5f9.png" src="../../_images/24802f60cd0c6a5f2cd8e50659505774387800113c661c6fa5434debcd9dd5f9.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">DISCUSS</span></strong></em>: How many clusters do you expect to see in the scatter plot of <code class="docutils literal notranslate"><span class="pre">y0</span></code> versus <code class="docutils literal notranslate"><span class="pre">y1</span></code> above based on what you know about this dataset?  Can you identify these clusters in plot above?</p>
@@ -1053,11 +938,11 @@ X^T X = M^T \Lambda M
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b98645e53451c53210a4a1605cd8a26142353e62b8b08f8a87d24277df05fe63.png" src="../../_images/b98645e53451c53210a4a1605cd8a26142353e62b8b08f8a87d24277df05fe63.png" />
+<img alt="../../_images/4a4bfe802ed76966d49cd50cac3f2d93026cbe78788be4d9a8a4b7e8a1fe1942.png" src="../../_images/4a4bfe802ed76966d49cd50cac3f2d93026cbe78788be4d9a8a4b7e8a1fe1942.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/2f3a3a3a75b301169108c3a2c6bac63fd1486df57fb87e8205e8c28be1ea16f9.png" src="../../_images/2f3a3a3a75b301169108c3a2c6bac63fd1486df57fb87e8205e8c28be1ea16f9.png" />
+<img alt="../../_images/8fe129db12c59dd29e1b77103a86afeb63f9908ba0b6bcaf1aabe4fe3f6103c2.png" src="../../_images/8fe129db12c59dd29e1b77103a86afeb63f9908ba0b6bcaf1aabe4fe3f6103c2.png" />
 </div>
 </div>
 </section>
@@ -1079,11 +964,11 @@ X_{ij} \rightarrow X_{ij} - \mu_i \quad , \quad \mu_i \equiv \frac{1}{N} \sum_i\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/65aa6743c672810d0c9d3c464f61506a0f027ef5d0b45a41c0d5b41123c1c554.png" src="../../_images/65aa6743c672810d0c9d3c464f61506a0f027ef5d0b45a41c0d5b41123c1c554.png" />
+<img alt="../../_images/393d56c60a5b65b4a0008d83fc4cc4d2a43bd39787149a56f6845a083609944e.png" src="../../_images/393d56c60a5b65b4a0008d83fc4cc4d2a43bd39787149a56f6845a083609944e.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/b0a837e8a8181f3d81ef7c86ce9e801d7ce51b3111bd9d4a65581737aa8bf5d6.png" src="../../_images/b0a837e8a8181f3d81ef7c86ce9e801d7ce51b3111bd9d4a65581737aa8bf5d6.png" />
+<img alt="../../_images/0b8a9d8454959e008ac627d746de392d079577658c7759b5d1fbbcfc61206af4.png" src="../../_images/0b8a9d8454959e008ac627d746de392d079577658c7759b5d1fbbcfc61206af4.png" />
 </div>
 </div>
 <p>To see the importance of the extra latent variable, try with d=2 and note how poorly samples are reconstructed:</p>
@@ -1094,11 +979,11 @@ X_{ij} \rightarrow X_{ij} - \mu_i \quad , \quad \mu_i \equiv \frac{1}{N} \sum_i\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/81adb35f5959aaec8f6ef867e01bf4efb0c2ad52366ca52ab5d475bbd15c8e5a.png" src="../../_images/81adb35f5959aaec8f6ef867e01bf4efb0c2ad52366ca52ab5d475bbd15c8e5a.png" />
+<img alt="../../_images/f0d74aa0ea9f3260700168953d31187255a83b726bf6fbc1d7eebeebdb540e91.png" src="../../_images/f0d74aa0ea9f3260700168953d31187255a83b726bf6fbc1d7eebeebdb540e91.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/1e9994d65f6eee73a2df127aa0ba88379a76c49d52ee36236f8f7b16fbd156b3.png" src="../../_images/1e9994d65f6eee73a2df127aa0ba88379a76c49d52ee36236f8f7b16fbd156b3.png" />
+<img alt="../../_images/f12a844330efc35c74782493048c6556af8af6c55c020aaf2dbaa957ba316e72.png" src="../../_images/f12a844330efc35c74782493048c6556af8af6c55c020aaf2dbaa957ba316e72.png" />
 </div>
 </div>
 </section>
@@ -1118,11 +1003,11 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a9e6cf1cbf1ca6625234d2ea7816e6f2185961fb6d063d50b0de09e3c7157cec.png" src="../../_images/a9e6cf1cbf1ca6625234d2ea7816e6f2185961fb6d063d50b0de09e3c7157cec.png" />
+<img alt="../../_images/82b247c0c9190e5b1af78c7b3ffef60e9bca087601fbcd30e8b448821897c8bc.png" src="../../_images/82b247c0c9190e5b1af78c7b3ffef60e9bca087601fbcd30e8b448821897c8bc.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/763ed5f564453c828681d22b53c006c564a2ed41fad739d19452e9c4f76b558b.png" src="../../_images/763ed5f564453c828681d22b53c006c564a2ed41fad739d19452e9c4f76b558b.png" />
+<img alt="../../_images/cab44f6d33f38f90d806f449a82a2d4d1c4f0a8eb9af729c8cb5575656d3c8a3.png" src="../../_images/cab44f6d33f38f90d806f449a82a2d4d1c4f0a8eb9af729c8cb5575656d3c8a3.png" />
 </div>
 </div>
 </section>
@@ -1155,7 +1040,7 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/60149df2e25494fba306a1f1544885b1a5a36052b158f15a1859e05d49582b85.png" src="../../_images/60149df2e25494fba306a1f1544885b1a5a36052b158f15a1859e05d49582b85.png" />
+<img alt="../../_images/d12670b9ac8cbf42a6eb9dab1b5d697736bc70bc33180491bb0cee31289af193.png" src="../../_images/d12670b9ac8cbf42a6eb9dab1b5d697736bc70bc33180491bb0cee31289af193.png" />
 </div>
 </div>
 <p><em><strong><span style="color:violet">EXERCISE</span></strong></em> Use the <code class="docutils literal notranslate"><span class="pre">demo()</span></code> function with <code class="docutils literal notranslate"><span class="pre">data=pong_data</span></code> and <span class="math notranslate nohighlight">\(d = 1, 2, 3,\ldots\)</span> to determine how many latent variables are necessary to give a good reconstruction.  Do the 1D plots of individual <code class="docutils literal notranslate"><span class="pre">pong_data</span></code> samples make sense?</p>
@@ -1166,11 +1051,11 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d1dee1a60e2dab1d4eb97fbe1e98706fe50c7418f2272648259597333d8a151d.png" src="../../_images/d1dee1a60e2dab1d4eb97fbe1e98706fe50c7418f2272648259597333d8a151d.png" />
+<img alt="../../_images/b363e750f2c8796a191f878945bfb6d894155db067dcefb821a37ddc9866453f.png" src="../../_images/b363e750f2c8796a191f878945bfb6d894155db067dcefb821a37ddc9866453f.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/e9ecc7e1dc3b6c949641a2f253acb46159687bdc81ecd8b5185197939bd5b71d.png" src="../../_images/e9ecc7e1dc3b6c949641a2f253acb46159687bdc81ecd8b5185197939bd5b71d.png" />
+<img alt="../../_images/9db853cf12f2686f153e5ab043f64b588ad46e8e8710c9472cf27d6d7feb5ce6.png" src="../../_images/9db853cf12f2686f153e5ab043f64b588ad46e8e8710c9472cf27d6d7feb5ce6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1180,11 +1065,11 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a26aac6c139aa6a1b848f71acc90163a4ec7cb10d46c08738f3f413244517061.png" src="../../_images/a26aac6c139aa6a1b848f71acc90163a4ec7cb10d46c08738f3f413244517061.png" />
+<img alt="../../_images/fc8b81bcadf093070bb6252798f49e76c24f916c04101d02f5431863966da71a.png" src="../../_images/fc8b81bcadf093070bb6252798f49e76c24f916c04101d02f5431863966da71a.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/0f882838d0e70a0c6c6ce6812f74f0afb5200b99498c3a1f69ecb34e6b8293c1.png" src="../../_images/0f882838d0e70a0c6c6ce6812f74f0afb5200b99498c3a1f69ecb34e6b8293c1.png" />
+<img alt="../../_images/182c7abb875b3b80865971aabca49a968b61442f97837f6ab8c25e00f8389dab.png" src="../../_images/182c7abb875b3b80865971aabca49a968b61442f97837f6ab8c25e00f8389dab.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1194,108 +1079,14 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/30ce3cc75bbaa33f68d6a74501ea6b7ea60d1a6a865d725a3b58fcfe186b3408.png" src="../../_images/30ce3cc75bbaa33f68d6a74501ea6b7ea60d1a6a865d725a3b58fcfe186b3408.png" />
+<img alt="../../_images/c813e0632ec4ad9df7fce4b290915ccadc7adff74b68adfaf4664b78151603b3.png" src="../../_images/c813e0632ec4ad9df7fce4b290915ccadc7adff74b68adfaf4664b78151603b3.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 850x400 with 0 Axes&gt;
 </pre></div>
 </div>
-<img alt="../../_images/297162f702bffd8dba416cadf9328a04c8ac01c2e109a527de776d04fbe53173.png" src="../../_images/297162f702bffd8dba416cadf9328a04c8ac01c2e109a527de776d04fbe53173.png" />
+<img alt="../../_images/f8a7b0eec67b11ac3eb13525fe226729f8c5007d9b04f2fc2b80c2c58aaddd47.png" src="../../_images/f8a7b0eec67b11ac3eb13525fe226729f8c5007d9b04f2fc2b80c2c58aaddd47.png" />
 </div>
 </div>
 <p>Two latent variables (<span class="math notranslate nohighlight">\(d=2\)</span>) are sufficient for a good reconstruction. The abrupt transition at feature 10 in the reconstructed samples is because features 0-9 are ~linearly increasing x values, while features 10-19 are the corresponding ~parabolic y values.  Note that this dataset has negligible noise compared with <code class="docutils literal notranslate"><span class="pre">spectra_data</span></code>.</p>
-</section>
-<section id="span-style-color-lightgreen-weighted-pca-span">
-<h3><span style="color:Lightgreen">Weighted PCA</span><a class="headerlink" href="#span-style-color-lightgreen-weighted-pca-span" title="Permalink to this heading">#</a></h3>
-<p>The linear algorithms presented above work fine with noisy data, but have no way to take advantage of data that includes its own estimate of the noise level.  In the most general case, each element of the data matrix <span class="math notranslate nohighlight">\(X\)</span> has a corresponding RMS error estimate <span class="math notranslate nohighlight">\(\delta X\)</span>, with values <span class="math notranslate nohighlight">\(\rightarrow\infty\)</span> used to indicate missing data. In practice, it is convenient to replace <span class="math notranslate nohighlight">\(\delta X\)</span> with a matrix of weights <span class="math notranslate nohighlight">\(W\)</span> where zero values indicate missing data. For data with Gaussian errors, <span class="math notranslate nohighlight">\(X_{ij} \pm \delta X_{ij}\)</span>, the appropriate weight is usually the <em>inverse variance</em> <span class="math notranslate nohighlight">\(W_{ij} = \delta X_{ij}^{-2}\)</span>.</p>
-<p>The <a class="reference external" href="https://github.com/jakevdp/wpca">wpca package</a> implements two different schemes to incorporate weights into PCA, which give similar results to each other.  Both schemes are used almost identically to sklearn PCA, but with an additional <code class="docutils literal notranslate"><span class="pre">weights</span></code> argument (method = <code class="docutils literal notranslate"><span class="pre">wpca.WPCA</span></code> or <code class="docutils literal notranslate"><span class="pre">wpca.EMPCA</span></code>):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Unfortunately, <code class="docutils literal notranslate"><span class="pre">wpca.WPCA</span></code> expects <code class="docutils literal notranslate"><span class="pre">weights=np.sqrt(W)</span></code> but this might be <a class="reference external" href="https://github.com/jakevdp/wpca/issues/2">fixed soon</a>.</p>
-<p>To study these schemes, we will assign weights to <code class="docutils literal notranslate"><span class="pre">spectra_data</span></code> by assuming that each value <span class="math notranslate nohighlight">\(X_{ij}\)</span> is the result of a Poisson process so has inverse variance <span class="math notranslate nohighlight">\(W_{ij} = X_{ij}^{-1}\)</span>.</p>
-<p>The function below allows us to optionally add extra noise that varies across the spectra and remove random chunks of data (by setting their weights to zero).  As usual, ignore the details of this function unless you are interested.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">weighted_pca</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">spectra_data</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
-    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
-    <span class="c1"># Calculate inverse variances assuming Poisson fluctuations in X.</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">X</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="c1"># Add some Gaussian noise with a linearly varying RMS, if requested.</span>
-    <span class="k">if</span> <span class="n">add_noise</span><span class="p">:</span>
-        <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">add_noise</span>
-        <span class="k">assert</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">stop</span> <span class="o">&gt;=</span> <span class="mi">0</span>
-        <span class="n">extra_rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">+</span> <span class="n">extra_rms</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">X</span> <span class="o">+=</span> <span class="n">gen</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">extra_rms</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="n">X</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="c1"># Remove some fraction of data from each sample, if requested.</span>
-    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">missing</span> <span class="o">&lt;</span> <span class="mf">0.5</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">high</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">missing</span><span class="p">)</span> <span class="o">*</span> <span class="n">D</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="n">stop</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">missing</span> <span class="o">*</span> <span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">stop</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">stop</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.</span>
-    <span class="c1"># Perform the fit.</span>
-    <span class="n">fit</span> <span class="o">=</span> <span class="n">wpca</span><span class="o">.</span><span class="n">WPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">W</span><span class="p">))</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">W</span><span class="p">))</span>
-    <span class="n">Xr</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-    <span class="c1"># Show the reconstruction of some samples.</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()):</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Feature #&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature Value&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>First check that we recover similar results to the standard PCA with no added noise or missing data.  The results are not identical (but presumably better now) because we are accounting for the fact that the relative errors are larger for lower fluxes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_pca</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/44edb3796beb34b35c05addff7e056656b9a679e54e35648dc97a3e0761efc63.png" src="../../_images/44edb3796beb34b35c05addff7e056656b9a679e54e35648dc97a3e0761efc63.png" />
-</div>
-</div>
-<p>Next, increase the noise across the spectrum.  The larger errors makes the principal components harder to nail down, leading to noisier reconstructions:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_pca</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/4979fbc5e8d8cb8cb8ec6827e3f1ff2490998e3a5de3bb4b176d46b27a4360d5.png" src="../../_images/4979fbc5e8d8cb8cb8ec6827e3f1ff2490998e3a5de3bb4b176d46b27a4360d5.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_pca</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/8695b097bad77120971b42d4f03b838b9d1ecc3e8e5814e90759b2738f872185.png" src="../../_images/8695b097bad77120971b42d4f03b838b9d1ecc3e8e5814e90759b2738f872185.png" />
-</div>
-</div>
-<p>Finally, remove 10% of the data from each sample (but, crucially, a different 10% from each sample). Note how this allows us to make a sensible guess at the missing data! (statisticians call this <a class="reference external" href="https://en.wikipedia.org/wiki/Imputation_(statistics)">imputation</a>.)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_pca</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/a13d9ee86f0e24f03fee8490c30a44499fab85275499555df4beea27785380d6.png" src="../../_images/a13d9ee86f0e24f03fee8490c30a44499fab85275499555df4beea27785380d6.png" />
-</div>
-</div>
 </section>
 </section>
 <section id="span-style-color-orange-acknowledgments-span">
@@ -1379,7 +1170,6 @@ P(y_1, y_2, y_3, \ldots) = P(y_1) P(y_2) P(y_3) \ldots
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-non-negative-matrix-factorization-span"><span style="color:Lightgreen">Non-negative Matrix Factorization</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-independent-component-analysis-span"><span style="color:Lightgreen">Independent Component Analysis</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-comparisons-of-linear-methods-span"><span style="color:Lightgreen">Comparisons of Linear Methods</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-weighted-pca-span"><span style="color:Lightgreen">Weighted PCA</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
