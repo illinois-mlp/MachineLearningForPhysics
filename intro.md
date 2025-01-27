@@ -60,7 +60,7 @@ Upon completion of the course students will be able to:
 ### TA
 * Chun Yu Chow
   * email: cychow2@illinois.edu
-  * Office Hour: Monday 2:00pm to 3:00pm
+  * Office Hour: Monday 2:30pm to 3:30pm
   * Location: Outside ESB 3137 (common area)
 
 ## <span style="color:Red">Online Tools</span>
