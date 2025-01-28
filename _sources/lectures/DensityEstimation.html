@@ -488,6 +488,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-from-histograms-to-kernel-density-estimates-span"><span style="color:Orange">From Histograms to Kernel Density Estimates</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-multidimensional-kde-span"><span style="color:Orange">Multidimensional KDE</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-gaussian-mixture-models-span"><span style="color:Orange">Gaussian Mixture Models</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-extreme-deconvolution-span"><span style="color:Orange">Extreme Deconvolution</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -506,7 +507,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
@@ -519,6 +520,56 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">mixture</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will also use the <a class="reference external" href="http://www.astroml.org/">astroML package</a> below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install astroML
+<span class="kn">import</span><span class="w"> </span><span class="nn">astroML.density_estimation</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting astroML
+  Downloading astroML-1.0.2.post1-py3-none-any.whl.metadata (7.4 kB)
+Requirement already satisfied: scikit-learn&gt;=0.18 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (1.6.1)
+Requirement already satisfied: numpy&gt;=1.13 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (2.0.2)
+Requirement already satisfied: scipy&gt;=0.18 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (1.15.1)
+Requirement already satisfied: matplotlib&gt;=3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (3.10.0)
+Collecting astropy&gt;=3.0 (from astroML)
+  Downloading astropy-7.0.0-cp313-cp313-macosx_11_0_arm64.whl.metadata (10 kB)
+Collecting pyerfa&gt;=2.0.1.1 (from astropy&gt;=3.0-&gt;astroML)
+  Downloading pyerfa-2.0.1.5-cp39-abi3-macosx_11_0_arm64.whl.metadata (5.7 kB)
+Collecting astropy-iers-data&gt;=0.2024.10.28.0.34.7 (from astropy&gt;=3.0-&gt;astroML)
+  Downloading astropy_iers_data-0.2025.1.27.0.32.44-py3-none-any.whl.metadata (5.1 kB)
+Collecting PyYAML&gt;=6.0.0 (from astropy&gt;=3.0-&gt;astroML)
+  Downloading PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.1 kB)
+Requirement already satisfied: packaging&gt;=22.0.0 in /Users/msn/Library/Python/3.13/lib/python/site-packages (from astropy&gt;=3.0-&gt;astroML) (24.2)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (1.3.1)
+Requirement already satisfied: cycler&gt;=0.10 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (4.55.4)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (1.4.8)
+Requirement already satisfied: pillow&gt;=8 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (11.1.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (3.2.1)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /Users/msn/Library/Python/3.13/lib/python/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (2.9.0.post0)
+Requirement already satisfied: joblib&gt;=1.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (1.4.2)
+Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (3.5.0)
+Requirement already satisfied: six&gt;=1.5 in /Users/msn/Library/Python/3.13/lib/python/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.0-&gt;astroML) (1.17.0)
+Downloading astroML-1.0.2.post1-py3-none-any.whl (134 kB)
+Downloading astropy-7.0.0-cp313-cp313-macosx_11_0_arm64.whl (6.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.5/6.5 MB</span> <span class=" -Color -Color-Red">10.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span> <span class=" -Color -Color-Cyan">0:00:01</span>
+?25hDownloading astropy_iers_data-0.2025.1.27.0.32.44-py3-none-any.whl (1.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">18.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading pyerfa-2.0.1.5-cp39-abi3-macosx_11_0_arm64.whl (329 kB)
+Downloading PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl (171 kB)
+Installing collected packages: PyYAML, pyerfa, astropy-iers-data, astropy, astroML
+<span class=" -Color -Color-Yellow">  WARNING: The scripts fits2bitmap, fitscheck, fitsdiff, fitsheader, fitsinfo, samp_hub, showtable, volint and wcslint are installed in &#39;/Library/Frameworks/Python.framework/Versions/3.13/bin&#39; which is not on PATH.</span>
+<span class=" -Color -Color-Yellow">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span>
+Successfully installed PyYAML-6.0.2 astroML-1.0.2.post1 astropy-7.0.0 astropy-iers-data-0.2025.1.27.0.32.44 pyerfa-2.0.1.5
+Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
 </div>
@@ -557,9 +608,31 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/cluster_d_data.hf5’ already there; not retrieving.
-File ‘./tmp_data/blobs_data.hf5’ already there; not retrieving.
-File ‘./tmp_data/blobs_targets.hf5’ already there; not retrieving.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2025-01-27 23:23:34--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_d_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 19192 (19K) [application/octet-stream]
+Saving to: ‘./tmp_data/cluster_d_data.hf5’
+     0K .......... ........                                   100% 38.3M=0s
+2025-01-27 23:23:34 (38.3 MB/s) - ‘./tmp_data/cluster_d_data.hf5’ saved [19192/19192]
+--2025-01-27 23:23:34--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 71192 (70K) [application/octet-stream]
+Saving to: ‘./tmp_data/blobs_data.hf5’
+     0K .......... .......... .......... .......... .......... 71% 2.70M 0s
+    50K .......... .........                                  100% 20.2M=0.02s
+2025-01-27 23:23:35 (3.57 MB/s) - ‘./tmp_data/blobs_data.hf5’ saved [71192/71192]
+--2025-01-27 23:23:35--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_targets.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 39192 (38K) [application/octet-stream]
+Saving to: ‘./tmp_data/blobs_targets.hf5’
+     0K .......... .......... .......... ........             100% 6.56M=0.006s
+2025-01-27 23:23:35 (6.56 MB/s) - ‘./tmp_data/blobs_targets.hf5’ saved [39192/39192]
 </pre></div>
 </div>
 </div>
@@ -603,19 +676,22 @@ File ‘./tmp_data/blobs_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 </div>
-<p>A histogram is a useful visualization of the 1D distribution of a feature. However, here we are after something more quantitative: a <strong>density estimate</strong>.  The underlying assumption of density estimation is that our data <span class="math notranslate nohighlight">\(X\)</span> is a random sampling of some underlying continuous probability density function <span class="math notranslate nohighlight">\(P(x)\)</span>,</p>
+<p>A histogram is a useful visualization of the 1D distribution of a feature. However, here we are after something more quantitative: a <span style="color:violet">density estimate</span>. The underlying assumption of density estimation is that our data <span class="math notranslate nohighlight">\(X\)</span> is a random sampling of some underlying continuous probability density function <span class="math notranslate nohighlight">\(P(x)\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 X \sim P(x) \; .
 \]</div>
-<p>The task of <strong>density estimation</strong> is then to empirically estimate <span class="math notranslate nohighlight">\(P(x)\)</span> from the observed <span class="math notranslate nohighlight">\(X\)</span>. This will always be an error prone process since, generally, <span class="math notranslate nohighlight">\(P(x)\)</span> contains infinitely more information than the finite <span class="math notranslate nohighlight">\(X\)</span> that we cannot hope to recover. Our goal is therefore to do the best possible job with the limited information available.</p>
+<p>The task of <span style="color:violet">density estimation</span> is then to empirically estimate <span class="math notranslate nohighlight">\(P(x)\)</span> from the observed <span class="math notranslate nohighlight">\(X\)</span>. This will always be an error prone process since, generally, <span class="math notranslate nohighlight">\(P(x)\)</span> contains infinitely more information than the finite <span class="math notranslate nohighlight">\(X\)</span> that we cannot hope to recover. Our goal is therefore to do the best possible job with the limited information available.</p>
 <p>A histogram usually counts the number <span class="math notranslate nohighlight">\(n_i\)</span> of samples falling into each of its <span class="math notranslate nohighlight">\(B\)</span> predefined bins <span class="math notranslate nohighlight">\(b_{i-1} \le x \lt b_i\)</span> (note that there are <span class="math notranslate nohighlight">\(B\)</span> counts <span class="math notranslate nohighlight">\(n_i\)</span> and <span class="math notranslate nohighlight">\(B+1\)</span> bin edges <span class="math notranslate nohighlight">\(b_i\)</span>). This convention has the advantage that the error on each bin value is described by the <a class="reference external" href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>, which becomes indistinguishable from the <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a> for large counts <span class="math notranslate nohighlight">\(n_i\)</span>, leading to the rule of thumb</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned} \Large
-n_i \pm \sqrt{n_i} ~~~~~~~~~~~~~~~~~\text{(Gaussian statistics per bin } i) 
-$$.\\In order to estimate probability density, we convert each bin count $n_i$ into a corresponding density\\$$ \Large
+\[ \Large
+n_i \pm \sqrt{n_i} ~~~~~~~~~~~~~~~~~(\text{Gaussian statistics per bin } i \; .)
+\]</div>
+<p>In order to estimate probability density, we convert each bin count <span class="math notranslate nohighlight">\(n_i\)</span> into a corresponding density</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 \rho_i = \frac{n_i}{N \left(b_i - b_{i-1}\right)}
-\end{aligned}\end{align} \]</div>
+\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[ \Large
@@ -941,12 +1017,12 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[9.08776030e+00, 5.18614914e+00, 8.45747850e+00],
-        [1.35964154e+01, 5.67723068e+00, 1.45469294e+01],
-        [1.18657188e+01, 1.42661790e-03, 1.49977988e+01],
-        [3.55900392e+00, 9.43986076e+00, 4.75033020e+00],
-        [2.79794415e+00, 4.11623484e+00, 5.37144909e+00]]),
- array([0, 1, 1, 2, 2]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 3.35920221,  6.8992151 ,  6.23358241],
+        [ 5.28533637,  9.77821911,  3.46514107],
+        [ 4.33487451,  5.45480832,  6.40348508],
+        [11.67026099,  5.06293373, 15.01944708],
+        [ 5.59172048,  6.00763012,  8.64144266]]),
+ array([0, 0, 0, 1, 2]))
 </pre></div>
 </div>
 </div>
@@ -972,7 +1048,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ec9f013880d8f0c59bcfa28ba343f79b89880e7518127ac1c1eaefecc8b03575.png" src="../../_images/ec9f013880d8f0c59bcfa28ba343f79b89880e7518127ac1c1eaefecc8b03575.png" />
+<img alt="../../_images/2474b59e735d257ea59274dc9dab1ab084170b162abe56cc688600d7ed101aa3.png" src="../../_images/2474b59e735d257ea59274dc9dab1ab084170b162abe56cc688600d7ed101aa3.png" />
 </div>
 </div>
 <p>Sometimes the individual <span class="math notranslate nohighlight">\(\alpha_i\)</span>, <span class="math notranslate nohighlight">\(\mu_i\)</span> and <span class="math notranslate nohighlight">\(C_i\)</span> parameters of each fitted component are useful.  For example, the parameters of the earlier 3D GMM fit are (do the shapes of each array make sense?):</p>
@@ -985,21 +1061,21 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.249 0.25  0.501]
-[[ 7.916  5.033 10.016]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.501 0.25  0.249]
+[[ 3.928  5.98   4.992]
  [11.918  1.013 13.981]
- [ 3.928  5.98   4.992]]
-[[[ 3.871e+00 -1.511e+00 -2.020e-01]
-  [-1.511e+00  1.027e+00 -4.000e-03]
-  [-2.020e-01 -4.000e-03  1.992e+00]]
+ [ 7.916  5.033 10.016]]
+[[[ 1.028e+00  4.800e-02 -2.700e-02]
+  [ 4.800e-02  2.805e+00 -2.600e-02]
+  [-2.700e-02 -2.600e-02  9.880e-01]]
 
  [[ 9.260e-01  9.000e-02 -2.000e-03]
   [ 9.000e-02  3.758e+00  9.890e-01]
   [-2.000e-03  9.890e-01  1.072e+00]]
 
- [[ 1.028e+00  4.800e-02 -2.700e-02]
-  [ 4.800e-02  2.805e+00 -2.600e-02]
-  [-2.700e-02 -2.600e-02  9.880e-01]]]
+ [[ 3.871e+00 -1.511e+00 -2.020e-01]
+  [-1.511e+00  1.027e+00 -4.000e-03]
+  [-2.020e-01 -4.000e-03  1.992e+00]]]
 </pre></div>
 </div>
 </div>
@@ -1182,10 +1258,10 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 3186.000, BIC = 3434.661
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 3183.294, BIC = 3431.956
 </pre></div>
 </div>
-<img alt="../../_images/37a57aa43512a6df01a794306876847bd412daed72da0e356547f4ccf0a90df5.png" src="../../_images/37a57aa43512a6df01a794306876847bd412daed72da0e356547f4ccf0a90df5.png" />
+<img alt="../../_images/7d4789cd6fe45e9b533cf0e3ce7efa75e52da7ac287b71e52dd472162d2faa65.png" src="../../_images/7d4789cd6fe45e9b533cf0e3ce7efa75e52da7ac287b71e52dd472162d2faa65.png" />
 </div>
 </div>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a> are different measures of the <span style="color:violet">goodness-of-fit</span> of the GMM to the data.  They both reward small residuals while penalizing extra fit parameters, to provide guidance on how many components to use.  However, both methods are ad-hoc and you should prefer the (more expensive) model selection methods we will see later whenever the answer really matters.</p>
@@ -1206,7 +1282,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8bde4066a05426e47df57c262f71081930f34d9a933346db5ba4ed43695e72c9.png" src="../../_images/8bde4066a05426e47df57c262f71081930f34d9a933346db5ba4ed43695e72c9.png" />
+<img alt="../../_images/5b4b8bf51ebaca16248fac278a724504a1ecd56c7bdd38db12892f0b2b412715.png" src="../../_images/5b4b8bf51ebaca16248fac278a724504a1ecd56c7bdd38db12892f0b2b412715.png" />
 </div>
 </div>
 <p>GMM is closely related to two other algorithms we have already encountered, <code class="docutils literal notranslate"><span class="pre">KMeans</span></code> and <code class="docutils literal notranslate"><span class="pre">FactorAnalysis</span></code>:</p>
@@ -1216,6 +1292,78 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <li><p>GMM implementations typically use KMeans to obtain its initial parameter values, before EM iterations.</p></li>
 <li><p>FactorAnalysis is an adaption of GMM with a single component for cases where the number of samples <span class="math notranslate nohighlight">\(N\)</span> is insufficient to estimate the <span class="math notranslate nohighlight">\(D(D+1)/2\)</span> indepdent elements of a full covariance matrix, so instead we assume a simpler (but non-diagonal) covariance with <span class="math notranslate nohighlight">\(N(D + 1)\)</span> independent parameters.</p></li>
 </ul>
+</section>
+<section id="span-style-color-orange-extreme-deconvolution-span">
+<h2><span style="color:Orange">Extreme Deconvolution</span><a class="headerlink" href="#span-style-color-orange-extreme-deconvolution-span" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://arxiv.org/abs/0905.2979">Extreme Convolution Method</a> seeks infer a complete probability distribution function from noisy, heterogeneous and incomplete observations (data). The algorithm is implemented in the AstroML package (see <a class="reference external" href="http://www.astroml.org/modules/generated/astroML.density_estimation.XDGMM.html">http://www.astroml.org/modules/generated/astroML.density_estimation.XDGMM.html</a>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">weighted_GMM</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">blobs_data</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">noisy</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">noisy</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c1"># Initialize zero errors.</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
+    <span class="c1"># Add some Gaussian noise with a linearly varying RMS, if requested.</span>
+    <span class="k">if</span> <span class="n">add_noise</span><span class="p">:</span>
+        <span class="n">add_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">add_noise</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">add_noise</span><span class="p">)</span> <span class="o">==</span> <span class="n">D</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">W</span><span class="p">[:,</span> <span class="n">diag</span><span class="p">,</span> <span class="n">diag</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_noise</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">noisy</span> <span class="o">+=</span> <span class="n">gen</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span> <span class="o">*</span> <span class="n">add_noise</span>
+    <span class="c1"># Perform the weighed &quot;extreme deconvolution&quot; fit.</span>
+    <span class="n">fit</span> <span class="o">=</span> <span class="n">astroML</span><span class="o">.</span><span class="n">density_estimation</span><span class="o">.</span><span class="n">XDGMM</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">noisy</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="n">GMM_pairplot</span><span class="p">(</span><span class="n">noisy</span><span class="p">,</span> <span class="n">fit</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">fit</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">fit</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="n">limits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First fit without any errors added to the data. Fix the plot limits for easier comparisons below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> weighted_GMM(3, limits=[(0,15), (-4,12), (2,18)])
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4619bd2347ab712559053088f799385fbbd89d95ca77a6549e2faba6d1095ea5.png" src="../../_images/4619bd2347ab712559053088f799385fbbd89d95ca77a6549e2faba6d1095ea5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.61 s, sys: 1.14 s, total: 2.75 s
+Wall time: 785 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, add errors to x0 only, and observe the effect on the scatter of x0 values below. The (x1, x2) projection of the fit is essentially unaffected while the (x0, x1) and (x0, x2) projections demonstrate that the fit is correcting for the added noise, with some expected loss of sensitivity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> weighted_GMM(3, add_noise=(2, 0, 0), limits=[(0,15), (-4,12), (2,18)])
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d2db45491b227b149d0c5fdf46834621b936a122ad0096e0b4f1d145d7c40444.png" src="../../_images/d2db45491b227b149d0c5fdf46834621b936a122ad0096e0b4f1d145d7c40444.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.1 s, sys: 1.27 s, total: 12.4 s
+Wall time: 10.3 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, add more noise to see how far we can push this approach:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> weighted_GMM(3, add_noise=(2, 2, 2), limits=[(0,15), (-4,12), (2,18)])
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/582a1a7d456009c89066dcf3fe07a8d49adfb88883df5d3f6062794b82d92ffe.png" src="../../_images/582a1a7d456009c89066dcf3fe07a8d49adfb88883df5d3f6062794b82d92ffe.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.3 s, sys: 1.33 s, total: 12.6 s
+Wall time: 10.5 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that errors slow down the fit substantially (although not with an obvious pattern). If this is an issue, the <a class="reference external" href="https://github.com/jobovy/extreme-deconvolution">original implementation of extreme deconvolution</a> is faster and more flexible, but also more complex to install.</p>
 </section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
@@ -1294,6 +1442,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-from-histograms-to-kernel-density-estimates-span"><span style="color:Orange">From Histograms to Kernel Density Estimates</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-multidimensional-kde-span"><span style="color:Orange">Multidimensional KDE</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-gaussian-mixture-models-span"><span style="color:Orange">Gaussian Mixture Models</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-extreme-deconvolution-span"><span style="color:Orange">Extreme Deconvolution</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
