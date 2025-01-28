@@ -13,7 +13,7 @@ __Note__: *This schedule will evolve throughout the semseter*
 
 | Week          | Topic                   | Homework                               | Projects                   |
 |---------------|-------------------------|----------------------------------------|----------------------------|
-| Jan 20  | {doc}`_sources/Week_01`       | HW 01                                  |                            |
+| Jan 20  | {doc}`_sources/Week_01`       | [HW 01](_sources/homework/Homework_01) |                            |
 | Jan 27  | {doc}`_sources/Week_02`       | HW 02                                  |                            |
 | Feb 03  | {doc}`_sources/Week_03`       | HW 03                                  |                            |
 | Feb 10  | {doc}`_sources/Week_04`       | HW 04                                  |                            |
