@@ -897,33 +897,42 @@ document.write(`
 </div>
 <p>The PCA method of dimensionality reduction first calculates an exact linear decomposition (up to round off error),
 then trims rows and columns to the desired number of latent variables.  In this problem, you will explore how PCA is implemented. The tricky linear algebra is already implemented in <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/routines.linalg.html">numpy.linalg</a>, but it is still a challenge to keep all the notation and conventions self consistent.</p>
-<p>The input data <span class="math notranslate nohighlight">\(X\)</span> is provided as an <span class="math notranslate nohighlight">\(N\times D\)</span> (samples, features) matrix. In the following we assume that each feature is centered on zero (otherwise, calculate and subtract the <span class="math notranslate nohighlight">\(\mu_j\)</span>, then add them back later),
-$<span class="math notranslate nohighlight">\(
+<p>The input data <span class="math notranslate nohighlight">\(X\)</span> is provided as an <span class="math notranslate nohighlight">\(N\times D\)</span> (samples, features) matrix. In the following we assume that each feature is centered on zero (otherwise, calculate and subtract the <span class="math notranslate nohighlight">\(\mu_j\)</span>, then add them back later),</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 \mu_j = \sum_i X_{ij} = 0 \;.
-\)</span>$
-There are three equivalent methods for performing the initial exact decomposition:</p>
+\]</div>
+<p>There are three equivalent methods for performing the initial exact decomposition:</p>
 <ol class="arabic simple">
-<li><p>Calculate the <span class="math notranslate nohighlight">\(D\times D\)</span> <a class="reference external" href="https://en.wikipedia.org/wiki/Sample_mean_and_covariance#Sample_covariance">sample covariance matrix</a>
-$<span class="math notranslate nohighlight">\(
-C \equiv \frac{1}{N-1}\,X^T X \;.
-\)</span><span class="math notranslate nohighlight">\(
-then find its eigenvalue decomposition:
-\)</span><span class="math notranslate nohighlight">\(
-C = Q^T \Lambda Q
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>\Lambda<span class="math notranslate nohighlight">\( is a diagonal \)</span>D\times D<span class="math notranslate nohighlight">\( matrix of eigenvalues and the rows of the orthogonal \)</span>D\times D<span class="math notranslate nohighlight">\( matrix \)</span>Q$ are the corresponding eigenvectors.</p></li>
-<li><p>Calculate the <span class="math notranslate nohighlight">\(N\times N\)</span> matrix of dot products between samples:
-$<span class="math notranslate nohighlight">\(
-D \equiv \frac{1}{N-1}\,X X^T \;,
-\)</span><span class="math notranslate nohighlight">\(
-then find its eigenvalue decomposition, where now \)</span>Q<span class="math notranslate nohighlight">\( and \)</span>\Lambda<span class="math notranslate nohighlight">\( are \)</span>N\times N$ matrices.</p></li>
-<li><p>Find the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular-value_decomposition">singular value decomposition (SVD)</a> of <span class="math notranslate nohighlight">\(X\)</span>
-$<span class="math notranslate nohighlight">\(
-X = U S V \quad \Rightarrow \quad C = \frac{1}{N-1}\,V^T S^2 V \;,
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>S<span class="math notranslate nohighlight">\( is a diagonal \)</span>K\times K<span class="math notranslate nohighlight">\( matrix of *singular values*, \)</span>U<span class="math notranslate nohighlight">\( is \)</span>N\times K<span class="math notranslate nohighlight">\( and \)</span>V<span class="math notranslate nohighlight">\( is \)</span>K\times D<span class="math notranslate nohighlight">\(, with
-\)</span>K = \min(N, D)$. The notation above is chosen to match <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.linalg.svd.html">np.linalg.svd</a> which you will use below.</p></li>
+<li><p>Calculate the <span class="math notranslate nohighlight">\(D\times D\)</span> <a class="reference external" href="https://en.wikipedia.org/wiki/Sample_mean_and_covariance#Sample_covariance">sample covariance matrix</a></p></li>
 </ol>
+<div class="math notranslate nohighlight">
+\[ \Large
+C \equiv \frac{1}{N-1}\,X^T X \;.
+\]</div>
+<p>then find its eigenvalue decomposition:</p>
+<div class="math notranslate nohighlight">
+\[ \large
+C = Q^T \Lambda Q
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal <span class="math notranslate nohighlight">\(D\times D\)</span> matrix of eigenvalues and the rows of the orthogonal <span class="math notranslate nohighlight">\(D\times D\)</span> matrix <span class="math notranslate nohighlight">\(Q\)</span> are the corresponding eigenvectors.</p>
+<ol class="arabic simple" start="2">
+<li><p>Calculate the <span class="math notranslate nohighlight">\(N\times N\)</span> matrix of dot products between samples:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[ \Large
+D \equiv \frac{1}{N-1}\,X X^T \;,
+\]</div>
+<p>then find its eigenvalue decomposition, where now <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(\Lambda\)</span> are <span class="math notranslate nohighlight">\(N\times N\)</span> matrices.</p>
+<ol class="arabic simple" start="3">
+<li><p>Find the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular-value_decomposition">singular value decomposition (SVD)</a> of <span class="math notranslate nohighlight">\(X\)</span></p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[ \Large
+X = U S V \quad \Rightarrow \quad C = \frac{1}{N-1}\,V^T S^2 V \;,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> is a diagonal <span class="math notranslate nohighlight">\(K\times K\)</span> matrix of <em>singular values</em>, <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(N\times K\)</span> and <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(K\times D\)</span>, with
+<span class="math notranslate nohighlight">\(K = \min(N, D)\)</span>. The notation above is chosen to match <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.linalg.svd.html">np.linalg.svd</a> which you will use below.</p>
 <p>The computational cost of each method depends differently on the values of <span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(D\)</span>, so the most efficient method will depend on the shape of the input data <span class="math notranslate nohighlight">\(X\)</span>. There are also numerical considerations: the matrices <span class="math notranslate nohighlight">\(C\)</span> and <span class="math notranslate nohighlight">\(D\)</span> should be <a class="reference external" href="https://en.wikipedia.org/wiki/Positive-definite_matrix">positive definite</a> in order to guarantee positive eigenvalues, but this will not be true for <span class="math notranslate nohighlight">\(C\)</span> if <span class="math notranslate nohighlight">\(N &lt; D\)</span> or for <span class="math notranslate nohighlight">\(D\)</span> if <span class="math notranslate nohighlight">\(N &gt; D\)</span>.</p>
 <p>Implement the function below to calculate the eigenvectors and eigenvalues of a square input matrix using a suitable function from <a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/routines.linalg.html">np.linalg</a>.  The results should be sorted in order of decreasing eigenvalues, as needed by PCA. Hint: <code class="docutils literal notranslate"><span class="pre">M[::-1]</span></code> reverses the rows of a 2D array <code class="docutils literal notranslate"><span class="pre">M</span></code> (more info <a class="reference external" href="https://docs.scipy.org/doc/numpy-dev/user/quickstart.html#indexing-slicing-and-iterating">here</a>).</p>
 <div class="cell docutils container">
