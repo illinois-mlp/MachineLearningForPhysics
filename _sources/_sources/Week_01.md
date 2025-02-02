@@ -1,6 +1,8 @@
 # <span style="color: blue;"><b>Introduction to Data Science</b></span>
 
 ## *Overview*
+Data science is a multidisciplinary field that focuses on extracting meaningful insights from large datasets by combining techniques from mathematics, statistics, computer science, and domain expertise, allowing businesses and researchers to make informed decisions based on data analysis, pattern recognition, and predictive modeling
+
 You will start with an overview of the course and then an introduction to statistics and data science. You will learn some of the tools of the trade in scientific python, particularly numerical python, Jupyter nodebooks, and handling data.
 
 ## *Goals*

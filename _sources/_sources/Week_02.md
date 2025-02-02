@@ -1,7 +1,7 @@
 # <span style="color: blue;"><b>Probability Theory and Density Estimation</b></span>
 
 ## *Overview*
-You will learn the basics of Probability Theory and Density Estimation
+You will learn the basics of Probability Theory and Density Estimation. Probability theory is a branch of mathematics that studies randomness and uncertainty. It's a mathematical framework that uses probability to analyze chance events. Density estimation is the process of constructing an approximation of an underlying probability density function (PDF) based on a set of observed data points, essentially trying to make an "educated guess" of the distribution of a variable by analyzing a sample drawn from it; this allows you to understand how likely different values are within that variable's range, even if the exact distribution is unknown.
 
 ## *Goals*
 * Learn about probability
