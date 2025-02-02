@@ -533,20 +533,15 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting astroML
-  Downloading astroML-1.0.2.post1-py3-none-any.whl.metadata (7.4 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: astroML in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (1.0.2.post1)
 Requirement already satisfied: scikit-learn&gt;=0.18 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (1.6.1)
 Requirement already satisfied: numpy&gt;=1.13 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (2.0.2)
 Requirement already satisfied: scipy&gt;=0.18 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (1.15.1)
 Requirement already satisfied: matplotlib&gt;=3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (3.10.0)
-Collecting astropy&gt;=3.0 (from astroML)
-  Downloading astropy-7.0.0-cp313-cp313-macosx_11_0_arm64.whl.metadata (10 kB)
-Collecting pyerfa&gt;=2.0.1.1 (from astropy&gt;=3.0-&gt;astroML)
-  Downloading pyerfa-2.0.1.5-cp39-abi3-macosx_11_0_arm64.whl.metadata (5.7 kB)
-Collecting astropy-iers-data&gt;=0.2024.10.28.0.34.7 (from astropy&gt;=3.0-&gt;astroML)
-  Downloading astropy_iers_data-0.2025.1.27.0.32.44-py3-none-any.whl.metadata (5.1 kB)
-Collecting PyYAML&gt;=6.0.0 (from astropy&gt;=3.0-&gt;astroML)
-  Downloading PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.1 kB)
+Requirement already satisfied: astropy&gt;=3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astroML) (7.0.0)
+Requirement already satisfied: pyerfa&gt;=2.0.1.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astropy&gt;=3.0-&gt;astroML) (2.0.1.5)
+Requirement already satisfied: astropy-iers-data&gt;=0.2024.10.28.0.34.7 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astropy&gt;=3.0-&gt;astroML) (0.2025.1.27.0.32.44)
+Requirement already satisfied: PyYAML&gt;=6.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from astropy&gt;=3.0-&gt;astroML) (6.0.2)
 Requirement already satisfied: packaging&gt;=22.0.0 in /Users/msn/Library/Python/3.13/lib/python/site-packages (from astropy&gt;=3.0-&gt;astroML) (24.2)
 Requirement already satisfied: contourpy&gt;=1.0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (1.3.1)
 Requirement already satisfied: cycler&gt;=0.10 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from matplotlib&gt;=3.0-&gt;astroML) (0.12.1)
@@ -558,17 +553,9 @@ Requirement already satisfied: python-dateutil&gt;=2.7 in /Users/msn/Library/Pyt
 Requirement already satisfied: joblib&gt;=1.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (1.4.2)
 Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from scikit-learn&gt;=0.18-&gt;astroML) (3.5.0)
 Requirement already satisfied: six&gt;=1.5 in /Users/msn/Library/Python/3.13/lib/python/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.0-&gt;astroML) (1.17.0)
-Downloading astroML-1.0.2.post1-py3-none-any.whl (134 kB)
-Downloading astropy-7.0.0-cp313-cp313-macosx_11_0_arm64.whl (6.5 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.5/6.5 MB</span> <span class=" -Color -Color-Red">10.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span> <span class=" -Color -Color-Cyan">0:00:01</span>
-?25hDownloading astropy_iers_data-0.2025.1.27.0.32.44-py3-none-any.whl (1.9 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">18.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading pyerfa-2.0.1.5-cp39-abi3-macosx_11_0_arm64.whl (329 kB)
-Downloading PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl (171 kB)
-Installing collected packages: PyYAML, pyerfa, astropy-iers-data, astropy, astroML
-<span class=" -Color -Color-Yellow">  WARNING: The scripts fits2bitmap, fitscheck, fitsdiff, fitsheader, fitsinfo, samp_hub, showtable, volint and wcslint are installed in &#39;/Library/Frameworks/Python.framework/Versions/3.13/bin&#39; which is not on PATH.</span>
-<span class=" -Color -Color-Yellow">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span>
-Successfully installed PyYAML-6.0.2 astroML-1.0.2.post1 astropy-7.0.0 astropy-iers-data-0.2025.1.27.0.32.44 pyerfa-2.0.1.5
+
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">24.3.1</span> -&gt; <span class=" -Color -Color-Green">25.0</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip3 install --upgrade pip</span>
 Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
@@ -608,31 +595,9 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2025-01-27 23:23:34--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_d_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 19192 (19K) [application/octet-stream]
-Saving to: ‘./tmp_data/cluster_d_data.hf5’
-     0K .......... ........                                   100% 38.3M=0s
-2025-01-27 23:23:34 (38.3 MB/s) - ‘./tmp_data/cluster_d_data.hf5’ saved [19192/19192]
---2025-01-27 23:23:34--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 71192 (70K) [application/octet-stream]
-Saving to: ‘./tmp_data/blobs_data.hf5’
-     0K .......... .......... .......... .......... .......... 71% 2.70M 0s
-    50K .......... .........                                  100% 20.2M=0.02s
-2025-01-27 23:23:35 (3.57 MB/s) - ‘./tmp_data/blobs_data.hf5’ saved [71192/71192]
---2025-01-27 23:23:35--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_targets.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 39192 (38K) [application/octet-stream]
-Saving to: ‘./tmp_data/blobs_targets.hf5’
-     0K .......... .......... .......... ........             100% 6.56M=0.006s
-2025-01-27 23:23:35 (6.56 MB/s) - ‘./tmp_data/blobs_targets.hf5’ saved [39192/39192]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/cluster_d_data.hf5’ already there; not retrieving.
+File ‘./tmp_data/blobs_data.hf5’ already there; not retrieving.
+File ‘./tmp_data/blobs_targets.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -1020,15 +985,15 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 3.35920221,  6.8992151 ,  6.23358241],
         [ 5.28533637,  9.77821911,  3.46514107],
         [ 4.33487451,  5.45480832,  6.40348508],
-        [11.67026099,  5.06293373, 15.01944708],
-        [ 5.59172048,  6.00763012,  8.64144266]]),
+        [11.82288738,  3.12351438,  9.23645078],
+        [10.7868612 , -1.14385655, 13.29797882]]),
  array([0, 0, 0, 1, 2]))
 </pre></div>
 </div>
 </div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">fit.sample()</span></code> does not allow you to pass in your random state directly, which I consider a <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10539">bug</a>, and returns true labels (0,1,2) for the generated samples in addition to the samples themselves.</p>
-<p><strong>EXERCISE:</strong> Perform a 3-component 1D GMM fit to <code class="docutils literal notranslate"><span class="pre">blobs1d</span></code> and make a plot to compare with a KDE fit using a Gaussian kernel with bandwidth of 0.5. (Hint: refer to <code class="docutils literal notranslate"><span class="pre">estimate_density1d</span></code> above).</p>
+<p><em><strong><span style="color:violet">EXERCISE:</strong></em></span> Perform a 3-component 1D GMM fit to <code class="docutils literal notranslate"><span class="pre">blobs1d</span></code> and make a plot to compare with a KDE fit using a Gaussian kernel with bandwidth of 0.5. (Hint: refer to <code class="docutils literal notranslate"><span class="pre">estimate_density1d</span></code> above).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the same fine grid of x values to calculate P(x) on.</span>
@@ -1061,21 +1026,21 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.501 0.25  0.249]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.501 0.249 0.25 ]
 [[ 3.928  5.98   4.992]
- [11.918  1.013 13.981]
- [ 7.916  5.033 10.016]]
+ [ 7.916  5.033 10.016]
+ [11.918  1.013 13.981]]
 [[[ 1.028e+00  4.800e-02 -2.700e-02]
   [ 4.800e-02  2.805e+00 -2.600e-02]
   [-2.700e-02 -2.600e-02  9.880e-01]]
 
- [[ 9.260e-01  9.000e-02 -2.000e-03]
-  [ 9.000e-02  3.758e+00  9.890e-01]
-  [-2.000e-03  9.890e-01  1.072e+00]]
-
  [[ 3.871e+00 -1.511e+00 -2.020e-01]
   [-1.511e+00  1.027e+00 -4.000e-03]
-  [-2.020e-01 -4.000e-03  1.992e+00]]]
+  [-2.020e-01 -4.000e-03  1.992e+00]]
+
+ [[ 9.260e-01  9.000e-02 -2.000e-03]
+  [ 9.000e-02  3.758e+00  9.890e-01]
+  [-2.000e-03  9.890e-01  1.072e+00]]]
 </pre></div>
 </div>
 </div>
@@ -1245,7 +1210,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 23357.804, BIC = 23520.230
 </pre></div>
 </div>
-<img alt="../../_images/db379d0a2deeab1c542e0132e3e53b98fd0c26c82ad13af1bd0b16ab575c503d.png" src="../../_images/db379d0a2deeab1c542e0132e3e53b98fd0c26c82ad13af1bd0b16ab575c503d.png" />
+<img alt="../../_images/363f402d4fc7fbd0be1a1b7c0ad9be3e322baaa57fde97ddb45ad9ff4058f50f.png" src="../../_images/363f402d4fc7fbd0be1a1b7c0ad9be3e322baaa57fde97ddb45ad9ff4058f50f.png" />
 </div>
 </div>
 <p>Although GMM is primarily a density estimator, a GMM fit can also be used for clustering, with the advantage that we can calculate the relative probability of cluster membership for borderline samples. However, some care is required to interpret GMM for clustering since, unlike other clustering methods, GMM components can be highly overlapping and a single “visual cluster” is often fit with multiple Gaussians.</p>
@@ -1258,10 +1223,10 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 3183.294, BIC = 3431.956
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC = 3186.266, BIC = 3434.928
 </pre></div>
 </div>
-<img alt="../../_images/7d4789cd6fe45e9b533cf0e3ce7efa75e52da7ac287b71e52dd472162d2faa65.png" src="../../_images/7d4789cd6fe45e9b533cf0e3ce7efa75e52da7ac287b71e52dd472162d2faa65.png" />
+<img alt="../../_images/726ad11a2845346110d5ebe04cf104b8b9f475247c91efd27b233f48bfe614d7.png" src="../../_images/726ad11a2845346110d5ebe04cf104b8b9f475247c91efd27b233f48bfe614d7.png" />
 </div>
 </div>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion (AIC)</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_information_criterion">Bayesian information criterion (BIC)</a> are different measures of the <span style="color:violet">goodness-of-fit</span> of the GMM to the data.  They both reward small residuals while penalizing extra fit parameters, to provide guidance on how many components to use.  However, both methods are ad-hoc and you should prefer the (more expensive) model selection methods we will see later whenever the answer really matters.</p>
@@ -1282,7 +1247,7 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5b4b8bf51ebaca16248fac278a724504a1ecd56c7bdd38db12892f0b2b412715.png" src="../../_images/5b4b8bf51ebaca16248fac278a724504a1ecd56c7bdd38db12892f0b2b412715.png" />
+<img alt="../../_images/cccdc64b180fb37638f026c7e981d613c12e242ade249ae7d78a0245e4a7d91e.png" src="../../_images/cccdc64b180fb37638f026c7e981d613c12e242ade249ae7d78a0245e4a7d91e.png" />
 </div>
 </div>
 <p>GMM is closely related to two other algorithms we have already encountered, <code class="docutils literal notranslate"><span class="pre">KMeans</span></code> and <code class="docutils literal notranslate"><span class="pre">FactorAnalysis</span></code>:</p>
@@ -1327,8 +1292,8 @@ G(\vec{x} ; \vec{\mu}, C) = \left(2\pi\right)^{-D/2}\,\left| C\right|^{-1/2}\,
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/4619bd2347ab712559053088f799385fbbd89d95ca77a6549e2faba6d1095ea5.png" src="../../_images/4619bd2347ab712559053088f799385fbbd89d95ca77a6549e2faba6d1095ea5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.61 s, sys: 1.14 s, total: 2.75 s
-Wall time: 785 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.59 s, sys: 1.15 s, total: 2.74 s
+Wall time: 726 ms
 </pre></div>
 </div>
 </div>
@@ -1342,8 +1307,8 @@ Wall time: 785 ms
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/d2db45491b227b149d0c5fdf46834621b936a122ad0096e0b4f1d145d7c40444.png" src="../../_images/d2db45491b227b149d0c5fdf46834621b936a122ad0096e0b4f1d145d7c40444.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.1 s, sys: 1.27 s, total: 12.4 s
-Wall time: 10.3 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 10.3 s, sys: 1.26 s, total: 11.5 s
+Wall time: 9.6 s
 </pre></div>
 </div>
 </div>
@@ -1357,8 +1322,8 @@ Wall time: 10.3 s
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/582a1a7d456009c89066dcf3fe07a8d49adfb88883df5d3f6062794b82d92ffe.png" src="../../_images/582a1a7d456009c89066dcf3fe07a8d49adfb88883df5d3f6062794b82d92ffe.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.3 s, sys: 1.33 s, total: 12.6 s
-Wall time: 10.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 10.3 s, sys: 1.22 s, total: 11.5 s
+Wall time: 9.63 s
 </pre></div>
 </div>
 </div>
