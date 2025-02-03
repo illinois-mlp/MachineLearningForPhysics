@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/BayesianInference';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -481,6 +483,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-types-of-probability-span"><span style="color:Orange">Types of Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-joint-probability-span"><span style="color:Orange">Bayesian Joint Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-likelihood-span"><span style="color:Orange">Likelihood</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-inference-span"><span style="color:Orange">Bayesian Inference</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-priors-should-i-use-span"><span style="color:Orange">What Priors Should I Use?</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-so-why-isn-t-everyone-a-bayesian-span"><span style="color:Orange">So, Why Isn’t Everyone a Bayesian?</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-graphical-models-span"><span style="color:Orange">Graphical Models</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -495,6 +504,658 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="bayesian-statistics">
 <h1>Bayesian Statistics<a class="headerlink" href="#bayesian-statistics" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-types-of-probability-span">
+<h2><span style="color:Orange">Types of Probability</span><a class="headerlink" href="#span-style-color-orange-types-of-probability-span" title="Permalink to this heading">#</a></h2>
+<p>We construct a probability space by assigning a numerical probability in the range <span class="math notranslate nohighlight">\([0,1]\)</span> to sets of outcomes (events) in some space.</p>
+<p>When outcomes are the result of an uncertain but <span style="color:violet">repeatable</span> process, probabilities can always be measured to arbitrary accuracy by simply observing many repetitions of the process and calculating the frequency at which each event occurs.</p>
+<p>The frequentist interpretation of probability is the long-run frequency of repeatable experiments. For example, saying that the probability of a coin landing heads being 0.5 means that if we were to flip the coin enough times, we would see heads 50% of the time.</p>
+<p>These <span style="color:violet">frequentist probabilities</span> have an appealing objective reality to them. However, you cannot define a probability for events that are not repeatable. For instance, before the 2018 FIFA world cup, let’s say that you read somewhere that Brazil’s probability of winning the tournament was 14%. This probability cannot really be explained with a purely frequentist interpretation, because the experiment is not repeatable! The 2018 world cup is only going to happen once, and it’s impossible to repeat the exact experiment with the same exact conditions, players and preceding events.</p>
+<p><em><strong><span style="color:violet">DISCUSS</span></strong></em>: How might you assign a frequentist probability to statements like:</p>
+<ul class="simple">
+<li><p>The electron spin is 1/2.</p></li>
+<li><p>The Higgs boson mass is between 124 and 126 GeV.</p></li>
+<li><p>The fraction of dark energy in the universe today is between 68% and 70%.</p></li>
+<li><p>The superconductor <span class="math notranslate nohighlight">\(\text{Hg}\text{Ba}_2\text{Ca}_2\text{Cu}_3\text{O}_{8+δ}\)</span> (Hg-1223) has a critical temperature above <span class="math notranslate nohighlight">\(130 K\)</span>.</p></li>
+</ul>
+<p>You cannot (if we assume that these are universal constants), since that would require a measurable process whose outcomes had different values for a universal constant.</p>
+<p>The inevitable conclusion is that the statements we are most interested in cannot be assigned frequentist probabilities.</p>
+<p>However, if we allow probabilities to also measure your subjective “degree of belief” in a statement, then we can use the full machinery of probability theory to discuss more interesting statements.  These are called <span style="color:violet">Bayesian probabiilities</span>.</p>
+<p>As usual, an XKCD comic captures the essence of the situation:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-XKCD.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-XKCD.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-XKCD.png" style="width: 800px;" /></a></img><br></p>
+<p>This is sort and absurd example, but this gets right to the core of the potential issues with frequentist inference. The chance of the sun exploding spontaneously are so low given well-known stellar and gravitational physics that it is far more likely that the two die both came up a 6 than that it is that the sun actually exploded.</p>
+<p>Since Frequentist inference does not take the probability of the sun exploding into account (the only data that matters is the die roll), taking a purely Frequentist approach can run into problems like these. And while it may be easy to spot the issue here, in contexts like scientific research it can be much harder to identify that this may be happening in your experiment.</p>
+<p>In other words, frequentist statistics estimates the desired confidence percentage (usually 95%) in which some parameter is placed. In contrast, Bayesian analysis answers the following question: “What is the probability of the hypothesis (model) given the measured data?” In addition, frequentist statistics accepts or rejects the null hypotheses, but Bayesian statistics estimates the ratio of probabilities of two different hypotheses. This ratio is known as the Bayes factor that we will study soon. The Bayes factor quantifies the support for one hypothesis over another, irregardless of whether either of these hypotheses are correct.</p>
+<p>Roughly speaking, the choice is between:</p>
+<ul class="simple">
+<li><p><em><strong><span style="color:violet">Frequentist statistics</span></strong></em>: objective probabilities of uninteresting statements.</p></li>
+<li><p><em><strong><span style="color:violet">Bayesian statistics</span></strong></em>: subjective probabilities of interesting statements.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="span-style-color-orange-bayesian-joint-probability-span">
+<h2><span style="color:Orange">Bayesian Joint Probability</span><a class="headerlink" href="#span-style-color-orange-bayesian-joint-probability-span" title="Permalink to this heading">#</a></h2>
+<p>Bayesian statistics starts from a joint probability distribution</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D, \Theta_M, M)
+\]</div>
+<p>over</p>
+<ul class="simple">
+<li><p>data features <span class="math notranslate nohighlight">\(D\)</span></p></li>
+<li><p>model parameters <span class="math notranslate nohighlight">\(\Theta_M\)</span></p></li>
+<li><p>hyperparameters <span class="math notranslate nohighlight">\(M\)</span></p></li>
+</ul>
+<p>The subscript on <span class="math notranslate nohighlight">\(\Theta_M\)</span> is to remind us that, in general, the set of parameters being used depends on the hyperparameters (e.g., increasing <code class="docutils literal notranslate"><span class="pre">n_components</span></code> adds parameters for the new components). We will sometimes refer to the pair <span class="math notranslate nohighlight">\((\Theta_M, M)\)</span> as the <strong>model</strong>.</p>
+<p>This joint probability implies that model parameters and hyperparameters are random variables, which in turn means that they label possible outcomes in our underlying probability space.</p>
+<p>For a concrete example, consider the possible outcomes necessary to discuss the statement “<em>the electron spin is 1/2</em>”, which must be labeled by the following random variables:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(D\)</span>: the measured electron spin for an outcome, <span class="math notranslate nohighlight">\(S_z = 0, \pm 1/2, \pm 1, \pm 3/2, \ldots\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta_M\)</span>: the total electron spin for an outcome, <span class="math notranslate nohighlight">\(S = 0, 1/2, 1, 3/2, \ldots\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span>: whether the electron is a boson or a fermion for an outcome.</p></li>
+</ul>
+<p>A table of random-variable values for possible outcomes would then look like:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(M\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\Theta_M\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(D\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>boson</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>fermion</p></td>
+<td><p>1/2</p></td>
+<td><p>-1/2</p></td>
+</tr>
+<tr class="row-even"><td><p>fermion</p></td>
+<td><p>1/2</p></td>
+<td><p>+1/2</p></td>
+</tr>
+<tr class="row-odd"><td><p>boson</p></td>
+<td><p>1</p></td>
+<td><p>-1</p></td>
+</tr>
+<tr class="row-even"><td><p>boson</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>boson</p></td>
+<td><p>1</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>Only two of these outcomes occur in our universe, but a Bayesian approach requires us to broaden the sample space from “<em>all possible outcomes</em>” to “<em>all possible outcomes in all possible universes</em>”.</p>
+</section>
+<section id="span-style-color-orange-likelihood-span">
+<h2><span style="color:Orange">Likelihood</span><a class="headerlink" href="#span-style-color-orange-likelihood-span" title="Permalink to this heading">#</a></h2>
+<p>The <span style="color:violet">likelihood</span> <span class="math notranslate nohighlight">\({\cal L}_M(\Theta_M, D)\)</span> is a function of model parameters <span class="math notranslate nohighlight">\(\Theta_M\)</span> (given hyperparameters <span class="math notranslate nohighlight">\(M\)</span>) and data features <span class="math notranslate nohighlight">\(D\)</span>, and measures the probability (density) of observing the data <span class="math notranslate nohighlight">\(\vec{x}\)</span> given the model.  For example, a Gaussian mixture model has the likelihood function:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+{\cal L}_M\left(\mathbf{\Theta}_M, \vec{x} \right) = \sum_{k=1}^{K}\, \omega_k G(\vec{x} ; \vec{\mu}_k, C_k) \; ,
+\]</div>
+<p>with parameters</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+\mathbf{\Theta}_M = \big\{
+&amp;\omega_1, \omega_2, \ldots, \omega_K, \\
+&amp;\vec{\mu}_1, \vec{\mu}_2, \ldots, \vec{\mu}_K, \\
+&amp;C_1, C_2, \ldots, C_K \big\}
+\end{aligned}
+\end{split}\]</div>
+<p>and hyperparameter <span class="math notranslate nohighlight">\(K\)</span>. Note that the likelihood must be normalized over the data for any values of the (fixed) parameters and hyperparameters.  However, it is not normalized over the parameters or hyperparameters.</p>
+<p>The likelihood function plays a central role in both frequentist and Bayesian statistics, but is used and interpreted differently. We will focus on the Bayesian perspective, where <span class="math notranslate nohighlight">\(\Theta_M\)</span> and <span class="math notranslate nohighlight">\(M\)</span> are considered random variables and the likelihood function is associated with the conditional probability</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+{\cal L}_M\left(\Theta_M, D \right) = P(D\mid \Theta_M, M)
+\]</div>
+<p>of observing features <span class="math notranslate nohighlight">\(D\)</span> given the model <span class="math notranslate nohighlight">\((\Theta_M, M)\)</span>.</p>
+</section>
+<section id="span-style-color-orange-bayesian-inference-span">
+<h2><span style="color:Orange">Bayesian Inference</span><a class="headerlink" href="#span-style-color-orange-bayesian-inference-span" title="Permalink to this heading">#</a></h2>
+<p>The term “<span style="color:violet">Bayesian inference</span>” comes from Bayes’ Theorem, which in turn is named after Thomas Bayes, an English statistician from the 18th century. In fact, the key ideas behind Bayes’ theorem were also used independently by the French mathematician Pierre-Simon Laplace around the same time.</p>
+<p>Once we associated the likelihood with a conditional probability, we can apply the earlier rules (2 &amp; 3) of probability calculus to derive the <em><strong><span style="color:violet">Generalized Bayes’ Rule</span></strong></em>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\Theta_M\mid D, M) = \frac{P(D\mid \Theta_M, M)\,P(\Theta_M\mid M)}{P(D\mid M)}
+\]</div>
+<p>Each term above has a name and measures a different probability:</p>
+<ol class="arabic simple">
+<li><p><em><strong><span style="color:violet">Posterior</span></strong></em>: <span class="math notranslate nohighlight">\(P(\Theta_M\mid D, M)\)</span> is the probability of the parameter values <span class="math notranslate nohighlight">\(\Theta_M\)</span> given the data and the choice of hyperparameters.</p></li>
+<li><p><em><strong><span style="color:violet">Likelihood</span></strong></em>: <span class="math notranslate nohighlight">\(P(D\mid \Theta_M, M)\)</span> is the probability of the data given the model.</p></li>
+<li><p><em><strong><span style="color:violet">Prior</span></strong></em>: <span class="math notranslate nohighlight">\(P(\Theta_M\mid M)\)</span> is the probability of the model parameters given the hyperparameters and <em>marginalized over all possible data</em>.</p></li>
+<li><p><em><strong><span style="color:violet">Evidence</span></strong></em>: <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> is the probability of the data given the hyperparameters and <em>marginalized over all possible parameter values given the hyperparameters</em>.</p></li>
+</ol>
+<p>In typical inference problems, the posterior (1) is what we really care about and the likelihood (2) is what we know how to calculate. The prior (3) is where we must quantify our subjective “degree of belief” in different possible universes.</p>
+<p>What about the evidence (4)?  Using the earlier rule (5) of probability calculus, we discover that (4) can be calculated from (2) and (3):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid M) = \int d\Theta_M' P(D\mid \Theta_M', M)\, P(\Theta_M'\mid M) \; .
+\]</div>
+<p>Note that this result is not surprising since the denominator must normalize the ratio to yield a probability (density). When the set of possible parameter values is discrete, <span class="math notranslate nohighlight">\(\Theta_M \in \{ \Theta_{M,1}, \Theta_{M,2}, \ldots\}\)</span>, the normalization integral reduces to a sum:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid M) \rightarrow \sum_k\, P(D\mid \Theta_{M,k}, M)\, P(\Theta_{M,k}\mid M) \; .
+\]</div>
+<p>The generalized Bayes’ rule above assumes fixed values of any hyperparameters (since <span class="math notranslate nohighlight">\(M\)</span> is on the RHS of all 4 terms), but a complete inference also requires us to consider different hyperparameter settings.  We will defer this (harder) <strong>model selection</strong> problem until later.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-England.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-England.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-England.png" style="width: 300px;" /></a></img><br></p>
+<p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Suppose that you meet someone for the first time at your next conference and they are wearing an “England” t-shirt.  Estimate the probability that they are English by:</p>
+<ul class="simple">
+<li><p>Defining the data <span class="math notranslate nohighlight">\(D\)</span> and model <span class="math notranslate nohighlight">\(\Theta_M\)</span> assuming, for simplicity, that there are no hyperparameters.</p></li>
+<li><p>Assigning the relevant likelihoods and prior probabilities (terms 2 and 3 above).</p></li>
+<li><p>Calculating the resulting LHS of the generalized Baye’s rule above.</p></li>
+</ul>
+<p><span style="color:LightGreen">Solution</span>:</p>
+<ul class="simple">
+<li><p>Define the <em><strong><span style="color:violet">data</span></strong></em> <span class="math notranslate nohighlight">\(D\)</span> as the observation that the person is wearing an “England” t-shirt.</p></li>
+<li><p>Define the <em><strong><span style="color:violet">model</span></strong></em> to have a single parameter, the person’s nationality <span class="math notranslate nohighlight">\(\Theta \in \{ \text{English}, \text{!English}\}\)</span>.</p></li>
+<li><p>We don’t need to specify a full <em><strong><span style="color:violet">likelihood function</span></strong></em> over all possible data since we only have a single datum. Instead, it is sufficient to assign the likelihood probabilities:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid \text{English}) = 0.4 \quad , \quad P(D\mid \text{!English}) = 0.1
+\]</div>
+<p>Note that the likelihood probabilities do not sum to one since the likelihood is normalized over the data, not the model, unlike the prior probabilities which must sum to one.</p>
+<ul class="simple">
+<li><p>Assign the <em><strong><span style="color:violet">prior probabilities</span></strong></em> for attendees at the conference:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\text{English}) = 0.2 \quad , \quad P(\text{!English}) = 0.8
+\]</div>
+<ul class="simple">
+<li><p>We can now calculate the LHS of the generalized Bayes’ rule which gives an estimate of the probabilty that the person is English given the shirt (Note: we calculate the <em><strong><span style="color:violet">evidence</span></strong></em> <span class="math notranslate nohighlight">\(P(D)\)</span> using a sum rather than integral, because <span class="math notranslate nohighlight">\(\Theta\)</span> is discrete.):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+P(\text{English}\mid D) &amp;= \frac{P(D\mid \text{English})\, P(\text{English})}
+{P(D\mid \text{English})\, P(\text{English}) + P(D\mid \text{!English})\, P(\text{!English})} \\
+&amp;= \frac{0.4\times 0.2}{0.4\times 0.2 + 0.1\times 0.8} \\
+&amp;= 0.5
+\end{aligned}
+\end{split}\]</div>
+<p>You would have probably assigned different probabilities, since these are subjective assessments where reasonable people can disagree. However, by allowing some subjectivity we are able to make a precise statement under some (subjective) assumptions.</p>
+<p>A simple example like this can be represented graphically in the 2D space of joint probability <span class="math notranslate nohighlight">\(P(D, \Theta)\)</span>:</p>
+<hr class="docutils" />
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-BayesBoxes.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-BayesBoxes.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-BayesBoxes.png" style="width: 800px;" /></a></img><br></p>
+<p>The generalized Bayes’ rule can be viewed as a learning rule that updates our knowledge as new information becomes available:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-UpdateRule.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-UpdateRule.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-UpdateRule.png" style="width: 800px;" /></a></img><br></p>
+<p>The generalized Bayes’ rule can be viewed as a learning rule that updates our knowledge as new information becomes available:</p>
+<p>The implied timeline motivates the <em>posterior</em> and <em>prior</em> terminology, although there is no requirement that the prior be based on data collected before the “new” data.</p>
+<p>Bayesian inference problems can be tricky to get right, even when they sound straightforward, so it is important to clearly spell out what you know or assume, and what you wish to learn:</p>
+<ol class="arabic simple">
+<li><p>List the possible models, i.e., your hypotheses.</p></li>
+<li><p>Assign a prior probability to each model.</p></li>
+<li><p>Define the likelihood of each possible observation <span class="math notranslate nohighlight">\(D\)</span> for each model.</p></li>
+<li><p>Apply Bayes’ rule to learn from new data and update your prior.</p></li>
+</ol>
+<p>For problems with a finite number of possible models and observations, the calculations required are simple arithmetic but quickly get cumbersome.  A helper function lets you hide the arithmetic and focus on the logic:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+    <span class="c1"># Calculate the Bayes&#39; rule numerator for each model.</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="p">{</span><span class="n">M</span><span class="p">:</span> <span class="n">prior</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span> <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">prior</span><span class="p">}</span>
+    <span class="c1"># Calculate the Bayes&#39; rule denominator.</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">prob</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1"># Return the posterior probabilities for each model.</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">M</span><span class="p">:</span> <span class="n">prob</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">/</span> <span class="n">norm</span> <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">prob</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, the problem above becomes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prior</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;!English&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">M</span> <span class="o">==</span> <span class="s1">&#39;English&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.4</span> <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="s1">&#39;t-shirt&#39;</span> <span class="k">else</span> <span class="mf">0.6</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.1</span> <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="s1">&#39;t-shirt&#39;</span> <span class="k">else</span> <span class="mf">0.9</span>
+    
+<span class="n">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;English&#39;: 0.5, &#39;!English&#39;: 0.5}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the (posterior) output from one learning update can be the (prior) input to the next update. For example, how should we update our knowledge if the person wears an “England” t-shirt the next day also?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">post1</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
+<span class="n">post2</span> <span class="o">=</span> <span class="n">learn</span><span class="p">(</span><span class="n">post1</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">post2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;English&#39;: 0.8, &#39;!English&#39;: 0.2}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is a helper function <code class="docutils literal notranslate"><span class="pre">Learn</span></code> for these calculations that allows multiple updates with one call and displays the learning process as a pandas table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">IPython.display</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Learn from data using Bayesian inference.</span>
+
+<span class="sd">    Assumes that the model and data spaces are discrete.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prior : dict</span>
+<span class="sd">        Dictionary of prior probabilities for all possible models.</span>
+<span class="sd">    likelihood : callable</span>
+<span class="sd">        Called with args (D,M) and must return a normalized likelihood.</span>
+<span class="sd">    data : variable-length list</span>
+<span class="sd">        Zero or more items of data to use in updating the prior.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize the Bayes&#39; rule numerator for each model.</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;PRIOR&#39;</span><span class="p">,</span> <span class="n">prior</span><span class="p">)]</span>
+    <span class="c1"># Loop over data.</span>
+    <span class="k">for</span> <span class="n">D</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="c1"># Update the Bayes&#39; rule numerator for each model.</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="p">{</span><span class="n">M</span><span class="p">:</span> <span class="n">prob</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span> <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">prob</span><span class="p">}</span>
+        <span class="c1"># Calculate the Bayes&#39; rule denominator.</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">prob</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="c1"># Calculate the posterior probabilities for each model.</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="p">{</span><span class="n">M</span><span class="p">:</span> <span class="n">prob</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">/</span> <span class="n">norm</span> <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">prob</span><span class="p">}</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;D=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">prob</span><span class="p">))</span>
+    <span class="c1"># Print our learning history.</span>
+    <span class="n">index</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">history</span><span class="p">)</span>
+    <span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">,</span> <span class="s1">&#39;t-shirt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>English</th>
+      <th>!English</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PRIOR</th>
+      <td>0.2</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <th>D=t-shirt</th>
+      <td>0.5</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>D=t-shirt</th>
+      <td>0.8</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-Dice.jpg" style="width: 400px;" /></a></img><br></p>
+<p>      <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Dice_(typical_role_playing_game_dice).jpg">https://commons.wikimedia.org/wiki/File:Dice_(typical_role_playing_game_dice).jpg</a></p>
+<p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Suppose someone rolls 6, 4, 5 on a dice without telling you whether it has 4, 6, 8, 12, or 20 sides.</p>
+<ul class="simple">
+<li><p>What is your intuition about the true number of sides based on the rolls?</p></li>
+<li><p>Identify the models (hypotheses) and data in this problem.</p></li>
+<li><p>Define your priors assuming that each model is equally likely.</p></li>
+<li><p>Define a likelihood function assuming that each dice is fair.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">Learn</span></code> function to estimate the posterior probability for the number of sides after each roll.</p></li>
+</ul>
+<p>We can be sure the dice is not 4-sided (because of the rolls &gt; 4) and guess that it is unlikely to be 12 or 20 sided (since the largest roll is a 6).</p>
+<p>The models in this problem correspond to the number of sides on the dice: 4, 6, 8, 12, 20.</p>
+<p>The data in this problem are the dice rolls: 6, 4, 5.</p>
+<p>Define the prior assuming that each model is equally likely:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prior</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Define the likelihood assuming that each dice is fair:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">likelihood</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">D</span> <span class="o">&lt;=</span> <span class="n">M</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">M</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, put the pieces together to estimate the posterior probability of each model after each roll:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Learn</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>12</th>
+      <th>20</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PRIOR</th>
+      <td>0.2</td>
+      <td>0.200</td>
+      <td>0.200</td>
+      <td>0.200</td>
+      <td>0.200</td>
+    </tr>
+    <tr>
+      <th>D=6</th>
+      <td>0.0</td>
+      <td>0.392</td>
+      <td>0.294</td>
+      <td>0.196</td>
+      <td>0.118</td>
+    </tr>
+    <tr>
+      <th>D=4</th>
+      <td>0.0</td>
+      <td>0.526</td>
+      <td>0.296</td>
+      <td>0.131</td>
+      <td>0.047</td>
+    </tr>
+    <tr>
+      <th>D=5</th>
+      <td>0.0</td>
+      <td>0.635</td>
+      <td>0.268</td>
+      <td>0.079</td>
+      <td>0.017</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Somewhat surprisingly, this toy problem has a practical application with historical significance!</p>
+<p>Imagine a factory that has made <span class="math notranslate nohighlight">\(N\)</span> items, each with a serial number 1–<span class="math notranslate nohighlight">\(N\)</span>. If you randomly select items and read their serial numbers, the problem of estimating <span class="math notranslate nohighlight">\(N\)</span> is analogous to our dice problem, but with many more models to consider. This approach was successfully used in World-War II by the Allied Forces to <a class="reference external" href="https://en.wikipedia.org/wiki/German_tank_problem">estimate the production rate of German tanks</a> at a time when most academic statisticians rejected Bayesian methods.</p>
+<p>For more historical perspective on the development of Bayesian methods (and many obstacles along the way), read the entertaining book <a class="reference external" href="https://www.amazon.com/Theory-That-Would-Not-Die/dp/0300188226">The Theory That Would Not Die</a>.</p>
+<hr class="docutils" />
+<p>The discrete examples above can be solved exactly, but this is not true in general. The challenge is to calculate the evidence, <span class="math notranslate nohighlight">\(P(D\mid M\)</span>), in the Bayes’ rule denominator, as the marginalization integral:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid M) = \int d\Theta_M' P(D\mid \Theta_M', M)\, P(\Theta_M'\mid M) \; .
+\]</div>
+<p>With careful choices of the prior and likelihood function, this integral can be performed analytically. However, for most practical work, an approximate <em>numerical approach</em> is required. Popular methods include <strong>Markov-Chain Monte Carlo</strong> and <strong>Variational Inference</strong>, which we will meet soon.</p>
+</section>
+<section id="span-style-color-orange-what-priors-should-i-use-span">
+<h2><span style="color:Orange">What Priors Should I Use?</span><a class="headerlink" href="#span-style-color-orange-what-priors-should-i-use-span" title="Permalink to this heading">#</a></h2>
+<p>The choice of priors is necessarily subjective and sometimes contentious, but keep the following general guidelines in mind:</p>
+<ul class="simple">
+<li><p>Inferences on data from an informative experiment are not very sensitive to your choice of priors.</p></li>
+<li><p>If your (posterior) results are sensitive to your choice of priors you need more (or better) data.</p></li>
+</ul>
+<p>For a visual demonstration of these guidelines, the following function performs exact inference for a common task: you make a number of observations and count how many pass some predefined test, and want to infer the fraction <span class="math notranslate nohighlight">\(0\le \theta\le 1\)</span> that pass. This applies to questions like:</p>
+<ul class="simple">
+<li><p>What fraction of galaxies contain a supermassive black hole?</p></li>
+<li><p>What fraction of Higgs candidate decays are due to background?</p></li>
+<li><p>What fraction of of my nanowires are superconducting?</p></li>
+</ul>
+<p>For our prior, <span class="math notranslate nohighlight">\(P(\theta)\)</span>, we use the <a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta distribution</a> which is specified by hyperparameters <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\theta\mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\, \theta^{a-1} \left(1 - \theta\right)^{b-1} \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Gamma\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_function">gamma function</a> related to the factorial <span class="math notranslate nohighlight">\(\Gamma(n) = (n-1)!\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">binomial_learn</span><span class="p">(</span><span class="n">prior_a</span><span class="p">,</span> <span class="n">prior_b</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_pass</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="c1"># Calculate and plot the prior on theta.</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">prior_a</span><span class="p">,</span> <span class="n">prior_b</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prior&#39;</span><span class="p">)</span>
+    <span class="c1"># Calculate and plot the likelihood of the fixed data given any theta.</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">n_pass</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="s1">&#39;k:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Likelihood&#39;</span><span class="p">)</span>
+    <span class="c1"># Calculate and plot the posterior on theta given the observed data.</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">prior_a</span> <span class="o">+</span> <span class="n">n_pass</span><span class="p">,</span> <span class="n">prior_b</span> <span class="o">+</span> <span class="n">n_obs</span> <span class="o">-</span> <span class="n">n_pass</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">posterior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">posterior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot cosmetics.</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">.102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+               <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;expand&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pass fraction $</span><span class="se">\\</span><span class="s1">theta$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><em><strong><span style="color:violet">EXERCISE</span></strong></em>:</p>
+<p><span style="color:LightGreen">Q1</span>: Think of a question in your research area where this inference problem applies.</p>
+<p><span style="color:LightGreen">Q2</span>: Infer <span class="math notranslate nohighlight">\(\theta\)</span> from 2 observations with 1 passing, using hyperparameters <span class="math notranslate nohighlight">\((a=1,b=1)\)</span>.</p>
+<ul class="simple">
+<li><p>Explain why the posterior is reasonable given the observed data.</p></li>
+<li><p>What values of <span class="math notranslate nohighlight">\(\theta\)</span> are absolutely ruled out by this data? Does this make sense?</p></li>
+<li><p>How are the three quantities plotted normalized?</p></li>
+</ul>
+<p><span style="color:LightGreen">Q3</span>: Infer <span class="math notranslate nohighlight">\(\theta\)</span> from the same 2 observations with 1 passing, using instead <span class="math notranslate nohighlight">\((a=10,b=5)\)</span>.</p>
+<ul class="simple">
+<li><p>Is the posterior still reasonable given the observed data?  Explain your reasoning.</p></li>
+<li><p>How might you choose between these two subjective priors?</p></li>
+</ul>
+<p><span style="color:LightGreen">Q4</span>: Use each of the priors above with different data: 100 trials with 60 passing.</p>
+<ul class="simple">
+<li><p>How does the relative importance of the prior and likelihood change with better data?</p></li>
+<li><p>Why are the likelihood values so much smaller now?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binomial_learn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/abd1e159fd19b23f3fb045d05271aa9bd42ff4aa0d76ab75ed0442ff31f120be.png" src="../../_images/abd1e159fd19b23f3fb045d05271aa9bd42ff4aa0d76ab75ed0442ff31f120be.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>The posterior peaks at the mean observed pass rate, 1/2, which is reasonable. It is very broad because we have only made two observations.</p></li>
+<li><p>Values of 0 and 1 are absolutely ruled out, which makes sense since we have already observed 1 pass and 1 no pass.</p></li>
+<li><p>The prior and posterior are probability densities normalized over <span class="math notranslate nohighlight">\(\theta\)</span>, so their area in the plot is 1. The likelihood is normalized over all possible data, so does not have area of 1 in this plot.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binomial_learn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3087c5636a5f442d18b1233cdde1a6065730054b10ba119abf14a8b776634895.png" src="../../_images/3087c5636a5f442d18b1233cdde1a6065730054b10ba119abf14a8b776634895.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>The posterior now peaks away from the mean observed pass rate of 1/2.  This is reasonable if we believe our prior information since, with relatively uninformative data, Bayes’ rule tells us that it should dominate our knowledge of <span class="math notranslate nohighlight">\(\theta\)</span>.  On the other hand, if we cannot justify why this prior is more believable than the earlier flat prior, then we must conclude that the value of <span class="math notranslate nohighlight">\(\theta\)</span> is unknown and that our data has not helped.</p></li>
+<li><p>If a previous experiment with 13 observations found 4 passing, then our new prior would be very reasonable. However, if this process has never been observed and we have no theoretical prejudice, then the original flat prior would be reasonable.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binomial_learn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/83e8353f1167fff4b9824673fab7ea0f70934e62987b5fa867ad038f127f7377.png" src="../../_images/83e8353f1167fff4b9824673fab7ea0f70934e62987b5fa867ad038f127f7377.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binomial_learn</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0032a26ddc9e2c026a0ae7bb2104d5b866a6564c28f10f3023fbc7a3b69c743e.png" src="../../_images/0032a26ddc9e2c026a0ae7bb2104d5b866a6564c28f10f3023fbc7a3b69c743e.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>With more data, the prior has much less influence. This is always the regime you want to be in.</p></li>
+<li><p>The likelihood values are larger because there are many more possible outcomes (pass or not) with more observations, so any one outcome becomes relatively less likely. (Recall that the likelihood is normalized over data outcomes, not <span class="math notranslate nohighlight">\(\theta\)</span>).</p></li>
+</ul>
+<hr class="docutils" />
+<p>You are hopefully convinced now that your choice of priors is mostly a non-issue, since inference with good data is relatively insensitive to your choice.  However, you still need to make a choice, so here are some practical guidelines:</p>
+<ul class="simple">
+<li><p>A “missing” prior, <span class="math notranslate nohighlight">\(P(\Theta\mid M) = 1\)</span>, is still a prior but not necessarily a “natural” choice or a “safe default”. It is often not even normalizable, although you can finesse this problem with good enough data.</p></li>
+<li><p>The prior on a parameter you care about usually summarizes previous measurements, assuming that you trust them but you are doing a better experiment. In this case, your likelihood measures the information provided by your data alone, and the posterior provides the new “world average”.</p></li>
+<li><p>The prior on a <strong>nuisance parameter</strong> (which you need for technical reasons but are not interesting in measuring) should be set conservatively (restrict as little as possible, to minimize the influence on the posterior) and in different ways (compare posteriors with different priors to estimate systematic uncertainty).</p></li>
+<li><p>If you really have no information on which to base a prior, learn about <a class="reference external" href="https://en.wikipedia.org/wiki/Prior_probability#Uninformative_priors">uninformative priors</a>, but don’t be fooled by their apparent objectivity.</p></li>
+<li><p>If being able to calculate your evidence integral analytically is especially important, look into <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate priors</a>, but don’t be surprised if this forces you to adopt an oversimplified model. The binomial example above is one of the rare cases where this works out.</p></li>
+<li><p>Always state your priors (in your code, papers, talks, etc), even when they don’t matter much.</p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-so-why-isn-t-everyone-a-bayesian-span">
+<h2><span style="color:Orange">So, Why Isn’t Everyone a Bayesian?</span><a class="headerlink" href="#span-style-color-orange-so-why-isn-t-everyone-a-bayesian-span" title="Permalink to this heading">#</a></h2>
+<p>The answer is more complicated than this, but two primary reasons are often cited:</p>
+<ol class="arabic simple">
+<li><p>The calculations needed for Bayesian statistics can be overwhelming for practical applications. However, this is becoming increasing manageable with modern computers. Also, the advent of numerical methods for approximate inference, especially <span style="color:violet">Markov chain Monte Carlo</span> (MCMC) the we will introduce in the next lecture, have tranformed probabilstic data inference.</p></li>
+<li><p>The structure requires a prior distribution (the “prior”) on the parameter of interest. If you use a different
+prior you will obtain different results and this “lack of objectivity” makes some people uncomfortable. However, we showed how some problems with sufficiant data can be relatively insensitive to choice of prior.</p></li>
+</ol>
+</section>
+<section id="span-style-color-orange-graphical-models-span">
+<h2><span style="color:Orange">Graphical Models</span><a class="headerlink" href="#span-style-color-orange-graphical-models-span" title="Permalink to this heading">#</a></h2>
+<p>We started above with the Bayesian joint probability:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D, \Theta_M, M)
+\]</div>
+<p>When the individual data features, parameters and hyperparameters are all written out, this often ends up being a very high-dimensional function.</p>
+<p>In the most general case, the joint probability requires a huge volume of data to estimate (recall our earlier discussion of <a class="reference internal" href="Dimensionality.html"><span class="doc std std-doc">dimensionality reduction</span></a>). However, many problems can be (approximately) described by a joint probability that is simplified by assuming that some random variables are mutually independent.</p>
+<p>Graphical models are a convenient visualization of the assumed direct dependencies between random variables. For example, suppose we have two parameters <span class="math notranslate nohighlight">\((\alpha, \beta)\)</span> and no hyperparameters, then the joint probability <span class="math notranslate nohighlight">\(P(D, \alpha, \beta)\)</span> can be expanded into a product of conditionals different ways using the rules of probability calculus, e.g.</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D, \alpha, \beta) = P(D,\beta\mid \alpha)\, P(\alpha) = P(D\mid \alpha,\beta)\, P(\beta\mid \alpha)\, P(\alpha) \; .
+\]</div>
+<p>or, equally well as,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D, \alpha, \beta) = P(D,\alpha\mid \beta)\, P(\beta) = P(D\mid \alpha,\beta)\, P(\alpha\mid \beta)\, P(\beta) \; ,
+\]</div>
+<p>The corresponding diagrams are:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_1.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_1.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_1.png" style="width: 400px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_2.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_2.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-fully_connected_2.png" style="width: 400px;" /></a></img><br></p>
+<p>The way to read these diagrams is that a node labeled with <span class="math notranslate nohighlight">\(X\)</span> represents a (multiplicative) factor <span class="math notranslate nohighlight">\(P(X\mid\ldots)\)</span> in the joint probability, where <span class="math notranslate nohighlight">\(\ldots\)</span> lists other nodes whose arrows feed into this node (in any order, thanks to probability calculus Rule-1). A shaded node indicates a random variable that is directly observed (i.e., data) while non-shaded nodes represent (unobserved) latent random variables.</p>
+<p>These diagrams both describe a fully general joint probability with two parameters. The rules for building a fully general joint probability with any number of parameters are:</p>
+<ul class="simple">
+<li><p>Pick an (arbitrary) ordering of the parameters.</p></li>
+<li><p>The first parameter’s node has arrows pointing to all other nodes (including the data).</p></li>
+<li><p>The n-th parameter’s node has arrows pointing to all later parameter nodes and the data.</p></li>
+</ul>
+<p>With <span class="math notranslate nohighlight">\(n\)</span> parameters, there are then <span class="math notranslate nohighlight">\(n!\)</span> possible diagrams and the number of potential dependencies grows rapidly with <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>To mitigate this factorial growth, we seek pairs of random variables that should not depend on each other. For example, in the two parameter case:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_1.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_1.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_1.png" style="width: 400px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_2.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_2.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-partial_2.png" style="width: 400px;" /></a></img><br></p>
+<p>Notice how each diagram tells a different story. For example, the first diagram tells us that the data can be predicted knowing only <span class="math notranslate nohighlight">\(\beta\)</span>, but that our prior knowledge of <span class="math notranslate nohighlight">\(\beta\)</span> depends on <span class="math notranslate nohighlight">\(\alpha\)</span>. In effect, then, simplifying a joint probability involves drawing a diagram that tells a suitable story for your data and models.</p>
+<p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Consider observing someone throwing a ball and measuring how far away it lands to infer the strength of gravity:</p>
+<ul class="simple">
+<li><p>Our data is the measured range <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p>Our parameters are the ball’s initial speed <span class="math notranslate nohighlight">\(v\)</span> and angle <span class="math notranslate nohighlight">\(\phi\)</span>, and the strength of gravity <span class="math notranslate nohighlight">\(g\)</span>.</p></li>
+<li><p>Our hyperparameters are the ball’s diameter <span class="math notranslate nohighlight">\(d\)</span> and the wind speed <span class="math notranslate nohighlight">\(w\)</span>.</p></li>
+</ul>
+<p>Draw one example of a fully general diagram of this inference’s joint probability <span class="math notranslate nohighlight">\(P(r, v, \phi, g, d, w)\)</span>.</p>
+<p>Suppose the thrower always throws as hard as they can, then adjusts the angle according to the wind. Draw a diagram to represent the direct dependencies in this simpler joint probability.</p>
+<p>Write down the posterior we are interested in for this inference problem.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_fully_connected.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_fully_connected.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_fully_connected.png" style="width: 400px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_story.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_story.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Bayes-projectile_story.png" style="width: 400px;" /></a></img><br></p>
+<p>The posterior we are most likely interested in for this inference is</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(g\mid r) \; ,
+\]</div>
+<p>but a more explicit posterior would be:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(g\mid r, v, \phi, d, w) \; .
+\]</div>
+<p>The difference between is these is that we marginalized over the “nuisance” parameters <span class="math notranslate nohighlight">\(v, \phi, d, w\)</span> in the first case.</p>
+<hr class="docutils" />
+<p>The arrows in these diagrams define the direction of conditional dependencies. They often mirror a causal influence in the underlying physical system, but this is not necessary. Probabilistic diagrams with directed edges are known as <em><strong><span style="color:violet">Bayesian networks</span></strong></em> or <em><strong><span style="color:violet">Belief Networks</span></strong></em>.</p>
+<p>It is also possible to draw diagrams where nodes are connected symmetrically, without a specified direction. These are known as <strong>Markov random fields</strong> or <strong>Markov networks</strong> and appropriate when dependencies flow in both directions or in an unknown direction.  You can read more about these <a class="reference external" href="https://en.wikipedia.org/wiki/Markov_random_field">here</a>.</p>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -567,6 +1228,13 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-types-of-probability-span"><span style="color:Orange">Types of Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-joint-probability-span"><span style="color:Orange">Bayesian Joint Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-likelihood-span"><span style="color:Orange">Likelihood</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-inference-span"><span style="color:Orange">Bayesian Inference</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-priors-should-i-use-span"><span style="color:Orange">What Priors Should I Use?</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-so-why-isn-t-everyone-a-bayesian-span"><span style="color:Orange">So, Why Isn’t Everyone a Bayesian?</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-graphical-models-span"><span style="color:Orange">Graphical Models</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
