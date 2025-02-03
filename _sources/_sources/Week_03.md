@@ -4,7 +4,10 @@
 You will learn the basics of statistics, particularly Bayesian Statistics. Statistics is the science concerned with developing and studying methods for collecting, analyzing, interpreting and presenting empirical data. Bayesian statistics is a statistical theory that uses probability to represent a degree of belief in an event. It's based on Bayes' theorem, which updates a model's parameters with data to make predictions.
 
 ## *Goals*
+* Review basics of statistics such as mean and covariance
+* Learn about Jensen's inequality as a property of convex functions
 * Learn about Baysian Statistics
+* Learn about stochastic processes and Markov Chains
 
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing)
