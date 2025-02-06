@@ -670,11 +670,14 @@ dtype: float64
 </div>
 <p>The definition</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned} \Large
+\[ \Large
 \sigma_x^2 = \langle\left( x - \overline{x} \right)^2\rangle
-$$, \\suggests that two passes through the data are necessary to calculate variance: one to calculate $\overline{x}$ and another to calculate the residual expectation. Expanding this definition, we obtain a formula\\$$ \Large
+\]</div>
+<p>suggests that two passes through the data are necessary to calculate variance: one to calculate <span class="math notranslate nohighlight">\(\overline{x}\)</span> and another to calculate the residual expectation. Expanding this definition, we obtain a formula</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 \sigma_x^2 = \langle x^2\rangle - \langle x\rangle^2
-\end{aligned}\end{align} \]</div>
+\]</div>
 <p>that can be evaluated in a single pass by simultaneously accumulating the first and second moments of <span class="math notranslate nohighlight">\(x\)</span>. However, this approach should generally not be used since it involves a cancellation between relatively large quantities that is subject to large round-off error. More details and recommended one-pass (aka “online”) formulas are <a class="reference external" href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">here</a>.</p>
 </section>
 <section id="span-style-color-lightgreen-covariance-span">
