@@ -687,19 +687,22 @@ document.write(`
 </section>
 <section id="span-style-color-orange-problem-2-span">
 <h2><span style="color:Orange">Problem 2</span><a class="headerlink" href="#span-style-color-orange-problem-2-span" title="Permalink to this heading">#</a></h2>
-<p>Suppose you measure a random process that follows an <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay law</a> for the number <span class="math notranslate nohighlight">\(n(t)\)</span> of un-decayed states as a function of time <span class="math notranslate nohighlight">\(t\)</span>:
-$<span class="math notranslate nohighlight">\(
+<p>Suppose you measure a random process that follows an <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay law</a> for the number <span class="math notranslate nohighlight">\(n(t)\)</span> of un-decayed states as a function of time <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 \frac{dn}{dt} = -\lambda n \; ,
-\)</span><span class="math notranslate nohighlight">\(
-and want to infer the posterior probability of the decay rate \)</span>\lambda$ given your data.</p>
-<p>First, implement the function below to evaluate the likelihood of observing <span class="math notranslate nohighlight">\(N\)</span> decay times <span class="math notranslate nohighlight">\(D = \{t_1, t_2, \ldots\}\)</span> as:
-$<span class="math notranslate nohighlight">\(
+\]</div>
+<p>and want to infer the posterior probability of the decay rate <span class="math notranslate nohighlight">\(\lambda\)</span> given your data.</p>
+<p>First, implement the function below to evaluate the likelihood of observing <span class="math notranslate nohighlight">\(N\)</span> decay times <span class="math notranslate nohighlight">\(D = \{t_1, t_2, \ldots\}\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 P(D\mid \lambda) = \prod_{i=1}^{N}\, P(t_i\mid \lambda)
-\)</span><span class="math notranslate nohighlight">\(
-where the **un-normalized** probability density for exponential decay is:
-\)</span><span class="math notranslate nohighlight">\(
+\]</div>
+<p>where the <strong>un-normalized</strong> probability density for exponential decay is:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 P(t\mid \lambda) \propto \exp(-\lambda t) \; .
-\)</span>$</p>
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">decay_likelihood</span><span class="p">(</span><span class="n">decay_times</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
