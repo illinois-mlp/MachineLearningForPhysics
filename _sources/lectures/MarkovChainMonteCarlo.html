@@ -853,13 +853,13 @@ f(z) = \begin{cases}
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plotfit</span><span class="p">(</span><span class="n">zlim</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">Pmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">zlim</span><span class="p">,</span> <span class="o">+</span><span class="n">zlim</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="c1"># f = unnormalized function (numerator)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> <span class="c1"># P = normalized (through KDE) function from samples  </span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f(z)$&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$P(z)$&#39;</span><span class="p">)</span>
-    <span class="n">ratio</span> <span class="o">=</span> <span class="n">f</span> <span class="o">/</span> <span class="n">P</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">f</span> <span class="o">/</span> <span class="n">P</span> <span class="c1"># estimate of normalization integral</span>
     <span class="n">sel</span> <span class="o">=</span> <span class="n">P</span> <span class="o">&gt;</span> <span class="n">Pmin</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">sel</span><span class="p">],</span> <span class="n">ratio</span><span class="p">[</span><span class="n">sel</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$P(z)/f(z)$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">sel</span><span class="p">],</span> <span class="n">ratio</span><span class="p">[</span><span class="n">sel</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f(z)/P(z)$&#39;</span><span class="p">)</span>
     <span class="n">mean_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ratio</span><span class="p">[</span><span class="n">sel</span><span class="p">])</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean P(z)/f(z) = </span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mean_ratio</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_ratio</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
@@ -874,7 +874,7 @@ f(z) = \begin{cases}
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean P(z)/f(z) = 1.766
 </pre></div>
 </div>
-<img alt="../../_images/2a02a1fc0ceb9171755ac7faf249ab38823373a49376462dcc635a3ad40781f8.png" src="../../_images/2a02a1fc0ceb9171755ac7faf249ab38823373a49376462dcc635a3ad40781f8.png" />
+<img alt="../../_images/1f7eeb2cae1b7d32b1958e6a4270e5e7aa22e87c4657a2bf0d13eb04551376ca.png" src="../../_images/1f7eeb2cae1b7d32b1958e6a4270e5e7aa22e87c4657a2bf0d13eb04551376ca.png" />
 </div>
 </div>
 <p>The estimated <span class="math notranslate nohighlight">\(P(z)\)</span> does not look great, but since it is just a scaled version of the smooth un-normalized <span class="math notranslate nohighlight">\(f(z)\)</span>, their ratio at each <span class="math notranslate nohighlight">\(z\)</span> is an estimate of the integral:</p>
@@ -946,28 +946,28 @@ f(\vec{z}, \vec{z}_0, r) =
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.660100</td>
-      <td>-2.168440</td>
+      <td>2.056148</td>
+      <td>-1.290368</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.580229</td>
-      <td>-2.095484</td>
+      <td>2.056148</td>
+      <td>-1.290368</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.527344</td>
-      <td>-2.108451</td>
+      <td>2.056148</td>
+      <td>-1.290368</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.806522</td>
-      <td>-1.591984</td>
+      <td>2.056148</td>
+      <td>-1.290368</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.832297</td>
-      <td>-1.809853</td>
+      <td>1.830559</td>
+      <td>-1.291290</td>
     </tr>
   </tbody>
 </table>
@@ -984,7 +984,7 @@ f(\vec{z}, \vec{z}_0, r) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/acffd636a2dc9d137a0c41ea984b7018604c8f510a62e800c2001a7839fef6cf.png" src="../../_images/acffd636a2dc9d137a0c41ea984b7018604c8f510a62e800c2001a7839fef6cf.png" />
+<img alt="../../_images/aecc74c9b12796461a20533e73b2b385ee6ec39b298e6c273fa600f5955a13c5.png" src="../../_images/aecc74c9b12796461a20533e73b2b385ee6ec39b298e6c273fa600f5955a13c5.png" />
 </div>
 </div>
 <p>With multidimensional samples, we can estimate expectation values of marginal PDFs just as easily as the full joint PDF.  In our 2D example, the marginal PDFs are:</p>
@@ -1006,7 +1006,7 @@ P_X(x) = \int dy\, P(x, y) \quad , \quad P_Y(y) = \int dx\, P(x, y) \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.8972137639177723)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7585619568721117)
 </pre></div>
 </div>
 </div>
@@ -1035,7 +1035,7 @@ P_X(x) = \int dy\, P(x, y) \quad , \quad P_Y(y) = \int dx\, P(x, y) \; .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1ecb7f16af354029ecaeb40f69a1314e3f528dda61bc5a61519a21b2f2f7acf3.png" src="../../_images/1ecb7f16af354029ecaeb40f69a1314e3f528dda61bc5a61519a21b2f2f7acf3.png" />
+<img alt="../../_images/899719684d0a80d028cbc4c9b6c188c7acd6d635d9e71b2a087a0738d26a8176.png" src="../../_images/899719684d0a80d028cbc4c9b6c188c7acd6d635d9e71b2a087a0738d26a8176.png" />
 </div>
 </div>
 </section>
@@ -1391,7 +1391,8 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.0</span><span class="p">));</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1410,7 +1411,8 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.0</span><span class="p">));</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1435,7 +1437,8 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">samples</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1453,7 +1456,8 @@ P(\Theta\mid M) = \prod_j P(\theta_j\mid M)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">samples</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
