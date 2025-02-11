@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/GenerativeModeling';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Convolutional and Recurrent Neural Networks" href="../Week_07.html" />
+    <link rel="next" title="Normalizing Flows" href="NormalizingFlows.html" />
     <link rel="prev" title="Deep Learning" href="DeepLearning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -201,16 +201,14 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ModelSelection.html">Bayesian Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="VariationalInference.html">Variational Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NormalizingFlows.html">Normalizing Flows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SimulationBasedInference.html">Simulation Based Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrossValidation.html">Cross Validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_04.html">Homework 04: Metropolis-Hastings and Cross Validation</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence and Machine Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Learning.html">Artificial Intelligence and Machine Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CrossValidation.html">Cross Validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SupervisedLearning.html">Supervised Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ArtificialNeuralNetworks.html">Artificial Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
@@ -220,6 +218,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DeepLearning.html">Deep Learning</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Generative Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NormalizingFlows.html">Normalizing Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SimulationBasedInference.html">Simulation Based Inference</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -544,11 +544,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../Week_07.html"
+       href="NormalizingFlows.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></p>
+        <p class="prev-next-title">Normalizing Flows</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

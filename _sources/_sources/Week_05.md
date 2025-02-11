@@ -1,7 +1,7 @@
-# <span style="color: blue;"><b>Introduction to Artificial Intelligence and Machine Learning</b></span>
+# <span style="color: blue;"><b>Introduction to Artificial Intelligence</b></span>
 
 ## *Overview*
-You will learn the basics of Artificial Intelligence and Macnhine Learning
+You will learn the basics of Artificial Intelligence and Machine Learning
 
 ## *Goals*
 * Learn about Artificial Intelligence and Machine Learning
@@ -11,8 +11,6 @@ You will learn the basics of Artificial Intelligence and Macnhine Learning
 * {doc}`lectures/Learning`
 * {doc}`lectures/SupervisedLearning`
 * {doc}`lectures/ArtificialNeuralNetworks`
-* {doc}`lectures/NormalizingFlows`
-* {doc}`lectures/SimulationBasedInference`
 
 ## *Homework Assignment*
 * {doc}`homework/Homework_05`
