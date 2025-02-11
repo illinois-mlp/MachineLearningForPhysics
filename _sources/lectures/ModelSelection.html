@@ -484,7 +484,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-model-selection-span"><span style="color:Orange">Bayesian Model Selection</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-how-many-peaks">Case Study: How Many Peaks?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-case-study-how-many-peaks-span"><span style="color:Orange">Case Study: How Many Peaks?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -732,12 +732,12 @@ P(M) = \int d\Theta_M\, P(\Theta_M, M) \; .
 <li><p>We were able to perform inference for a given model without ever calculating its evidence <span class="math notranslate nohighlight">\(P(D\mid M)\)</span>, but that is no longer possible for model comparison.</p></li>
 <li><p>To calculate the “super evidence” we must be able to specify <em>all possible models</em>.</p></li>
 </ul>
-<p>However, we can sidestep the second problem if we only want to compare two possible models, <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span>, without specifying (or perhaps even knowing) the set of possible models. We use the  ___<span style="color:Violet">odds ratio</span> for this comparison,</p>
+<p>However, we can sidestep the second problem if we only want to compare two possible models, <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span>, without specifying (or perhaps even knowing) the set of possible models. We use the  <em><strong><span style="color:Violet">odds ratio</span></strong></em> for this comparison,</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 \boxed{
 \text{odds ratio =}\quad
-\frac{P(M_1\mid D)}{P(M_2\mid D)} = \frac{P(D\mid M_1)\, P(M_1)}{P(D\mid M_2)\,P(M_2)} \; ,
+\frac{P(M_1\mid D)}{P(M_2\mid D)} = \frac{P(D\mid M_1)\, P(M_1)}{P(D\mid M_2)\,P(M_2)} \;
 }
 \]</div>
 <p>where, conveniently, the “super evidence” <span class="math notranslate nohighlight">\(P(D)\)</span> cancels in the ratio. The ratio of “model likelihoods” appearing on the right-hand side is known as the <strong>Bayes factor</strong>:</p>
@@ -745,7 +745,7 @@ P(M) = \int d\Theta_M\, P(\Theta_M, M) \; .
 \[ \Large
 \boxed{
 \text{Bayes factor =}\quad
-\frac{P(D\mid M_1)}{P(D\mid M_2)} \; .
+\frac{P(D\mid M_1)}{P(D\mid M_2)} \;
 }
 \]</div>
 <p>It is easy to lose sight of the big picture with all of this probability calculus, so let’s zoom out to a simple example:</p>
@@ -782,8 +782,8 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <p>This is an example of <a class="reference external" href="https://en.wikipedia.org/wiki/Occam's_razor">Occam’s razor</a> in action: Bayesian inference prefers the simplest explanation (model), independently of any prior knowledge.</p>
 </section>
 <hr class="docutils" />
-<section id="case-study-how-many-peaks">
-<h2>Case Study: How Many Peaks?<a class="headerlink" href="#case-study-how-many-peaks" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-orange-case-study-how-many-peaks-span">
+<h2><span style="color:Orange">Case Study: How Many Peaks?</span><a class="headerlink" href="#span-style-color-orange-case-study-how-many-peaks-span" title="Permalink to this heading">#</a></h2>
 <p>Generate some random samples of a single feature <span class="math notranslate nohighlight">\(x\)</span> drawn from a mixture of two Gaussians:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1419,7 +1419,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-model-selection-span"><span style="color:Orange">Bayesian Model Selection</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-how-many-peaks">Case Study: How Many Peaks?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-case-study-how-many-peaks-span"><span style="color:Orange">Case Study: How Many Peaks?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
