@@ -1394,11 +1394,10 @@ P(q) \propto \exp\left( -\frac{U(q)}{k_B T} \right) \; ,
 <p>Which package should you use?</p>
 <ul class="simple">
 <li><p>For initial exploratory work, start with <a class="reference external" href="http://dfm.io/emcee/">emcee</a>, which implements <a class="reference external" href="http://dx.doi.org/10.2140/camcos.2010.5.65">ensemble sampling</a> where many independent “walkers” simultaneously crawl around your target space, and has a nice <a class="reference external" href="https://en.wikipedia.org/wiki/Affine_geometry">affine invariance</a> property, where the efficiency is not affected by any linear (aka “affine”) transformation of your target space.</p></li>
-<li><p>Look into <a class="reference external" href="http://docs.pymc.io/notebooks/getting_started.html">PyMC3</a> or <a class="reference external" href="http://edwardlib.org/">Edward</a> to explore HMC and other more advanced updating rules. These are generally more complex to use and have rigid rules for specifying your target <span class="math notranslate nohighlight">\(\tilde{P}\)</span>.</p></li>
+<li><p>Look into <a class="reference external" href="http://docs.pymc.io/notebooks/getting_started.html">PyMC3</a> or other frameworks to explore HMC and other more advanced updating rules. These are generally more complex to use and have rigid rules for specifying your target <span class="math notranslate nohighlight">\(\tilde{P}\)</span>.</p></li>
 <li><p>Consider an alternative approximate method for Bayesian inference, such as <a class="reference external" href="https://en.wikipedia.org/wiki/Variational_Bayesian_methods">variational inference</a>, with different tradeoffs.</p></li>
 </ul>
-<p>This <a class="reference external" href="http://twiecki.github.io/blog/2013/09/23/emcee-pymc/">blog post</a> compares emcee and PyMC3.</p>
-<p>You will see examples of performing MCMC and variational inference with <a class="reference external" href="http://edwardlib.org/">Edward</a> soon.</p>
+<p>This <a class="reference external" href="http://twiecki.github.io/blog/2013/09/23/emcee-pymc/">blog post</a> compares emcee and PyMC3. You will see examples of performing MCMC and variational inference with PyMC3 soon.</p>
 </section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
