@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/CrossValidation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -481,6 +483,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-model-selection-with-cross-validation-span"><span style="color:Orange">Model Selection With Cross Validation</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-vs-validate-vs-test-data-span"><span style="color:Lightgreen">Train vs. Validate vs. Test Data</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-cross-validation-cv-process-span"><span style="color:Lightgreen">Cross Validation (CV) Process</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-overfitting-and-generalization-span"><span style="color:Lightgreen">Overfitting and Generalization</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-test-split-span"><span style="color:Lightgreen">Train-Test Split</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-k-folding-span"><span style="color:Lightgreen">K-Folding</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-hyperparameter-grid-search-span"><span style="color:Lightgreen">Hyperparameter Grid Search</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -495,6 +506,790 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="cross-validation">
 <h1>Cross Validation<a class="headerlink" href="#cross-validation" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">model_selection</span><span class="p">,</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">mixture</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-model-selection-with-cross-validation-span">
+<h2><span style="color:Orange">Model Selection With Cross Validation</span><a class="headerlink" href="#span-style-color-orange-model-selection-with-cross-validation-span" title="Permalink to this heading">#</a></h2>
+<p>Recall that there are three main types of learning:</p>
+<ul class="simple">
+<li><p>Learning model parameters from data.</p></li>
+<li><p>Learning to predict new data (unsupervised learning).</p></li>
+<li><p>Learning to predict target features in new data (supervised learning).</p></li>
+</ul>
+<p>All three types of learning require an assumed model with associated parameters, and predicting new data is only possible after learning model parameters from old data.</p>
+<p>Since all types of learning assume a model, they must all solve the meta-problem of comparing competing models. The Bayesian evidence <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> is our primary quantitative tool for comparing how well different models explain the same data.  When we are primarily interested in a model’s ability to generalize and predict new data, <em><strong><span style="color:violet">cross validation</span></strong></em> is a useful alternative.</p>
+<section id="span-style-color-lightgreen-train-vs-validate-vs-test-data-span">
+<h3><span style="color:Lightgreen">Train vs. Validate vs. Test Data</span><a class="headerlink" href="#span-style-color-lightgreen-train-vs-validate-vs-test-data-span" title="Permalink to this heading">#</a></h3>
+<p>During an ML model development and evaluation, various types of data are utilized. Below, we review these types of data, their purpose and the differences between each in how they are used.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-splits.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-splits.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-splits.png" style="width: 800px;" /></a></img><br></p>
+<p><span style="color:Tan">Training Dataset</span>: The sample of data used to fit the model.</p>
+<ul class="simple">
+<li><p>The actual dataset that we use to train the ML model under development (weights and biases in the case of a Neural Network). The model sees and learns from this data. Training data are collections of examples or samples that are used to “teach” or “train” the model. The model uses a training data set to understand the patterns and relationships within the data, thereby learning to make predictions or decisions without being explicitly programmed to perform a specific task.</p></li>
+</ul>
+<p><span style="color:Tan">Validation Dataset</span>: The sample of data used to provide an unbiased evaluation of a model fit on the training dataset (i.e. a “trained model”) while tuning model hyperparameters. The evaluation becomes more biased as more skill on the validation dataset is incorporated into the model configuration.</p>
+<ul class="simple">
+<li><p>It is still possible to tune and control the model at this stage. Working on validation data is used to assess the model performance and fine-tune the parameters of the model. This becomes an iterative process wherein the model learns from the training data and is then validated and fine-tuned on the validation set. A validation dataset tells us how well the model is learning and adapting, allowing for adjustments and optimizations to be made to the model’s parameters or hyperparameters before it’s finally put to the test. So the validation set affects a model, but only indirectly.</p>
+<ul>
+<li><p>Note that not all models require validation sets. Some experts consider that ML models with no hyperparameters or those that do not have tuning options do not need a validation set. Still, in most practical applications, validation sets play a crucial role in ensuring the model’s robustness and performance.</p></li>
+</ul>
+</li>
+</ul>
+<p><span style="color:Tan">Test Dataset</span>: The sample of data used to provide an unbiased evaluation of a final model fit on the training dataset.</p>
+<ul class="simple">
+<li><p>The Test dataset provides the gold standard used to evaluate the model. It is only used once a model is completely trained (using the train and validation sets). It is a separate sample, an unseen data set, to provide an unbiased final evaluation of a model. Its primary purpose is to offer a fair and final assessment of how the model would perform when it encounters new data in a live, operational environment.</p>
+<ul>
+<li><p>The test set is generally what is used to evaluate competing models (For example on many Kaggle competitions, the validation set is released initially along with the training set and the actual test set is only released when the competition is about to close, and it is the result of the the model on the Test set that decides the winner).</p></li>
+<li><p>Many a times the validation set is used as the test set, but it is not good practice. The test set is generally well curated. It contains carefully sampled data that spans the various classes that the model would face, when used in the real world on data it has never seen before. The inputs in the test data are similar to the previous stages but not the same data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="span-style-color-lightgreen-cross-validation-cv-process-span">
+<h3><span style="color:Lightgreen">Cross Validation (CV) Process</span><a class="headerlink" href="#span-style-color-lightgreen-cross-validation-cv-process-span" title="Permalink to this heading">#</a></h3>
+<p>Cross validation is a process that provides the ability to estimate model performance on unseen data not used while training. It is a systematic process that can involve tuning the model hyperparameters, testing different properties of the overall datasets, and iterating the training process. There are many variations of the CV process - we will study primarily the <span style="color:violet">K-folds method</span> in this lecture. We will show some examples using random sampling (called “folds”) of these types of data to illustrate the process. For simplicity, we will focus on the test and train data and not consider validation data explicitly in the following.</p>
+<p>The figure below summarizes the data splitting and process:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-process.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-process.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/CrossValidation-process.png" style="width: 600px;" /></a></img><br></p>
+<p>The basic idea of <em><strong><span style="color:violet">cross validation</span></strong></em> is to:</p>
+<ol class="arabic simple">
+<li><p>split the observed data into separate training and test datasets</p></li>
+<li><p>learn the model from the training dataset</p></li>
+<li><p>measure the model’s ability to predict the test dataset</p></li>
+<li><p>repeat the steps above with different splits (“folds”) and combine the results.</p></li>
+</ol>
+</section>
+<section id="span-style-color-lightgreen-overfitting-and-generalization-span">
+<h3><span style="color:Lightgreen">Overfitting and Generalization</span><a class="headerlink" href="#span-style-color-lightgreen-overfitting-and-generalization-span" title="Permalink to this heading">#</a></h3>
+<p>Generate some data consisting of 2D points along the path of a projectile, where <span class="math notranslate nohighlight">\(x\)</span> is measured with negligible error and <span class="math notranslate nohighlight">\(y\)</span> has a known error <span class="math notranslate nohighlight">\(\sigma_y\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span>
+<span class="n">poly_coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">])</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">poly_coefs</span><span class="p">,</span> <span class="p">[</span><span class="n">X</span> <span class="o">**</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X</span> <span class="o">**</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span> <span class="o">**</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">sigma_y</span> <span class="o">=</span> <span class="mf">0.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">gen</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare results with different numbers of samples from the same model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span> <span class="o">=</span> <span class="n">generate</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="n">generate</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plotXy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">fits</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">fit</span> <span class="ow">in</span> <span class="n">fits</span><span class="p">:</span>
+        <span class="n">y_fit</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">)</span>
+    <span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">yhi</span> <span class="o">-</span> <span class="n">ylo</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylo</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">dy</span><span class="p">,</span> <span class="n">yhi</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">dy</span><span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plotXy</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plotXy</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4bd5630dc74e0200e2ecd1bf6a2f82b5a258c6a029aaac4b822dd9e4018a1743.png" src="../../_images/4bd5630dc74e0200e2ecd1bf6a2f82b5a258c6a029aaac4b822dd9e4018a1743.png" />
+</div>
+</div>
+<p>The family of competing models we consider are polynomials of different degrees <span class="math notranslate nohighlight">\(P\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+y(x) = \sum_{k=0}^P\, c_k x^k \; ,
+\]</div>
+<p>each with <span class="math notranslate nohighlight">\(P+1\)</span> parameters.  The true model that the datasets were generated from have <span class="math notranslate nohighlight">\(P=2\)</span>.</p>
+<p>Use sklearn <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">LinearRegression</a> to implement this fit after expanding the features with <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html">PolynomialFeatures</a>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x \; \rightarrow\; \{ x^0, x^1, \ldots, x^P \} \; ,
+\]</div>
+<p>and combining the preprocessing and regression steps into a <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">Pipeline</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">poly_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
+    <span class="n">degree_is_zero</span> <span class="o">=</span> <span class="p">(</span><span class="n">degree</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span> <span class="n">include_bias</span><span class="o">=</span><span class="n">degree_is_zero</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="ow">not</span> <span class="n">degree_is_zero</span><span class="p">))])</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare fits with <span class="math notranslate nohighlight">\(P = 0, 1, 2, 14\)</span> to each dataset. Note that <span class="math notranslate nohighlight">\(P=14\)</span> is an extreme case of overfitting to the smaller dataset, with the model passing exactly through each sample with large oscillations between them.  Similarly, <span class="math notranslate nohighlight">\(P=1\)</span> underfits the larger dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plotXy</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="n">plotXy</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b0603a4ab0607a7421b390bbf6a20328fcf9b907f5feda9b344d5a73bc30d5a4.png" src="../../_images/b0603a4ab0607a7421b390bbf6a20328fcf9b907f5feda9b344d5a73bc30d5a4.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-train-test-split-span">
+<h3><span style="color:Lightgreen">Train-Test Split</span><a class="headerlink" href="#span-style-color-lightgreen-train-test-split-span" title="Permalink to this heading">#</a></h3>
+<p>The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a> function picks a random fraction of the observed data to hold back when learning the model and then use for latest testing.</p>
+<p>Note that since train/test splitting involves random numbers, you will need to pass around a random state object for reproducible results.</p>
+<p>The plots below show 20% of the data reserved for testing (red points) with a <span class="math notranslate nohighlight">\(P=2\)</span> fit to the training data superimposed. The primary sklearn test metric for regression problems is the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> <span class="math notranslate nohighlight">\(R^2\)</span>, for which the goal is <span class="math notranslate nohighlight">\(R^2 = 1\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">test_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_fraction</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+    <span class="n">train_fit</span> <span class="o">=</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+    <span class="n">plotXy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">train_fit</span><span class="p">)</span>
+    <span class="n">test_R2</span> <span class="o">=</span> <span class="n">train_fit</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;$R^2=</span><span class="si">{:.2f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_R2</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">train_test_split</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">train_test_split</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7ab4c33c67678038f8e05d9eb1ff293a775365ee4bc2cbb41a1dce0a58240639.png" src="../../_images/7ab4c33c67678038f8e05d9eb1ff293a775365ee4bc2cbb41a1dce0a58240639.png" />
+</div>
+</div>
+<p>There is no rigorous procedure for setting an optimum test fraction, and anything between 0.1 and 0.5 would be reasonable (and the sklearn default is 0.25).  A larger test fraction improves the reliability of the test metric but decreases the reliability of the model being tested.  As always, more data always helps and reduces your sensitivity to the training fraction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_fraction_scan</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">test_fractions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">)</span>
+    <span class="n">R2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_fractions</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">test_fraction</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_fractions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(((</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">),</span> <span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">))):</span>
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span>
+                <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_fraction</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="n">poly_fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+            <span class="n">R2</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_fractions</span><span class="p">,</span> <span class="n">R2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;o:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$N = </span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ya</span><span class="p">)))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_fractions</span><span class="p">,</span> <span class="n">R2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;o:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$N = </span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yb</span><span class="p">)))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Test fraction&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Test score $R^2$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">test_fraction_scan</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/23b484c7e71855c8e7286c95d44cb942299b36bf9387c5d7554c9acfd885066a.png" src="../../_images/23b484c7e71855c8e7286c95d44cb942299b36bf9387c5d7554c9acfd885066a.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-k-folding-span">
+<h3><span style="color:Lightgreen">K-Folding</span><a class="headerlink" href="#span-style-color-lightgreen-k-folding-span" title="Permalink to this heading">#</a></h3>
+<p>Cross validation goes beyond a simple train-test split by repeating the split multiple times and combining the (correlated) results. There are different strategies for picking the different splits, but <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html">K-folding</a> is a good all-around choice:</p>
+<ul class="simple">
+<li><p>Specify the number <span class="math notranslate nohighlight">\(k\)</span> of splits (folds) to use.</p></li>
+<li><p>The data is split into <span class="math notranslate nohighlight">\(k\)</span> (almost) equal independent subsets.</p></li>
+<li><p>Each subset is used for testing once, with the remaining subsets used for training.</p></li>
+</ul>
+<p>The result is <span class="math notranslate nohighlight">\(k\)</span> different train-test splits using a test fraction <span class="math notranslate nohighlight">\(1/k\)</span>.  For example, with <span class="math notranslate nohighlight">\(N=10\)</span> samples and <span class="math notranslate nohighlight">\(k=3\)</span> folds, the subsets are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kfold</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(np.int64(0), np.int64(1), np.int64(2), np.int64(3)),
+ (np.int64(4), np.int64(5), np.int64(6)),
+ (np.int64(7), np.int64(8), np.int64(9))]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html">cross_validate</a> function automates the k-folding and scoring process, and outputs both train and test <span class="math notranslate nohighlight">\(R^2\)</span> scores, as well as CPU times, for each split:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cross_validate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">))])</span>
+    <span class="n">kfold</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">cross_validate</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfold</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cross_validate</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fit_time</th>
+      <th>score_time</th>
+      <th>test_score</th>
+      <th>train_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(0, 1, 2, 3, 4)</th>
+      <td>0.001055</td>
+      <td>0.000295</td>
+      <td>0.404038</td>
+      <td>0.731105</td>
+    </tr>
+    <tr>
+      <th>(5, 6, 7, 8, 9)</th>
+      <td>0.000416</td>
+      <td>0.000268</td>
+      <td>-2.232860</td>
+      <td>0.632223</td>
+    </tr>
+    <tr>
+      <th>(10, 11, 12, 13, 14)</th>
+      <td>0.000685</td>
+      <td>0.000335</td>
+      <td>-0.352504</td>
+      <td>0.518438</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>With enough data, you can use a large number of K-folds but remember that they are highly correlated so you are not increasing the useful information as much as you might think. The sklearn default number of splits is 3.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cross_validate</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fit_time</th>
+      <th>score_time</th>
+      <th>test_score</th>
+      <th>train_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)</th>
+      <td>0.000607</td>
+      <td>0.000441</td>
+      <td>0.574221</td>
+      <td>0.613270</td>
+    </tr>
+    <tr>
+      <th>(10, 11, 12, 13, 14, 15, 16, 17, 18, 19)</th>
+      <td>0.000437</td>
+      <td>0.000246</td>
+      <td>0.644016</td>
+      <td>0.608664</td>
+    </tr>
+    <tr>
+      <th>(20, 21, 22, 23, 24, 25, 26, 27, 28, 29)</th>
+      <td>0.000574</td>
+      <td>0.000313</td>
+      <td>0.559857</td>
+      <td>0.614704</td>
+    </tr>
+    <tr>
+      <th>(30, 31, 32, 33, 34, 35, 36, 37, 38, 39)</th>
+      <td>0.000410</td>
+      <td>0.000248</td>
+      <td>0.382087</td>
+      <td>0.619587</td>
+    </tr>
+    <tr>
+      <th>(40, 41, 42, 43, 44, 45, 46, 47, 48, 49)</th>
+      <td>0.000405</td>
+      <td>0.000266</td>
+      <td>0.741344</td>
+      <td>0.601154</td>
+    </tr>
+    <tr>
+      <th>(50, 51, 52, 53, 54, 55, 56, 57, 58, 59)</th>
+      <td>0.000457</td>
+      <td>0.000269</td>
+      <td>0.415899</td>
+      <td>0.625590</td>
+    </tr>
+    <tr>
+      <th>(60, 61, 62, 63, 64, 65, 66, 67, 68, 69)</th>
+      <td>0.000421</td>
+      <td>0.000244</td>
+      <td>0.675124</td>
+      <td>0.601310</td>
+    </tr>
+    <tr>
+      <th>(70, 71, 72, 73, 74, 75, 76, 77, 78, 79)</th>
+      <td>0.000394</td>
+      <td>0.000243</td>
+      <td>0.745460</td>
+      <td>0.599734</td>
+    </tr>
+    <tr>
+      <th>(80, 81, 82, 83, 84, 85, 86, 87, 88, 89)</th>
+      <td>0.000390</td>
+      <td>0.000239</td>
+      <td>0.366792</td>
+      <td>0.618551</td>
+    </tr>
+    <tr>
+      <th>(90, 91, 92, 93, 94, 95, 96, 97, 98, 99)</th>
+      <td>0.000386</td>
+      <td>0.000240</td>
+      <td>0.498276</td>
+      <td>0.614549</td>
+    </tr>
+    <tr>
+      <th>(100, 101, 102, 103, 104, 105, 106, 107, 108, 109)</th>
+      <td>0.000385</td>
+      <td>0.000238</td>
+      <td>0.752076</td>
+      <td>0.595514</td>
+    </tr>
+    <tr>
+      <th>(110, 111, 112, 113, 114, 115, 116, 117, 118, 119)</th>
+      <td>0.000440</td>
+      <td>0.000237</td>
+      <td>0.604196</td>
+      <td>0.610233</td>
+    </tr>
+    <tr>
+      <th>(120, 121, 122, 123, 124, 125, 126, 127, 128, 129)</th>
+      <td>0.000380</td>
+      <td>0.000262</td>
+      <td>-0.292603</td>
+      <td>0.630345</td>
+    </tr>
+    <tr>
+      <th>(130, 131, 132, 133, 134, 135, 136, 137, 138, 139)</th>
+      <td>0.000380</td>
+      <td>0.000234</td>
+      <td>0.529028</td>
+      <td>0.616538</td>
+    </tr>
+    <tr>
+      <th>(140, 141, 142, 143, 144, 145, 146, 147, 148, 149)</th>
+      <td>0.000377</td>
+      <td>0.000235</td>
+      <td>0.513520</td>
+      <td>0.619319</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-hyperparameter-grid-search-span">
+<h3><span style="color:Lightgreen">Hyperparameter Grid Search</span><a class="headerlink" href="#span-style-color-lightgreen-hyperparameter-grid-search-span" title="Permalink to this heading">#</a></h3>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> function puts all the pieces together to scan a grid of one or more hyperparameters for a family of models.  For example, the polynomial degree <span class="math notranslate nohighlight">\(P\)</span> corresponds to a pipeline <code class="docutils literal notranslate"><span class="pre">poly__degree</span></code> parameter, which we vary from 0 to 5 below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cv_summary</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Summarize the results from a GridSearchCV fit.</span>
+
+<span class="sd">    Summarize a cross-validation grid search in a pandas DataFrame with the</span>
+<span class="sd">    following transformations of the full results:</span>
+<span class="sd">      - Remove all columns with timing measurements.</span>
+<span class="sd">      - Remove the &#39;param_&#39; prefix from column names.</span>
+<span class="sd">      - Remove the &#39;_score&#39; suffix from column names.</span>
+<span class="sd">      - Round scores to 3 decimal places.</span>
+
+<span class="sd">     If the parameter grid is 1D, then this function also plots the test</span>
+<span class="sd">     and training R2 scores versus the parameter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cv : sklearn.model_selection.GridSearchCV</span>
+<span class="sd">        Instance of a GridSearchCV object that has been fit to some data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Summary table of cross-validation results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Look up the list of parameters used in the grid.</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="c1"># Index results by the test score rank.</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;rank_test_score&#39;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="s1">&#39;rank_test_score&#39;</span><span class="p">])</span>
+    <span class="c1"># Remove columns that measure running time.</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_time&#39;</span><span class="p">)])</span>
+    <span class="c1"># Remove param_ prefix from column names.</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;param_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+    <span class="c1"># Remove _score suffix from column names.</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="p">[:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_score&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Plot the test and training scores vs the grid parameter when there is only one.</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mean_train&#39;</span><span class="p">],</span> <span class="s1">&#39;o:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mean_test&#39;</span><span class="p">],</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hyperparameter value&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Score $R^2$&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;mean_test&#39;</span><span class="p">])),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_models</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">max_degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="n">hyper_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;poly__degree&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">hyper_model</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">))])</span>
+    <span class="n">kfold</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">GridSearchCV</span><span class="p">(</span><span class="n">hyper_model</span><span class="p">,</span> <span class="n">hyper_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfold</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv_summary</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With a small dataset, a polynomial fit is very prone to overfitting and the training score continues to rise as <span class="math notranslate nohighlight">\(P\)</span> increases.  However, only the <span class="math notranslate nohighlight">\(P=1\)</span> and <span class="math notranslate nohighlight">\(P=2\)</span> models look at all promising on the test data, but are still worse than guessing the average <span class="math notranslate nohighlight">\(y\)</span> value (which always has <span class="math notranslate nohighlight">\(R^2=0\)</span>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compare_models</span><span class="p">(</span><span class="n">Xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>poly__degree</th>
+      <th>split0_test</th>
+      <th>split1_test</th>
+      <th>split2_test</th>
+      <th>mean_test</th>
+      <th>std_test</th>
+      <th>split0_train</th>
+      <th>split1_train</th>
+      <th>split2_train</th>
+      <th>mean_train</th>
+      <th>std_train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0.404</td>
+      <td>-2.233</td>
+      <td>-0.353</td>
+      <td>-0.727</td>
+      <td>1.109</td>
+      <td>0.731</td>
+      <td>0.632</td>
+      <td>0.518</td>
+      <td>0.627</td>
+      <td>0.087</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0.474</td>
+      <td>-2.819</td>
+      <td>-0.801</td>
+      <td>-1.049</td>
+      <td>1.356</td>
+      <td>0.621</td>
+      <td>0.628</td>
+      <td>0.481</td>
+      <td>0.577</td>
+      <td>0.068</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>-0.048</td>
+      <td>-7.549</td>
+      <td>-3.226</td>
+      <td>-3.608</td>
+      <td>3.074</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-1.743</td>
+      <td>-5.019</td>
+      <td>-28.006</td>
+      <td>-11.589</td>
+      <td>11.685</td>
+      <td>0.857</td>
+      <td>0.714</td>
+      <td>0.625</td>
+      <td>0.732</td>
+      <td>0.095</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>0.408</td>
+      <td>-51.581</td>
+      <td>-0.324</td>
+      <td>-17.166</td>
+      <td>24.337</td>
+      <td>0.740</td>
+      <td>0.708</td>
+      <td>0.518</td>
+      <td>0.656</td>
+      <td>0.098</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>5</td>
+      <td>-0.837</td>
+      <td>-316.856</td>
+      <td>-157.921</td>
+      <td>-158.538</td>
+      <td>129.015</td>
+      <td>0.895</td>
+      <td>0.716</td>
+      <td>0.749</td>
+      <td>0.787</td>
+      <td>0.077</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../../_images/08223bfa78328d55176b7c4bfd8802dc142037f9a306ddc928927cc1b49e3f9a.png" src="../../_images/08223bfa78328d55176b7c4bfd8802dc142037f9a306ddc928927cc1b49e3f9a.png" />
+</div>
+</div>
+<p>With a larger dataset, the training score is stable over a wide range of <span class="math notranslate nohighlight">\(P\ge 1\)</span> and the test score decreases very slowly. You could make a case for either <span class="math notranslate nohighlight">\(P=1\)</span> (less overfitting) or <span class="math notranslate nohighlight">\(P=2\)</span> (better test score) from the graph below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compare_models</span><span class="p">(</span><span class="n">Xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>poly__degree</th>
+      <th>split0_test</th>
+      <th>split1_test</th>
+      <th>split2_test</th>
+      <th>mean_test</th>
+      <th>std_test</th>
+      <th>split0_train</th>
+      <th>split1_train</th>
+      <th>split2_train</th>
+      <th>mean_train</th>
+      <th>std_train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0.593</td>
+      <td>0.600</td>
+      <td>0.509</td>
+      <td>0.567</td>
+      <td>0.041</td>
+      <td>0.610</td>
+      <td>0.611</td>
+      <td>0.638</td>
+      <td>0.620</td>
+      <td>0.013</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0.563</td>
+      <td>0.590</td>
+      <td>0.512</td>
+      <td>0.555</td>
+      <td>0.032</td>
+      <td>0.619</td>
+      <td>0.612</td>
+      <td>0.639</td>
+      <td>0.623</td>
+      <td>0.011</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0.607</td>
+      <td>0.590</td>
+      <td>0.415</td>
+      <td>0.537</td>
+      <td>0.087</td>
+      <td>0.536</td>
+      <td>0.540</td>
+      <td>0.625</td>
+      <td>0.567</td>
+      <td>0.041</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>0.575</td>
+      <td>0.584</td>
+      <td>0.337</td>
+      <td>0.499</td>
+      <td>0.114</td>
+      <td>0.620</td>
+      <td>0.612</td>
+      <td>0.688</td>
+      <td>0.640</td>
+      <td>0.034</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>0.569</td>
+      <td>0.586</td>
+      <td>0.336</td>
+      <td>0.497</td>
+      <td>0.114</td>
+      <td>0.623</td>
+      <td>0.612</td>
+      <td>0.689</td>
+      <td>0.642</td>
+      <td>0.034</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>-0.017</td>
+      <td>-0.023</td>
+      <td>-0.001</td>
+      <td>-0.014</td>
+      <td>0.009</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../../_images/c5416f9bc3aa7618d2a7f64d60e6c6ca17dd9296cc6603eb60a7d95a244c6124.png" src="../../_images/c5416f9bc3aa7618d2a7f64d60e6c6ca17dd9296cc6603eb60a7d95a244c6124.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -567,6 +1362,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-model-selection-with-cross-validation-span"><span style="color:Orange">Model Selection With Cross Validation</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-vs-validate-vs-test-data-span"><span style="color:Lightgreen">Train vs. Validate vs. Test Data</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-cross-validation-cv-process-span"><span style="color:Lightgreen">Cross Validation (CV) Process</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-overfitting-and-generalization-span"><span style="color:Lightgreen">Overfitting and Generalization</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-test-split-span"><span style="color:Lightgreen">Train-Test Split</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-k-folding-span"><span style="color:Lightgreen">K-Folding</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-hyperparameter-grid-search-span"><span style="color:Lightgreen">Hyperparameter Grid Search</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
