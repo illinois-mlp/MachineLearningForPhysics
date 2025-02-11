@@ -38,16 +38,14 @@ chapters:
     title: Slides
   - file: _sources/lectures/ModelSelection
   - file: _sources/lectures/VariationalInference
-  - file: _sources/lectures/NormalizingFlows
-  - file: _sources/lectures/SimulationBasedInference
+  - file: _sources/lectures/Optimization
+  - file: _sources/lectures/CrossValidation
   - file: _sources/homework/Homework_04
 - file: _sources/Week_05 # Introduction to Artificial Intelligence and Machine Learning
   sections:
   - url: https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/Learning
-  - file: _sources/lectures/Optimization
-  - file: _sources/lectures/CrossValidation
   - file: _sources/lectures/SupervisedLearning
   - file: _sources/lectures/ArtificialNeuralNetworks
   - file: _sources/homework/Homework_05
@@ -57,6 +55,8 @@ chapters:
     title: Slides
   - file: _sources/lectures/DeepLearning.ipynb
   - file: _sources/lectures/GenerativeModeling.ipynb
+  - file: _sources/lectures/NormalizingFlows
+  - file: _sources/lectures/SimulationBasedInference
 - file: _sources/Week_07 # Convolutional and Recurrent Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing
