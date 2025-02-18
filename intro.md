@@ -17,7 +17,7 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Jan 27  | {doc}`_sources/Week_02`       | [HW 02](_sources/homework/Homework_02) |                            |
 | Feb 03  | {doc}`_sources/Week_03`       | [HW 03](_sources/homework/Homework_03) |                            |
 | Feb 10  | {doc}`_sources/Week_04`       | [HW 04](_sources/homework/Homework_04) |                            |
-| Feb 17  | {doc}`_sources/Week_05`       | HW 05                                  |                            |
+| Feb 17  | {doc}`_sources/Week_05`       | [HW 05](_sources/homework/Homework_05) |                            |
 | Feb 24  | {doc}`_sources/Week_06`       | HW 06                                  |                            |
 | Mar 03  | {doc}`_sources/Week_07`       | HW 07                                  | {doc}`_sources/Project_01` |
 | Mar 10  | {doc}`_sources/Week_08`       |                                        |                            |
