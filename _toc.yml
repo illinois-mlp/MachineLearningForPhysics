@@ -45,8 +45,8 @@ chapters:
   sections:
   - url: https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/Learning
   - file: _sources/lectures/SupervisedLearning
+  - file: _sources/lectures/Learning
   - file: _sources/lectures/ArtificialNeuralNetworks
   - file: _sources/homework/Homework_05
 - file: _sources/Week_06 # Deep Learning and Generative Modeling
