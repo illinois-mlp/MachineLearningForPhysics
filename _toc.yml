@@ -78,7 +78,8 @@ chapters:
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/GenerativeModeling.ipynb
+  - file: _sources/lectures/GenerativeModeling
+  - file: _sources/lectures/GenerativeAdversarialNetworks
   - file: _sources/lectures/NormalizingFlows
   - file: _sources/lectures/SimulationBasedInference
 - file: _sources/Week_10 # Reinforcement Learning
