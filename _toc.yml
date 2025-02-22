@@ -41,28 +41,26 @@ chapters:
   - file: _sources/lectures/Optimization
   - file: _sources/lectures/CrossValidation
   - file: _sources/homework/Homework_04
-- file: _sources/Week_05 # Introduction to Artificial Intelligence and Machine Learning
+- file: _sources/Week_05 # Introduction to Artificial Intelligence
   sections:
   - url: https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/SupervisedLearning
   - file: _sources/lectures/Learning
   - file: _sources/lectures/ArtificialNeuralNetworks
-  - file: _sources/homework/Homework_05
-- file: _sources/Week_06 # Deep Learning and Generative Modeling
-  sections:
-  - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
-    title: Slides
   - file: _sources/lectures/DeepLearning.ipynb
-  - file: _sources/lectures/GenerativeModeling.ipynb
-  - file: _sources/lectures/NormalizingFlows
-  - file: _sources/lectures/SimulationBasedInference
-- file: _sources/Week_07 # Convolutional and Recurrent Neural Networks
+  - file: _sources/homework/Homework_05
+- file: _sources/Week_06 # Convolutional and Recurrent Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
   - file: _sources/homework/Homework_06
+- file: _sources/Week_07 # Geometric Deep Learning and Graph Neural Networks
+  sections:
+  - url: https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/GraphNeuralNetworks
 - file: _sources/Project_01 # Project 01
   sections:
   - file: _sources/projects/Project_01_HiggsTauTau
@@ -71,16 +69,18 @@ chapters:
   - file: _sources/projects/Project_01_NuclearGeometryQGP
   - file: _sources/projects/Project_01_AberratedImages
   - file: _sources/projects/Project_01_DarkEnergySurvey
-- file: _sources/Week_08 # Geometric Deep Learning and Graph Neural Networks
-  sections:
-  - url: https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing
-    title: Slides
-  - file: _sources/lectures/GraphNeuralNetworks
-- file: _sources/Week_09 # Attention Mechanism and Transformers
+- file: _sources/Week_08 # Attention Mechanism and Transformers
   sections:
   - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AttentionTransformers
+- file: _sources/Week_09 # Generative Modeling
+  sections:
+  - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/GenerativeModeling.ipynb
+  - file: _sources/lectures/NormalizingFlows
+  - file: _sources/lectures/SimulationBasedInference
 - file: _sources/Week_10 # Reinforcement Learning
   sections:
   - url: https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing

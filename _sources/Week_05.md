@@ -11,6 +11,7 @@ You will learn the basics of Artificial Intelligence and Machine Learning
 * {doc}`lectures/SupervisedLearning`
 * {doc}`lectures/Learning`
 * {doc}`lectures/ArtificialNeuralNetworks`
+* {doc}`lectures/DeepLearning`
 
 ## *Homework Assignment*
 * {doc}`homework/Homework_05`

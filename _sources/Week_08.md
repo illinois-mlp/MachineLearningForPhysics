@@ -1,14 +1,14 @@
-# <span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span>
+* # <span style="color: blue;"><b>Attention Mechanism and Transformers</b></span>
 
 ## *Overview*
-You will learn the basics of Geometric Deep Learning and Graph Neural Networks
+You will learn the basics of Attention Mechanism and Transformers
 
 ## *Goals*
-* Learn about Geometric Deep Learning and Graph Neural Networks
+* Learn about Attention Mechanism and Transformers
 
 ## *Lecture Materials*
-* [Slides](https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing)
-* {doc}`lectures/GraphNeuralNetworks`
+* [Slides](https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing)
+* {doc}`lectures/AttentionTransformers`
 
 ## *Homework Assignment*
 * None
