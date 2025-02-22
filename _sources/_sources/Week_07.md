@@ -1,17 +1,17 @@
-# <span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span>
+# <span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span>
 
 ## *Overview*
-You will learn the basics of Convolutional and Recurrent Neural Networks
+You will learn the basics of Geometric Deep Learning and Graph Neural Networks
 
 ## *Goals*
-* Learn about Convolutional and Recurrent Neural Networks
+* Learn about Geometric Deep Learning and Graph Neural Networks
 
 ## *Lecture Materials*
-* [Slides](https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing)
-* {doc}`lectures/ConvolutionalRecurrentNeuralNetworks`
+* [Slides](https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing)
+* {doc}`lectures/GraphNeuralNetworks`
 
 ## *Homework Assignment*
-* {doc}`homework/Homework_06`
+* None
 
 ## *Supplemental Readings*
 * None

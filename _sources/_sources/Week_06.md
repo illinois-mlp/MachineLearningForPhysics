@@ -1,20 +1,17 @@
-# <span style="color: blue;"><b>Deep Learning and Generative Modeling</b></span>
+# <span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span>
 
 ## *Overview*
-You will learn the basics of Deep Learning and Generative Modeling
+You will learn the basics of Convolutional and Recurrent Neural Networks
 
 ## *Goals*
-* Learn about Deep Learning and Generative Modeling
+* Learn about Convolutional and Recurrent Neural Networks
 
 ## *Lecture Materials*
-* [Slides](https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing)
-* {doc}`lectures/DeepLearning`
-* {doc}`lectures/GenerativeModeling`
-* {doc}`lectures/NormalizingFlows`
-* {doc}`lectures/SimulationBasedInference`
+* [Slides](https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing)
+* {doc}`lectures/ConvolutionalRecurrentNeuralNetworks`
 
 ## *Homework Assignment*
-* None
+* {doc}`homework/Homework_06`
 
 ## *Supplemental Readings*
 * None

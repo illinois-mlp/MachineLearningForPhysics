@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Geometric Deep Learning and Graph Neural Networks &#8212; PHYS 498 MLP</title>
+    <title>Attention Mechanism and Transformers &#8212; PHYS 498 MLP</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/Week_08';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Geometric Deep Learning and Graph Neural Networks" href="lectures/GraphNeuralNetworks.html" />
+    <link rel="next" title="Attention Mechanism and Transformers" href="lectures/AttentionTransformers.html" />
     <link rel="prev" title="Dark Energy Survey" href="projects/Project_01_DarkEnergySurvey.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -211,21 +211,19 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="lectures/SupervisedLearning.html">Supervised Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/Learning.html">Artificial Intelligence and Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/ArtificialNeuralNetworks.html">Artificial Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/DeepLearning.html">Deep Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Week_06.html"><span style="color: blue;"><b>Deep Learning and Generative Modeling</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/DeepLearning.html">Deep Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/GenerativeModeling.html">Generative Modeling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/NormalizingFlows.html">Normalizing Flows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/SimulationBasedInference.html">Simulation Based Inference</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Week_07.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Week_06.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/ConvolutionalRecurrentNeuralNetworks.html">Convolutional and Recurrent Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Project_01.html"><span style="color: blue;"><b>Project 01</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -237,14 +235,16 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="projects/Project_01_DarkEnergySurvey.html">Dark Energy Survey</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Week_09.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/AttentionTransformers.html">Attention Mechanism and Transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Week_09.html"><span style="color: blue;"><b>Generative Modeling</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/GenerativeModeling.html">Generative Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/NormalizingFlows.html">Normalizing Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/SimulationBasedInference.html">Simulation Based Inference</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -440,7 +440,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></h1>
+    <h1><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -466,23 +466,26 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="span-style-color-blue-b-geometric-deep-learning-and-graph-neural-networks-b-span">
-<h1><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span><a class="headerlink" href="#span-style-color-blue-b-geometric-deep-learning-and-graph-neural-networks-b-span" title="Permalink to this heading">#</a></h1>
+  <ul class="simple">
+<li></li>
+</ul>
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-blue-b-attention-mechanism-and-transformers-b-span">
+<h1><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span><a class="headerlink" href="#span-style-color-blue-b-attention-mechanism-and-transformers-b-span" title="Permalink to this heading">#</a></h1>
 <section id="overview">
 <h2><em>Overview</em><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>You will learn the basics of Geometric Deep Learning and Graph Neural Networks</p>
+<p>You will learn the basics of Attention Mechanism and Transformers</p>
 </section>
 <section id="goals">
 <h2><em>Goals</em><a class="headerlink" href="#goals" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Learn about Geometric Deep Learning and Graph Neural Networks</p></li>
+<li><p>Learn about Attention Mechanism and Transformers</p></li>
 </ul>
 </section>
 <section id="lecture-materials">
 <h2><em>Lecture Materials</em><a class="headerlink" href="#lecture-materials" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></p></li>
-<li><p><a class="reference internal" href="lectures/GraphNeuralNetworks.html"><span class="doc">Geometric Deep Learning and Graph Neural Networks</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></p></li>
+<li><p><a class="reference internal" href="lectures/AttentionTransformers.html"><span class="doc">Attention Mechanism and Transformers</span></a></p></li>
 </ul>
 </section>
 <section id="homework-assignment">
@@ -541,11 +544,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="lectures/GraphNeuralNetworks.html"
+       href="lectures/AttentionTransformers.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Geometric Deep Learning and Graph Neural Networks</p>
+        <p class="prev-next-title">Attention Mechanism and Transformers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
