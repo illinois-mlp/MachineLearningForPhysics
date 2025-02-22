@@ -902,7 +902,7 @@ Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z
 </section>
 <section id="span-style-color-lightgreen-controlling-backpropagation-span">
 <h3><span style="color:LightGreen">Controlling Backpropagation</span><a class="headerlink" href="#span-style-color-lightgreen-controlling-backpropagation-span" title="Permalink to this heading">#</a></h3>
-<a class="reference internal image-reference" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_backprop.png?raw=true"><img alt="drawing" src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_backprop.png?raw=true" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_backprop.png?raw=true"><img alt="drawing" src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_backprop.png?raw=true" style="width: 1000px;" /></a>
 <p>This is the most important part of our implementation, instead of having one optimizer for our model we will have two separate optimizers, and this is a more important than you think!</p>
 <section id="span-style-color-lightpink-necessity-of-two-optimizers-span">
 <h4><span style="color:LightPink">Necessity of Two Optimizers</span><a class="headerlink" href="#span-style-color-lightpink-necessity-of-two-optimizers-span" title="Permalink to this heading">#</a></h4>
