@@ -570,59 +570,59 @@ document.write(`
 <p>The first step will be to take our random noise and use or Generator <span class="math notranslate nohighlight">\(G(z)\)</span> to generate a batch of fake samples. We can then concatenate our fake samples to real ones to create a batch where half the images are real and the other half are fake. We can similarly create labels for this, identifying which images are real and which are fake (we will use 0 for generated and 1 for true, although it doesn’t matter which is which) and then give the discriminator this data to learn to identify real from fake images!</p>
 <p>The Loss function we use in this case is the Binary Cross Entropy (BCE) Loss Function!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H(y,\hat{y}) = -\frac{1}{N}\sum y\log(\hat{y}) + (1-y)\log(1-\hat{y})
 \]</div>
 <p><em>If you dont know where this came from, please take a look at my <a class="reference external" href="https://www.youtube.com/watch?v=d86lJxKInYg&amp;t=3931s">video</a> where we derive this!</em></p>
 <p>We know that in our case of binary (fake vs real) prediction, the y value can either be 0 or 1. When y is 1 (indicating a real image), the discriminator is seeing real images, lets call them <span class="math notranslate nohighlight">\(x\)</span>. In this case, the output of our discriminator will just be <span class="math notranslate nohighlight">\(\hat{y} = D(x)\)</span>, as the discriminator is getting true images. Then we get the following simplification of the BCE Loss:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_{real}(y=1,\hat{y}) = -\frac{1}{N}\sum (1)\log(D(x)) + (1-1)\log(1-D(x)) = -\frac{1}{N}\sum \log(D(x))
 \]</div>
 <p>Similarly when y is 0 (indicating a fake image) the discriminator is seeing the fake generated images <span class="math notranslate nohighlight">\(G(z)\)</span>. In this case the output of the discriminator will just be <span class="math notranslate nohighlight">\(\hat{y} = D(G(z))\)</span> as the discriminator is getting fake images. Then we see the following simplification of the BCE Loss:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_{fake}(y=0,\hat{y}) = -\frac{1}{N}\sum (0)\log(D(G(z))) + (1-0)\log(1-D(G(z))) = -\frac{1}{N}\sum \log(1-D(G(z)))
 \]</div>
 <p>Therefore, our final Discriminator loss can be written out as the sum of the real and fake discriminator losses:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_D = -\frac{1}{N}\sum \log(D(x)) + \log(1-D(G(z)))
 \]</div>
 <section id="span-style-color-lightpink-expanding-to-continuous-distributions-span">
 <h4><span style="color:LightPink">Expanding to Continuous Distributions</span><a class="headerlink" href="#span-style-color-lightpink-expanding-to-continuous-distributions-span" title="Permalink to this heading">#</a></h4>
 <p>Although this is the discriminator we use (because in our classification task our targets are discrete 0/1), it hides an underlying property we want to look at! Instead of just using 0/1 to indicate fake or real, lets instead say we want to model the continuous distribution of the fake images and the distribution of the real images. Applying it to our case, where <span class="math notranslate nohighlight">\(p_{x}\)</span> is the true distribution of the data, <span class="math notranslate nohighlight">\(p_{z}\)</span> is the true distribution of the random noise and then <span class="math notranslate nohighlight">\(D(x)\)</span> is the predicted distribution of real data and <span class="math notranslate nohighlight">\(D(G(z))\)</span> is the predicted distribution of the generated data. We can then write:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_{real}(p_x(x), D(x)) = -\int p_x(x) \log(D(x))
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_{fake}(p_z(z), D(G(z))) = -\int p_z(z) \log((1-D(G(z))))
 \]</div>
 <p>And our final continuous discriminator loss can be written as:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_D = H_{real}(p_x(x), D(x)) + H_{fake}(p_z(z), D(G(z))) = -\int p_x(x) \log(D(x)) + p_z(z) \log((1-D(G(z))))
 \]</div>
 <p>This should look identical to our equation earlier for the discriminator loss! Just a continuous representation. We can then finally convert this to just using expected value using the following method:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H(p,q) = \int p \log(q) = \mathbb{E}_{x\sim p} \log(q)
 \]</div>
 <p>Therefore our final form (in expected value) of our Discriminator loss looks like:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H_D = -\mathbb{E}_{x\sim p_x(x)} \log(D(x)) -\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z))
 \]</div>
 <p>Our end goal will be to minimize <span class="math notranslate nohighlight">\(H_D\)</span>, as you want the discriminator to get better at identifying fakes, but minimizing <span class="math notranslate nohighlight">\(H_D\)</span> is the same as maximizing <span class="math notranslate nohighlight">\(-H_D\)</span> (and we have those negatives we don’t want to write) so we can write the final form of our discriminator loss as:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 L_D = \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z)))
 \]</div>
 <p>And finally, the most general form, lets say <span class="math notranslate nohighlight">\(x\)</span> is now an arbritrary sample, we don’t now if its real or generated, then we can write the most general form of our loss function using some variable substitutions:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 L_D = \max_D \mathbb{E}_{x\sim p_{data}(x)} \log(D(x)) +\mathbb{E}_{x\sim p_g} \log((1-D(x))
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(p_g\)</span> is the distribution of the generator (rather than over the distribution of the random noise) and <span class="math notranslate nohighlight">\(p_{data}\)</span> is the distribution over the data (previously
@@ -653,16 +653,16 @@ The key idea here is that the discriminator will provide a signal of real vs fak
 <h4><span style="color:LightPink">Discrete Loss for the Generator</span><a class="headerlink" href="#span-style-color-lightpink-discrete-loss-for-the-generator-span" title="Permalink to this heading">#</a></h4>
 <p>As explained above, the idea generator will minimize the discriminators ability to distinguish between real and fake samples, and we assume we are using our new discriminator <span class="math notranslate nohighlight">\(D^*(x)\)</span>. Well this loss function is identical again to before, just a simple BCELoss, so lets do the discrete case first (that we will actually use in practice). All images will be identified as real where <span class="math notranslate nohighlight">\(y=1\)</span> so in our BCE Loss, the case of <span class="math notranslate nohighlight">\((1-y)\)</span> will dissapear:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H(y,\hat{y}) = -\frac{1}{N}\sum y\log(\hat{y}) + (1-y)\log(1-\hat{y})
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H(y=1,\hat{y}) = -\frac{1}{N}\sum (1)\log(\hat{y}) + (1-1)\log(1-\hat{y}) = -\frac{1}{N}\sum \log(\hat{y})
 \]</div>
 <p>So in our case, where <span class="math notranslate nohighlight">\(\hat{y} = D^*(G(z))\)</span> because we are using generated images, we can write this as:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H(y=1,\hat{y}) = - \frac{1}{N}\sum \log(D^*(G(z)))
 \]</div>
 </section>
@@ -670,7 +670,7 @@ H(y=1,\hat{y}) = - \frac{1}{N}\sum \log(D^*(G(z)))
 <h4><span style="color:LightPink">Moving to the Continuous Loss Function</span><a class="headerlink" href="#span-style-color-lightpink-moving-to-the-continuous-loss-function-span" title="Permalink to this heading">#</a></h4>
 <p>Using all the same logic as before, when we expanded our discrete discriminator loss to continuous, we can do the same process here. <span class="math notranslate nohighlight">\(x\)</span> is again some arbritrary image, although we know they are all fake, the loss doesn’t!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g} \log((1-D^*(x))
 \]</div>
 <p>There are two main differences between our generator loss <span class="math notranslate nohighlight">\(L_G\)</span> and our discriminator loss <span class="math notranslate nohighlight">\(L_D\)</span>:</p>
@@ -680,15 +680,15 @@ L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g}
 </ol>
 <p>Now, because we actually know what the formulation for the ideal discriminator <span class="math notranslate nohighlight">\(D^*(x)\)</span> is, we can plug it in!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g} \log((1-D^*(x))
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log\left[\frac{p_{data}(x)}{p_{data}(x)+p_g(x)}\right] +\mathbb{E}_{x\sim p_g} \log\left[1 - \frac{p_{data}(x)}{p_{data}(x)+p_g(x)}\right]
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log\left[\frac{p_{data}(x)}{p_{data}(x)+p_g(x)}\right] +\mathbb{E}_{x\sim p_g} \log\left[\frac{p_{g}(x)}{p_{data}(x)+p_g(x)}\right]
 \]</div>
 <hr class="docutils" />
@@ -696,78 +696,78 @@ L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g}
 <p>So we have already seek KL-Divergence before (if you haven’t take a look at my <a class="reference external" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/PyTorch%20for%20Generation/AutoEncoders/Intro%20to%20AutoEncoders/Variational_AutoEncoders.ipynb">notebook on Variational AutoEncoders</a> to learn more and also this [helpful video] walking you through the relation between KL divergence and Cross Entropy. As a quick reminder though:</p>
 <p>KL Divergence is a measure of entropy (or difference) between two probability distributions. But what is Entropy? Entropy is a measure of the amount of “information” in data and is typically written as:,</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 H = -\sum_{i=1}^Np(x_i)\cdot \log p(x_i)
 \]</div>
 <p>You can think of this like the Expected Value of information in an event. KL Divergence is then the difference in information between two separate distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. Well then we can just write that as:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 D_{KL}(Q||P) = \sum_{i=1}^Np(x_i) \cdot (\log p(x_i) - \log q(x_i)) = \sum_{i=1}^Np(x_i) \cdot \log \frac{p(x_i)}{q(x_i)} = \mathbb{E}_{x\sim p} \log\frac{p(x)}{q(x)}
 \]</div>
 <p>Well, doesnt our form for <span class="math notranslate nohighlight">\(L_G\)</span> look like the sum of two different KL-Divergence terms? We could rewrite it as such:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 &quot;L_G&quot; = D_{KL}(p_{data}(x) || p_{data}(x)+p_g(x)) + D_{KL}(p_{g}(x) || p_{data}(x)+p_g(x))
 \]</div>
 <p>If thats the case, we know of another formulation that looks just like this: <span style="color:Violet">Jensen-Shannon Divergence</span></p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 D_{JS}(Q||P) = \frac{1}{2}D_{KL}(Q||M) + \frac{1}{2}D_{KL}(P||M)
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 \text{where } M = \frac{Q+P}{2}
 \]</div>
 <p>Although KL-Divergences are very useful to us, it has a few limitations, notably not being symmetric. <span class="math notranslate nohighlight">\(D_{KL}(Q||P) \neq D_{KL}(P||Q)\)</span>. JS-Divergence on the other hand is a symmetric and smooth version of the KL divergence, and <span class="math notranslate nohighlight">\(M\)</span> is the mixture of distributions P and Q.</p>
 <p>In our case, we have something very similar in <span class="math notranslate nohighlight">\(L_G\)</span>, but we are missing a few of those <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> constants, so lets expand it out. First we use the rule that <span class="math notranslate nohighlight">\(\log(\frac{a}{b})= \log(a) - \log(b)\)</span></p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 &quot;L_G&quot; = \mathbb{E}_{x\sim p_{data}(x)} \log\left[\frac{p_{data}(x)}{p_{data}(x)+p_g(x)}\right] +\mathbb{E}_{x\sim p_g} \log\left[\frac{p_{g}(x)}{p_{data}(x)+p_g(x)}\right]
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = \mathbb{E}_{x\sim p_{data}(x)} \left[\log p_{data}(x) - \log (p_{data}(x)+p_g(x))\right] +\mathbb{E}_{x\sim p_g} \left[\log p_{g}(x) - \log (p_{data}(x)+p_g(x))\right]
 \]</div>
 <p>We first know that:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 M(x) = \frac{p_{data}(x)+p_g(x)}{2}
 \]</div>
 <p>So lets introduce the <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> constant by multiplying and dividing by 2!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = \mathbb{E}_{x\sim p_{data}(x)} \left[\log p_{data}(x) - \log \frac{2(p_{data}(x)+p_g(x))}{2}\right] +\mathbb{E}_{x\sim p_g} \left[\log p_{g}(x) - \log \frac{2(p_{data}(x)+p_g(x))}{2}\right]
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = \mathbb{E}_{x\sim p_{data}(x)} \left[\log p_{data}(x) - \log(2) - \log \frac{(p_{data}(x)+p_g(x))}{2}\right] +\mathbb{E}_{x\sim p_g} \left[\log p_{g}(x) - \log(2) - \log \frac{(p_{data}(x)+p_g(x))}{2}\right]
 \]</div>
 <p>The expectation of the constant <span class="math notranslate nohighlight">\(\log(2)\)</span> is just the constant, so we can pull them out!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + \mathbb{E}_{x\sim p_{data}(x)} \left[\log p_{data}(x) - \log \frac{(p_{data}(x)+p_g(x))}{2}\right] +\mathbb{E}_{x\sim p_g} \left[\log p_{g}(x) - \log \frac{(p_{data}(x)+p_g(x))}{2}\right]
 \]</div>
 <p>And finally we can return the expected values back to the original form (putting the logs back together)</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + \mathbb{E}_{x\sim p_{data}(x)} \left[\log \frac{p_{data}(x)}{\frac{(p_{data}(x)+p_g(x))}{2}}\right] +\mathbb{E}_{x\sim p_g} \left[\log \frac{p_{g}(x)}{\frac{(p_{data}(x)+p_g(x))}{2}}\right]
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + \mathbb{E}_{x\sim p_{data}(x)} \left[\log \frac{p_{data}(x)}{M(x)}\right] +\mathbb{E}_{x\sim p_g} \left[\log \frac{p_{g}(x)}{M(x)}\right]
 \]</div>
 <p>We can write this all as the KL Divergences again:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + D_{KL}(p_{data}(x) || M(x)) + D_{KL}(p_{g}(x) || M(x))
 \]</div>
 <p>We are missing the last <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> term, as we average together both KL Divergences, so we can just say that:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + 2 * \frac{D_{KL}(p_{data}(x) || M(x)) + D_{KL}(p_{g}(x) || M(x))}{2}
 \]</div>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 = -2\log(2) + 2 * D_{JS}(p_{data} || p_g)
 \]</div>
 <p>This also makes a lot of sense. We will be minimizing this function for the generator, which will reduce the symmetric distance between <span class="math notranslate nohighlight">\(p_{data}\)</span> and <span class="math notranslate nohighlight">\(p_g\)</span>. This means as the generator improves, the distribution of the generator will get closer to that of the original data, indicating a good generative model.</p>
@@ -777,7 +777,7 @@ M(x) = \frac{p_{data}(x)+p_g(x)}{2}
 <section id="span-style-color-lightgreen-final-loss-function-span">
 <h3><span style="color:LightGreen">Final Loss Function</span><a class="headerlink" href="#span-style-color-lightgreen-final-loss-function-span" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z)))
 \]</div>
 <p>This is the original loss function for the GAN, and it does exactly what we have outlined until now. We will be maximizing <span class="math notranslate nohighlight">\(D\)</span> and minimizing <span class="math notranslate nohighlight">\(G\)</span>. Notice we have a negative on our cross entropy, so instead of minimizing cross entropy we are maximizing negative cross entropy with <span class="math notranslate nohighlight">\(D\)</span>, if we had the normal cross entropy formula, then the min/max would be flipped but give the same result!</p>
