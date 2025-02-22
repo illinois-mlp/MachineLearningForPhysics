@@ -485,7 +485,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-review-autoencoders-span"><span style="color:Orange">Review: AutoEncoders</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span"><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span>|</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span"><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-math-for-gans-span"><span style="color:Orange">The Math for GANs</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-training-the-discriminator-span"><span style="color:LightGreen">Training the Discriminator</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-expanding-to-continuous-distributions-span"><span style="color:LightPink">Expanding to Continuous Distributions</span></a></li>
@@ -515,7 +515,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-conditional-gan-span"><span style="color:Orange">Conditional GAN</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-does-a-conditional-gan-work-span"><span style="color:LightGreen">What does a Conditional GAN Work?</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-why-does-a-conditional-gan-work-span"><span style="color:LightGreen">Why does a Conditional GAN Work?</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-model-details-span"><span style="color:LightGreen">Model Details</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-conditional-gan-span"><span style="color:LightGreen">Train Conditional GAN</span></a></li>
 </ul>
@@ -549,7 +549,7 @@ document.write(`
 <p>As it can be clearly seen, these would not be considered very high quality generations of handwritten digits. They are typically blurry, and using a VAE, which is the only way to generate from a known distribution, the results get even worse!</p>
 </section>
 <section id="span-style-color-orange-what-are-generative-adversarial-networks-gans-span">
-<h2><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span>|<a class="headerlink" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span" title="Permalink to this heading">#</a></h2>
+<h2><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span><a class="headerlink" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span" title="Permalink to this heading">#</a></h2>
 <a class="reference internal image-reference" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_diagram.png?raw=true"><img alt="drawing" src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/gan_diagram.png?raw=true" style="width: 800px;" /></a>
 <p>GANs are basically a cat and mouse game, and changes the way in which we approach generation. Instead of an Encoder/Decoder structure of the AutoEncoder, we will have a Generator and Discriminator. The purpose of the Generator is to take in noise (typically random gaussian noise) and try to create an image out of it. This method of generating from noise is a technique we will see again in the future with Diffusion! The Discriminator on the other hand takes in generated images and real images from our dataset, and tries to determine whether or not each image is real or fake. The game then becomes: The Generator has to produce images that can fool the Discriminator, which then forces the Discriminator to become better at identifying real and fake images!</p>
 <a class="reference internal image-reference" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/PyTorch%20for%20Generation/Generative%20Adversarial%20Network/Intro%20to%20GANs/src/gen.gif?raw=true"><img alt="drawing" src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/PyTorch%20for%20Generation/Generative%20Adversarial%20Network/Intro%20to%20GANs/src/gen.gif?raw=true" style="width: 800px;" /></a>
@@ -632,12 +632,12 @@ L_D = \max_D \mathbb{E}_{x\sim p_{data}(x)} \log(D(x)) +\mathbb{E}_{x\sim p_g} \
 <h4><span style="color:LightPink">Finding the Ideal Discriminator</span><a class="headerlink" href="#span-style-color-lightpink-finding-the-ideal-discriminator-span" title="Permalink to this heading">#</a></h4>
 <p>To find the max of this function (the <span class="math notranslate nohighlight">\(D(x)\)</span> that maximizes this <span class="math notranslate nohighlight">\(L_D\)</span>), we can just take the derivative of <span class="math notranslate nohighlight">\(L_D\)</span> with respect to <span class="math notranslate nohighlight">\(D(x)\)</span> and set to 0!</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 \dfrac{dL_D}{dD(x)} = \frac{p_{data}(x)}{D(x)} - \frac{p_g(x)}{1-D(x)} = 0
 \]</div>
 <p>Solving for <span class="math notranslate nohighlight">\(D(x)\)</span>, and giving us our optimial discriminator, which we will indicate as <span class="math notranslate nohighlight">\(D^*(x)\)</span> we get:</p>
 <div class="math notranslate nohighlight">
-\[ \Large
+\[
 D^*(x) = \frac{p_{data}(x)}{p_{data}(x)+p_g(x)}
 \]</div>
 <p>This also makes a lot of sense because, if <span class="math notranslate nohighlight">\(x\)</span> is truly from the original true data, then this fraction will converge to 1 as <span class="math notranslate nohighlight">\(p_{data}(x)\)</span> will be close to 1 and <span class="math notranslate nohighlight">\(p_g(x)\)</span> will be close to 0. On the other hand, if <span class="math notranslate nohighlight">\(x\)</span> is from the generated data, then this fraction will converge to 0.</p>
@@ -1124,8 +1124,8 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 <a class="reference internal image-reference" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/conditional_gan.png?raw=true"><img alt="drawing" src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/conditional_gan.png?raw=true" style="width: 800px;" /></a>
 <p>Although we have a GAN that can now successfully generate images, what we are missing is the ability to control what is generated! If I want to generate the digit 7, then let me actually control that, not just randomly generate until I get a 7.</p>
 <p>Conditional GAN works exactly like this, and we pass in a conditioning signal. This sounds fancy, but really we are just concatenating on some extra information about which digit we want. We saw in our exploration of <a class="reference external" href="https://github.com/priyammaz/PyTorch-Adventures/tree/main/PyTorch%20for%20NLP/Recurrent%20Neural%20Networks/IMDB%20Classification">sequence modeling</a> that we have to convert tokens to embeddings, and the embeddings for each token represent their meaning. In the same way, we have the digits 0 - 9 in our dataset, so we will have embeddings for each digit, and that will encode whcih digit we are wanting to generate! Before we had no use for the labels to generate our data, but now we will actually incorporate the MNIST labels to have some control over the generation.</p>
-<section id="span-style-color-lightgreen-what-does-a-conditional-gan-work-span">
-<h3><span style="color:LightGreen">What does a Conditional GAN Work?</span><a class="headerlink" href="#span-style-color-lightgreen-what-does-a-conditional-gan-work-span" title="Permalink to this heading">#</a></h3>
+<section id="span-style-color-lightgreen-why-does-a-conditional-gan-work-span">
+<h3><span style="color:LightGreen">Why does a Conditional GAN Work?</span><a class="headerlink" href="#span-style-color-lightgreen-why-does-a-conditional-gan-work-span" title="Permalink to this heading">#</a></h3>
 <p>There will be two embeddings matricies that convert digit labels to vectors, one in the generator and the other in the discriminator. In the generator, we can randomly sample digit labels (for some batch size) and then pass it into our generator with our randomly sampled noise. The generators goal will be to generate an image that matches with the corresponding digit.</p>
 <p>We then concatenate together true images with our generated images (just like before) but also true labels with our previously randomly sampled labels. This stack of true/fake images along with their labels will then be passed to the discriminator, which will have both image data and label data to determine if the images are real or fake. There are then two ways for the discriminator to determine between real and fake images:</p>
 <ol class="arabic simple">
@@ -1577,7 +1577,7 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-review-autoencoders-span"><span style="color:Orange">Review: AutoEncoders</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span"><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span>|</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-what-are-generative-adversarial-networks-gans-span"><span style="color:Orange">What are Generative Adversarial Networks (GANs)?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-math-for-gans-span"><span style="color:Orange">The Math for GANs</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-training-the-discriminator-span"><span style="color:LightGreen">Training the Discriminator</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-expanding-to-continuous-distributions-span"><span style="color:LightPink">Expanding to Continuous Distributions</span></a></li>
@@ -1607,7 +1607,7 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-conditional-gan-span"><span style="color:Orange">Conditional GAN</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-does-a-conditional-gan-work-span"><span style="color:LightGreen">What does a Conditional GAN Work?</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-why-does-a-conditional-gan-work-span"><span style="color:LightGreen">Why does a Conditional GAN Work?</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-model-details-span"><span style="color:LightGreen">Model Details</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-train-conditional-gan-span"><span style="color:LightGreen">Train Conditional GAN</span></a></li>
 </ul>
