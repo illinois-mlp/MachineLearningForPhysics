@@ -895,7 +895,13 @@ Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">latent_dimension</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">64</span>
 <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
-<span class="n">epochs</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">200</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cuda
 </pre></div>
 </div>
 </div>
@@ -1095,10 +1101,26 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "de575ed5bf714dbc97e8ed7296b6fa8f", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/2 | Generator Loss: 2.6422954631893876 | Discriminator Loss: 0.3012567215414444
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "84a81568eeda4f6c99816914818ccac4", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/200 | Generator Loss: 2.6304310425512316 | Discriminator Loss: 0.3004046868381978
 </pre></div>
 </div>
-<img alt="../../_images/3db756c5231fbabea7f8fa825e4d2e48e8ee3604130dc6617d8c09d87301b768.png" src="../../_images/3db756c5231fbabea7f8fa825e4d2e48e8ee3604130dc6617d8c09d87301b768.png" />
+<img alt="../../_images/c4e56bdf6124def3952e5d5c8be1a81671e79f00bf8a163c9fdb506e18990ed6.png" src="../../_images/c4e56bdf6124def3952e5d5c8be1a81671e79f00bf8a163c9fdb506e18990ed6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 40/200 | Generator Loss: 1.6327878136370482 | Discriminator Loss: 0.4080896986001082
+</pre></div>
+</div>
+<img alt="../../_images/7e4d17ee00f891fc41a0fb1e62ac285a361073ed865cd7b6cde2fca8e269cee1.png" src="../../_images/7e4d17ee00f891fc41a0fb1e62ac285a361073ed865cd7b6cde2fca8e269cee1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 80/200 | Generator Loss: 1.354299812174555 | Discriminator Loss: 0.48136409818490683
+</pre></div>
+</div>
+<img alt="../../_images/ecdb3cc0426fdf101572dbc9832ae1bea3d354a5f4fb1e36b471d94ea9e7419e.png" src="../../_images/ecdb3cc0426fdf101572dbc9832ae1bea3d354a5f4fb1e36b471d94ea9e7419e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 120/200 | Generator Loss: 1.328497620152512 | Discriminator Loss: 0.4943319481255403
+</pre></div>
+</div>
+<img alt="../../_images/8e73f60bb8608ba35b1d2b5369fc96c25053b082116395009450e5a86efedd18.png" src="../../_images/8e73f60bb8608ba35b1d2b5369fc96c25053b082116395009450e5a86efedd18.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 160/200 | Generator Loss: 1.3261665151571669 | Discriminator Loss: 0.4958460940353906
+</pre></div>
+</div>
+<img alt="../../_images/466387f182fa2574020acab3102a8d2ca860b048647bf96172a8d4b8eecf8d5e.png" src="../../_images/466387f182fa2574020acab3102a8d2ca860b048647bf96172a8d4b8eecf8d5e.png" />
 </div>
 </div>
 </section>
@@ -1115,7 +1137,7 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c0c90ed1dcb0d406c573e7761fd9b0fd64cec3a850791dec40d4e9ee080ec151.png" src="../../_images/c0c90ed1dcb0d406c573e7761fd9b0fd64cec3a850791dec40d4e9ee080ec151.png" />
+<img alt="../../_images/ddc4f33c201deabe624a355ea3a176d11e67f71500bbb14cc0b84f2b306508b7.png" src="../../_images/ddc4f33c201deabe624a355ea3a176d11e67f71500bbb14cc0b84f2b306508b7.png" />
 </div>
 </div>
 </section>
@@ -1357,10 +1379,26 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "aa51c93ce7744ab9803cfcc8f9e45c60", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/2 | Generator Loss: 2.4743372016369913 | Discriminator Loss: 0.319680030904472
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ee68737871e84b6ca60893e9d14579bd", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/200 | Generator Loss: 2.714516445327161 | Discriminator Loss: 0.29023685201462396
 </pre></div>
 </div>
-<img alt="../../_images/ea497bb3dc0c3283819444ea366fcfbaaca4992ef3c25a383da0f4b0b9d8f1b8.png" src="../../_images/ea497bb3dc0c3283819444ea366fcfbaaca4992ef3c25a383da0f4b0b9d8f1b8.png" />
+<img alt="../../_images/3be33d3c36a6db19a97ff99ce4dc809895cc2d6601226ad22f354aa044dbad2e.png" src="../../_images/3be33d3c36a6db19a97ff99ce4dc809895cc2d6601226ad22f354aa044dbad2e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 40/200 | Generator Loss: 1.1178556451284047 | Discriminator Loss: 0.5631598981776471
+</pre></div>
+</div>
+<img alt="../../_images/c584ee4fb494d3dd5247c6529128359cf3d7fddba8c8a57baf3eb60e25d6c902.png" src="../../_images/c584ee4fb494d3dd5247c6529128359cf3d7fddba8c8a57baf3eb60e25d6c902.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 80/200 | Generator Loss: 1.0567189980544516 | Discriminator Loss: 0.5803023697470805
+</pre></div>
+</div>
+<img alt="../../_images/2ec6bb0b7bbb368e6b56db3bfbdc716e062ec99a514f74466e2ff6f0fd5fd285.png" src="../../_images/2ec6bb0b7bbb368e6b56db3bfbdc716e062ec99a514f74466e2ff6f0fd5fd285.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 120/200 | Generator Loss: 1.103743928073566 | Discriminator Loss: 0.5693011011904491
+</pre></div>
+</div>
+<img alt="../../_images/bdf0b1ad1047933cc5326357898e2f47bd5d485fc683b8d984e4e058e5f0999f.png" src="../../_images/bdf0b1ad1047933cc5326357898e2f47bd5d485fc683b8d984e4e058e5f0999f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 160/200 | Generator Loss: 1.1755260525863054 | Discriminator Loss: 0.5526353868403668
+</pre></div>
+</div>
+<img alt="../../_images/04a22f573f6444a07d250d077f2ef425b54239cd89c66d78df4d15bb587595da.png" src="../../_images/04a22f573f6444a07d250d077f2ef425b54239cd89c66d78df4d15bb587595da.png" />
 </div>
 </div>
 </section>
@@ -1489,10 +1527,28 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2880ad6595f74de7a81486937bb05eb7", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/2 | Generator Loss: 1.5716939352150918 | Discriminator Loss: 0.44139802570282016
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8607e13bc9414af09594937f19be8f5a", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0/200 | Generator Loss: 2.065079904441386 | Discriminator Loss: 0.3847251913504306
 </pre></div>
 </div>
-<img alt="../../_images/a98d7eb1fcb0a9993a3405b9effdbbfd03ff247a2e4b0e77cd60d0d7da7d547a.png" src="../../_images/a98d7eb1fcb0a9993a3405b9effdbbfd03ff247a2e4b0e77cd60d0d7da7d547a.png" />
+<img alt="../../_images/32f7421d6a9cb2eeafdfafb62877bcc9a51901b0b938287b1c026da9e11b3523.png" src="../../_images/32f7421d6a9cb2eeafdfafb62877bcc9a51901b0b938287b1c026da9e11b3523.png" />
+<img alt="../../_images/bed58e5e5b6a15fc13d3cc03b755dee0cabce205b931a27d6c9bfe5e662246ad.png" src="../../_images/bed58e5e5b6a15fc13d3cc03b755dee0cabce205b931a27d6c9bfe5e662246ad.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 40/200 | Generator Loss: 0.7191067027893148 | Discriminator Loss: 0.6884513026488616
+</pre></div>
+</div>
+<img alt="../../_images/cf0ef4ff382874bd4d643b94d741036d9b27366ccde5e2f49f8c5ead9460c04c.png" src="../../_images/cf0ef4ff382874bd4d643b94d741036d9b27366ccde5e2f49f8c5ead9460c04c.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 80/200 | Generator Loss: 0.703067980595489 | Discriminator Loss: 0.6898242350199075
+</pre></div>
+</div>
+<img alt="../../_images/fe07976e365753085b46e1ba9b5b5623d039143e068d2980a4ad8a424726bd8f.png" src="../../_images/fe07976e365753085b46e1ba9b5b5623d039143e068d2980a4ad8a424726bd8f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 120/200 | Generator Loss: 0.7045717878001077 | Discriminator Loss: 0.6908398996919457
+</pre></div>
+</div>
+<img alt="../../_images/a6085951774826f88c2f0f5dca13209f6df52c9e1ca5cd7a02789a41de2ca58c.png" src="../../_images/a6085951774826f88c2f0f5dca13209f6df52c9e1ca5cd7a02789a41de2ca58c.png" />
+<img alt="../../_images/bfd8f092942157883282676c3168b2b44a9960fb0635d17f8ee6511e46487b6f.png" src="../../_images/bfd8f092942157883282676c3168b2b44a9960fb0635d17f8ee6511e46487b6f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 160/200 | Generator Loss: 0.7956475625033064 | Discriminator Loss: 0.6594471512699941
+</pre></div>
+</div>
+<img alt="../../_images/ad754ec88f5c8c75272c79d5a216d7ecc6a831bb2a40565bb70f4f3beca97615.png" src="../../_images/ad754ec88f5c8c75272c79d5a216d7ecc6a831bb2a40565bb70f4f3beca97615.png" />
 </div>
 </div>
 </section>
