@@ -73,7 +73,7 @@ chapters:
   sections:
   - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/AttentionTransformers
+  - file: _sources/lectures/Attention
 - file: _sources/Week_09 # Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
