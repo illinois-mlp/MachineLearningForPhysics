@@ -9,6 +9,8 @@ You will learn the basics of Attention Mechanism and Transformers
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing)
 * {doc}`lectures/Attention`
+* {doc}`lectures/Transformers`
+* {doc}`lectures/VisionTransformers`
 
 ## *Homework Assignment*
 * None
