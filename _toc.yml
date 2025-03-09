@@ -75,7 +75,7 @@ chapters:
     title: Slides
   - file: _sources/lectures/Attention
   - file: _sources/lectures/Transformers
-  - file: _sources/lectures/VisionTransformers
+  - file: _sources/lectures/VisionTransformer
 - file: _sources/Week_09 # Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
