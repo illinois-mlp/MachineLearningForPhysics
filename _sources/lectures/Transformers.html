@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Transformers and Attention &#8212; PHYS 498 MLP</title>
+    <title>Transformers &#8212; PHYS 498 MLP</title>
   
   
   
@@ -67,7 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/Transformers';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Generative Modeling" href="../Week_09.html" />
+    <link rel="next" title="Vision Transformer" href="VisionTransformer.html" />
     <link rel="prev" title="Attention" href="Attention.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -245,7 +245,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Attention.html">Attention</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Transformers and Attention</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Transformers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VisionTransformer.html">Vision Transformer</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_09.html"><span style="color: blue;"><b>Generative Modeling</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -481,7 +482,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Transformers and Attention</h1>
+    <h1>Transformers</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -518,8 +519,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="transformers-and-attention">
-<h1>Transformers and Attention<a class="headerlink" href="#transformers-and-attention" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="transformers">
+<h1>Transformers<a class="headerlink" href="#transformers" title="Permalink to this heading">#</a></h1>
 <p>In this tutorial, we will discuss one of the most impactful architectures of the last few years: the Transformer model. Since the paper <a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> by Vaswani et al. had been published in 2017, the Transformer architecture has continued to beat benchmarks in many domains, most importantly in Natural Language Processing. Transformers with an incredible amount of parameters can generate long, convincing <a class="reference external" href="https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3">essays</a>, and opened up new application fields of AI. As the hype of the Transformer architecture seems not to come to an end in the next years, it is important to understand how it works, and have implemented it yourself, which we will do in this notebook.</p>
 <p>Despite the huge success of Transformers in NLP, we will <em>not</em> include the NLP domain in our notebook here. Why? Firstly, there are other courses that take a closer look at the application of the Transformer architecture in NLP. Most importantly, there is so much more to the Transformer architecture than NLP applications. NLP is the domain the Transformer architecture has been originally proposed for and had the greatest impact on, but it also accelerated research in other domains, recently even <a class="reference external" href="https://arxiv.org/abs/2010.11929">Computer Vision</a>. Thus, we focus here on what makes the Transformer and self-attention so powerful in general.</p>
 <div class="cell docutils container">
@@ -1443,11 +1444,11 @@ Test accuracy: 100.00%
       </div>
     </a>
     <a class="right-next"
-       href="../Week_09.html"
+       href="VisionTransformer.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span style="color: blue;"><b>Generative Modeling</b></span></p>
+        <p class="prev-next-title">Vision Transformer</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
