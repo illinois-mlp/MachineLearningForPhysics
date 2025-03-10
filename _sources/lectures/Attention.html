@@ -1085,59 +1085,63 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
 <p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our RoBERTa model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>, the raw output before the softmax is below.</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7948feaf-faa4-4188-94f3-38fab40378cc">
+<span class="eqno">(1)<a class="headerlink" href="#equation-7948feaf-faa4-4188-94f3-38fab40378cc" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
-7       &amp; -8   &amp; 6  \
--3       &amp; 2   &amp; 4   \
-1       &amp; 6  &amp; -2   \
+  7       &amp; -8   &amp; 6  \\
+  -3       &amp; 2   &amp; 4   \\
+  1       &amp; 6  &amp; -2   \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Remember, the equation for softmax is:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
 <p>Then, if we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-91f86760-6cdf-4f43-91d3-9367cb2f6b49">
+<span class="eqno">(2)<a class="headerlink" href="#equation-91f86760-6cdf-4f43-91d3-9367cb2f6b49" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
-7       &amp; -8   &amp; 6  \
--3       &amp; 2   &amp; 4   \
-1       &amp; 6  &amp; -2   \
-\end{bmatrix} =
+  7       &amp; -8   &amp; 6  \\
+  -3       &amp; 2   &amp; 4   \\
+  1       &amp; 6  &amp; -2   \\
+\end{bmatrix} = 
 \begin{bmatrix}
-\frac{e^{7}}{e^{7}+e^{-8}+e^{6}}       &amp; \frac{e^{-8}}{e^{7}+e^{-8}+e^{6}}   &amp; \frac{e^{6}}{e^{7}+e^{-8}+e^{6}}  \
-\frac{e^{-3}}{e^{-3}+e^{2}+e^{4}}       &amp; \frac{e^{2}}{e^{-3}+e^{2}+e^{4}}   &amp; \frac{e^{4}}{e^{-3}+e^{2}+e^{4}}  \
-\frac{e^{1}}{e^{1}+e^{6}+e^{-2}}       &amp; \frac{e^{6}}{e^{1}+e^{6}+e^{-2}}   &amp; \frac{e^{-2}}{e^{1}+e^{6}+e^{-2}}  \
-\end{bmatrix} =
+  \frac{e^{7}}{e^{7}+e^{-8}+e^{6}}       &amp; \frac{e^{-8}}{e^{7}+e^{-8}+e^{6}}   &amp; \frac{e^{6}}{e^{7}+e^{-8}+e^{6}}  \\
+  \frac{e^{-3}}{e^{-3}+e^{2}+e^{4}}       &amp; \frac{e^{2}}{e^{-3}+e^{2}+e^{4}}   &amp; \frac{e^{4}}{e^{-3}+e^{2}+e^{4}}  \\
+  \frac{e^{1}}{e^{1}+e^{6}+e^{-2}}       &amp; \frac{e^{6}}{e^{1}+e^{6}+e^{-2}}   &amp; \frac{e^{-2}}{e^{1}+e^{6}+e^{-2}}  \\
+\end{bmatrix} = 
 \begin{bmatrix}
-0.73       &amp; 0.0000002   &amp; 0.27   \
-0.0008       &amp; 0.12   &amp; 0.88 \
-0.007       &amp; 0.99  &amp; 0.003  \
+  0.73       &amp; 0.0000002   &amp; 0.27   \\
+  0.0008       &amp; 0.12   &amp; 0.88 \\
+  0.007       &amp; 0.99  &amp; 0.003  \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-65fc7834-7e1e-49dd-be18-617ef066bc8a">
+<span class="eqno">(3)<a class="headerlink" href="#equation-65fc7834-7e1e-49dd-be18-617ef066bc8a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
-7       &amp; -8   &amp; -\infty  \
--3       &amp; 2   &amp; -\infty   \
-1       &amp; 6  &amp; -\infty  \
+  7       &amp; -8   &amp; -\infty  \\
+  -3       &amp; 2   &amp; -\infty   \\
+  1       &amp; 6  &amp; -\infty  \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-66b0783f-e846-4e76-8f58-1e604293bd6d">
+<span class="eqno">(4)<a class="headerlink" href="#equation-66b0783f-e846-4e76-8f58-1e604293bd6d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
-7       &amp; -8   &amp; -\infty  \
--3       &amp; 2   &amp; -\infty   \
-1       &amp; 6  &amp; -\infty  \
-\end{bmatrix} =
+ 7       &amp; -8   &amp; -\infty  \\
+  -3       &amp; 2   &amp; -\infty   \\
+  1       &amp; 6  &amp; -\infty  \\
+\end{bmatrix} = 
 \begin{bmatrix}
-1       &amp; 0   &amp; 0  \
-0.0067  &amp; 0.9933 &amp; 0   \
-0.0067       &amp; 0.9933  &amp; 0  \
+  1       &amp; 0   &amp; 0  \\
+  0.0067  &amp; 0.9933 &amp; 0   \\
+  0.0067       &amp; 0.9933  &amp; 0  \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Which is exactly what we want! Therefore, when computing attention, we need to know which tokens are padding tokens in our data, and then go ahead and perform this computation on our attention output before multiplying with values.</p>
 <section id="span-style-color-lightgreen-add-padding-to-our-attention-computation-span">
 <h3><span style="color:LightGreen">Add Padding to our Attention Computation</span><a class="headerlink" href="#span-style-color-lightgreen-add-padding-to-our-attention-computation-span" title="Permalink to this heading">#</a></h3>
@@ -1167,12 +1171,13 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<p>\begin{bmatrix}
-True &amp; True &amp; True &amp; False\
-True &amp; True &amp; True &amp; False\
-True &amp; True &amp; True &amp; False\
+<div class="amsmath math notranslate nohighlight" id="equation-221c3a33-4e01-4810-9e09-653d5360b135">
+<span class="eqno">(5)<a class="headerlink" href="#equation-221c3a33-4e01-4810-9e09-653d5360b135" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+True &amp; True &amp; True &amp; False\\
+True &amp; True &amp; True &amp; False\\
+True &amp; True &amp; True &amp; False\\
 True &amp; True &amp; True &amp; False
-\end{bmatrix}</p>
+\end{bmatrix}\]</div>
 <p>By repeating our mask for sequence_1, we get exactly a seq_len x seq_len matrix where the column we don’t want to compute attention for is indicated by the False!</p>
 <p>Therefore our final mask will be of shape (Batch x seq_len x seq_len)</p>
 <p><em><strong><span style="color:Violet">CAVEAT</span></strong></em>: Technically we don’t need to do this actually, and this is why the padding can get confusing as different people/functions do it different ways. First of all, lets say we reshaped our attention mask from (Batch x seq_len) to (Batch x 1 x seq_len). That 1 is a dummy dimension, and when we use the <code class="docutils literal notranslate"><span class="pre">Tensor.masked_fill_</span></code> it will automatically broadcast our attention mask across that dummy 1 dimension. On the other hand, when we go to use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html">flash_attention</a> at the end, this method wants the tensor specifically in the shape (Batch x seq_len x seq_len)</p>
@@ -1433,35 +1438,37 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d4fe5194-db41-4f2e-8e63-ced3922164b7">
+<span class="eqno">(6)<a class="headerlink" href="#equation-d4fe5194-db41-4f2e-8e63-ced3922164b7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
-7       &amp; -8   &amp; 6  \
--3       &amp; 2   &amp; 4   \
-1       &amp; 6  &amp; -2   \
+  7       &amp; -8   &amp; 6  \\
+  -3       &amp; 2   &amp; 4   \\
+  1       &amp; 6  &amp; -2   \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Remember, the equation for softmax is:</p>
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4b72d35b-2f41-4ad9-bc59-6bcbfbcd2f48">
+<span class="eqno">(7)<a class="headerlink" href="#equation-4b72d35b-2f41-4ad9-bc59-6bcbfbcd2f48" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
-7       &amp; -8   &amp; 6  \
--3       &amp; 2   &amp; 4   \
-1       &amp; 6  &amp; -2   \
-\end{bmatrix} =
+  7       &amp; -8   &amp; 6  \\
+  -3       &amp; 2   &amp; 4   \\
+  1       &amp; 6  &amp; -2   \\
+\end{bmatrix} = 
 \begin{bmatrix}
-\frac{e^{7}}{e^{7}+e^{-8}+e^{6}}       &amp; \frac{e^{-8}}{e^{7}+e^{-8}+e^{6}}   &amp; \frac{e^{6}}{e^{7}+e^{-8}+e^{6}}  \
-\frac{e^{-3}}{e^{-3}+e^{2}+e^{4}}       &amp; \frac{e^{2}}{e^{-3}+e^{2}+e^{4}}   &amp; \frac{e^{4}}{e^{-3}+e^{2}+e^{4}}  \
-\frac{e^{1}}{e^{1}+e^{6}+e^{-2}}       &amp; \frac{e^{6}}{e^{1}+e^{6}+e^{-2}}   &amp; \frac{e^{-2}}{e^{1}+e^{6}+e^{-2}}  \
-\end{bmatrix} =
+  \frac{e^{7}}{e^{7}+e^{-8}+e^{6}}       &amp; \frac{e^{-8}}{e^{7}+e^{-8}+e^{6}}   &amp; \frac{e^{6}}{e^{7}+e^{-8}+e^{6}}  \\
+  \frac{e^{-3}}{e^{-3}+e^{2}+e^{4}}       &amp; \frac{e^{2}}{e^{-3}+e^{2}+e^{4}}   &amp; \frac{e^{4}}{e^{-3}+e^{2}+e^{4}}  \\
+  \frac{e^{1}}{e^{1}+e^{6}+e^{-2}}       &amp; \frac{e^{6}}{e^{1}+e^{6}+e^{-2}}   &amp; \frac{e^{-2}}{e^{1}+e^{6}+e^{-2}}  \\
+\end{bmatrix} = 
 \begin{bmatrix}
-0.73       &amp; 0.0000002   &amp; 0.27   \
-0.0008       &amp; 0.12   &amp; 0.88 \
-0.007       &amp; 0.99  &amp; 0.003  \
+  0.73       &amp; 0.0000002   &amp; 0.27   \\
+  0.0008       &amp; 0.12   &amp; 0.88 \\
+  0.007       &amp; 0.99  &amp; 0.003  \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>But, what we want, is the top triangle to have weights of 0, and the rest adding up to 1. So lets take the second vector in the matrix above to see how we can do that.</p>
 <div class="math notranslate nohighlight">
 \[ \Large
@@ -1483,27 +1490,29 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-01d9b845-4cd5-4454-a905-bb61d8fd5608">
+<span class="eqno">(8)<a class="headerlink" href="#equation-01d9b845-4cd5-4454-a905-bb61d8fd5608" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
-7       &amp; -\infty   &amp; -\infty  \
--3       &amp; 2   &amp; -\infty   \
-1       &amp; 6  &amp; -2   \
+  7       &amp; -\infty   &amp; -\infty  \\
+  -3       &amp; 2   &amp; -\infty   \\
+  1       &amp; 6  &amp; -2   \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<p>\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8e6f86a4-adc4-4222-91dc-22df76472c86">
+<span class="eqno">(9)<a class="headerlink" href="#equation-8e6f86a4-adc4-4222-91dc-22df76472c86" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
-7       &amp; -\infty   &amp; -\infty  \
--3       &amp; 2   &amp; -\infty   \
-1       &amp; 6  &amp; -2   \
-\end{bmatrix} =
+  7       &amp; -\infty   &amp; -\infty  \\
+  -3       &amp; 2   &amp; -\infty   \\
+  1       &amp; 6  &amp; -2   \\
+\end{bmatrix} = 
 \begin{bmatrix}
-1       &amp; 0   &amp; 0  \
-0.0067  &amp; 0.9933 &amp; 0   \
-0.007       &amp; 0.99  &amp; 0.003   \
+  1       &amp; 0   &amp; 0  \\
+  0.0067  &amp; 0.9933 &amp; 0   \\
+  0.007       &amp; 0.99  &amp; 0.003   \\
 \end{bmatrix}
-\end{equation}</p>
+\end{equation}\]</div>
 <p>Therefore, the best way to apply out attention mask is by filling the top right triangle with <span class="math notranslate nohighlight">\(-\inf\)</span> and then take the softmax! So lets go ahead and add an option for causality for our attention function we wrote above!</p>
 </section>
 <section id="span-style-color-lightgreen-attention-mask-span">
