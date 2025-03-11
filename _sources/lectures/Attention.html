@@ -500,7 +500,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-attention-is-all-you-need-span"><span style="color:Orange">Attention is All You Need!</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-step-1-compute-the-attention-matrix-span"><span style="color:LightGreen">Step 1: Compute the Attention Matrix</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-recap-the-dot-product-span"><span style="color:LightPink">Recap: The Dot Product</span></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-matrix-multiplication-span"><span style="color:LightPink">Matrix Multiplication</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-recap-matrix-multiplication-span"><span style="color:LightPink">Recap: Matrix Multiplication</span></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-step-2-weighting-the-values-matrix-span"><span style="color:LightGreen">Step 2: Weighting the Values Matrix</span></a></li>
@@ -608,7 +608,9 @@ document.write(`
 <p>The groundbreaking paper, <a class="reference external" href="https://arxiv.org/pdf/1706.03762">Attention is All You Need</a> solved all of the problems above, but added a new one: <span style="color:Violet">computational cost</span>. Lets first look at what the <span style="color:Violet">Attention Mechanism</span> proposed in this paper is doing.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/attention_mechanism_visual.png?raw=true" width="1000"/>
-</div><p>The input is a sequence of embedding vectors and the output is a sequence of context vectors. Lets quickly look at the formulation for this:</p>
+</div><p>The input is a sequence of embedding vectors and the output is a sequence of context vectors. The three linear layers which you see in the above image take three things as an input — “<span style="color:Violet">QUERY</span>, <span style="color:Violet">KEY</span> &amp; <span style="color:Violet">VALUE</span>”. Let’s take a simple example to understand them.</p>
+<p>If you were to search for something on Youtube or Google, The text which you type in the search box is the <span style="color:Violet">QUERY</span>. The results which appear as the video or article title are the <span style="color:Violet">KEY</span> and the content inside them is the <span style="color:Violet">VALUE</span>. So as to find the best matches the Query has to find the similarity between it and the Keys.</p>
+<p>Lets quickly look at the formulation for this:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 \text{Attention}(Q,K,V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_e}})V
@@ -622,7 +624,7 @@ document.write(`
 <p>This is a little weird so lets step through it! First important note, the <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> are three projections of our original data input <span class="math notranslate nohighlight">\(X\)</span>. This basically means we have three linear layers that all take the same input <span class="math notranslate nohighlight">\(X\)</span> to produce our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span>.</p>
 <section id="span-style-color-lightgreen-step-1-compute-the-attention-matrix-span">
 <h3><span style="color:LightGreen">Step 1: Compute the Attention Matrix</span><a class="headerlink" href="#span-style-color-lightgreen-step-1-compute-the-attention-matrix-span" title="Permalink to this heading">#</a></h3>
-<p>The first step is computing the Attention Matrix with <span class="math notranslate nohighlight">\(Softmax(QK^T)\)</span>, where Q and K both have the shape (Sequence Length x Embedding Dimension). The output of this computation will be sequence length x sequence length. This is what it looks like!</p>
+<p>The first step is computing the <span style="color:Violet">Attention Matrix</span> with <span class="math notranslate nohighlight">\(Softmax(QK^T)\)</span>, where Q and K both have the shape <code class="docutils literal notranslate"><span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Embedding</span> <span class="pre">Dimension</span></code>. The output of this computation will be <code class="docutils literal notranslate"><span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Sequence</span> <span class="pre">Length</span></code>. This is what it looks like:</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/computing_attention.png?raw=true" width="800"/>
 </div><p>In the image above, I also applied the softmax (not shown for simplicity), so each row of the attention matrix adds up to 1 (like probabilities).</p>
@@ -635,33 +637,35 @@ a\cdot b = \sum_{i=1}^n a_i*b_i = |a||b|cos(\theta)
 \]</div>
 <p>What the dot product really signifies is the similarity between vectors. Remember the cosine of 0 is just 1, so the highest possible cosine value would be when the vectors <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> point in the exact same direction. This means vectors that are similar in direction have higher magnitude.</p>
 </section>
-<section id="span-style-color-lightpink-matrix-multiplication-span">
-<h4><span style="color:LightPink">Matrix Multiplication</span><a class="headerlink" href="#span-style-color-lightpink-matrix-multiplication-span" title="Permalink to this heading">#</a></h4>
-<p>Also remember, matrix multiplication is basically just a bunch of dot products, repeating the multiply/add operation repeatedly. If we are multiplying matrix <span class="math notranslate nohighlight">\(A\)</span> with matrix <span class="math notranslate nohighlight">\(B\)</span>, what we are really doing is doing the dot product of every row of <span class="math notranslate nohighlight">\(A\)</span> and every column of <span class="math notranslate nohighlight">\(B\)</span>!</p>
+<hr class="docutils" />
+<section id="span-style-color-lightpink-recap-matrix-multiplication-span">
+<h4><span style="color:LightPink">Recap: Matrix Multiplication</span><a class="headerlink" href="#span-style-color-lightpink-recap-matrix-multiplication-span" title="Permalink to this heading">#</a></h4>
+<p>Also remember, matrix multiplication is basically just a bunch of dot products, repeating the multiply/add operation repeatedly. If we are multiplying matrix <span class="math notranslate nohighlight">\(A\)</span> with matrix <span class="math notranslate nohighlight">\(B\)</span>, what we are really doing is doing the dot product of every row of <span class="math notranslate nohighlight">\(A\)</span> and every column of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<hr class="docutils" />
 <p>So with our quick recaps, lets go back to the image above, when we are multiplying <span class="math notranslate nohighlight">\(Q\)</span> by <span class="math notranslate nohighlight">\(K^T\)</span>, we are multiplying each vector in the sequence <span class="math notranslate nohighlight">\(Q\)</span> by each vector in the sequence <span class="math notranslate nohighlight">\(K\)</span> and computing their dot product similarity. Again, <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(K\)</span> are just projections of the original data <span class="math notranslate nohighlight">\(X\)</span>, so really we are just computing the similarity between every possible combination of timesteps in <span class="math notranslate nohighlight">\(X\)</span>. We also could have just done <span class="math notranslate nohighlight">\(XX^T\)</span>, this would technically be the same thing, but by including the projections of <span class="math notranslate nohighlight">\(X\)</span> rather than using the the raw inputs themselves, we allow the model to have more learnable parameters so it can futher accentuate similarities and differences between different timesteps!</p>
 <p>The final result of this operation is the attention matrix, that computes the similarity between every possible pairs of tokens.</p>
-<p><em><strong><span style="color:Violet">Note</strong></em></span>: I didn’t inlude anything about the <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{d_e}}\)</span> term in the formula. This is just a normalization constant that ensures our variance of the attention matrix isn’t too large after our matrix multiplication. This just leads to more stable training!</p>
+<p><em><strong><span style="color:Violet">Note</strong></em></span>: I didn’t say anything about the <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{d_e}}\)</span> term in the formula. This is just a normalization constant that ensures our variance of the attention matrix isn’t too large after our matrix multiplication. This just leads to more stable training.</p>
 </section>
 </section>
 <section id="span-style-color-lightgreen-step-2-weighting-the-values-matrix-span">
 <h3><span style="color:LightGreen">Step 2: Weighting the Values Matrix</span><a class="headerlink" href="#span-style-color-lightgreen-step-2-weighting-the-values-matrix-span" title="Permalink to this heading">#</a></h3>
-<p>Now that we have our similarities of how each timestep is related to all the other timesteps, we can now do our weighted average! After the weighted average computation, each vector for each timestep isn’t just the data of the timestep but rather a weighted average of all the vectors in the sequence and how they are related to that timestep of interest.</p>
+<p>Now that we have the similarities of how each timestep is related to all the other timesteps, we can do our weighted average. After the weighted average computation, each vector for each timestep isn’t just the data of the timestep but rather a weighted average of all the vectors in the sequence and how they are related to that timestep of interest.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/encoder_attention_vis.png?raw=true" width="800"/>
-</div><p>The output of this operation gives us the sequence of context vectors!</p>
+</div><p>The output of this operation gives us the sequence of <span style="color:Violet">context vectors</span>.</p>
 </section>
 <section id="span-style-color-lightgreen-enforcing-causality-span">
 <h3><span style="color:LightGreen">Enforcing Causality</span><a class="headerlink" href="#span-style-color-lightgreen-enforcing-causality-span" title="Permalink to this heading">#</a></h3>
 <p>What we have seen so far is the equivalent to a Bidirectional RNN. The weighted average operation we are doing is between a timestep of interest and all timesteps before and after it. If we wanted a causal model, where a context vector only depends on the timesteps before it, then we need to apply a causal mask to our attention mechanism.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/causal_masking.png?raw=true" width="800"/>
-</div><p>As you can see, we apply a mask to all values of <span class="math notranslate nohighlight">\(t\)</span> where the index of the column values (our key index) is greater than the index of the row value (our value index). In practice, once we apply this mask to our attention matrix, we can then multiply by our values. You will see that the context vector at time <span class="math notranslate nohighlight">\(t\)</span> is only then dependent on previous timesteps, as we make sure future vectors of <span class="math notranslate nohighlight">\(V\)</span> are zeroed out!</p>
+<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/causal_masking.png?raw=true" width="400"/>
+</div><p>As you can see, we apply a mask to all values of <span class="math notranslate nohighlight">\(t\)</span> where the index of the column values (our key index) is greater than the index of the row value (our value index). In practice, once we apply this mask to our attention matrix, we can then multiply by our values. You will see that the context vector at time <span class="math notranslate nohighlight">\(t\)</span> is only then dependent on previous timesteps, as we make sure future vectors of <span class="math notranslate nohighlight">\(V\)</span> are zeroed out.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/decoder_attention_vis.png?raw=true" width="800"/>
 </div></section>
 <section id="span-style-color-lightgreen-lets-build-this-span">
 <h3><span style="color:LightGreen">Lets Build This!</span><a class="headerlink" href="#span-style-color-lightgreen-lets-build-this-span" title="Permalink to this heading">#</a></h3>
-<p>Now that we have everything we need, we can build it! We wont be trainig any models now, just defining and exploring the architecture here. To do so, we will define some data in the form of <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Embed</span> <span class="pre">Dim</span></code>. The Embedding dimension is basically, what dimension vector do we want to use to represent a single timestep, and the sequence length is how many timesteps there are in total.</p>
+<p>Now that we have everything we need, we can build it! We wont be trainig any models now, just defining and exploring the architecture here. To do so, we will define some data in the form of <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Embed</span> <span class="pre">Dim</span></code>. The Embedding dimension is the dimension of the vector we want to use to represent a single timestep, and the sequence length is how many timesteps there are in total.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
@@ -694,9 +698,9 @@ a\cdot b = \sum_{i=1}^n a_i*b_i = |a||b|cos(\theta)
 <p><em><strong><span style="color:Violet">Step 1</span></strong></em></p>
 <p>Compute <span class="math notranslate nohighlight">\(XX^T\)</span> which will provide the similarity score between every pair of vectors in <span class="math notranslate nohighlight">\(X\)</span>. This will be contained inside a <code class="docutils literal notranslate"><span class="pre">batch</span> <span class="pre">x</span> <span class="pre">sequence_length</span> <span class="pre">x</span> <span class="pre">sequence_length</span></code> matrix</p>
 <p><em><strong><span style="color:Violet">Step 2</span></strong></em></p>
-<p>After computing the similarity score, we can check and see that the variance of the similarity matrix is extremely high, this is the main reason for the normalization of dividing by the square root of the embedding dimension. In the end, the similarity scores are passed through a softmax to compute a probability vector, dividing by a constant basically acts as a temperature parameter to cool the distribution and provide more stable training!</p>
+<p>After computing the similarity score, we can check and see that the variance of the similarity matrix is extremely high. This is the main reason for the normalization of dividing by the square root of the embedding dimension. In the end, the similarity scores are passed through a Softmax to compute a probability vector, dividing by a constant basically acts as a temperature parameter to cool the distribution and provide more stable training.</p>
 <p><em><strong><span style="color:Violet">Step 3</span></strong></em></p>
-<p>Each row of our <code class="docutils literal notranslate"><span class="pre">sequence_length</span> <span class="pre">x</span> <span class="pre">sequence_length</span></code> matrix is the similarity of how one timestep is related to all other timesteps! What we want to do is, instead of raw similarity scores, we will convert them to probabilities, so when we do the weighted average on our values matrix, the weights add up to 1!</p>
+<p>Each row of our <code class="docutils literal notranslate"><span class="pre">sequence_length</span> <span class="pre">x</span> <span class="pre">sequence_length</span></code> matrix is the similarity of how one timestep is related to all other timesteps. Instead of raw similarity scores, we will convert them to probabilities, so that when we do the weighted average on our values matrix, the weights add up to 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### First compute XX^T for similarity score between every pair of tokens ###</span>
@@ -725,8 +729,8 @@ a\cdot b = \sum_{i=1}^n a_i*b_i = |a||b|cos(\theta)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prenormalization Variance: tensor(379.1394)
-Normed Similarity Variance: tensor(2.9620)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prenormalization Variance: tensor(377.7599)
+Normed Similarity Variance: tensor(2.9512)
 Shape of Normed Similarity: torch.Size([4, 64, 64])
 Everything Equal to One: True
 Output Shape: torch.Size([4, 64, 128])
@@ -738,7 +742,7 @@ Output Shape: torch.Size([4, 64, 128])
 </section>
 <section id="span-style-color-lightpink-lets-add-learnable-parameters-span">
 <h4><span style="color:LightPink">Lets Add Learnable Parameters</span><a class="headerlink" href="#span-style-color-lightpink-lets-add-learnable-parameters-span" title="Permalink to this heading">#</a></h4>
-<p>This time, instead of using <span class="math notranslate nohighlight">\(X\)</span> as our input, we will create our three projections of <span class="math notranslate nohighlight">\(X\)</span> (Queries, Keys and Values), but then repeat the operation we just did here! Also for convenience, I will wrap it all in a PyTorch class so we can continue adding stuff onto it as we go on!</p>
+<p>This time, instead of using <span class="math notranslate nohighlight">\(X\)</span> as our input, we will create our three projections of <span class="math notranslate nohighlight">\(X\)</span> (Queries, Keys and Values) and then repeat the operation we just did. Also for convenience, we will wrap it all in a PyTorch class so we can continue adding stuff onto it as we go on to build up a general attention block.</p>
 <p>Now what are these projections exactly? The are pointwise (or per timestep) projections! Remember, in our example here, each timestep is encoded by a vector of size 128. We will create three learnable weight matricies, incorporated inside the Linear modules in PyTorch, that take these 128 numbers per timestep and projects them to another 128 numbers (it is typical to keep the embedding dimension the same). This is a per timestep operation not across timesteps operation (across timesteps occurs within the attention computation). Obviously, PyTorch will accelerate this per timestep operation by doing it in parallel, but regardless, different timesteps dont get to see each other in the projection step.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -750,7 +754,7 @@ Output Shape: torch.Size([4, 64, 128])
         
         <span class="c1">### Create Pointwise Projections ###</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span>   <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -762,7 +766,7 @@ Output Shape: torch.Size([4, 64, 128])
 
         <span class="c1">### Do the same Computation from above, just with our QKV Matricies instead of X ###</span>
         <span class="n">similarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">@</span> <span class="n">k</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">attention</span>  <span class="o">=</span> <span class="n">similarity</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">similarity</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">attention</span> <span class="o">@</span> <span class="n">v</span>
 
         <span class="k">return</span> <span class="n">output</span>
@@ -783,23 +787,24 @@ Output Shape: torch.Size([4, 64, 128])
 </section>
 <section id="span-style-color-lightgreen-multiheaded-attention-span">
 <h3><span style="color:LightGreen">MultiHeaded Attention</span><a class="headerlink" href="#span-style-color-lightgreen-multiheaded-attention-span" title="Permalink to this heading">#</a></h3>
-<p>Now we have a small problem! Remember, the Attention matrix encodes the similarity between each pair of timesteps in your sequence. But in many cases, language being a prime example, there can be different types of relationships between different pairs of words, but our attention computation is restricted to only learn one of them. The solution to this is <span style="color:Violet">MultiHeaded Attention</span>. Inside each attention computation, what if we have 2 attention matricies, or 8 or however many we want! The more we have the larger diversity of relationships we can learn!</p>
+<p>Now we have a small problem. Remember, the Attention matrix encodes the similarity between each pair of timesteps in your sequence. But in many cases, language being a prime example, there can be different types of relationships between different pairs of words, but our attention computation is restricted to learn only one of them. The solution to this is <span style="color:Violet">Multi Headed Attention</span>. Inside each attention computation, what if we have 2 attention matricies, or 8 or however many we want! The more we have the larger diversity of relationships we can learn!</p>
 <section id="span-style-color-lightpink-single-headed-attention-recap-span">
 <h4><span style="color:LightPink">Single Headed Attention Recap</span><a class="headerlink" href="#span-style-color-lightpink-single-headed-attention-recap-span" title="Permalink to this heading">#</a></h4>
 <p>Lets summarize everything we have seen so far with a single visual, and we will call this a Single Head of attention. We will also have our embedding dimension for each word in the sequence be 9, and the sequence length is 8.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/single_headed_attention_visual.png?raw=true" width="800"/>
-</div><p>This is again called single headed attention because we only compute a single attention matrix following the logic above!</p>
+</div><p>This is again called single headed attention because we only compute a single attention matrix following the logic described above.</p>
 </section>
 <section id="span-style-color-lightpink-moving-to-multiheaded-attention-span">
 <h4><span style="color:LightPink">Moving to MultiHeaded Attention</span><a class="headerlink" href="#span-style-color-lightpink-moving-to-multiheaded-attention-span" title="Permalink to this heading">#</a></h4>
 <p>For multiheaded attention there isn’t really a lot changing. Remember, to create our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span> in single headed attention, we have 3 linear projection layers that take in the embedding dimension and output the same embedding dimension (in our case it takes in 9 and outputs 9). But in multiheaded attention, we can actually reduce our embedding dimension to a smaller value, do the attention computation on the tokens with this condensed embedding dimension, repeat it a bunch of times, and then concatenate together the outputs.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/multiheaded_attention_visual.png?raw=true" width="800"/>
+<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/multiheaded_attention_visual.png?raw=true" width="1000"/>
 </div>
 <p>It is general practice to have the number of heads you pick to be a divisor of the embedding dimension. For example, in our case, our original embedding dimension is 9, so we can pick 3 heads because 9 is divisible by 3. This also means our head dimension would now be 3, because 9/3 = 3. In typical transformers, the embedding dimension is 768, and they typically have 12 heads of attention. This means each head of attention will have a dimension of 64 because 768/12 = 64.</p>
-<p>The main reason we want it to evenly divide is because we have three heads, each takes in an embedding dimension of 9 and compresses to 3 before computing attention, and then outputs a tensor of embedding size 3. We can then take our 3 tensors, each having an embedding dimension of 3, concatenate them together, returning us back to the 9 that we began with! Again, this is just for convenience, so the embedding dimension of the input and output tensor dont change in any way. Last problem is, each head of attention is computed individually, so the final concatenated tensor has a bunch of heads of attention packed together, but we never got to share information between the different heads of attention. This is why we have the final head projection, that will take in the embedding dimension of 9 from our concatenated tensor, and output an embedding dimension of 9, therefore meshing information across the heads of our embedding dimension.</p>
-<p>Lets go ahead and build this module as shown in the figure above! Basically, each head will have 3 projection layers for <span class="math notranslate nohighlight">\(Q\)</span>,<span class="math notranslate nohighlight">\(K\)</span>,<span class="math notranslate nohighlight">\(V\)</span>, we will perform the attention computation, and then stick all the results back together at the end!</p>
+<p>The main reason we want it to evenly divide is because we have three heads, each takes in an embedding dimension of 9 and compresses to 3 before computing attention, and then outputs a tensor of embedding size 3. We can then take our 3 tensors, each having an embedding dimension of 3, concatenate them together, returning us back to the 9 that we began with! Again, this is just for convenience, so the embedding dimension of the input and output tensor dont change in any way.</p>
+<p>The last problem is that since each head of attention is computed individually, the final concatenated tensor has a bunch of heads of attention packed together, but we never got to share information between the different heads of attention. This is why we have the final head projection, that will take in the embedding dimension of 9 from our concatenated tensor, and output an embedding dimension of 9, therefore meshing information across the heads of our embedding dimension.</p>
+<p>Lets go ahead and build this module as shown in the figure above. Each head will have 3 projection layers for <span class="math notranslate nohighlight">\(Q\)</span>,<span class="math notranslate nohighlight">\(K\)</span>,<span class="math notranslate nohighlight">\(V\)</span>. We will perform the attention computation and then stick all the results back together at the end.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -891,10 +896,11 @@ Output Shape: torch.Size([4, 64, 128])
 </section>
 <section id="span-style-color-lightgreen-increasing-efficiency-span">
 <h3><span style="color:LightGreen">Increasing Efficiency</span><a class="headerlink" href="#span-style-color-lightgreen-increasing-efficiency-span" title="Permalink to this heading">#</a></h3>
-<p>We now have a successful Multihead Attention layer!! This basically has all the same math and lodgic of attention, except for one small issue: efficiency. Typically we want to avoid for loops as much as possible in our PyTorch code, being able to vectorize and do things in parallel will make much better use of the GPUs we train on. To make this more efficient though, theres something we need to understand first: PyTorch Linear layers on multidimensional tensors!</p>
+<p>We now have successfully implemented a Multi Head Attention layer! This has all the same math and lodgic of attention, except for one small issue: <span style="color:Violet">efficiency</span>. Typically we want to avoid for loops as much as possible in our PyTorch code, being able to vectorize and do things in parallel will make much better use of the GPUs we train on. To make this more efficient, there is something we need to understand first: PyTorch Linear layers on multidimensional tensors.</p>
 <section id="span-style-color-lightpink-linear-layers-on-multidimensional-tensors-span">
 <h4><span style="color:LightPink">Linear Layers on MultiDimensional Tensors</span><a class="headerlink" href="#span-style-color-lightpink-linear-layers-on-multidimensional-tensors-span" title="Permalink to this heading">#</a></h4>
-<p>We have already seen <code class="docutils literal notranslate"><span class="pre">nn.Linear(input_dim,</span> <span class="pre">output_dim)</span></code> many times already, and this module expects a tensor of shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">input_dim]</span></code> and it will output <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">output_dim]</span></code>. But what if our input is <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Dim1</span> <span class="pre">x</span> <span class="pre">Dim2</span> <span class="pre">x</span> <span class="pre">input_dim]</span></code>, then what happens? Basically, PyTorch will automatically flatten all the dimensions other than the last one automagically, do the linear layer, and then return back to the expected shape, so we would get an output of <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Dim1</span> <span class="pre">x</span> <span class="pre">Dim2</span> <span class="pre">x</span> <span class="pre">output_dim]</span></code>. Another way of thinking about this is, PyTorch linear layers only are applied to the last dimension of your tensor. Lets do a quick example!</p>
+<p>We have already seen <code class="docutils literal notranslate"><span class="pre">nn.Linear(input_dim,</span> <span class="pre">output_dim)</span></code> many times already, and this module expects a tensor of shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">input_dim]</span></code> and it will output <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">output_dim]</span></code>. But what if our input is <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Dim1</span> <span class="pre">x</span> <span class="pre">Dim2</span> <span class="pre">x</span> <span class="pre">input_dim]</span></code>, then what happens? Basically, PyTorch will automatically flatten all the dimensions other than the last one automagically, do the Linear layer, and then return back to the expected shape, so we would get an output of <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Dim1</span> <span class="pre">x</span> <span class="pre">Dim2</span> <span class="pre">x</span> <span class="pre">output_dim]</span></code>. Another way of thinking about this is, PyTorch linear layers only are applied to the last dimension of your tensor.</p>
+<p>Lets do a quick example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
@@ -919,13 +925,13 @@ Input Shape: torch.Size([5, 1, 2, 3, 4, 10]) Output Shape: torch.Size([5, 1, 2, 
 </section>
 <section id="span-style-color-lightpink-packing-linear-layers-span">
 <h4><span style="color:LightPink">Packing Linear Layers</span><a class="headerlink" href="#span-style-color-lightpink-packing-linear-layers-span" title="Permalink to this heading">#</a></h4>
-<p>Another important idea is packing our linear layers together. Lets think about out example again, each projection for Q, K and V have a Linear layer that takes in 9 values and outputs 3 values, and we repeat this 3 times for each head. Lets just think about our Queries for now.</p>
+<p>Another important idea is packing our Linear layers together. Lets think about our Multi Head example again: each projection for Q, K and V have a Linear layer that takes in 9 values and outputs 3 values, and we repeat this 3 times for each head. Lets just think about our Queries for now.</p>
 <ul class="simple">
-<li><p>Query for Head 1: Take in input x with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
-<li><p>Query for Head 2: Take in input x with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
-<li><p>Query for Head 3: Take in input x with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
+<li><p><span style="color:Violet">Query for Head 1</span>: Take in input <span class="math notranslate nohighlight">\(x\)</span> with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
+<li><p><span style="color:Violet">Query for Head 2</span>: Take in input <span class="math notranslate nohighlight">\(x\)</span> with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
+<li><p><span style="color:Violet">Query for Head 3</span>: Take in input <span class="math notranslate nohighlight">\(x\)</span> with embedding dim 9 and outputs tensor with embedding dimension 3</p></li>
 </ul>
-<p>Well what if we reframed this? What if we had a single linear layer that take input x with embedding dim 9 and outputs something with embedding dim 9. Afterwards, we can cut the matrix into our three heads of attention. Lets do a quick example!</p>
+<p>Well what if we reframed this? What if we had a single Linear layer that takes input <span class="math notranslate nohighlight">\(x\)</span> with embedding dim 9 and outputs something with embedding dim 9. Afterwards, we can cut the matrix into our three heads of attention. Lets do a quick example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
@@ -951,11 +957,11 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 </section>
 <section id="span-style-color-lightpink-multidimensional-matrix-multiplication-span">
 <h4><span style="color:LightPink">MultiDimensional Matrix Multiplication</span><a class="headerlink" href="#span-style-color-lightpink-multidimensional-matrix-multiplication-span" title="Permalink to this heading">#</a></h4>
-<p>So, we have composed our 9 linear layers (3 heads have 3 projections for Q,k,V each) into just 3 linear layers, where we have packed all the heads into them. But after we chunk up our Q,K,V tensors each into three more tensors for each head we will still need to do the looping operation to go through the cooresponding q,k,v matricies. Can we parallelize this too? Of course! We just need to better understand higher dimensional matrix multiplication.</p>
+<p>So, we have composed our 9 Linear layers (3 heads have 3 projections for <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span> each) into just 3 Linear layers, where we have packed all the heads into them. But after we chunk up our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span> tensors each into three more tensors for each head we will still need to do the looping operation to go through the cooresponding <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(v\)</span> matricies. Can we parallelize this too? Of course! We just need to better understand higher dimensional matrix multiplication.</p>
 </section>
 <section id="span-style-color-lightpink-recap-span">
 <h4><span style="color:LightPink">Recap</span><a class="headerlink" href="#span-style-color-lightpink-recap-span" title="Permalink to this heading">#</a></h4>
-<p>Matrix multiplication is typicall seen like this, multiplying an <code class="docutils literal notranslate"><span class="pre">[AxB]</span></code> matrix by a <code class="docutils literal notranslate"><span class="pre">[BxC]</span></code> which will produce a <code class="docutils literal notranslate"><span class="pre">[AxC]</span></code> matrix. But what if we have a <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">A</span> <span class="pre">x</span> <span class="pre">B]</span></code> multiplied by a <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">B</span> <span class="pre">x</span> <span class="pre">C]</span></code>. Matrix multiplication again only happens on the last two dimensions, so because our first tensor ends with an <code class="docutils literal notranslate"><span class="pre">[AxB]</span></code> and the second tensor ends with a <code class="docutils literal notranslate"><span class="pre">[BxC]</span></code>, the resulting matrix multiplication will be <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">A</span> <span class="pre">x</span> <span class="pre">C</span></code>]`. Lets see a quick example!</p>
+<p>Matrix multiplication is typicall seen like this, multiplying an <code class="docutils literal notranslate"><span class="pre">[AxB]</span></code> matrix by a <code class="docutils literal notranslate"><span class="pre">[BxC]</span></code> which will produce a <code class="docutils literal notranslate"><span class="pre">[AxC]</span></code> matrix. But what if we have a <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">A</span> <span class="pre">x</span> <span class="pre">B]</span></code> multiplied by a <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">B</span> <span class="pre">x</span> <span class="pre">C]</span></code>. Matrix multiplication again only happens on the last two dimensions, so because our first tensor ends with an <code class="docutils literal notranslate"><span class="pre">[AxB]</span></code> and the second tensor ends with a <code class="docutils literal notranslate"><span class="pre">[BxC]</span></code>, the resulting matrix multiplication will be <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">dim1</span> <span class="pre">x</span> <span class="pre">A</span> <span class="pre">x</span> <span class="pre">C</span></code>. Lets see a quick example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
@@ -974,19 +980,19 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 </section>
 <section id="span-style-color-lightgreen-the-trick-of-parallelizing-heads-span">
 <h3><span style="color:LightGreen">The Trick of Parallelizing Heads</span><a class="headerlink" href="#span-style-color-lightgreen-the-trick-of-parallelizing-heads-span" title="Permalink to this heading">#</a></h3>
-<p>Now for the trick of parallelizing our heads by using everything we have just seen! All we need to do is split the embedding dimension up and move the heads out of the way so the computation can occur. Remember, we have our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> matricies right now that each contain all the projected heads and are in the shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_dim]</span></code> ([batch x 8 x 9] in our case).</p>
+<p>Now for the trick of parallelizing our heads by using everything we have just seen. All we need to do is split the embedding dimension up and move the heads out of the way so the computation can occur. Remember, we have our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> matricies right now that each contain all the projected heads and are in the shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_dim]</span></code> ([batch x 8 x 9] in our case).</p>
 <ul class="simple">
-<li><p>Step 1: Split the embedding dimension into the number of heads and head dim. We already know that our embedding dimension is divisible as thats how we set it, so we can do <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_dim]</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>. (This would be taking our [batch x 8 x 9] and converting to [batch x 8 x 3 x 3])</p></li>
+<li><p>The first step is to split the embedding dimension into the number of heads and head dimension. We already know that our embedding dimension is divisible as thats how we set it, so we can do <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_dim]</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>. (This would be taking our [batch x 8 x 9] and converting to [batch x 8 x 3 x 3] in our case).</p></li>
 <li><p>The attention computation has to happen between two matricies of shape <code class="docutils literal notranslate"><span class="pre">[Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code> for queries and <code class="docutils literal notranslate"><span class="pre">[Embed_Dim</span> <span class="pre">x</span> <span class="pre">Seq_len]</span></code> for our transposed keys. In the case of multihead attention, the matrix multiplication happens across the Head Dimension rather than embedding. If our Queries, Keys and Values are in the shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>, we can just transpose the Seq_len and Num_heads dimensions and make a tensor of shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>. This way when I do Queries multiplied by the Transpose of Keys I will be doing <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code> multiplied by <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed</span> <span class="pre">Dim</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code> creating the attention matrix <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code>. Therefore we have effectively created for every sample in the batch, and for every head of attention, a unique attention matrix! Thus we have parallelized the Attention Matrix computation.</p></li>
-<li><p>Now that we have out all our attention matricies <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code>, we can perform our scaling by our constant, and perform softmax across every row of each attention matrix (along the last dimension).</p></li>
-<li><p>The last step is to multiply out attention matrix <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code> by the Values which is in the shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>, which will get us to <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>!</p></li>
+<li><p>Now that we have out all our attention matricies <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code>, we can perform our scaling by our constant, and perform Softmax across every row of each attention matrix (along the last dimension).</p></li>
+<li><p>The next step is to multiply out attention matrix <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq</span> <span class="pre">Len]</span></code> by the Values which is in the shape <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>, which will get us to <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>!</p></li>
 <li><p>Lastly, we need to put our Num Heads and Embedding dimensions back together, so we can permute the Num Heads and Seq Len dimensions again which gives us <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code> and flatten on the last two dimension finally giving us <code class="docutils literal notranslate"><span class="pre">[Batch</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Num_Heads</span> <span class="pre">x</span> <span class="pre">Embed_Dim]</span></code>.</p></li>
 <li><p>This flattening operation is equivalent to concatenation of all the heads of attention, so we can pass this through our final projection layer so all the heads of attention gets to know each other!</p></li>
 </ul>
 </section>
 <section id="span-style-color-lightgreen-more-efficient-attention-implementation-span">
 <h3><span style="color:LightGreen">More Efficient Attention Implementation</span><a class="headerlink" href="#span-style-color-lightgreen-more-efficient-attention-implementation-span" title="Permalink to this heading">#</a></h3>
-<p>We will also include some extra dropout layers typically added to attention computations.</p>
+<p>We will also include some extra <span style="color:Violet">dropout layers</span> typically added to attention computations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SelfAttentionEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -1073,24 +1079,24 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 </section>
 <section id="span-style-color-orange-padding-span">
 <h2><span style="color:Orange">Padding</span><a class="headerlink" href="#span-style-color-orange-padding-span" title="Permalink to this heading">#</a></h2>
-<p>One aspect we haven’t talked about yet is padding. We have to train in batches, and unfortunately, if each sequence is of different lengths, we cannot put them together, so in this situation, we just take all the sequences that are shorter than the longest in the batch and then pad them.</p>
+<p>One aspect we haven’t talked about yet is padding. We have to train in batches, and unfortunately, if each sequence is of different lengths, we cannot put them together simply and dynamically, In this situation, we just take all the sequences that are shorter than the longest one in the batch and then <span style="color:Violet">pad</span> them.</p>
 <section id="span-style-color-lightgreen-sequence-padding-and-attention-masking-span">
 <h3><span style="color:LightGreen">Sequence Padding and Attention Masking</span><a class="headerlink" href="#span-style-color-lightgreen-sequence-padding-and-attention-masking-span" title="Permalink to this heading">#</a></h3>
-<p>One typical consideration for models like this is, when we pass in sentences of data, different sentences have different lengths. To create a matrix of tokens, we need to make sure all the sequences are the same, therefore we have to pad the shorter sequences to the longer ones. This is what the padding looks like!</p>
+<p>One typical consideration for models like this is, when we pass in sentences of data, different sentences have different lengths. To create a matrix of tokens, we need to make sure all the sequences are the same, therefore we have to pad the shorter sequences to the longer ones. This is what the padding looks like:</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/sequence_padding.png?raw=true" width="600"/>
 </div>
-<p>Now the pad tokens are just fillers, they don’t add any information at all to the data. To deal with this, we need to make sure that when we compute attention, these pad tokens are ignored. This is very similar to the Causal Mask in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, and we will be doing exactly what we did there, fill in the masked locations with <span class="math notranslate nohighlight">\(-\infty\)</span> before softmax is computed. Lets take a quick look at this for one of the sentences above.</p>
+<p>The pad tokens are just fillers and they don’t add any information at all to the data. To deal with this, we need to make sure that when we compute attention, these pad tokens are ignored. This is very similar to the Causal Mask in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, and we will be doing exactly what we did there, fill in the masked locations with <span class="math notranslate nohighlight">\(-\infty\)</span> before Softmax is computed. Lets take a quick look at this for one of the sentences above.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/padding_attention_mask.png?raw=true" width="600"/>
-</div><p>You can see that we zero out the columns of our attention mask that has padding tokens, but not the row. <span style="color:Violet">The reason for this is, the model should learn the relation of how the padding tokens are related to the words (this is most likely just positional information that padding is at the end), but it should not learn how other words are related to padding</span>, as the padding adds no semantic meaning. This is why, when multiplying by our values, we have zeroed out the attention weights of the 4th column, as when computing weighted averages of how one word is related to all others, the padding token is not included.</p>
+<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/padding_attention_mask.png?raw=true" width="800"/>
+</div><p>You can see that we zero out the columns of our attention mask that has padding tokens, but not the row. The reason for this is, <span style="color:Violet">the model should learn the relation of how the padding tokens are related to the words</span> (this is most likely just positional information that padding is at the end), but it <span style="color:Violet">should not learn how other words are related to padding</span>, as the padding adds no semantic meaning. This is why, when multiplying by our values, we have zeroed out the attention weights of the 4th column, as when computing weighted averages of how one word is related to all others, the padding token is not included.</p>
 </section>
 </section>
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
-<p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our RoBERTa model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>, the raw output before the softmax is below.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a1828324-58e2-4017-aed6-656cc2374f83">
-<span class="eqno">(1)<a class="headerlink" href="#equation-a1828324-58e2-4017-aed6-656cc2374f83" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>. The raw output before the Softmax is below:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-959c14d7-522c-42d6-955e-58b5fc0ab1f3">
+<span class="eqno">(1)<a class="headerlink" href="#equation-959c14d7-522c-42d6-955e-58b5fc0ab1f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1102,9 +1108,9 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \[ \Large
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
-<p>Then, if we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7d789a03-5fcf-42d7-8171-e0f96075c588">
-<span class="eqno">(2)<a class="headerlink" href="#equation-7d789a03-5fcf-42d7-8171-e0f96075c588" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p>If we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-380bc3e2-52b9-44f9-993f-52e09d25384c">
+<span class="eqno">(2)<a class="headerlink" href="#equation-380bc3e2-52b9-44f9-993f-52e09d25384c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1123,8 +1129,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eb762e0b-7e9c-4c94-8d4a-948d82b40295">
-<span class="eqno">(3)<a class="headerlink" href="#equation-eb762e0b-7e9c-4c94-8d4a-948d82b40295" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9e8cf2b3-83fc-4561-a501-79d17e200998">
+<span class="eqno">(3)<a class="headerlink" href="#equation-9e8cf2b3-83fc-4561-a501-79d17e200998" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1132,8 +1138,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e9ae3f11-025c-4325-8a62-50b064b905dc">
-<span class="eqno">(4)<a class="headerlink" href="#equation-e9ae3f11-025c-4325-8a62-50b064b905dc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d8095385-f56d-4069-a4eb-59c4ea7c3dcc">
+<span class="eqno">(4)<a class="headerlink" href="#equation-d8095385-f56d-4069-a4eb-59c4ea7c3dcc" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
  7       &amp; -8   &amp; -\infty  \\
@@ -1149,7 +1155,7 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p>Which is exactly what we want! Therefore, when computing attention, we need to know which tokens are padding tokens in our data, and then go ahead and perform this computation on our attention output before multiplying with values.</p>
 <section id="span-style-color-lightgreen-add-padding-to-our-attention-computation-span">
 <h3><span style="color:LightGreen">Add Padding to our Attention Computation</span><a class="headerlink" href="#span-style-color-lightgreen-add-padding-to-our-attention-computation-span" title="Permalink to this heading">#</a></h3>
-<p>There are a few ways to indicate padding, but the most common is a simple True/False vector. Lets say we have the following 3 sequences:</p>
+<p>There are a few ways to indicate padding, but the most common is a simple <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> vector. Lets say we have the following 3 sequences:</p>
 <ul class="simple">
 <li><p>sequence_1: [a1, a2, a3]</p></li>
 <li><p>sequence_2: [b1, b2, b3, b4]</p></li>
@@ -1157,36 +1163,36 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 </ul>
 <p>In this situation we would pad sequence_1 and sequence_3 to the longest sequence, so after padding we would have something like this:</p>
 <ul class="simple">
-<li><p>sequence_1: [a1, a2, a3, <strong>&lt;PAD&gt;</strong>]</p></li>
+<li><p>sequence_1: [a1, a2, a3, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>]</p></li>
 <li><p>sequence_2: [b1, b2, b3, b4]</p></li>
-<li><p>sequence_3: [c1, c2, c3, <strong>&lt;PAD&gt;</strong>]</p></li>
+<li><p>sequence_3: [c1, c2, c3, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>]</p></li>
 </ul>
-<p>Now we will create boolean vectors, identifying True/False for tokens we want to compute attention on. Anything that is a <strong>&lt;PAD&gt;</strong> token would be omitted, so we would have the following attention masks for each sequence:</p>
+<p>Now we will create boolean vectors, identifying <code class="docutils literal notranslate"><span class="pre">True/</span></code>False for tokens we want to compute attention on. Anything that is a <strong>&lt;PAD&gt;</strong> token would be omitted, so we would have the following attention masks for each sequence:</p>
 <ul class="simple">
-<li><p>sequence_1: [True, True, True, False]</p></li>
-<li><p>sequence_2: [True, True, True, True]</p></li>
-<li><p>sequence_3: [True, True, True, False]</p></li>
+<li><p>sequence_1: [<code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code>]</p></li>
+<li><p>sequence_2: [<code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>]</p></li>
+<li><p>sequence_3: [<code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span></code>]</p></li>
 </ul>
-<p>Then, as indicated above, for columns for tokens identified as False (because they are pad tokens) we will zero out the attention scores and reweight them to properly compute attention without learning how words are related to the padding (only how the padding is related to the words)</p>
+<p>Then, as indicated above, for columns for tokens identified as <code class="docutils literal notranslate"><span class="pre">False</span></code> (because they are pad tokens) we will zero out the attention scores and reweight them to properly compute attention without learning how words are related to the padding (only how the padding is related to the words)</p>
 </section>
 <section id="span-style-color-lightgreen-repeating-to-match-attention-matrix-shape-span">
 <h3><span style="color:LightGreen">Repeating to Match Attention Matrix Shape</span><a class="headerlink" href="#span-style-color-lightgreen-repeating-to-match-attention-matrix-shape-span" title="Permalink to this heading">#</a></h3>
-<p>So we now have our attention mask and know we need to mask the columns in our attention matrix that coorespond to them! Lets also pretend for now we are doing single headed attention, we can deal with the multiheaded attention in a bit. In this case, lets take a look at our attention and mask shapes:</p>
+<p>So we now have our attention mask and know we need to mask the columns in our attention matrix that coorespond to them. Lets also pretend for now we are doing single headed attention, we can deal with the multiheaded attention in a bit. In this case, lets take a look at our attention and mask shapes:</p>
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ad22de85-46cd-487c-a048-c9033506a8f6">
-<span class="eqno">(5)<a class="headerlink" href="#equation-ad22de85-46cd-487c-a048-c9033506a8f6" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
-True &amp; True &amp; True &amp; False\\
-True &amp; True &amp; True &amp; False\\
-True &amp; True &amp; True &amp; False\\
-True &amp; True &amp; True &amp; False
+<div class="amsmath math notranslate nohighlight" id="equation-a7d0d329-2a6f-4dc2-a2ed-60d774f8e6ac">
+<span class="eqno">(5)<a class="headerlink" href="#equation-a7d0d329-2a6f-4dc2-a2ed-60d774f8e6ac" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+\textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
+\textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
+\textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
+\textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False}
 \end{bmatrix}\]</div>
-<p>By repeating our mask for sequence_1, we get exactly a seq_len x seq_len matrix where the column we don’t want to compute attention for is indicated by the False!</p>
-<p>Therefore our final mask will be of shape (Batch x seq_len x seq_len)</p>
-<p><em><strong><span style="color:Violet">CAVEAT</span></strong></em>: Technically we don’t need to do this actually, and this is why the padding can get confusing as different people/functions do it different ways. First of all, lets say we reshaped our attention mask from (Batch x seq_len) to (Batch x 1 x seq_len). That 1 is a dummy dimension, and when we use the <code class="docutils literal notranslate"><span class="pre">Tensor.masked_fill_</span></code> it will automatically broadcast our attention mask across that dummy 1 dimension. On the other hand, when we go to use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html">flash_attention</a> at the end, this method wants the tensor specifically in the shape (Batch x seq_len x seq_len)</p>
-<p>For testing, lets just use a (1 x 6 x 6) tensor as a fake 8 x 8 attention matrix for a single sample (not multihead attention yet). Lets also pretend the last two tokens are pad tokens, so we want the attention mask that will fill the last two columns with <span class="math notranslate nohighlight">\(-\infty\)</span>, so when we take the softmax in the future it’ll become zero!</p>
-<p><code class="docutils literal notranslate"><span class="pre">Tensor.masked_fill_</span></code> will fill anywhere indicated as <code class="docutils literal notranslate"><span class="pre">True</span></code> with our fill value. In our case though, we have the tokens we don’t want to compute on (the ones we want to fill with <span class="math notranslate nohighlight">\(-\infty\)</span> as false! So we just need to flip the boolean in our attention mask.</p>
+<p>By repeating our mask for sequence_1, we get exactly a <code class="docutils literal notranslate"><span class="pre">seq_len</span> <span class="pre">x</span> <span class="pre">seq_len</span></code> matrix where the column we don’t want to compute attention for is indicated by the <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>Therefore our final mask will be of shape <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">seq_len</span> <span class="pre">x</span> <span class="pre">seq_len</span></code></p>
+<p><em><strong><span style="color:Violet">CAVEAT</span></strong></em>: Technically we don’t need to do this, and this is why the padding can get confusing as different people/functions do it different ways. First of all, lets say we reshaped our attention mask from<code class="docutils literal notranslate"><span class="pre">(Batch</span> <span class="pre">x</span> <span class="pre">seq_len</span></code> to <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">seq_len</span></code>. That 1 is a dummy dimension, and when we use the <code class="docutils literal notranslate"><span class="pre">Tensor.masked_fill_</span></code> it will automatically broadcast our attention mask across that dummy 1 dimension. On the other hand, when we go to use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html">flash_attention</a> at the end, this method wants the tensor specifically in the shape <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">seq_len</span> <span class="pre">x</span> <span class="pre">seq_len</span></code>.</p>
+<p>For testing, lets just use a <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">x</span> <span class="pre">6</span> <span class="pre">x</span> <span class="pre">6</span></code> tensor as a fake <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">x</span> <span class="pre">8</span></code> attention matrix for a single sample (not multihead attention yet). Lets also pretend the last two tokens are pad tokens, so we want the attention mask that will fill the last two columns with <span class="math notranslate nohighlight">\(-\infty\)</span>, so when we take the softmax in the future it’ll become zero!</p>
+<p><code class="docutils literal notranslate"><span class="pre">Tensor.masked_fill_</span></code> will fill anywhere indicated as <code class="docutils literal notranslate"><span class="pre">True</span></code> with our fill value. In our case though, we have the tokens we don’t want to compute on (the ones we want to fill with <span class="math notranslate nohighlight">\(-\infty\)</span>) as false. So we just need to flip the boolean in our attention mask.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Create an example attention matrix (b x n x n) ###</span>
@@ -1218,12 +1224,12 @@ True &amp; True &amp; True &amp; False
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Method 1:
 --------
 tensor([[[ True,  True,  True,  True, False, False]]])
-tensor([[[0.2013, 0.0377, 0.2680, 0.6254,   -inf,   -inf],
-         [0.9160, 0.4620, 0.3482, 0.6635,   -inf,   -inf],
-         [0.3787, 0.1584, 0.5135, 0.6204,   -inf,   -inf],
-         [0.9522, 0.3619, 0.8143, 0.6780,   -inf,   -inf],
-         [0.2496, 0.4891, 0.4725, 0.9057,   -inf,   -inf],
-         [0.5401, 0.2821, 0.7578, 0.2110,   -inf,   -inf]]])
+tensor([[[0.6821, 0.4571, 0.9372, 0.7789,   -inf,   -inf],
+         [0.1615, 0.4683, 0.1886, 0.0264,   -inf,   -inf],
+         [0.4572, 0.5982, 0.7586, 0.3741,   -inf,   -inf],
+         [0.3705, 0.3646, 0.2765, 0.2522,   -inf,   -inf],
+         [0.3564, 0.2086, 0.9521, 0.3250,   -inf,   -inf],
+         [0.4875, 0.8989, 0.4354, 0.0878,   -inf,   -inf]]])
 Method 2:
 --------
 tensor([[[ True,  True,  True,  True, False, False],
@@ -1232,12 +1238,12 @@ tensor([[[ True,  True,  True,  True, False, False],
          [ True,  True,  True,  True, False, False],
          [ True,  True,  True,  True, False, False],
          [ True,  True,  True,  True, False, False]]])
-tensor([[[0.2013, 0.0377, 0.2680, 0.6254,   -inf,   -inf],
-         [0.9160, 0.4620, 0.3482, 0.6635,   -inf,   -inf],
-         [0.3787, 0.1584, 0.5135, 0.6204,   -inf,   -inf],
-         [0.9522, 0.3619, 0.8143, 0.6780,   -inf,   -inf],
-         [0.2496, 0.4891, 0.4725, 0.9057,   -inf,   -inf],
-         [0.5401, 0.2821, 0.7578, 0.2110,   -inf,   -inf]]])
+tensor([[[0.6821, 0.4571, 0.9372, 0.7789,   -inf,   -inf],
+         [0.1615, 0.4683, 0.1886, 0.0264,   -inf,   -inf],
+         [0.4572, 0.5982, 0.7586, 0.3741,   -inf,   -inf],
+         [0.3705, 0.3646, 0.2765, 0.2522,   -inf,   -inf],
+         [0.3564, 0.2086, 0.9521, 0.3250,   -inf,   -inf],
+         [0.4875, 0.8989, 0.4354, 0.0878,   -inf,   -inf]]])
 </pre></div>
 </div>
 </div>
@@ -1245,10 +1251,10 @@ tensor([[[0.2013, 0.0377, 0.2680, 0.6254,   -inf,   -inf],
 </section>
 <section id="span-style-color-lightgreen-matching-shapes-for-multihead-attention-span">
 <h3><span style="color:LightGreen">Matching Shapes for MultiHead Attention</span><a class="headerlink" href="#span-style-color-lightgreen-matching-shapes-for-multihead-attention-span" title="Permalink to this heading">#</a></h3>
-<p>So we now have our attention mask and know how to mask the columns cooresponding to them! But we have one other problem: MultiHead Attention. This means we don’t have just a single attention matrix, but rather <code class="docutils literal notranslate"><span class="pre">num_heads</span></code> of them. This means we need to mask the cooresponding columns of <span style="color:Violet">ALL</span> attention matricies across the heads. Lets take a quick look at our tensors in question again:</p>
+<p>So we now have our attention mask and know how to mask the columns cooresponding to them. But we have one other problem: Multi Head Attention. This means we don’t have just a single attention matrix, but rather <code class="docutils literal notranslate"><span class="pre">num_heads</span></code> of them. This means we need to mask the corresponding columns of <span style="color:Violet">ALL</span> attention matricies across the heads. Lets take a quick look at our tensors in question again:</p>
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x num_heads x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
-<p>This means we can do what we did earlier, just twice! We can take our mask and unsqueeze twice, and go from (Batch x seq_len) to (Batch x 1 x 1 x seq_len), and this would be totally fine! Except again, when we do our <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html">flash_attention</a> later, it again expects a (seq_len x seq_len). Luckily though, flash attention will broadcast over the head dimension as long as that dimension is present in the mask, so we just have to do what we did earlier and repeat (Batch x 1 x 1 x seq_len) to (Batch x 1 x seq_len x seq_len)</p>
+<p>This means we can do what we did earlier, just twice! We can take our mask and unsqueeze twice, and go from <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">seq_len</span></code> to <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">seq_len</span></code>, and this would be totally fine. Except again, when we do our <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html">flash_attention</a> later, it again expects a <code class="docutils literal notranslate"><span class="pre">seq_len</span> <span class="pre">x</span> <span class="pre">seq_len</span></code>. Luckily though, flash attention will broadcast over the head dimension as long as that dimension is present in the mask, so we just have to do what we did earlier and repeat <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">seq_len</span></code> to <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">seq_len</span> <span class="pre">x</span> <span class="pre">seq_len</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Create an example attention matrix (b x h x n x n) ###</span>
@@ -1280,19 +1286,19 @@ tensor([[[0.2013, 0.0377, 0.2680, 0.6254,   -inf,   -inf],
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Method 1:
 --------
 tensor([[[[ True,  True,  True,  True, False, False]]]])
-tensor([[[[0.3654, 0.8532, 0.5070, 0.1845,   -inf,   -inf],
-          [0.3154, 0.8159, 0.3620, 0.3203,   -inf,   -inf],
-          [0.9002, 0.8642, 0.3435, 0.1944,   -inf,   -inf],
-          [0.0805, 0.6759, 0.0151, 0.6594,   -inf,   -inf],
-          [0.3954, 0.3038, 0.5052, 0.5700,   -inf,   -inf],
-          [0.7350, 0.4743, 0.5680, 0.3269,   -inf,   -inf]],
+tensor([[[[0.4502, 0.4681, 0.3192, 0.6109,   -inf,   -inf],
+          [0.8668, 0.0899, 0.7930, 0.7684,   -inf,   -inf],
+          [0.6498, 0.2491, 0.8711, 0.9962,   -inf,   -inf],
+          [0.9936, 0.9426, 0.4658, 0.4616,   -inf,   -inf],
+          [0.3343, 0.3867, 0.0966, 0.0596,   -inf,   -inf],
+          [0.5665, 0.5316, 0.8865, 0.6268,   -inf,   -inf]],
 
-         [[0.1874, 0.2801, 0.8402, 0.7756,   -inf,   -inf],
-          [0.2076, 0.1797, 0.7023, 0.8779,   -inf,   -inf],
-          [0.6574, 0.6212, 0.2039, 0.6746,   -inf,   -inf],
-          [0.1400, 0.2291, 0.6756, 0.3327,   -inf,   -inf],
-          [0.0820, 0.3183, 0.4739, 0.2000,   -inf,   -inf],
-          [0.9870, 0.8551, 0.3228, 0.2129,   -inf,   -inf]]]])
+         [[0.8691, 0.4049, 0.5839, 0.4622,   -inf,   -inf],
+          [0.3121, 0.0574, 0.0720, 0.6727,   -inf,   -inf],
+          [0.8972, 0.7221, 0.7368, 0.8762,   -inf,   -inf],
+          [0.5947, 0.8555, 0.8953, 0.3878,   -inf,   -inf],
+          [0.1727, 0.1827, 0.4982, 0.2055,   -inf,   -inf],
+          [0.9288, 0.4976, 0.4614, 0.9533,   -inf,   -inf]]]])
 Method 2:
 --------
 tensor([[[[ True,  True,  True,  True, False, False],
@@ -1301,19 +1307,19 @@ tensor([[[[ True,  True,  True,  True, False, False],
           [ True,  True,  True,  True, False, False],
           [ True,  True,  True,  True, False, False],
           [ True,  True,  True,  True, False, False]]]])
-tensor([[[[0.3654, 0.8532, 0.5070, 0.1845,   -inf,   -inf],
-          [0.3154, 0.8159, 0.3620, 0.3203,   -inf,   -inf],
-          [0.9002, 0.8642, 0.3435, 0.1944,   -inf,   -inf],
-          [0.0805, 0.6759, 0.0151, 0.6594,   -inf,   -inf],
-          [0.3954, 0.3038, 0.5052, 0.5700,   -inf,   -inf],
-          [0.7350, 0.4743, 0.5680, 0.3269,   -inf,   -inf]],
+tensor([[[[0.4502, 0.4681, 0.3192, 0.6109,   -inf,   -inf],
+          [0.8668, 0.0899, 0.7930, 0.7684,   -inf,   -inf],
+          [0.6498, 0.2491, 0.8711, 0.9962,   -inf,   -inf],
+          [0.9936, 0.9426, 0.4658, 0.4616,   -inf,   -inf],
+          [0.3343, 0.3867, 0.0966, 0.0596,   -inf,   -inf],
+          [0.5665, 0.5316, 0.8865, 0.6268,   -inf,   -inf]],
 
-         [[0.1874, 0.2801, 0.8402, 0.7756,   -inf,   -inf],
-          [0.2076, 0.1797, 0.7023, 0.8779,   -inf,   -inf],
-          [0.6574, 0.6212, 0.2039, 0.6746,   -inf,   -inf],
-          [0.1400, 0.2291, 0.6756, 0.3327,   -inf,   -inf],
-          [0.0820, 0.3183, 0.4739, 0.2000,   -inf,   -inf],
-          [0.9870, 0.8551, 0.3228, 0.2129,   -inf,   -inf]]]])
+         [[0.8691, 0.4049, 0.5839, 0.4622,   -inf,   -inf],
+          [0.3121, 0.0574, 0.0720, 0.6727,   -inf,   -inf],
+          [0.8972, 0.7221, 0.7368, 0.8762,   -inf,   -inf],
+          [0.5947, 0.8555, 0.8953, 0.3878,   -inf,   -inf],
+          [0.1727, 0.1827, 0.4982, 0.2055,   -inf,   -inf],
+          [0.9288, 0.4976, 0.4614, 0.9533,   -inf,   -inf]]]])
 </pre></div>
 </div>
 </div>
@@ -1431,7 +1437,7 @@ Final Output: torch.Size([3, 5, 9])
 </section>
 <section id="id1">
 <h3><span style="color:LightGreen">Enforcing Causality</span><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<p>Everything we have done so far is an encoding transformer, which is eqivalent to a bidirectional RNN where a single timestep can look forwards and backwards. To enforce causality, we can only look backwards, so we have to add in a causal mask! How the causal mask looks is the following:</p>
+<p>Everything we have done so far is an <span style="color:Violet">encoding transformer</span>, which is eqivalent to a bidirectional RNN where a single timestep can look both forwards and backwards. To enforce causality, we can only look backwards, so we have to add in a causal mask. How the causal mask looks is the following:</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/causal_masking.png?raw=true" width="600"/>
 </div><p>Basically, every Query vector can only attend to the Key vectors that are at the same timestep or before! Now how do we actually do this? Unfortunately its not as easy as just changing the numbers in our attention mask, because we still need every row of the attention mask to add to one (like a probability vector!). We want something like this though:</p>
@@ -1442,8 +1448,8 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6f31a3a8-d658-4363-84ff-80690c2efae3">
-<span class="eqno">(6)<a class="headerlink" href="#equation-6f31a3a8-d658-4363-84ff-80690c2efae3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9b5eb7da-c208-491a-b335-86319c023d92">
+<span class="eqno">(6)<a class="headerlink" href="#equation-9b5eb7da-c208-491a-b335-86319c023d92" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1454,8 +1460,8 @@ Final Output: torch.Size([3, 5, 9])
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bff4bb69-45df-4047-b40a-4fe033f2e8f4">
-<span class="eqno">(7)<a class="headerlink" href="#equation-bff4bb69-45df-4047-b40a-4fe033f2e8f4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5720301f-7e5c-4578-9b77-56a32bb87e6a">
+<span class="eqno">(7)<a class="headerlink" href="#equation-5720301f-7e5c-4578-9b77-56a32bb87e6a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1494,8 +1500,8 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e25f6822-834a-460c-a936-92bbc67f850e">
-<span class="eqno">(8)<a class="headerlink" href="#equation-e25f6822-834a-460c-a936-92bbc67f850e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f3020c97-1215-441a-8e5d-43d95477dfae">
+<span class="eqno">(8)<a class="headerlink" href="#equation-f3020c97-1215-441a-8e5d-43d95477dfae" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1503,8 +1509,8 @@ x_2 = [-3, 2, -\infty]
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0acee95b-e26e-4eb3-94f5-3561caa586f7">
-<span class="eqno">(9)<a class="headerlink" href="#equation-0acee95b-e26e-4eb3-94f5-3561caa586f7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c8bb85f0-c5e4-4ec0-8e2a-557785b5b9f0">
+<span class="eqno">(9)<a class="headerlink" href="#equation-c8bb85f0-c5e4-4ec0-8e2a-557785b5b9f0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
@@ -2318,7 +2324,7 @@ Final Output: torch.Size([3, 7, 9])
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-attention-is-all-you-need-span"><span style="color:Orange">Attention is All You Need!</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-step-1-compute-the-attention-matrix-span"><span style="color:LightGreen">Step 1: Compute the Attention Matrix</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-recap-the-dot-product-span"><span style="color:LightPink">Recap: The Dot Product</span></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-matrix-multiplication-span"><span style="color:LightPink">Matrix Multiplication</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-recap-matrix-multiplication-span"><span style="color:LightPink">Recap: Matrix Multiplication</span></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-step-2-weighting-the-values-matrix-span"><span style="color:LightGreen">Step 2: Weighting the Values Matrix</span></a></li>
