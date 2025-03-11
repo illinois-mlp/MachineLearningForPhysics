@@ -16,4 +16,5 @@ You will learn the basics of Attention Mechanism and Transformers
 * None
 
 ## *Supplemental Readings*
-* None
+* [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+* [Neural Machine Translation By Jointly Learning To Align and Translate](https://arxiv.org/pdf/1409.0473)

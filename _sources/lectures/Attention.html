@@ -574,14 +574,17 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="attention">
 <h1>Attention<a class="headerlink" href="#attention" title="Permalink to this heading">#</a></h1>
-<p>Attention networks have become crucial in state of the art architectures, namely Transformers! Today we will be delving a bit deeper into attention and how it works! Although attention was mainly intended for use in sequence modeling, it has found its way into Computer Vision, Graphs and basically every domain, demonstrating the flexibility of the architecture. Lets discuss this from a sequence modeling perspective today though just to build intuition on how this works. To start the explanation, lets reference back the original sequence modeling mechanism: <span style="color:Violet">Recurrent Neural Networks</span></p>
+<p>Since its introduction via the original transformer paper (<a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>), self-attention has become a cornerstone of many state-of-the-art deep learning models, particularly in the field of Natural Language Processing (NLP). Since self-attention is now everywhere, it’s important to understand how it works. This lecture provides and overview of the key aspects of the attention mechanism and details (code) on how it works.</p>
+<p>Although attention was mainly intended for use in sequence modeling, it has found its way into Computer Vision, Graphs and basically every domain, demonstrating the flexibility of the architecture. We will discuss attention from a sequence modeling perspective just to build intuition on how this works.</p>
 <section id="span-style-color-orange-recap-recurrent-neural-networks-span">
 <h2><span style="color:Orange">Recap: Recurrent Neural Networks</span><a class="headerlink" href="#span-style-color-orange-recap-recurrent-neural-networks-span" title="Permalink to this heading">#</a></h2>
+<p>To start the explanation, lets reference back the original sequence modeling mechanism: <span style="color:Violet">Recurrent Neural Networks</span> (RNNs). You might review the RNN part of this <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/ConvolutionalRecurrentNeuralNetworks.html">notebook</a> from earlier in the course.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/recurrent_neural_network_diagram.png?raw=true" width="800">
-</div><p>In recurrent neural networks, what we typically do is take our sequence and pass in a single timestep at a time and produce an output. This means when we pass in <span class="math notranslate nohighlight">\(x_1\)</span> we create a hidden state <span class="math notranslate nohighlight">\(h_1\)</span> that captures all the relevant information in the input, and this hidden state then is used to produce the output <span class="math notranslate nohighlight">\(y_1\)</span>. Now what makes it an RNN is when we pass in the second timestep <span class="math notranslate nohighlight">\(x_2\)</span> to produce the hidden state <span class="math notranslate nohighlight">\(h_2\)</span>, the hidden state already contains information about the past <span class="math notranslate nohighlight">\(h_1\)</span>! Therefore our output of <span class="math notranslate nohighlight">\(y_2\)</span> is informed both by information from <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span> encoded through the hidden states. If we keep this going, when we want to make a prediction at <span class="math notranslate nohighlight">\(y_{100}\)</span>, we will be using a hidden state that has encoded information of all the inputs <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_{100}\)</span>.</p>
-<p>Everything explained so far is a causal RNN, basically to make a prediction of sometime timestep <span class="math notranslate nohighlight">\(t\)</span>, we can use all the input timesteps <span class="math notranslate nohighlight">\(&lt;=t\)</span>. We can easily expand this though to make a bidirectional RNN, where to make a prediction at time <span class="math notranslate nohighlight">\(t\)</span>, we can look at the entire sequence as well. In this case we will really have two hidden states, one that looks backwards and another that looks forward! Whether you use causal or bidirectional depends a lot on what you want to do. If you want to do Name Entity Recognition (i.e. determine if each word in a sentence is an entity), you can look at the entire sentence to do this. On the other hand if you want to forecast the future, like a stock price, then you have to use causal as you can only look at the past to predict the future.</p>
-<p>All this sounds well and good, but there was one glaring problem: Memory. The hidden states we use to encode the history can only contain so much information, i.e. as the sequence length becomes longer the model will start to forget. This matters a lot for things like Natural Language Processing, as there may be imporant relations between parts of a book that are pages, or even chapters, apart. To solve this issue, Attention Augmented RNNs were introduced in the paper <a class="reference external" href="https://arxiv.org/pdf/1409.0473">Neural Machine Translation By Jointly Learning To Align and Translate</a>.</p>
+</div><p>In recurrent neural networks, what we typically do is take our sequence and pass in a single timestep at a time and produce an output. This means when we pass in <span class="math notranslate nohighlight">\(x_1\)</span> we create a hidden state <span class="math notranslate nohighlight">\(h_1\)</span> that captures all the relevant information in the input, and this hidden state then is used to produce the output <span class="math notranslate nohighlight">\(y_1\)</span>. Now what makes it an RNN is when we pass in the second timestep <span class="math notranslate nohighlight">\(x_2\)</span> to produce the hidden state <span class="math notranslate nohighlight">\(h_2\)</span>, the hidden state already contains information about the past <span class="math notranslate nohighlight">\(h_1\)</span> Therefore our output of <span class="math notranslate nohighlight">\(y_2\)</span> is informed both by information from <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span> encoded through the hidden states. If we keep this going, when we want to make a prediction at <span class="math notranslate nohighlight">\(y_{100}\)</span>, we will be using a hidden state that has encoded information of all the inputs <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_{100}\)</span>.</p>
+<p>Everything explained so far is a <span style="color:Violet">causal RNN</span> which makes a prediction of some timestep <span class="math notranslate nohighlight">\(t\)</span> by using all of the input timesteps <span class="math notranslate nohighlight">\(&lt;=t\)</span>. We can easily expand this to make a <span style="color:Violet">bidirectional RNN</span> to make a prediction at time <span class="math notranslate nohighlight">\(t\)</span> by looking at the entire sequence as well. In this case we will really have <span style="color:Violet">two hidden states</span> - one that looks backwards and another that looks forward.</p>
+<p>Whether you use causal or bidirectional depends a lot on what you want to do. If you want to do Name Entity Recognition (i.e. determine if each word in a sentence is an entity), you can look at the entire sentence to do this. On the other hand if you want to forecast the future, like a stock price, then you have to use causal as you can only look at the past to predict the future.</p>
+<p>All this sounds well and good, but there was one glaring problem: <em><strong>Memory</strong></em>. The hidden states we use to encode the history can only contain so much information, i.e. as the sequence length becomes longer the model will have to start to forget based on memory limitations. This matters a lot for things like MLP, as there may be imporant relations between parts of a book that are pages, or even chapters, apart. To solve this issue, <span style="color:Violet">Attention Augmented RNNs</span> were introduced in the paper <a class="reference external" href="https://arxiv.org/pdf/1409.0473">Neural Machine Translation By Jointly Learning To Align and Translate</a>.</p>
 </section>
 <section id="span-style-color-orange-attention-augmented-rnn-span">
 <h2><span style="color:Orange">Attention Augmented RNN</span><a class="headerlink" href="#span-style-color-orange-attention-augmented-rnn-span" title="Permalink to this heading">#</a></h2>
@@ -1085,8 +1088,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
 <p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our RoBERTa model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>, the raw output before the softmax is below.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7948feaf-faa4-4188-94f3-38fab40378cc">
-<span class="eqno">(1)<a class="headerlink" href="#equation-7948feaf-faa4-4188-94f3-38fab40378cc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-71d8f975-9fcc-4537-aa1d-ee546ab4f54e">
+<span class="eqno">(1)<a class="headerlink" href="#equation-71d8f975-9fcc-4537-aa1d-ee546ab4f54e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1099,8 +1102,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
 <p>Then, if we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-91f86760-6cdf-4f43-91d3-9367cb2f6b49">
-<span class="eqno">(2)<a class="headerlink" href="#equation-91f86760-6cdf-4f43-91d3-9367cb2f6b49" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f4dc3274-f788-4678-a1b1-ff6baba2a6b0">
+<span class="eqno">(2)<a class="headerlink" href="#equation-f4dc3274-f788-4678-a1b1-ff6baba2a6b0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1119,8 +1122,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-65fc7834-7e1e-49dd-be18-617ef066bc8a">
-<span class="eqno">(3)<a class="headerlink" href="#equation-65fc7834-7e1e-49dd-be18-617ef066bc8a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-05c8ce76-57e9-4140-bd26-839cbbdba0c1">
+<span class="eqno">(3)<a class="headerlink" href="#equation-05c8ce76-57e9-4140-bd26-839cbbdba0c1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1128,8 +1131,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-66b0783f-e846-4e76-8f58-1e604293bd6d">
-<span class="eqno">(4)<a class="headerlink" href="#equation-66b0783f-e846-4e76-8f58-1e604293bd6d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-013c6edf-9b8c-4691-821f-d43a16bee254">
+<span class="eqno">(4)<a class="headerlink" href="#equation-013c6edf-9b8c-4691-821f-d43a16bee254" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
  7       &amp; -8   &amp; -\infty  \\
@@ -1171,8 +1174,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-221c3a33-4e01-4810-9e09-653d5360b135">
-<span class="eqno">(5)<a class="headerlink" href="#equation-221c3a33-4e01-4810-9e09-653d5360b135" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+<div class="amsmath math notranslate nohighlight" id="equation-c94f0902-eaa8-4f89-aedc-a239b8248baf">
+<span class="eqno">(5)<a class="headerlink" href="#equation-c94f0902-eaa8-4f89-aedc-a239b8248baf" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
 True &amp; True &amp; True &amp; False\\
 True &amp; True &amp; True &amp; False\\
 True &amp; True &amp; True &amp; False\\
@@ -1438,8 +1441,8 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d4fe5194-db41-4f2e-8e63-ced3922164b7">
-<span class="eqno">(6)<a class="headerlink" href="#equation-d4fe5194-db41-4f2e-8e63-ced3922164b7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-449b64d3-97e2-4fb6-a74f-9a2d23152888">
+<span class="eqno">(6)<a class="headerlink" href="#equation-449b64d3-97e2-4fb6-a74f-9a2d23152888" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1450,8 +1453,8 @@ Final Output: torch.Size([3, 5, 9])
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4b72d35b-2f41-4ad9-bc59-6bcbfbcd2f48">
-<span class="eqno">(7)<a class="headerlink" href="#equation-4b72d35b-2f41-4ad9-bc59-6bcbfbcd2f48" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7e133601-4a92-4d2d-9cdd-eb63c4835b23">
+<span class="eqno">(7)<a class="headerlink" href="#equation-7e133601-4a92-4d2d-9cdd-eb63c4835b23" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1490,8 +1493,8 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-01d9b845-4cd5-4454-a905-bb61d8fd5608">
-<span class="eqno">(8)<a class="headerlink" href="#equation-01d9b845-4cd5-4454-a905-bb61d8fd5608" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9156b770-7ef8-445d-928e-55fcecc6692b">
+<span class="eqno">(8)<a class="headerlink" href="#equation-9156b770-7ef8-445d-928e-55fcecc6692b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1499,8 +1502,8 @@ x_2 = [-3, 2, -\infty]
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8e6f86a4-adc4-4222-91dc-22df76472c86">
-<span class="eqno">(9)<a class="headerlink" href="#equation-8e6f86a4-adc4-4222-91dc-22df76472c86" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2fcffb58-46f8-48ab-a0b7-35943d711bd0">
+<span class="eqno">(9)<a class="headerlink" href="#equation-2fcffb58-46f8-48ab-a0b7-35943d711bd0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
