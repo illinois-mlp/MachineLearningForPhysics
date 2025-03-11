@@ -492,6 +492,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-transformer-architecture-span"><span style="color:Orange">The Transformer Architecture</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-is-attention-span"><span style="color:LightGreen">What is Attention?</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-scaled-dot-product-attention-span"><span style="color:LightGreen">Scaled Dot Product Attention</span></a></li>
@@ -521,7 +522,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="transformers">
 <h1>Transformers<a class="headerlink" href="#transformers" title="Permalink to this heading">#</a></h1>
-<p>In this tutorial, we will discuss one of the most impactful architectures of the last few years: the Transformer model. Since the paper <a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> by Vaswani et al. had been published in 2017, the Transformer architecture has continued to beat benchmarks in many domains, most importantly in Natural Language Processing. Transformers with an incredible amount of parameters can generate long, convincing <a class="reference external" href="https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3">essays</a>, and opened up new application fields of AI. As the hype of the Transformer architecture seems not to come to an end in the next years, it is important to understand how it works, and have implemented it yourself, which we will do in this notebook.</p>
+<section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p>In this lecture, we will discuss one of the most impactful architectures of the last few years: the <span style="color:Violet">Transformer</span> model. Since the paper <a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> by Vaswani et al. had been published in 2017, the Transformer architecture has continued to beat benchmarks in many domains, most importantly in Natural Language Processing.</p>
+<p>With an incredible number of trainable parameters, Transformers can generate long, convincing <a class="reference external" href="https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3">essays</a>, and have opened up new application fields of AI. As the hype of the Transformer architecture seems not to come to an end in the next years, it is important to understand how it works, and have the tools to implement it yourself, which we will do in this notebook.</p>
 <p>Despite the huge success of Transformers in NLP, we will <em>not</em> include the NLP domain in our notebook here. Why? Firstly, there are other courses that take a closer look at the application of the Transformer architecture in NLP. Most importantly, there is so much more to the Transformer architecture than NLP applications. NLP is the domain the Transformer architecture has been originally proposed for and had the greatest impact on, but it also accelerated research in other domains, recently even <a class="reference external" href="https://arxiv.org/abs/2010.11929">Computer Vision</a>. Thus, we focus here on what makes the Transformer and self-attention so powerful in general.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,6 +605,7 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
 <section id="span-style-color-orange-the-transformer-architecture-span">
 <h2><span style="color:Orange">The Transformer Architecture</span><a class="headerlink" href="#span-style-color-orange-the-transformer-architecture-span" title="Permalink to this heading">#</a></h2>
 <p>In the first part of this notebook, we will implement the Transformer architecture by hand. As the architecture is so popular, there already exists a Pytorch module <code class="docutils literal notranslate"><span class="pre">nn.Transformer</span></code> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html">documentation</a>) and a <a class="reference external" href="https://pytorch.org/tutorials/beginner/transformer_tutorial.html">tutorial</a> on how to use it for next token prediction. However, we will implement it here ourselves, to get through to the smallest details.</p>
@@ -1467,6 +1472,7 @@ Test accuracy: 100.00%
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-transformer-architecture-span"><span style="color:Orange">The Transformer Architecture</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-is-attention-span"><span style="color:LightGreen">What is Attention?</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-scaled-dot-product-attention-span"><span style="color:LightGreen">Scaled Dot Product Attention</span></a></li>
