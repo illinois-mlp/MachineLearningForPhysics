@@ -61,6 +61,13 @@ chapters:
   - url: https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/GraphNeuralNetworks
+- file: _sources/Week_08 # Attention Mechanism and Transformers
+  sections:
+  - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
+    title: Slides
+  - file: _sources/lectures/Attention
+  - file: _sources/lectures/Transformers
+  - file: _sources/lectures/VisionTransformer
 - file: _sources/Project_01 # Project 01
   sections:
   - file: _sources/projects/Project_01_HiggsTauTau
@@ -69,13 +76,6 @@ chapters:
   - file: _sources/projects/Project_01_NuclearGeometryQGP
   - file: _sources/projects/Project_01_AberratedImages
   - file: _sources/projects/Project_01_DarkEnergySurvey
-- file: _sources/Week_08 # Attention Mechanism and Transformers
-  sections:
-  - url: https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing
-    title: Slides
-  - file: _sources/lectures/Attention
-  - file: _sources/lectures/Transformers
-  - file: _sources/lectures/VisionTransformer
 - file: _sources/Week_09 # Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
