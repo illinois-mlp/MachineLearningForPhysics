@@ -6,3 +6,4 @@ __pycache__
 tfs
 tmp_data
 .ipynb_checkpoints
+.DS_Store
