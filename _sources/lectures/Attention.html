@@ -1095,8 +1095,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
 <p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>. The raw output before the Softmax is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-959c14d7-522c-42d6-955e-58b5fc0ab1f3">
-<span class="eqno">(1)<a class="headerlink" href="#equation-959c14d7-522c-42d6-955e-58b5fc0ab1f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-68ed9302-a8ae-4888-9729-5150f347c2ed">
+<span class="eqno">(1)<a class="headerlink" href="#equation-68ed9302-a8ae-4888-9729-5150f347c2ed" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1109,8 +1109,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
 <p>If we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-380bc3e2-52b9-44f9-993f-52e09d25384c">
-<span class="eqno">(2)<a class="headerlink" href="#equation-380bc3e2-52b9-44f9-993f-52e09d25384c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dda2d6ba-3655-4e31-b616-3fc99e6f74fe">
+<span class="eqno">(2)<a class="headerlink" href="#equation-dda2d6ba-3655-4e31-b616-3fc99e6f74fe" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1129,8 +1129,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9e8cf2b3-83fc-4561-a501-79d17e200998">
-<span class="eqno">(3)<a class="headerlink" href="#equation-9e8cf2b3-83fc-4561-a501-79d17e200998" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-406f85bf-456b-4e2e-9a46-864f9853e7c2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-406f85bf-456b-4e2e-9a46-864f9853e7c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1138,8 +1138,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d8095385-f56d-4069-a4eb-59c4ea7c3dcc">
-<span class="eqno">(4)<a class="headerlink" href="#equation-d8095385-f56d-4069-a4eb-59c4ea7c3dcc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2d66f76a-2071-4d61-8d6e-1c1feb7162ed">
+<span class="eqno">(4)<a class="headerlink" href="#equation-2d66f76a-2071-4d61-8d6e-1c1feb7162ed" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
  7       &amp; -8   &amp; -\infty  \\
@@ -1181,8 +1181,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a7d0d329-2a6f-4dc2-a2ed-60d774f8e6ac">
-<span class="eqno">(5)<a class="headerlink" href="#equation-a7d0d329-2a6f-4dc2-a2ed-60d774f8e6ac" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+<div class="amsmath math notranslate nohighlight" id="equation-00a32d16-eca9-454c-96ca-bc81374c8964">
+<span class="eqno">(5)<a class="headerlink" href="#equation-00a32d16-eca9-454c-96ca-bc81374c8964" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
@@ -1437,19 +1437,13 @@ Final Output: torch.Size([3, 5, 9])
 </section>
 <section id="id1">
 <h3><span style="color:LightGreen">Enforcing Causality</span><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<p>Everything we have done so far is an <span style="color:Violet">encoding transformer</span>, which is eqivalent to a bidirectional RNN where a single timestep can look both forwards and backwards. To enforce causality, we can only look backwards, so we have to add in a causal mask. How the causal mask looks is the following:</p>
-<div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/causal_masking.png?raw=true" width="600"/>
-</div><p>Basically, every Query vector can only attend to the Key vectors that are at the same timestep or before! Now how do we actually do this? Unfortunately its not as easy as just changing the numbers in our attention mask, because we still need every row of the attention mask to add to one (like a probability vector!). We want something like this though:</p>
-<div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/decoder_attention_vis.png?raw=true" width="600"/>
-</div><p>As we can see, because we have zeroed out the attention weights on future keys, when we multiply by values, we multiply by 0. Therefore our weighted average context vector of a timestep only is computed at that timestep and previous, never the future!</p>
+<p>Everything we have done so far is an <span style="color:Violet">encoding transformer</span>, which is eqivalent to a bidirectional RNN where a single timestep can look both forwards and backwards. To enforce causality, we can only look backwards, so we have to add in a causal mask in exactly the same way we described before.</p>
 </section>
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9b5eb7da-c208-491a-b335-86319c023d92">
-<span class="eqno">(6)<a class="headerlink" href="#equation-9b5eb7da-c208-491a-b335-86319c023d92" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b1afc881-e90b-4755-aadc-cc3601e71fda">
+<span class="eqno">(6)<a class="headerlink" href="#equation-b1afc881-e90b-4755-aadc-cc3601e71fda" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1460,8 +1454,8 @@ Final Output: torch.Size([3, 5, 9])
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5720301f-7e5c-4578-9b77-56a32bb87e6a">
-<span class="eqno">(7)<a class="headerlink" href="#equation-5720301f-7e5c-4578-9b77-56a32bb87e6a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6116f5e8-1b1c-4a43-806a-93c7ca26661a">
+<span class="eqno">(7)<a class="headerlink" href="#equation-6116f5e8-1b1c-4a43-806a-93c7ca26661a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1500,8 +1494,8 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f3020c97-1215-441a-8e5d-43d95477dfae">
-<span class="eqno">(8)<a class="headerlink" href="#equation-f3020c97-1215-441a-8e5d-43d95477dfae" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-aa47b89d-f894-4b86-9d51-1941e8540c71">
+<span class="eqno">(8)<a class="headerlink" href="#equation-aa47b89d-f894-4b86-9d51-1941e8540c71" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1509,8 +1503,8 @@ x_2 = [-3, 2, -\infty]
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c8bb85f0-c5e4-4ec0-8e2a-557785b5b9f0">
-<span class="eqno">(9)<a class="headerlink" href="#equation-c8bb85f0-c5e4-4ec0-8e2a-557785b5b9f0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-38299970-eead-4f35-8bf8-7a6798deb36d">
+<span class="eqno">(9)<a class="headerlink" href="#equation-38299970-eead-4f35-8bf8-7a6798deb36d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
@@ -1694,7 +1688,7 @@ Final Output: torch.Size([3, 5, 9])
 </section>
 <section id="span-style-color-orange-cross-attention-span">
 <h2><span style="color:Orange">Cross Attention</span><a class="headerlink" href="#span-style-color-orange-cross-attention-span" title="Permalink to this heading">#</a></h2>
-<p>We have talked about Self-Attention so far, where a model looks at a sequence and tries to learn how every word in that sequence is related to itself! This is totally fine if we are just dealing with that sequence (BERT/GPT), but what if we are translating between two different sequences? For example, the original <a class="reference external" href="https://arxiv.org/pdf/1706.03762">Attention is All You Need</a> paper was about Neural Machine Translation. So if we are doing English to French generation, we don’t only care about how english tokens are related english, and how french tokens are related to french, we also need to learn how english tokens are related to french!!!</p>
+<p>We have talked about Self-Attention so far, where a model looks at a sequence and tries to learn how every word in that sequence is related to itself. This is totally fine if we are just dealing with that sequence (BERT/GPT), but what if we are translating between two different sequences? For example, the original <a class="reference external" href="https://arxiv.org/pdf/1706.03762">Attention is All You Need</a> paper was about Neural Machine Translation. So if we are doing English to French generation, we don’t only care about how english tokens are related english, and how french tokens are related to french, we also need to learn how english tokens are related to french.</p>
 <p>Luckily this isn’t too bad or different from what we have done so far but we have some new complexities:</p>
 <ol class="arabic simple">
 <li><p>English will have a different length than French (this means our attention matricies of how each english token is related to french is no longer a square!)</p></li>
@@ -1703,23 +1697,23 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-cross-attention-queries-keys-and-values-span">
 <h3><span style="color:LightGreen">Cross Attention Queries, Keys and Values</span><a class="headerlink" href="#span-style-color-lightgreen-cross-attention-queries-keys-and-values-span" title="Permalink to this heading">#</a></h3>
 <p>So the first question, before we had some data that we projected to our Queries, Keys and Values. But now we have two sources of data, English and French. Lets pretend we are translating from English to French. This means to understand how the French is related to the English to inform generating the French we will set the Queries as the projection of our French Embeddings and the Keys/Values as the projection of our English Embeddings. Typically, we set the queries to the thing we care about (what we want to produce), and they keys/values to what we want to relate it to.</p>
-<p>We can think about this in another way as well: Lets say we are doing Text to Image Generation. Again, because we have two sources we are translating between, we can use Cross Attention. Attention will tell us how pieces of our image are related to the text embeddings. In the end we want the image, so we can set them to the queries, and then the text will be the keys/values, which will be how we want to weight the relation between the image pieces and our text tokens.</p>
+<p>We can think about this in another way as well: Lets say we are doing Text to Image Generation. Again, because we have two sources we are translating between, we can use <span style="color:Violet">Cross Attention</span>. Attention will tell us how pieces of our image are related to the text embeddings. In the end we want the image, so we can set them to the queries, and then the text will be the keys/values, which will be how we want to weight the relation between the image pieces and our text tokens.</p>
 </section>
 <section id="span-style-color-lightgreen-tensor-shapes-for-cross-attention-span">
 <h3><span style="color:LightGreen">Tensor Shapes for Cross Attention</span><a class="headerlink" href="#span-style-color-lightgreen-tensor-shapes-for-cross-attention-span" title="Permalink to this heading">#</a></h3>
-<p>We spent a lot of time understanding the tensor shapes for self-attention, lets do the same thing now for cross attention! We will be using our English to French translation example for this, so lets start with producing our Queries/Keys/Values!</p>
+<p>We spent a lot of time understanding the tensor shapes for self-attention, lets do the same thing now for cross attention. We will be using our English to French translation example for this, so lets start with producing our Queries/Keys/Values:</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_atttenion_qkv.png?raw=true" width="600"/>
 </div><p>Lets pretend we have an input of French embeddings with <span class="math notranslate nohighlight">\(N\)</span> tokens (with an embedding dimension of <span class="math notranslate nohighlight">\(E\)</span>) and then also English Embeddings with <span class="math notranslate nohighlight">\(L\)</span> tokens (again with an embedding dimension of <span class="math notranslate nohighlight">\(E\)</span>). Again, because the French is what we want, we will project our French embeddings to be our Queries, and then our English Embeddings to our Keys/Values.</p>
 <ul class="simple">
-<li><p>French Query Embeddings: (B x N x E)</p></li>
-<li><p>English Key Embeddings: (B x L x E)</p></li>
-<li><p>English Value Embeddings: (B x L x E)</p></li>
+<li><p>French Query Embeddings: <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code></p></li>
+<li><p>English Key Embeddings: <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">L</span> <span class="pre">x</span> <span class="pre">E</span></code></p></li>
+<li><p>English Value Embeddings: <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">L</span> <span class="pre">x</span> <span class="pre">E</span></code></p></li>
 </ul>
 </section>
 <section id="span-style-color-lightgreen-performing-the-attention-computation-span">
 <h3><span style="color:LightGreen">Performing the Attention Computation</span><a class="headerlink" href="#span-style-color-lightgreen-performing-the-attention-computation-span" title="Permalink to this heading">#</a></h3>
-<p>Nothing changes about our attention formula! This attention computation is identical to earlier, its just because our Queries is of length <span class="math notranslate nohighlight">\(N\)</span> and the Keys are of length <span class="math notranslate nohighlight">\(L\)</span>, our final attention matrix will be an (B x N x L) matrix.</p>
+<p>Nothing changes with our attention formula as described. This attention computation is identical to earlier, its just because our Queries is of length <span class="math notranslate nohighlight">\(N\)</span> and the Keys are of length <span class="math notranslate nohighlight">\(L\)</span>, our final attention matrix will be an (B x N x L) matrix.</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_matmul.png?raw=true" width="600"/>
 </div><p>We can take a closer look at our attention matrix now as well, and we see that it isn’t a square matrix anymore, but it still does the same thing: How are each French token related to each English token?</p>
@@ -1728,13 +1722,13 @@ Final Output: torch.Size([3, 5, 9])
 </div></section>
 <section id="span-style-color-lightgreen-the-most-important-part-span">
 <h3><span style="color:LightGreen">THE MOST IMPORTANT PART!!!</span><a class="headerlink" href="#span-style-color-lightgreen-the-most-important-part-span" title="Permalink to this heading">#</a></h3>
-<p>Once our attention matrix (B x N x L) is computed, we can again multiply it by our Values matrix which is also from our English embeddings, so we are multiplying a (B x N x L) by a (B x L x E), producing the final output of (B x N x E)! Why does this matter? Because our original French was also (B x N x E)! Remember, our attention computation told us how every French token is related to every English token. Then, the output of our full attention computation does the weighted average, so our new (B x N x E) is the weighted average of those english tokens! Lets see what that looks like:</p>
+<p>Once our attention matrix <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">L</span></code> is computed, we can again multiply it by our Values matrix which is also from our English embeddings, so we are multiplying a <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">L</span></code> by a <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">L</span> <span class="pre">x</span> <span class="pre">E</span></code>, producing the final output of <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code>! Why does this matter? Because our original French was also <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code>! Remember, our attention computation told us how every French token is related to every English token. Then, the output of our full attention computation does the weighted average, so our new <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code> is the weighted average of those english tokens. Lets see what that looks like:</p>
 <div>
 <img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_weight_by_val.png?raw=true" width="600"/>
 </div></section>
 <section id="span-style-color-lightgreen-basically-nothing-changed-span">
 <h3><span style="color:LightGreen">Basically Nothing Changed</span><a class="headerlink" href="#span-style-color-lightgreen-basically-nothing-changed-span" title="Permalink to this heading">#</a></h3>
-<p>Nothing really changed in the end! Cross Attention is just attention between two different sequences rather than than one sequence to itself. This means we also have multihead attention (although I didn’t draw it), so nothing changes at all! Cross Attention is <span style="color:Violet">ALWAYS</span> an encoder, not autoregressive. It doesnt make sense to have a causal mask here because one sequence can look at the entirety of the other (i.e. our input english can look at all of the generated french). But there is one more caveat:</p>
+<p>Nothing really changed in the end! Cross Attention is just attention between two different sequences rather than than one sequence to itself. This means we also have multihead attention (although I didn’t draw it), so nothing changes at all. Cross Attention is <span style="color:Violet">ALWAYS</span> an encoder, not autoregressive. It doesnt make sense to have a causal mask here because one sequence can look at the entirety of the other (i.e. our input english can look at all of the generated french). But there is one more caveat:</p>
 </section>
 <section id="span-style-color-lightgreen-padding-on-english-and-french-span">
 <h3><span style="color:LightGreen">Padding on English and French</span><a class="headerlink" href="#span-style-color-lightgreen-padding-on-english-and-french-span" title="Permalink to this heading">#</a></h3>
@@ -1746,29 +1740,29 @@ Final Output: torch.Size([3, 5, 9])
 <p>This means, when we batch the english we have to pad the sequence of length 3 to the sequence of length 4.</p>
 <ul class="simple">
 <li><p>[a1, a2, a3, a4]</p></li>
-<li><p>[c1, c2, c3, <strong>&lt;PAD&gt;</strong>]</p></li>
+<li><p>[c1, c2, c3, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>]</p></li>
 </ul>
 <p>And similarly, when we batch the french, we have to pad the sequence of length 2 to the sequence of length 5.</p>
 <ul class="simple">
 <li><p>[b1, b2, b3, b4, b5]</p></li>
-<li><p>[d1, d2, <strong>&lt;PAD&gt;</strong>, <strong>&lt;PAD&gt;</strong>, <strong>&lt;PAD&gt;</strong>]</p></li>
+<li><p>[d1, d2, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>, <strong><span style="color:Blue">&lt;PAD&gt;</span></strong>]</p></li>
 </ul>
-<p>So we have padding on both dimensions, but again nothing changes! Remember before (in self attention), when we have pad tokens we just zeroed out the columns of the cooresponding pad tokens. But really, we are zeroing out the <span style="color:Violet">Keys</span> columns. We want to make sure that when we learn how the French is related to the English, that the French is <span style="color:Violet">not looking at English Pad Tokens</span>. It is ok though for French pad tokens to look at english. (i.e. the Query pad tokens can look at the keys, but the Query non-pad tokens should not look at the Key pad tokens). This is what this would again look like:</p>
+<p>So we have padding on both dimensions, but again nothing changes. Remember before (in self attention), when we have pad tokens we just zeroed out the columns of the cooresponding pad tokens. But really, we are zeroing out the <span style="color:Violet">Keys</span> columns. We want to make sure that when we learn how the French is related to the English, that the French is <span style="color:Violet">not looking at English Pad Tokens</span>. It is ok though for French pad tokens to look at English. (i.e. the Query pad tokens can look at the keys, but the Query non-pad tokens should not look at the Key pad tokens). This is what this would again look like:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_padding.png?raw=true" width="600"/>
-</div><p>As we can see here, all French tokens (french padding included) can look at all non-padding english tokens! This is identical to what we did before, its just now our attention matrix just isn’t square!</p>
+<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_padding.png?raw=true" width="800"/>
+</div><p>As we can see here, all French tokens (french padding included) can look at all non-padding english tokens. This is identical to what we did before, its just now our attention matrix just isn’t square.</p>
 </section>
 </section>
 <section id="span-style-color-orange-implementing-cross-attention-span">
 <h2><span style="color:Orange">Implementing Cross Attention</span><a class="headerlink" href="#span-style-color-orange-implementing-cross-attention-span" title="Permalink to this heading">#</a></h2>
-<p>Implementing Cross Attention shouldn’t be all that different from before. There is no causality here, so we only have to keep an eye on the attention mask. We will have two attention masks now, one for the english and another for the french. But when doing English to French Translation, we really just care about the English padding mask, so we can remove those columns from our attention computation. We do need the French padding mask though when we are doing french self-attention, but lets focus on the Cross Attention now!</p>
+<p>Implementing Cross Attention shouldn’t be all that different from before. There is no causality here, so we only have to keep an eye on the attention mask. We will have two attention masks now, one for the english and another for the french. But when doing English to French Translation, we really just care about the English padding mask, so we can remove those columns from our attention computation. We do need the French padding mask though when we are doing french self-attention, but lets focus on the Cross Attention now</p>
 <p>In this implementation, we will be passing in both a <code class="docutils literal notranslate"><span class="pre">src</span></code> (our English) and <code class="docutils literal notranslate"><span class="pre">tgt</span></code> (our French).</p>
 <section id="id2">
 <h3><span style="color:LightGreen">Matching Shapes for MultiHead Attention</span><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
 <p>We again have our attention mask and need to do the reshapes and repeats to get it to the shape necessary to mask our attention computation! Lets take a look at our shapes for Cross Attention again.</p>
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x num_heads x french_seq_len x english_seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x english_seq_len)</p>
-<p>So just like before, we can take our mask, and add dimensions from (Batch x english_seq_len) to (Batch x 1 x 1 x english_seq_len) which would be enough, except our Flash Attention implementation will expect a (Batch x 1 x french_seq_len x english_seq_len). So then we can take our (Batch x 1 x 1 x english_seq_len) and repeat the dummy 1 dimension which is a placeholder for the french_seq_len and repeat it french_seq_len times!</p>
+<p>So just like before, we can take our mask, and add dimensions from <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">english_seq_len</span></code> to <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">english_seq_len</span></code> which would be enough, except our Flash Attention implementation will expect a <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">french_seq_len</span> <span class="pre">x</span> <span class="pre">english_seq_len</span></code>. So then we can take our <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">english_seq_len</span></code> and repeat the dummy 1 dimension which is a placeholder for the french_seq_len and repeat it french_seq_len times.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CrossAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -1909,7 +1903,7 @@ Final Output: torch.Size([3, 7, 18])
 <p>So as you can see, Flash Attention supports our <code class="docutils literal notranslate"><span class="pre">Queries</span></code> being different from <code class="docutils literal notranslate"><span class="pre">Keys</span></code>/<code class="docutils literal notranslate"><span class="pre">Values</span></code> as we saw in our Cross Attention implementation. In the case of self-attention <span class="math notranslate nohighlight">\(L = S\)</span> which also isn’t a problem. The only extra step on our end is to make sure our <code class="docutils literal notranslate"><span class="pre">attn_mask</span></code> is of shape (B x 1 x L x S), which means we have to do the extra repeat, as it wont automatically broadcast along the <span class="math notranslate nohighlight">\(L\)</span> dimension if we left it as (B x 1 x 1 x S). Flash Attention also expects tokens we don’t want to compute attention on to be <code class="docutils literal notranslate"><span class="pre">False</span></code> in the attention mask!</p>
 <p>The other option that is important it:</p>
 <ul class="simple">
-<li><p>is_causal: True/False Boolean indicating if we want a causal mask. The method will apply the causal mask itself so we don’t need to do it!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_causal</span></code>: True/False Boolean indicating if we want a causal mask. The method will apply the causal mask itself so we don’t need to do it!</p></li>
 </ul>
 </section>
 <section id="span-style-color-lightgreen-lets-add-flash-attention-to-our-self-attention-span">
@@ -2035,37 +2029,26 @@ Final Output: torch.Size([3, 7, 18])
 <li><p>We can have self-attention on a source with padding mask and causal mask</p></li>
 <li><p>We can have cross attention between a source and target</p></li>
 </ol>
-<p>Lets write our final Attention computation, putting all of these things together! This is the Attention mechanism we will be using later for our full implementation of Neural Machine Translation with Transformers!</p>
-<p>Again, lets set the stage in terms of and English (src) to French (tgt) translation</p>
+<p>Lets write our final Attention computation, putting all of these things together. Again, lets set the stage in terms of and English (src) to French (tgt) translation:</p>
 </section>
 <section id="span-style-color-lightgreen-attention-class-details-span">
 <h3><span style="color:LightGreen">Attention Class Details</span><a class="headerlink" href="#span-style-color-lightgreen-attention-class-details-span" title="Permalink to this heading">#</a></h3>
 <p>This class will handle all the cases we need. Lets pretend we are doing English to French</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- We can provide English as the src along with its padding mask for Encoder self-attention
-- We can provide French as the src along with its padding mask and causal as True for decoder self-attention
-- We can provide English as src and French as tgt along with the src padding_mask for cross attention
-</pre></div>
-</div>
+<ul class="simple">
+<li><p>We can provide English as the src along with its padding mask for Encoder self-attention</p></li>
+<li><p>We can provide French as the src along with its padding mask and causal as True for decoder self-attention</p></li>
+<li><p>We can provide English as src and French as tgt along with the src padding_mask for cross attention</p></li>
+</ul>
 <p>All of this should be very familiar now as we have implemented all the pieces of this already! Its just time to put it together!</p>
 </section>
 <section id="span-style-color-lightgreen-attention-mask-for-self-attention-span">
 <h3><span style="color:LightGreen">Attention Mask for Self-Attention</span><a class="headerlink" href="#span-style-color-lightgreen-attention-mask-for-self-attention-span" title="Permalink to this heading">#</a></h3>
-<p>Attention Mask is in (Batch x Sequence Length) where we have False for tokens we don’t want to attend to.
-F.scaled_dot_product_attention expects a mask of the shape (Batch x …, x Seq_len x Seq_len)
-the “…” in this case is any extra dimensions (such as heads of attention). lets expand our mask to (Batch x 1 x Seq_len x Seq_len)
-The 1 in this case refers to the number of heads of attention we want, so it is a dummy index to broadcast over
-In each (Seq_len x Seq_len) matrix for every batch, we want False for all columns corresponding to padding tokens</p>
+<p>Attention Mask is in <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">Sequence</span> <span class="pre">Length</span></code> where we have <code class="docutils literal notranslate"><span class="pre">False</span></code> for tokens we don’t want to attend to. <code class="docutils literal notranslate"><span class="pre">F.scaled_dot_product_attention</span></code> expects a mask of the shape <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">...,</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq_len</span></code>, where the “…” in this case is any extra dimensions (such as heads of attention). Lets expand our mask to <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq_len</span></code>. The 1 in this case refers to the number of heads of attention we want, so it is a dummy index to broadcast over. In each <code class="docutils literal notranslate"><span class="pre">Seq_len</span> <span class="pre">x</span> <span class="pre">Seq_len</span></code> matrix for every batch, we want False for all columns corresponding to padding tokens.</p>
 </section>
 <section id="span-style-color-lightgreen-attention-mask-for-cross-attention-span">
 <h3><span style="color:LightGreen">Attention Mask for Cross-Attention</span><a class="headerlink" href="#span-style-color-lightgreen-attention-mask-for-cross-attention-span" title="Permalink to this heading">#</a></h3>
-<p>When doing cross attention, our French will be (Batch x french_len x embed_dim) and our English will be (Batch x english_len x embed_dim)
-In typical cross attention fashion, the queries will be the thing we want and Keys/Values will be the thing we are crossing with. In our
-Decoder Cross Attention, we want to learn how our generated French is related to the encoded english from the Encoder. So our Queries will be
-French and Keys/Values will be the encoded English.</p>
-<p><span class="math notranslate nohighlight">\(Q\)</span> &#64; <span class="math notranslate nohighlight">\(K^T\)</span> will then give a shape (Batch x … x french_len x english_len). This means our attention mask also has to have this shape! Just like
-before, we want to mask out the columns of the attention mask, so our french tokens dont attend to any english padding tokens. We can then take
-our english padding mask which is (Batch x english_len), add extra dimensions for head and src_len dimension which will give a
-(Batch x 1 x 1 x english_len) and then repeat the mask for the source length (batc x 1 x french_len x english_len)</p>
+<p>When doing cross attention, our French will be <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">french_len</span> <span class="pre">x</span> <span class="pre">embed_dim</span></code> and our English will be <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">english_len</span> <span class="pre">x</span> <span class="pre">embed_dim</span></code>. In typical cross attention fashion, the queries will be the thing we want and Keys/Values will be the thing we are crossing with. In our Decoder Cross Attention, we want to learn how our generated French is related to the encoded english from the Encoder. So our Queries will be French and Keys/Values will be the encoded English.</p>
+<p><span class="math notranslate nohighlight">\(Q\)</span> &#64; <span class="math notranslate nohighlight">\(K^T\)</span> will then give a shape <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">...</span> <span class="pre">x</span> <span class="pre">french_len</span> <span class="pre">x</span> <span class="pre">english_len</span></code>. This means our attention mask also has to have this shape. Just like before, we want to mask out the columns of the attention mask, so our french tokens dont attend to any english padding tokens. We can then take our english padding mask which is (Batch x english_len), add extra dimensions for head and src_len dimension which will give a <code class="docutils literal notranslate"><span class="pre">Batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">english_len</span></code> and then repeat the mask for the source length <code class="docutils literal notranslate"><span class="pre">batch</span> <span class="pre">x</span> <span class="pre">1</span> <span class="pre">x</span> <span class="pre">french_len</span> <span class="pre">x</span> <span class="pre">english_len</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Attention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -2233,7 +2216,7 @@ Final Output: torch.Size([3, 7, 9])
 </section>
 <section id="span-style-color-orange-thats-it-span">
 <h2><span style="color:Orange">Thats It!</span><a class="headerlink" href="#span-style-color-orange-thats-it-span" title="Permalink to this heading">#</a></h2>
-<p>That is basically everything you need to know about attention! Now if you are actually going to be using attention in your model, it is better to use optimized cuda implementations rather than this only for speed and efficiency reasons, but they are doing exactly the same thing underneath the hood, just faster! This sets us up though for the next step! All we have done so far is implement the Attention mechanism, this is only half the picture for the Transformer. There are bunch of directions we can now go:</p>
+<p>That is basically everything you need to know about attention! Now if you are actually going to be using attention in your model, it is better to use optimized cuda implementations rather than this only for speed and efficiency reasons, but they are doing exactly the same thing underneath the hood, just faster! This sets us up though for the next step! All we have done so far is implement the Attention mechanism, this is only half the picture for the Transformer. There are bunch of directions one can now go:</p>
 <ul class="simple">
 <li><p>Seq2Seq Models (Language Translation, Image Captioning)</p></li>
 <li><p>Encoder Models (RoBERTa, Vision Transformer)</p></li>
