@@ -1,10 +1,16 @@
 # <span style="color: blue;"><b>Attention Mechanism and Transformers</b></span>
 
 ## *Overview*
-You will learn the basics of Attention Mechanism and Transformers
+You will learn the basics of Attention Mechanism and Transformers, implementing a Vision Transformer
 
 ## *Goals*
 * Learn about Attention Mechanism and Transformers
+* Why Attention and not Convolutions?
+* Patch Embeddings (Conversion of Images to "sequences")
+* Understanding CLS tokens and Positional Embeddings
+* How to build a single Attention Head (Q, K, V)
+* Expanding Single Headed Attention to MultiHeaded Attention
+* The purpose of Layer Normalization
 
 ## *Lecture Materials*
 * [Slides](https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing)
