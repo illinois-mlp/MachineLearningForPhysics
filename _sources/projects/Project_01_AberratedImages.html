@@ -549,7 +549,16 @@ document.write(`
 </section>
 <section id="span-style-color-orange-data-sources-span">
 <h2><span style="color:Orange">Data Sources</span><a class="headerlink" href="#span-style-color-orange-data-sources-span" title="Permalink to this heading">#</a></h2>
-<p>Data is available <a class="reference external" href="https://github.com/illinois-ipaml/MachineLearningForPhysics/tree/main/_sources/projects/Project_01_Aberrated_images_additional_material">here</a> on the course GitHub, along with ImageSimulation.ipynb, the notebook used to generate the data. You are encouraged to read through that notebook to see how the simulation works and even generate your own datasets if desired.</p>
+<p>File URLs</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://courses.physics.illinois.edu/phys498mlp/sp2025/data/projects/AberratedImages/data.tgz">https://courses.physics.illinois.edu/phys498mlp/sp2025/data/projects/AberratedImages/data.tgz</a></p></li>
+</ul>
+<p>You should untar this file into your local directory and access the image files from there:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Heavy_tails/HiNA.atom_num=100000.*.tiff</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Number_estimate/LoNA.atom_num=10000.*.tiff</span></code></p></li>
+</ul>
+<p>Also included is <code class="docutils literal notranslate"><span class="pre">ImageSimulation.ipynb</span></code>, which is the notebook used to generate the data you will find in that folder. You are encouraged to read through that notebook to see how the simulation works and even generate your own datasets if desired.</p>
 <p>You are welcome to access the images however works best for you, but a simple solution is to download the dataset folder to the same path as this notebook (or the one you plan to do your analysis in) and use the following helper function to important an image based on the true parameters of the underlying density distribution—found in the image file name.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
