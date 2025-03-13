@@ -76,6 +76,7 @@ chapters:
   - file: _sources/projects/Project_01_NuclearGeometryQGP
   - file: _sources/projects/Project_01_AberratedImages
   - file: _sources/projects/Project_01_DarkEnergySurvey
+  - file: _sources/projects/Project_01_GravitationalWaves
 - file: _sources/Week_09 # Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
@@ -112,7 +113,6 @@ chapters:
   sections:
   - file: _sources/projects/Project_02_AnisotropyQGP
   - file: _sources/projects/Project_02_AberratedImages
-  - file: _sources/projects/Project_02_GravitationalWaves
 - file: _sources/Week_14 # Learning from the Machines
   sections:
   - url: https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing
