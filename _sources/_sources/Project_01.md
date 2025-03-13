@@ -8,3 +8,4 @@
 * {doc}`projects/Project_01_NuclearGeometryQGP`
 * {doc}`projects/Project_01_DarkEnergySurvey`
 * {doc}`projects/Project_01_AberratedImages`
+* {doc}`projects/Project_01_GravitationalWaves`
