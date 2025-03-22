@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/SimulationBasedInference';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -493,6 +495,21 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-simple-bump-on-power-law-example-span"><span style="color:Orange">Simple Bump-on-Power-Law Example</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-explicit-likelikood-span"><span style="color:Orange">The Explicit Likelikood</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-implicit-likelikood-span"><span style="color:Orange">The Implicit Likelikood</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-approximate-bayesian-computation-span"><span style="color:LightGreen">Approximate Bayesian Computation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-neural-likelihood-ratio-estimation-span"><span style="color:LightGreen">Neural Likelihood-ratio Estimation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-neural-posterior-estimation-span"><span style="color:LightGreen">Neural Posterior Estimation</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-a-more-complicated-example-distribution-of-point-sources-in-a-2d-image-span"><span style="color:Orange">A more complicated example: distribution of point sources in a 2D image</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-the-explicit-likelikood-span"><span style="color:LightGreen">The Explicit Likelikood</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span"><span style="color:LightGreen">Implicit inference: Neural posterior estimation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-test-of-statistical-coverage-span"><span style="color:LightGreen">Test of Statistical Coverage</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -509,20 +526,1172 @@ document.write(`
 <h1>Simulation Based Inference<a class="headerlink" href="#simulation-based-inference" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">random_split</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">poisson</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">basinhopping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytorch_lightning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">corner</span>
 </pre></div>
 </div>
 </div>
 </div>
+<section id="span-style-color-orange-introduction-span">
+<h2><span style="color:Orange">Introduction</span><a class="headerlink" href="#span-style-color-orange-introduction-span" title="Permalink to this heading">#</a></h2>
+<p><span style="color:Violet">Simulation-based inference</span> (SBI) is a powerful class of methods for performing inference in settings where the likelihood is computationally intractable, but simulations can be realized via forward modeling.</p>
+<p>In this lecture we will</p>
+<ul class="simple">
+<li><p>Introduce the notion of an implicit likelihood, and how to leverage it to perform inference;</p></li>
+<li><p>Look at a “traditional” method for likelihood-free inference, Approximate Bayesian Computation (ABC);</p></li>
+<li><p>Build up two common modern <em>neural</em> SBI techniques: neural likelihood-ratio estimation (NRE) and neural posterior estimation (NPE);</p></li>
+<li><p>Introduce the concept of statistical coverage testing and calibration.</p></li>
+</ul>
+<p>As examples, we will look at a simple Gaussian-signal-on-power-law-background (“bump hunt”), where the likelihood is tractable, and a more complicated example of inferring a distribution of point sources, where the likelihood is computationally intractable. We will emphasize what it means for a likelihood to be computationally intractable/challenging and where the advantages of SBI come in.</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png" style="width: 1000px;" /></a></img><br></p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png" style="width: 1000px;" /></a></img><br></p>
+</section>
+<section id="span-style-color-orange-simple-bump-on-power-law-example-span">
+<h2><span style="color:Orange">Simple Bump-on-Power-Law Example</span><a class="headerlink" href="#span-style-color-orange-simple-bump-on-power-law-example-span" title="Permalink to this heading">#</a></h2>
+<p>As an initial example, consider a Gaussian signal parameterized by {amplitude, mean location, std} on top of a power law background parameterize by {amplitude, power-law exponent}.</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x_b = A_b\,y^{n_b}
+\]</div>
+<div class="math notranslate nohighlight">
+\[ \Large
+x_s = A_s\,\exp^{-(y - \mu_s)^2 / 2\sigma_s^2}
+\]</div>
+<div class="math notranslate nohighlight">
+\[ \Large
+x \sim \mathrm{Pois}(x_b + x_s)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bump_forward_model</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span><span class="p">,</span> <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Forward model for a Gaussian bump (amp_s, mu_s, std_s) on top of a power-law background (amp_b, exp_b).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_b</span> <span class="o">=</span> <span class="n">amp_b</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">**</span> <span class="n">exp_b</span><span class="p">)</span>  <span class="c1"># Power-law background</span>
+    <span class="n">x_s</span> <span class="o">=</span> <span class="n">amp_s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">mu_s</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">std_s</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Gaussian signal</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x_b</span> <span class="o">+</span> <span class="n">x_s</span>  <span class="c1"># Total mean signal</span>
+
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">poisson_interval</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.32</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Uses chi2 to get the poisson interval.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="n">low</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">-</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">-</span> <span class="n">k</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>  <span class="c1"># Dependent variable</span>
+
+<span class="c1"># Mean expected counts</span>
+<span class="n">x_mu</span> <span class="o">=</span> <span class="n">bump_forward_model</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> 
+                    <span class="n">amp_s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">mu_s</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">std_s</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># Signal params</span>
+                    <span class="n">amp_b</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">exp_b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Background params</span>
+
+<span class="c1"># Realized counts</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">x_mu</span><span class="p">)</span>
+<span class="n">x_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">poisson_interval</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x_mu</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean expected counts&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">x_err</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Realized counts&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$y$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Counts&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2c77e722121771f87b03cda5eb337472a644d6c6b930c1e641385110b0b83629.png" src="../../_images/2c77e722121771f87b03cda5eb337472a644d6c6b930c1e641385110b0b83629.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-the-explicit-likelikood-span">
+<h2><span style="color:Orange">The Explicit Likelikood</span><a class="headerlink" href="#span-style-color-orange-the-explicit-likelikood-span" title="Permalink to this heading">#</a></h2>
+<p>In this case, we can write down a log-likelihood as a Poisson over the mean returned by the forward model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_like</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-likehood function for a Gaussian bump (amp_s, mu_s, std_s) on top of a power-law background (amp_b, exp_b).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span><span class="p">,</span> <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span> <span class="o">=</span> <span class="n">theta</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">bump_forward_model</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span><span class="p">,</span> <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">poisson</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s focus on just 2 parameters for simplicity, the signal amplitude and mean location. The likelihood in this case is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_like_sig</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-likehood function for a Gaussian bump (amp_s, mu_s) on top of a fixed PL background.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">bump_forward_model</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span><span class="p">,</span> <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">poisson</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">log_like_sig</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(-175.93791395694095)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get a maximum-liklelihood estimate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial guess for the parameters</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+
+<span class="c1"># Set up the minimizer_kwargs for the basinhopping algorithm</span>
+<span class="n">minimizer_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span> <span class="s2">&quot;bounds&quot;</span><span class="p">:</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))}</span>
+
+<span class="c1"># Perform the optimization using basinhopping</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">basinhopping</span><span class="p">(</span><span class="k">lambda</span> <span class="n">thetas</span><span class="p">:</span> <span class="o">-</span><span class="n">log_like_sig</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">initial_guess</span><span class="p">,</span> <span class="n">minimizer_kwargs</span><span class="o">=</span><span class="n">minimizer_kwargs</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MLE parameters: </span><span class="si">{}</span><span class="s2">; true parameters: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MLE parameters: [52.47003182  0.79877118]; true parameters: (50, 0.8)
+</pre></div>
+</div>
+</div>
+</div>
+<p>And approximate posterior using <code class="docutils literal notranslate"><span class="pre">emcee</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_prior</span><span class="p">(</span><span class="n">thetas</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-prior function for a Gaussian bump (amp_s, mu_s) on top of a fixed PL background.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span> <span class="o">=</span> <span class="n">thetas</span>
+    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">amp_s</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">mu_s</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    
+<span class="k">def</span><span class="w"> </span><span class="nf">log_post</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-posterior function for a Gaussian bump (amp_s, mu_s) on top of a fixed PL background.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lp</span> <span class="o">=</span> <span class="n">log_prior</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">lp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lp</span> <span class="o">+</span> <span class="n">log_like_sig</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    
+<span class="c1"># Sampling with `emcee`</span>
+<span class="n">ndim</span><span class="p">,</span> <span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">32</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">log_post</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run_mcmc</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 5000/5000 [00:03&lt;00:00, 1546.42it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot posterior samples</span>
+<span class="n">flat_samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">get_chain</span><span class="p">(</span><span class="n">discard</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp_s&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_s&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8e8beffbcfc8bb7a8d5add0cc11e9a2fd830ad69f61bfbd9317326e9e117f878.png" src="../../_images/8e8beffbcfc8bb7a8d5add0cc11e9a2fd830ad69f61bfbd9317326e9e117f878.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-the-implicit-likelikood-span">
+<h2><span style="color:Orange">The Implicit Likelikood</span><a class="headerlink" href="#span-style-color-orange-the-implicit-likelikood-span" title="Permalink to this heading">#</a></h2>
+<p>Now we will do inference without relying on the explicit likelihood evaluation. The key realization is that samples from the forward model implicitly encode the likelihood; when we are simulating data points <span class="math notranslate nohighlight">\(x\)</span> for different parameter points <span class="math notranslate nohighlight">\(\theta\)</span>, we are drawing samples from the likelihood:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x\sim p(x\mid\theta)
+\]</div>
+<p>which is where the <em>implicit</em> aspect comes from. Let’s write down a bump simulator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bump_simulator</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simulate samples from the bump forward model given theta = (amp_s, mu_s) and abscissa points y.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span> <span class="o">=</span> <span class="n">thetas</span>
+    <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span>
+    <span class="n">x_mu</span> <span class="o">=</span> <span class="n">bump_forward_model</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">amp_s</span><span class="p">,</span> <span class="n">mu_s</span><span class="p">,</span> <span class="n">std_s</span><span class="p">,</span> <span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">x_mu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># Test it out</span>
+<span class="n">bump_simulator</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([154, 156, 133, 119, 116, 121, 111, 128,  95,  95,  93,  86,  82,
+        95,  83,  81,  92,  64,  68,  69,  82,  60,  63,  80,  67,  76,
+        57,  68,  65,  62,  55,  59,  63,  60,  74,  63,  96,  86, 115,
+        90,  91,  66,  71,  59,  47,  46,  48,  49,  60,  49])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-approximate-bayesian-computation-span">
+<h3><span style="color:LightGreen">Approximate Bayesian Computation</span><a class="headerlink" href="#span-style-color-lightgreen-approximate-bayesian-computation-span" title="Permalink to this heading">#</a></h3>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png" style="width: 1000px;" /></a></img><br></p>
+<p>The idea behind <span style="color:Violet">Approximate Bayesian Computation</span> (ABC) is to realize samples from the forward model (with the parameters <span class="math notranslate nohighlight">\(\theta\)</span> drawn from a prior) and compare it to the dataset of interest <span class="math notranslate nohighlight">\(x\)</span>. If the data and realized samples are close enough to each other according to some criterion, we keep the parameter points.</p>
+<p>The comparison criterion here is a simple MSE on the data points. Play around with the parameters of the forward model to see how the criterion <code class="docutils literal notranslate"><span class="pre">eps</span></code> changes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_fwd</span> <span class="o">=</span> <span class="n">bump_simulator</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_fwd</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">eps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(125.06)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">abc</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">eps_thresh</span><span class="o">=</span><span class="mf">500.</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ABC algorithm for Gaussian bump model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        y (np.ndarray): Abscissa points.</span>
+<span class="sd">        x (np.ndarray): Data counts.</span>
+<span class="sd">        eps_thresh (float, optional): Acceptance threshold. Defaults to 500.0.</span>
+<span class="sd">        n_samples (int, optional): Number of samples after which to stop. Defaults to 1000.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: Accepted samples approximating the posterior p(theta|x).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">total_attempts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Accepted Samples&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;samples&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Keep simulating until we have enough accepted samples</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_samples</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># Priors; theta ~ p(theta)</span>
+        <span class="n">x_fwd</span> <span class="o">=</span> <span class="n">bump_simulator</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># x ~ p(x|theta)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_fwd</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Distance metric; d(x, x_fwd)</span>
+        <span class="n">total_attempts</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># If accepted, add to samples</span>
+        <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="n">eps_thresh</span><span class="p">:</span>
+            <span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">acceptance_ratio</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_attempts</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">acceptance_ratio</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">acceptance_ratio</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">5_000</span>
+<span class="n">post_samples</span> <span class="o">=</span> <span class="n">abc</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">eps_thresh</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accepted Samples: 100%|██████████| 5000/5000 [00:06&lt;00:00, 753.63samples/s, acceptance_ratio=0.012]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp_s&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_s&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="nb">range</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp_s&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_s&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">))</span> <span class="o">*</span> <span class="n">n_samples</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">),</span> <span class="nb">range</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:root:Too few points to create valid contours
+</pre></div>
+</div>
+<img alt="../../_images/c0be0ea462ef25f6bc6d7636e39b8481392bf9d57aa96671e11b7b950e6b6d90.png" src="../../_images/c0be0ea462ef25f6bc6d7636e39b8481392bf9d57aa96671e11b7b950e6b6d90.png" />
+</div>
+</div>
+<p>Downsides of vanilla ABC:</p>
+<ul class="simple">
+<li><p>How to summarize the data? Curse of dimensionality / loss of information.</p></li>
+<li><p>How to compare with data? Likelihood may not be available.</p></li>
+<li><p>Choice of acceptance threshold: Precision/efficiency tradeoff.</p></li>
+<li><p>Need to re-run pipeline for new data or new prior.</p></li>
+</ul>
+</section>
+<section id="span-style-color-lightgreen-neural-likelihood-ratio-estimation-span">
+<h3><span style="color:LightGreen">Neural Likelihood-ratio Estimation</span><a class="headerlink" href="#span-style-color-lightgreen-neural-likelihood-ratio-estimation-span" title="Permalink to this heading">#</a></h3>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png" style="width: 1000px;" /></a></img><br></p>
+<p>For numerical stability, the alternate hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span> can be assumed to be one where <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> are not correlated, i.e., drawn from the individual marginal distributions <span class="math notranslate nohighlight">\(\{x, \theta\} \sim p(x)\,p(\theta)\)</span>. Then the alternate has support over the entire parameter space, instead of being a single hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
+<p>In this case, we get the likelihood-to-evidence ratio,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\hat r(x, \theta) = \frac{s(x, \theta)}{1 - s(x, \theta)} = \frac{p(x,\theta)}{p(x)p(\theta)} = \frac{p(x\mid\theta)}{p(x)}
+\]</div>
+<p><span class="math notranslate nohighlight">\(\hat r(x, \theta)\)</span> can be shown to be the classifier logit, i.e. the output before softmaxxing into the decision function with range between 0 and 1.</p>
+<p>Start by creating some training data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_train</span> <span class="o">=</span> <span class="mi">50_000</span>
+
+<span class="c1"># Simulate training data</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_train</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Parameter proposal</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">bump_simulator</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">theta_samples</span><span class="p">)])</span>
+
+<span class="c1"># Convert to torch tensors</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">theta_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Normalize the data</span>
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">x_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_std</span> <span class="o">=</span> <span class="n">x_samples</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_samples</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+
+<span class="n">theta_mean</span> <span class="o">=</span> <span class="n">theta_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">theta_std</span> <span class="o">=</span> <span class="n">theta_samples</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta_samples</span> <span class="o">-</span> <span class="n">theta_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">theta_std</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50000/50000 [00:00&lt;00:00, 103379.07it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>As our parameterized classifier, we will use a simple MLP.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_mlp</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">GELU</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an MLP from the configuration.&quot;&quot;&quot;</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span> <span class="n">activation</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layers</span><span class="p">):</span>
+        <span class="n">seq</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span> <span class="n">activation</span><span class="p">]</span>
+    <span class="n">seq</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a neural ratio estimator class, with a corresponding loss function. The loss is a simple binary cross-entropy loss that discriminates between samples from the joint distribution <span class="math notranslate nohighlight">\(\{x, \theta\} \sim p(x\mid\theta)\)</span> and those from a product of marginals <span class="math notranslate nohighlight">\(\{x, \theta\} \sim p(x)\,p(\theta)\)</span>. Samples from the latter are obtained by shuffling joint samples from within a batch.</p>
+<p>The binary cross-entropy loss is used as the classifier loss to distinguish samples from the joint and marginals,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\mathcal L = - \sum_i y_i \log(p_i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true labels and <span class="math notranslate nohighlight">\(p_i\)</span> the softmaxxed probabilities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">NeuralRatioEstimator</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simple neural likelihood-to-evidence ratio estimator, using an MLP as a parameterized classifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">theta_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">build_mlp</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">x_dim</span> <span class="o">+</span> <span class="n">theta_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+
+        <span class="c1"># Repeat x in groups of 2 along batch axis</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Get a shuffled version of theta</span>
+        <span class="n">theta_shuffled</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+        <span class="c1"># Interleave theta and shuffled theta</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">theta</span><span class="p">,</span> <span class="n">theta_shuffled</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Get labels; ones for pairs from joint, zeros for pairs from marginals</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> 
+        <span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Pass through parameterized classifier to get logits</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">BCELoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)(</span><span class="n">probs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;train_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate loss; initially it should be around -log(0.5) = 0.693</span>
+<span class="n">nre</span> <span class="o">=</span> <span class="n">NeuralRatioEstimator</span><span class="p">(</span><span class="n">x_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">theta_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">nre</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">],</span> <span class="n">theta_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([0.7111, 0.6754, 0.7117, 0.6749, 0.7113, 0.6758, 0.7109, 0.6758, 0.7118,
+        0.6746, 0.7132, 0.6736, 0.7116, 0.6749, 0.7108, 0.6753, 0.7122, 0.6743,
+        0.7107, 0.6759, 0.7121, 0.6747, 0.7113, 0.6756, 0.7112, 0.6754, 0.7116,
+        0.6752, 0.7112, 0.6755, 0.7111, 0.6756, 0.7110, 0.6756, 0.7113, 0.6753,
+        0.7123, 0.6743, 0.7113, 0.6753, 0.7107, 0.6758, 0.7114, 0.6753, 0.7109,
+        0.6758, 0.7112, 0.6755, 0.7122, 0.6745, 0.7112, 0.6755, 0.7136, 0.6732,
+        0.7116, 0.6751, 0.7123, 0.6744, 0.7106, 0.6760, 0.7139, 0.6731, 0.7110,
+        0.6755, 0.7108, 0.6755, 0.7111, 0.6754, 0.7111, 0.6756, 0.7115, 0.6753,
+        0.7122, 0.6748, 0.7109, 0.6757, 0.7115, 0.6749, 0.7111, 0.6754, 0.7106,
+        0.6760, 0.7111, 0.6755, 0.7116, 0.6749, 0.7113, 0.6753, 0.7111, 0.6756,
+        0.7111, 0.6757, 0.7117, 0.6752, 0.7114, 0.6754, 0.7114, 0.6753, 0.7106,
+        0.6761, 0.7112, 0.6755, 0.7114, 0.6753, 0.7109, 0.6756, 0.7115, 0.6752,
+        0.7128, 0.6736, 0.7116, 0.6754, 0.7108, 0.6758, 0.7111, 0.6752, 0.7114,
+        0.6753, 0.7113, 0.6752, 0.7117, 0.6748, 0.7117, 0.6747, 0.7125, 0.6742,
+        0.7108, 0.6759], grad_fn=&lt;BinaryCrossEntropyBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Instantiate dataloader and train.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">val_fraction</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">n_samples_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val_fraction</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_samples</span><span class="p">))</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">x_samples</span><span class="p">,</span> <span class="n">theta_samples</span><span class="p">)</span>
+
+<span class="n">dataset_train</span><span class="p">,</span> <span class="n">dataset_val</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x_samples</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_samples_val</span><span class="p">,</span> <span class="n">n_samples_val</span><span class="p">])</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset_val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">nre</span><span class="p">,</span> <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">val_dataloaders</span><span class="o">=</span><span class="n">val_loader</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+/home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:76: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name       | Type       | Params | Mode 
+--------------------------------------------------
+0 | classifier | Sequential | 73.0 K | train
+--------------------------------------------------
+73.0 K    Trainable params
+0         Non-trainable params
+73.0 K    Total params
+0.292     Total estimated model params size (MB)
+8         Modules in train mode
+0         Modules in eval mode
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3fa7b232d5754f0ab9211bec43fe66f7", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "baf92fae76624d89aa006b7fa698921a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "cb60fb762ac646a2bdbfd9045d44438a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "9d7f4a955b344c1ea8d447b574001348", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c46f11fee40c464693cc3d4477c15a14", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "832d46437f294832a9e32686662ad231", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "fd94d8d98417428ab2a111df9feac7da", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8db295800b49447cb8d3fa7444ce9077", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f45c49af53e045f2aa6c7d4a4d1b3ef0", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8c186c2901074bfea140211bf88a307c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "56530a8fdefa4c57b4848ce1e7f66073", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "1a0c3a7d96b945e7bb69eef3d65ffcd4", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "36e74082b6aa407dae3cddc86c4bd980", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "60ad425dd0de4db29c5ae2e0ba5f3de0", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2d50599741c34c9da10ca85dc6412514", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "a7dc6a5fdb4b45608553c845f5a522d4", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f1c657c6afea4ecf896c80f84fcad7a8", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c332611f8bd8401d8420d5e5a657a9f0", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b945287bef1c48219e05d415f4e90d87", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2ddb9e5c19d84c5db0d03bce56460d39", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "5449e5164c1a4837a419bc7ab016812b", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6111cc7aebe64d0d96aa1ba6efc734cd", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`Trainer.fit` stopped: `max_epochs=20` reached.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The classifier logits are now an estimator for the likelihood ratio. We can write down a log-likelihood function and use it to sample from the corresponding posterior distribution, just like before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_like</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-likelihood ratio estimator using trained classifier logits.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1"># Normalize</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">theta_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">theta_std</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1"># Detach the tensor to remove it from the computation graph and get the scalar value</span>
+    <span class="k">return</span> <span class="n">nre</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">theta_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">90</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">bump_simulator</span><span class="p">(</span><span class="n">theta_test</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">log_like</span><span class="p">(</span><span class="n">theta_test</span><span class="p">,</span> <span class="n">x_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(3.7350936, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_post</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Log-posterior distribution, for sampling.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lp</span> <span class="o">=</span> <span class="n">log_prior</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">lp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lp</span> <span class="o">+</span> <span class="n">log_like</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sample with <code class="docutils literal notranslate"><span class="pre">emcee</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ndim</span><span class="p">,</span> <span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">32</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">log_post</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x_test</span><span class="p">,))</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run_mcmc</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 5000/5000 [00:15&lt;00:00, 330.74it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot approximate posterior:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">flat_samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">get_chain</span><span class="p">(</span><span class="n">discard</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp_s&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_s&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3d6730f0b1474f057122983ac0de99093b67fd5b56c02be99ecfbb8958035fa5.png" src="../../_images/3d6730f0b1474f057122983ac0de99093b67fd5b56c02be99ecfbb8958035fa5.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-neural-posterior-estimation-span">
+<h3><span style="color:LightGreen">Neural Posterior Estimation</span><a class="headerlink" href="#span-style-color-lightgreen-neural-posterior-estimation-span" title="Permalink to this heading">#</a></h3>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png" style="width: 1000px;" /></a></img><br></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nflows.flows.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nflows.distributions.normal</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardNormal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nflows.transforms.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeTransform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nflows.transforms.autoregressive</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaskedAffineAutoregressiveTransform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nflows.transforms.permutations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReversePermutation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_flow</span><span class="p">(</span><span class="n">d_in</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">d_hidden</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">d_context</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Instantiate a simple (Masked Autoregressive) normalizing flow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">base_dist</span> <span class="o">=</span> <span class="n">StandardNormal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">d_in</span><span class="p">])</span>
+
+    <span class="n">transforms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ReversePermutation</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">d_in</span><span class="p">))</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MaskedAffineAutoregressiveTransform</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">d_in</span><span class="p">,</span> <span class="n">hidden_features</span><span class="o">=</span><span class="n">d_hidden</span><span class="p">,</span> <span class="n">context_features</span><span class="o">=</span><span class="n">d_context</span><span class="p">))</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">CompositeTransform</span><span class="p">(</span><span class="n">transforms</span><span class="p">)</span>
+
+    <span class="n">flow</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">base_dist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flow</span>
+
+<span class="c1"># Instantiate flow</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">get_flow</span><span class="p">()</span>
+
+<span class="c1"># Make sure sampling and log-prob calculation makes sense</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">log_prob</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">sample_and_log_prob</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">log_prob</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([2, 100, 2]) torch.Size([2, 100])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Construct a neural posterior estimator. It uses a normalizing flow as a (conditional) posterior density estimator, and a feature-extraction network that aligns the directions of variations in parameters <span class="math notranslate nohighlight">\(\theta\)</span> and data <span class="math notranslate nohighlight">\(x\)</span>.
+$<span class="math notranslate nohighlight">\(  \mathcal L = -\log p_\phi(\theta\mid s_\varphi(x))\)</span><span class="math notranslate nohighlight">\(
+where \)</span>{\phi, \varphi}$ are the parameters of the normalizing flow and featurizer MLP, respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">NeuralPosteriorEstimator</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simple neural posterior estimator class using a normalizing flow as the posterior density estimator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">featurizer</span><span class="p">,</span> <span class="n">d_context</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">featurizer</span> <span class="o">=</span> <span class="n">featurizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="o">=</span> <span class="n">get_flow</span><span class="p">(</span><span class="n">d_in</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">d_hidden</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">d_context</span><span class="o">=</span><span class="n">d_context</span><span class="p">,</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featurizer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;train_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Instantiate the NPE class and look at the loss:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">npe</span> <span class="o">=</span> <span class="n">NeuralPosteriorEstimator</span><span class="p">(</span><span class="n">featurizer</span><span class="o">=</span><span class="n">build_mlp</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">npe</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">],</span> <span class="n">theta_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([4.5507, 4.5462, 4.8587, 4.7216, 5.1465, 5.2831, 4.3842, 5.0363, 4.4481,
+        4.8252, 4.9690, 4.8283, 4.7866, 4.8281, 4.8784, 4.5674, 4.4706, 4.3238,
+        4.6094, 4.3764, 4.7190, 4.2643, 4.8801, 4.5625, 4.5427, 4.8193, 4.8709,
+        4.4313, 4.5512, 4.4553, 5.2397, 4.6987, 4.9395, 4.5036, 4.7875, 4.7663,
+        4.9747, 4.5486, 4.6612, 4.5463, 4.9352, 4.9381, 4.4469, 4.8464, 4.5437,
+        4.7972, 4.9030, 4.7755, 4.6783, 4.4491, 4.5710, 4.3873, 4.5539, 4.6423,
+        4.7834, 4.8794, 4.9736, 4.5666, 4.2649, 4.3008, 4.4493, 4.5511, 4.5869,
+        4.8481], grad_fn=&lt;NegBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Train using the same data as before:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1">#trainer = pl.Trainer(max_epochs=20, accelerator=&quot;cpu&quot;) # msn: needed on Mac due to float64 limitations on Apple Silicon</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">npe</span><span class="p">,</span> <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">val_dataloaders</span><span class="o">=</span><span class="n">val_loader</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name       | Type       | Params | Mode 
+--------------------------------------------------
+0 | featurizer | Sequential | 74.6 K | train
+1 | flow       | Flow       | 24.3 K | train
+--------------------------------------------------
+99.0 K    Trainable params
+0         Non-trainable params
+99.0 K    Total params
+0.396     Total estimated model params size (MB)
+89        Modules in train mode
+0         Modules in eval mode
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "7883b690fd7346ff92a0320f30b0b7a5", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6b5682c5b2c14a2494bbf0716c1f15b3", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d5c4244748864e20a228aef82c0fe091", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "9963235ee1964501ba7a083b059e6a27", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "20f78f82f0e146178fe16d24c16abd6c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "dc493c6d80564f30ac2b64878b3159a2", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "168b53f5d402487385dcfa190659a2ff", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "691b7293fc914704a03f301005857c11", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "27470edaa8d649e9ad205847d6933876", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "4763d8079eb84a6cbe0b1b987610d5e2", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "a562be179e54417b84a6a2311c13e63e", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e9f5592d9feb4acc873f4d6730ec83b1", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "56c886a1ab264e11980abaff671f1127", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "53efbf4cdec7414cafa0dff55e525556", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "508ceac88d2e44d88eb81bf22b861f00", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "97a0abdcb1334a9db7803e3409e7039c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "26b79ee775f346d3969125fe752c9584", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e9c774e10cc643c3a73aae14237de2e1", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "96f4e136aaab416f9f680bdb3a0b3e96", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "04bbda00b8b041d683498fa17a6a7410", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "0413b25256564b379da58a669a7eaa8c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b2b3bbdea5c24272b94d1349f41c400a", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`Trainer.fit` stopped: `max_epochs=20` reached.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get a test data sample, pass it through the feature extractor, and condition the flow density estimator on it. We get posterior samples by drawing from</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\theta \sim p_\phi(\theta\mid s_\varphi(x))
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">90</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">bump_simulator</span><span class="p">(</span><span class="n">theta_test</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_test_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">featurizer</span><span class="p">(</span><span class="n">x_test_norm</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">samples_test</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta_std</span> <span class="o">+</span> <span class="n">theta_mean</span>
+<span class="n">samples_test</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="c1"># Reshape the 3D array to 2D</span>
+<span class="n">num_samples</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">data_2d</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reshape to (num_samples, 2) msn: not needed on Colab!</span>
+
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">data_2d</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp_s&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_s&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a3d79970cfbeca10ea2b76237dc9e866f443cb5afc82b79539dbf0fd470f4cc6.png" src="../../_images/a3d79970cfbeca10ea2b76237dc9e866f443cb5afc82b79539dbf0fd470f4cc6.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-a-more-complicated-example-distribution-of-point-sources-in-a-2d-image-span">
+<h2><span style="color:Orange">A more complicated example: distribution of point sources in a 2D image</span><a class="headerlink" href="#span-style-color-orange-a-more-complicated-example-distribution-of-point-sources-in-a-2d-image-span" title="Permalink to this heading">#</a></h2>
+<p>Finally, let’s look at a more complicated example, one that is closer to a typical application of SBI and where the likelihood is formally intractable.</p>
+<p>The forward model simulates a map of point sources with mean counts drawn from a power law (Pareto) distribution. The distribution of the mean counts is given by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\frac{\mathrm dn}{\mathrm  ds} = A s^{\beta}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is the amplitude (amp_b), <span class="math notranslate nohighlight">\(s\)</span> is the flux, and <span class="math notranslate nohighlight">\(\beta\)</span> is the exponent (exp_b). The fluxes are drawn from a truncated power law with minimum and maximum bounds, <span class="math notranslate nohighlight">\(s_\text{min}\)</span> and <span class="math notranslate nohighlight">\(s_\text{max}\)</span>, respectively.</p>
+<p>The number of sources is determined by integrating the power law distribution within the flux limits and taking a Poisson realization:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+N_\text{sources} \sim \text{Pois}\left(\int_{s_\text{min}}^{s_\text{max}} \, \mathrm ds \frac{\mathrm dn}{\mathrm ds}\right)
+\]</div>
+<p>For each source, a position is randomly assigned within the box of size <code class="docutils literal notranslate"><span class="pre">box_size</span></code>. The fluxes are then binned into a grid with <code class="docutils literal notranslate"><span class="pre">resolution</span></code> number of bins in both x and y directions. The resulting map is convolved with a Gaussian point spread function (PSF) with a standard deviation of <code class="docutils literal notranslate"><span class="pre">sigma_psf</span></code> to account for the spatial resolution of the instrument.</p>
+<p>The output is a 2D map of counts, representing the simulated observation of the point sources in the sky.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">binned_statistic_2d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.convolution</span><span class="w"> </span><span class="kn">import</span> <span class="n">convolve</span><span class="p">,</span> <span class="n">Gaussian2DKernel</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_sources</span><span class="p">(</span><span class="n">amp_b</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">,</span> <span class="n">s_min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">s_max</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">box_size</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">sigma_psf</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simulate a map of point sources with mean counts drawn from a power law (Pareto) distribution dn/ds = amp_b * s ** exp_b</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get number of sources by analytically integrating dn/ds and taking Poisson realization</span>
+    <span class="n">n_sources</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="o">-</span><span class="n">amp_b</span> <span class="o">*</span> <span class="p">(</span><span class="n">s_min</span> <span class="o">**</span> <span class="p">(</span><span class="n">exp_b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp_b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Draw fluxes from truncated power law amp_b * s ** (exp_b - 1), with s_min and s_max as the bounds</span>
+    <span class="n">fluxes</span> <span class="o">=</span> <span class="n">draw_powerlaw_flux</span><span class="p">(</span><span class="n">n_sources</span><span class="p">,</span> <span class="n">s_min</span><span class="p">,</span> <span class="n">s_max</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">)</span>
+
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">box_size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_sources</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">box_size</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">pixel_size</span> <span class="o">=</span> <span class="n">box_size</span> <span class="o">/</span> <span class="n">resolution</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">Gaussian2DKernel</span><span class="p">(</span><span class="n">x_stddev</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">sigma_psf</span> <span class="o">/</span> <span class="n">pixel_size</span><span class="p">)</span>
+
+    <span class="n">mu_signal</span> <span class="o">=</span> <span class="n">binned_statistic_2d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="n">fluxes</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">convolve</span><span class="p">(</span><span class="n">mu_signal</span><span class="p">,</span> <span class="n">kernel</span><span class="p">))</span>
+                
+    <span class="k">return</span> <span class="n">fluxes</span><span class="p">,</span> <span class="n">counts</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_powerlaw_flux</span><span class="p">(</span><span class="n">n_sources</span><span class="p">,</span> <span class="n">s_min</span><span class="p">,</span> <span class="n">s_max</span><span class="p">,</span> <span class="n">exp_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw from a powerlaw with slope `exp_b` and min/max mean counts `s_min` and `s_max`. From:</span>
+<span class="sd">    https://stackoverflow.com/questions/31114330/python-generating-random-numbers-from-a-power-law-distribution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_sources</span><span class="p">)</span>
+    <span class="n">s_low_u</span><span class="p">,</span> <span class="n">s_high_u</span> <span class="o">=</span> <span class="n">s_min</span> <span class="o">**</span> <span class="p">(</span><span class="n">exp_b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">s_max</span> <span class="o">**</span> <span class="p">(</span><span class="n">exp_b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">s_low_u</span> <span class="o">+</span> <span class="p">(</span><span class="n">s_high_u</span> <span class="o">-</span> <span class="n">s_low_u</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp_b</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">))</span>
+
+<span class="n">fluxes</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">simulate_sources</span><span class="p">(</span><span class="n">amp_b</span><span class="o">=</span><span class="mf">200.</span><span class="p">,</span> <span class="n">exp_b</span><span class="o">=-</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Pixels&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Pixels&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Pixels&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/d13b7eaf7447b40e0cef73430d6946c7e3d7aefa8db42e8d8d57000a42c9f361.png" src="../../_images/d13b7eaf7447b40e0cef73430d6946c7e3d7aefa8db42e8d8d57000a42c9f361.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Draw parameters from the prior</span>
+<span class="n">n_params</span> <span class="o">=</span> <span class="mi">16</span>
+
+<span class="n">amp_b_prior</span> <span class="o">=</span> <span class="p">(</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">)</span>
+<span class="n">exp_b_prior</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">amp_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">amp_b_prior</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">amp_b_prior</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_params</span><span class="p">)</span>
+<span class="n">exp_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">exp_b_prior</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">exp_b_prior</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_params</span><span class="p">)</span>
+
+<span class="c1"># Plot the data samples on a grid</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">fluxes</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">simulate_sources</span><span class="p">(</span><span class="n">amp_b</span><span class="o">=</span><span class="n">amp_bs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">exp_b</span><span class="o">=</span><span class="n">exp_bs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$A_b=</span><span class="si">{</span><span class="n">amp_bs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">, n_b=</span><span class="si">{</span><span class="n">exp_bs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9a4f30789df8c86d8af382458225b86d3d689870748165e1db3f2562414674ab.png" src="../../_images/9a4f30789df8c86d8af382458225b86d3d689870748165e1db3f2562414674ab.png" />
+</div>
+</div>
+<section id="span-style-color-lightgreen-the-explicit-likelikood-span">
+<h3><span style="color:LightGreen">The Explicit Likelikood</span><a class="headerlink" href="#span-style-color-lightgreen-the-explicit-likelikood-span" title="Permalink to this heading">#</a></h3>
+<p>The (marginal) likelihood, which we would need to plug into something like MCMC, is computationally intractable! This is because it involves an integral over a cumbersome latent space, which consists of all possible number <span class="math notranslate nohighlight">\(n\)</span> of sources and their positions <span class="math notranslate nohighlight">\(\{z\}=\{x, y\}_{i=1}^{n}\)</span>. Let’s write this out formally:
+$<span class="math notranslate nohighlight">\(p(x \mid \theta)=\sum_{n} \int \mathrm{d}^{n} \{z\}\, p\left(n \mid \theta\right) \prod_i^{n} p\left(z_{i} \mid \theta\right) \, p\left(x \mid \theta,\left\{z_{i}\right\}\right)\)</span>$</p>
+</section>
+<section id="span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span">
+<h3><span style="color:LightGreen">Implicit inference: Neural posterior estimation</span><a class="headerlink" href="#span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span" title="Permalink to this heading">#</a></h3>
+<p>Let’s use neural posterior estimation with a normalizing flow again. Get a training sample:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_train</span> <span class="o">=</span> <span class="mi">30_000</span>
+
+<span class="c1"># Sample from prior, then simulate</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="p">[</span><span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="p">[</span><span class="mf">200.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.99</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_train</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">simulate_sources</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">theta_samples</span><span class="p">)])</span>
+
+<span class="c1"># Convert to torch tensors</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">theta_samples</span><span class="p">)</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x_samples</span><span class="p">)</span>
+
+<span class="c1"># Normalize the data</span>
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">x_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_std</span> <span class="o">=</span> <span class="n">x_samples</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_samples</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+
+<span class="n">theta_mean</span> <span class="o">=</span> <span class="n">theta_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">theta_std</span> <span class="o">=</span> <span class="n">theta_samples</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta_samples</span> <span class="o">-</span> <span class="n">theta_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">theta_std</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 30000/30000 [00:10&lt;00:00, 2790.80it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">val_fraction</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">n_samples_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val_fraction</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_samples</span><span class="p">))</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">x_samples</span><span class="p">,</span> <span class="n">theta_samples</span><span class="p">)</span>
+
+<span class="n">dataset_train</span><span class="p">,</span> <span class="n">dataset_val</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x_samples</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_samples_val</span><span class="p">,</span> <span class="n">n_samples_val</span><span class="p">])</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset_val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since we’re working with images, use a simple convolutional neural network (CNN) as the feature extractor. The normalizing flow will be conditioned on the output of the CNN.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simple CNN feature extractor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="mi">16</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Add channel dim</span>
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool1</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.02</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool2</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.02</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">npe</span> <span class="o">=</span> <span class="n">NeuralPosteriorEstimator</span><span class="p">(</span><span class="n">featurizer</span><span class="o">=</span><span class="n">CNN</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">),</span> <span class="n">d_context</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">npe</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">],</span> <span class="n">theta_samples</span><span class="p">[:</span><span class="mi">64</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([5.5472, 5.4650, 5.2634, 5.2259, 5.4311, 5.4464, 5.2569, 5.2601, 5.2231,
+        5.6663, 5.6888, 5.6201, 5.2845, 5.2401, 5.4838, 5.5989, 5.5505, 5.2108,
+        5.3182, 5.5351, 5.2221, 5.2659, 5.2454, 5.5654, 5.6308, 5.3478, 5.7694,
+        5.2209, 5.3496, 5.4248, 5.5198, 5.2646, 5.2557, 5.3036, 5.4230, 5.6174,
+        5.3109, 5.2547, 5.2582, 5.4802, 5.2518, 5.2179, 5.2548, 5.4662, 5.2859,
+        5.2461, 5.5553, 5.2576, 5.3641, 5.6228, 5.3387, 5.3764, 5.2950, 5.2379,
+        5.4209, 5.5746, 5.4005, 5.5264, 5.2809, 5.3875, 5.5117, 5.2231, 5.4146,
+        5.3383], grad_fn=&lt;NegBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="c1">#trainer = pl.Trainer(max_epochs=15, accelerator=&quot;cpu&quot;) # msn: needed on Mac due to float64 limitations on Apple Silicon</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">npe</span><span class="p">,</span> <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">val_dataloaders</span><span class="o">=</span><span class="n">val_loader</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+HPU available: False, using: 0 HPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+  | Name       | Type | Params | Mode
+-------------------------------------------
+0 | featurizer | CNN  | 265 K  | eval
+1 | flow       | Flow | 30.5 K | eval
+-------------------------------------------
+296 K     Trainable params
+0         Non-trainable params
+296 K     Total params
+1.184     Total estimated model params size (MB)
+0         Modules in train mode
+88        Modules in eval mode
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "92c3167128d54d95b08daaadec7e0e2f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c41b211e99ec480083914b9b98a0b091", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c27c41477fd04e649da1f9fd4223a6d2", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b6db0105609e4fcf96ca049f5f012c1a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d14972749d2c401ba1fe9ffac29b3da5", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7bb870bd5abf40e5ac915db958d05a2d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d3f725e22d0844fbbe1605278aa42cee", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6d94b08e00bc4bf88cd638da8874889f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e21e57db92ae44a5938a8172c7ab9a4c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e8fc9ddbb0c94aef8af2c6ceacff3a71", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "071db2f9f6b94b1395db09d740618a2c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "505c410979e34ef89849557e40549cb2", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "21aa505804d349689c96fae55d4bfb44", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7f618b0ad9994722a2fe35e1032ba290", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b000e5d5fc234a5d8295f589a74fb334", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2709f7bf10e84a63b62a22b543585b47", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "0b47f20a6f2d4f37b4400d742bf050ac", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`Trainer.fit` stopped: `max_epochs=15` reached.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">npe</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get a test map, extract features, condition normalizing flow, extract samples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">15.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4</span><span class="p">])</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">simulate_sources</span><span class="p">(</span><span class="n">params_test</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">params_test</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_test_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">featurizer</span><span class="p">(</span><span class="n">x_test_norm</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="n">samples_test</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta_std</span> <span class="o">+</span> <span class="n">theta_mean</span>
+<span class="n">samples_test</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">samples_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1">#corner.corner(samples_test, labels=[&quot;amp&quot;, &quot;exp&quot;], truths=params_test);</span>
+
+
+
+<span class="c1"># Reshape the 3D array to 2D</span>
+<span class="n">num_samples</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">data_2d</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reshape to (num_samples, 2) msn: not needed on Colab!</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">data_2d</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="s2">&quot;exp&quot;</span><span class="p">],</span> <span class="n">truths</span><span class="o">=</span><span class="n">params_test</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 10000, 2)
+(10000, 2)
+</pre></div>
+</div>
+<img alt="../../_images/ad3de7d15df7b93b09469c8d8bb7529fa70d810d64fd921637b178f075cee77e.png" src="../../_images/ad3de7d15df7b93b09469c8d8bb7529fa70d810d64fd921637b178f075cee77e.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-test-of-statistical-coverage-span">
+<h3><span style="color:LightGreen">Test of Statistical Coverage</span><a class="headerlink" href="#span-style-color-lightgreen-test-of-statistical-coverage-span" title="Permalink to this heading">#</a></h3>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png" style="width: 1000px;" /></a></img><br></p>
+<p>Figure from <a class="reference external" href="https://arxiv.org/abs/2209.01845">https://arxiv.org/abs/2209.01845</a></p>
+<p>We can do some checks to make sure that our posterior has the correct statistical interpretation. In particular, let’s test the posterior statistical coverage by evaluating how well the Highest Posterior Density (HPD) intervals capture the true parameter values.</p>
+<p>The <span style="color:Violet">Highest Posterior Density</span> (HPD) interval is a region in the parameter space that contains the most probable values for a given credible mass (e.g., 95% or 99%). In other words, it is the shortest interval that contains the specified credible mass of the posterior distribution. This is one of summarizing a posterior distribution.</p>
+<p><span style="color:Violet">Nominal coverage</span> is the probability, or the proportion of the parameter space, that the HPD interval is intended to contain. For example, if the nominal coverage is 0.95, the HPD interval should theoretically contain the true parameter value 95% of the time.</p>
+<p><span style="color:Violet">Empirical coverage</span> is the proportion of true parameter values that actually fall within the HPD interval, based on a set of test cases or simulations.</p>
+<p>For a perfectly calibrated posterior estimator, empirical coverage = nominal coverage for all credibility levels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_test</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c1"># How many test samples to draw for coverage test</span>
+
+<span class="c1"># Get samples </span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">simulate_sources</span><span class="p">(</span><span class="n">params_test</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">params_test</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_test</span><span class="p">)])</span>
+<span class="n">x_test_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_std</span>
+
+<span class="c1"># and featurize</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">featurizer</span><span class="p">(</span><span class="n">x_test_norm</span><span class="p">)</span>
+
+<span class="c1"># Get posterior for all samples together in a batch</span>
+<span class="n">samples_test</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta_std</span> <span class="o">+</span> <span class="n">theta_mean</span>
+<span class="n">samples_test</span> <span class="o">=</span> <span class="n">samples_test</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_80963/4001163492.py:4: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:254.)
+  x_test = torch.Tensor([simulate_sources(params_test[0], params_test[1])[1] for _ in range(n_test)])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">hpd</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">credible_mass</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute highest posterior density (HPD) of array for given credible mass.&quot;&quot;&quot;</span>
+    <span class="n">sorted_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">interval_idx_inc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">credible_mass</span> <span class="o">*</span> <span class="n">sorted_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">n_intervals</span> <span class="o">=</span> <span class="n">sorted_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">interval_idx_inc</span>
+    <span class="n">interval_width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_intervals</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_intervals</span><span class="p">):</span>
+        <span class="n">interval_width</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_samples</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">interval_idx_inc</span><span class="p">]</span> <span class="o">-</span> <span class="n">sorted_samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">hdi_min</span> <span class="o">=</span> <span class="n">sorted_samples</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">interval_width</span><span class="p">)]</span>
+    <span class="n">hdi_max</span> <span class="o">=</span> <span class="n">sorted_samples</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">interval_width</span><span class="p">)</span> <span class="o">+</span> <span class="n">interval_idx_inc</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">hdi_min</span><span class="p">,</span> <span class="n">hdi_max</span>
+
+<span class="n">hpd</span><span class="p">(</span><span class="n">samples_test</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">credible_mass</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float32(13.387672), np.float32(15.186882))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_nominals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">contains_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_test</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p_nominals</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">i_param</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples_test</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i_param</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">p_nominal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p_nominals</span><span class="p">):</span>
+            <span class="n">hdi_min</span><span class="p">,</span> <span class="n">hdi_max</span> <span class="o">=</span> <span class="n">hpd</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">credible_mass</span><span class="o">=</span><span class="n">p_nominal</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hdi_min</span> <span class="o">&lt;</span> <span class="n">params_test</span><span class="p">[</span><span class="n">i_param</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">hdi_max</span><span class="p">:</span>
+                <span class="n">contains_true</span><span class="p">[</span><span class="n">i_param</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make two plots, one for each parameter</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_nominals</span><span class="p">,</span> <span class="n">contains_true</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_test</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Nominal coverage&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Expected coverage&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coverage for amplitude&quot;</span><span class="p">)</span>
+
+
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p_nominals</span><span class="p">,</span> <span class="n">contains_true</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_test</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Nominal coverage&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Expected coverage&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coverage for exponent&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Coverage for exponent&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/5229da278b8b4b28d53e61202c3d4cc31541519e6c238f177dfcb7136a677aed.png" src="../../_images/5229da278b8b4b28d53e61202c3d4cc31541519e6c238f177dfcb7136a677aed.png" />
+</div>
+</div>
+</section>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Initial version: Mark Neubauer</p></li>
+<li><p>Initial version: Mark Neubauer</p>
+<ul>
+<li><p>Modified from the following <a class="reference external" href="https://github.com/smsharma/sbi-lecture-mit/tree/main">lecture</a></p></li>
+</ul>
+</li>
+<li><p>Code Heavily Inspired by the Following Repositories</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/huggingface/pytorch-image-models/blob/main/timm/models/vision_transformer.py">Huggingface Pytorch Image Models</a></p></li>
+<li><p><a class="reference external" href="https://github.com/lucidrains/vit-pytorch/blob/main/vit_pytorch/local_vit.py">Lucidrains ViT Pytorch</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jankrepl/mildlyoverfitted/blob/master/github_adventures/vision_transformer/custom.py">Jankrepl Github Adventures</a></p></li>
+<li><p><a class="reference external" href="https://github.com/karpathy/minGPT/blob/master/mingpt/model.py">Karpathy minGPT</a></p></li>
+</ul>
+</li>
 </ul>
 <p>© Copyright 2025</p>
 </section>
@@ -591,6 +1760,21 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-simple-bump-on-power-law-example-span"><span style="color:Orange">Simple Bump-on-Power-Law Example</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-explicit-likelikood-span"><span style="color:Orange">The Explicit Likelikood</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-the-implicit-likelikood-span"><span style="color:Orange">The Implicit Likelikood</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-approximate-bayesian-computation-span"><span style="color:LightGreen">Approximate Bayesian Computation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-neural-likelihood-ratio-estimation-span"><span style="color:LightGreen">Neural Likelihood-ratio Estimation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-neural-posterior-estimation-span"><span style="color:LightGreen">Neural Posterior Estimation</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-a-more-complicated-example-distribution-of-point-sources-in-a-2d-image-span"><span style="color:Orange">A more complicated example: distribution of point sources in a 2D image</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-the-explicit-likelikood-span"><span style="color:LightGreen">The Explicit Likelikood</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span"><span style="color:LightGreen">Implicit inference: Neural posterior estimation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-test-of-statistical-coverage-span"><span style="color:LightGreen">Test of Statistical Coverage</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
