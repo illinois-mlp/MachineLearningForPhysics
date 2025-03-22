@@ -1,4 +1,4 @@
-# <span style="color: blue;"><b>Generative Modeling</b></span>
+# <span style="color: blue;"><b>Generative Modeling and Simulation-Based Inference</b></span>
 
 ## *Overview*
 You will learn the basics of Deep Learning and Generative Modeling
