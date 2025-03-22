@@ -665,7 +665,7 @@ document.write(`
 <h4><span style="color:LightPink">Aside: Couple of Details on why its a Weighted Average</span><a class="headerlink" href="#span-style-color-lightpink-aside-couple-of-details-on-why-its-a-weighted-average-span" title="Permalink to this heading">#</a></h4>
 <p>Pretend our Attention matrix is of shape <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">x</span> <span class="pre">3</span></code> and the values matrix is of shape <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">x</span> <span class="pre">768</span></code>. After performing softmax on our attention matrix, each row will sum to one. Therefore, when multiplying with the Values matrix, each row of the Attention martrix is encoding a weighted sum of the embeddings of the values matrix.</p>
 <div>
-<img src="https://raw.githubusercontent.com/priyammaz/PyTorch-Adventures/main/src/visuals/encoder_attention_vis.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VisionTransformer-encoder_attention_vis.png" width=800></img>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Head</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
