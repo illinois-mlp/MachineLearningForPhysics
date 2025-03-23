@@ -583,7 +583,7 @@ document.write(`
 <h2><span style="color:Orange">Recap: Recurrent Neural Networks</span><a class="headerlink" href="#span-style-color-orange-recap-recurrent-neural-networks-span" title="Permalink to this heading">#</a></h2>
 <p>To start the explanation, lets reference back the original sequence modeling mechanism: <span style="color:Violet">Recurrent Neural Networks</span> (RNNs). You might review the RNN part of this <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/ConvolutionalRecurrentNeuralNetworks.html">notebook</a> from earlier in the course.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/recurrent_neural_network_diagram.png?raw=true" width="800">
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-recurrent_neural_network_diagram.png" width=800></img>
 </div><p>In recurrent neural networks, what we typically do is take our sequence and pass in a single timestep at a time and produce an output. This means when we pass in <span class="math notranslate nohighlight">\(x_1\)</span> we create a hidden state <span class="math notranslate nohighlight">\(h_1\)</span> that captures all the relevant information in the input, and this hidden state then is used to produce the output <span class="math notranslate nohighlight">\(y_1\)</span>. Now what makes it an RNN is when we pass in the second timestep <span class="math notranslate nohighlight">\(x_2\)</span> to produce the hidden state <span class="math notranslate nohighlight">\(h_2\)</span>, the hidden state already contains information about the past <span class="math notranslate nohighlight">\(h_1\)</span> Therefore our output of <span class="math notranslate nohighlight">\(y_2\)</span> is informed both by information from <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span> encoded through the hidden states. If we keep this going, when we want to make a prediction at <span class="math notranslate nohighlight">\(y_{100}\)</span>, we will be using a hidden state that has encoded information of all the inputs <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_{100}\)</span>.</p>
 <p>Everything explained so far is a <span style="color:Violet">causal RNN</span> which makes a prediction of some timestep <span class="math notranslate nohighlight">\(t\)</span> by using all of the input timesteps <span class="math notranslate nohighlight">\(&lt;=t\)</span>. We can easily expand this to make a <span style="color:Violet">bidirectional RNN</span> to make a prediction at time <span class="math notranslate nohighlight">\(t\)</span> by looking at the entire sequence as well. In this case we will really have <span style="color:Violet">two hidden states</span> - one that looks backwards and another that looks forward.</p>
 <p>Whether you use causal or bidirectional depends a lot on what you want to do. If you want to do Name Entity Recognition (i.e. determine if each word in a sentence is an entity), you can look at the entire sentence to do this. On the other hand if you want to forecast the future, like a stock price, then you have to use causal as you can only look at the past to predict the future.</p>
@@ -594,7 +594,7 @@ document.write(`
 <p>If I had to use two words to define attention it would be: <span style="color:Violet">Weighted Average</span>. In Attention Augmented RNN paper, the authors call the hidden states <em><span style="color:Violet">annotations</span></em>, but they are the same thing as attention.</p>
 <p>So lets go back to our RNN again. Before we do our prediction for <span class="math notranslate nohighlight">\(y_t\)</span>, we have a sequence of hidden states <span class="math notranslate nohighlight">\(h_t\)</span> that contain the information about the sequence <span class="math notranslate nohighlight">\(x_t\)</span> itself produced from the RNN mechanism. Again, the problem is that <span class="math notranslate nohighlight">\(h_t\)</span> for large values of <span class="math notranslate nohighlight">\(t\)</span> will have forgotten imporant information about early <span class="math notranslate nohighlight">\(x_t\)</span> values with small values of <span class="math notranslate nohighlight">\(t\)</span>. So what if we got everyone to know each other again? We can produce a context vector <span class="math notranslate nohighlight">\(c_i\)</span> that is a <span style="color:Violet">weighted average</span> of all the hidden states in the case of a bidirectional architecture, or just the previous hidden states in a causal architecture. This means at any time of the context vector <span class="math notranslate nohighlight">\(c_t\)</span>, it will be a weighted average of all of the timesteps so it is reminded about more distant timesteps, solving our <em>memory</em> problem!</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/rnn_with_attention.png?raw=true" width="800">
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-rnn_with_attention.png" width=800></img>
 </div><p>Now I keep saying weighted average, and this is because for one of the timesteps, the model has to learn the weights of what is the most important information to know at those times, and then weight them higher. As per the paper, the weights were learned through an <span style="color:Violet">alignment model</span>, which was just a feedforward network that scores how well hidden states as time <span class="math notranslate nohighlight">\(t\)</span> is related to those around it in the sequence. These scores were then passed through a softmax to ensure all the learned weights sum upto 1, and then the context vectors are computed based on them. This means every context vector is a customized weighted average that learned exactly what information to put empahsis on at every timestep of the context vectors.</p>
 <section id="span-style-color-lightgreen-problems-span">
 <h3><span style="color:LightGreen">Problems</span><a class="headerlink" href="#span-style-color-lightgreen-problems-span" title="Permalink to this heading">#</a></h3>
@@ -610,7 +610,7 @@ document.write(`
 <h2><span style="color:Orange">Attention is All You Need!</span><a class="headerlink" href="#span-style-color-orange-attention-is-all-you-need-span" title="Permalink to this heading">#</a></h2>
 <p>The groundbreaking paper, <a class="reference external" href="https://arxiv.org/pdf/1706.03762">Attention is All You Need</a> solved all of the problems above, but added a new one: <span style="color:Violet">computational cost</span>. Lets first look at what the <span style="color:Violet">Attention Mechanism</span> proposed in this paper is doing.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/attention_mechanism_visual.png?raw=true" width="1000"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-attention_mechanism_visual.png" width=1000></img>
 </div><p>The input is a sequence of embedding vectors and the output is a sequence of context vectors. The three linear layers which you see in the above image take three things as an input — “<span style="color:Violet">QUERY</span>, <span style="color:Violet">KEY</span> &amp; <span style="color:Violet">VALUE</span>”. Let’s take a simple example to understand them.</p>
 <p>If you were to search for something on Youtube or Google, The text which you type in the search box is the <span style="color:Violet">QUERY</span>. The results which appear as the video or article title are the <span style="color:Violet">KEY</span> and the content inside them is the <span style="color:Violet">VALUE</span>. So as to find the best matches the Query has to find the similarity between it and the Keys.</p>
 <p>Lets quickly look at the formulation for this:</p>
@@ -629,7 +629,7 @@ document.write(`
 <h3><span style="color:LightGreen">Step 1: Compute the Attention Matrix</span><a class="headerlink" href="#span-style-color-lightgreen-step-1-compute-the-attention-matrix-span" title="Permalink to this heading">#</a></h3>
 <p>The first step is computing the <span style="color:Violet">Attention Matrix</span> with <span class="math notranslate nohighlight">\(Softmax(QK^T)\)</span>, where Q and K both have the shape <code class="docutils literal notranslate"><span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Embedding</span> <span class="pre">Dimension</span></code>. The output of this computation will be <code class="docutils literal notranslate"><span class="pre">Sequence</span> <span class="pre">Length</span> <span class="pre">x</span> <span class="pre">Sequence</span> <span class="pre">Length</span></code>. This is what it looks like:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/computing_attention.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-computing_attention.png" width=800></img>
 </div><p>In the image above, I also applied the softmax (not shown for simplicity), so each row of the attention matrix adds up to 1 (like probabilities).</p>
 <section id="span-style-color-lightpink-recap-the-dot-product-span">
 <h4><span style="color:LightPink">Recap: The Dot Product</span><a class="headerlink" href="#span-style-color-lightpink-recap-the-dot-product-span" title="Permalink to this heading">#</a></h4>
@@ -654,17 +654,17 @@ a\cdot b = \sum_{i=1}^n a_i*b_i = |a||b|cos(\theta)
 <h3><span style="color:LightGreen">Step 2: Weighting the Values Matrix</span><a class="headerlink" href="#span-style-color-lightgreen-step-2-weighting-the-values-matrix-span" title="Permalink to this heading">#</a></h3>
 <p>Now that we have the similarities of how each timestep is related to all the other timesteps, we can do our weighted average. After the weighted average computation, each vector for each timestep isn’t just the data of the timestep but rather a weighted average of all the vectors in the sequence and how they are related to that timestep of interest.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/encoder_attention_vis.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-encoder_attention_vis.png" width=800></img>
 </div><p>The output of this operation gives us the sequence of <span style="color:Violet">context vectors</span>.</p>
 </section>
 <section id="span-style-color-lightgreen-enforcing-causality-span">
 <h3><span style="color:LightGreen">Enforcing Causality</span><a class="headerlink" href="#span-style-color-lightgreen-enforcing-causality-span" title="Permalink to this heading">#</a></h3>
 <p>What we have seen so far is the equivalent to a Bidirectional RNN. The weighted average operation we are doing is between a timestep of interest and all timesteps before and after it. If we wanted a causal model, where a context vector only depends on the timesteps before it, then we need to apply a causal mask to our attention mechanism.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/causal_masking.png?raw=true" width="400"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-causal_masking.png" width=400></img>
 </div><p>As you can see, we apply a mask to all values of <span class="math notranslate nohighlight">\(t\)</span> where the index of the column values (our key index) is greater than the index of the row value (our value index). In practice, once we apply this mask to our attention matrix, we can then multiply by our values. You will see that the context vector at time <span class="math notranslate nohighlight">\(t\)</span> is only then dependent on previous timesteps, as we make sure future vectors of <span class="math notranslate nohighlight">\(V\)</span> are zeroed out.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/decoder_attention_vis.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-decoder_attention_vis.png" width=800></img>
 </div></section>
 <section id="span-style-color-lightgreen-lets-build-this-span">
 <h3><span style="color:LightGreen">Lets Build This!</span><a class="headerlink" href="#span-style-color-lightgreen-lets-build-this-span" title="Permalink to this heading">#</a></h3>
@@ -795,16 +795,15 @@ Output Shape: torch.Size([4, 64, 128])
 <h4><span style="color:LightPink">Single Headed Attention Recap</span><a class="headerlink" href="#span-style-color-lightpink-single-headed-attention-recap-span" title="Permalink to this heading">#</a></h4>
 <p>Lets summarize everything we have seen so far with a single visual, and we will call this a Single Head of attention. We will also have our embedding dimension for each word in the sequence be 9, and the sequence length is 8.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/single_headed_attention_visual.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-single_headed_attention_visual.png" width=800></img>
 </div><p>This is again called single headed attention because we only compute a single attention matrix following the logic described above.</p>
 </section>
 <section id="span-style-color-lightpink-moving-to-multiheaded-attention-span">
 <h4><span style="color:LightPink">Moving to MultiHeaded Attention</span><a class="headerlink" href="#span-style-color-lightpink-moving-to-multiheaded-attention-span" title="Permalink to this heading">#</a></h4>
 <p>For multiheaded attention there isn’t really a lot changing. Remember, to create our <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span> in single headed attention, we have 3 linear projection layers that take in the embedding dimension and output the same embedding dimension (in our case it takes in 9 and outputs 9). But in multiheaded attention, we can actually reduce our embedding dimension to a smaller value, do the attention computation on the tokens with this condensed embedding dimension, repeat it a bunch of times, and then concatenate together the outputs.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/multiheaded_attention_visual.png?raw=true" width="1000"/>
-</div>
-<p>It is general practice to have the number of heads you pick to be a divisor of the embedding dimension. For example, in our case, our original embedding dimension is 9, so we can pick 3 heads because 9 is divisible by 3. This also means our head dimension would now be 3, because 9/3 = 3. In typical transformers, the embedding dimension is 768, and they typically have 12 heads of attention. This means each head of attention will have a dimension of 64 because 768/12 = 64.</p>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-multiheaded_attention_visual.png" width=1000></img>
+</div><p>It is general practice to have the number of heads you pick to be a divisor of the embedding dimension. For example, in our case, our original embedding dimension is 9, so we can pick 3 heads because 9 is divisible by 3. This also means our head dimension would now be 3, because 9/3 = 3. In typical transformers, the embedding dimension is 768, and they typically have 12 heads of attention. This means each head of attention will have a dimension of 64 because 768/12 = 64.</p>
 <p>The main reason we want it to evenly divide is because we have three heads, each takes in an embedding dimension of 9 and compresses to 3 before computing attention, and then outputs a tensor of embedding size 3. We can then take our 3 tensors, each having an embedding dimension of 3, concatenate them together, returning us back to the 9 that we began with! Again, this is just for convenience, so the embedding dimension of the input and output tensor dont change in any way.</p>
 <p>The last problem is that since each head of attention is computed individually, the final concatenated tensor has a bunch of heads of attention packed together, but we never got to share information between the different heads of attention. This is why we have the final head projection, that will take in the embedding dimension of 9 from our concatenated tensor, and output an embedding dimension of 9, therefore meshing information across the heads of our embedding dimension.</p>
 <p>Lets go ahead and build this module as shown in the figure above. Each head will have 3 projection layers for <span class="math notranslate nohighlight">\(Q\)</span>,<span class="math notranslate nohighlight">\(K\)</span>,<span class="math notranslate nohighlight">\(V\)</span>. We will perform the attention computation and then stick all the results back together at the end.</p>
@@ -1087,19 +1086,18 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <h3><span style="color:LightGreen">Sequence Padding and Attention Masking</span><a class="headerlink" href="#span-style-color-lightgreen-sequence-padding-and-attention-masking-span" title="Permalink to this heading">#</a></h3>
 <p>One typical consideration for models like this is, when we pass in sentences of data, different sentences have different lengths. To create a matrix of tokens, we need to make sure all the sequences are the same, therefore we have to pad the shorter sequences to the longer ones. This is what the padding looks like:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/sequence_padding.png?raw=true" width="600"/>
-</div>
-<p>The pad tokens are just fillers and they don’t add any information at all to the data. To deal with this, we need to make sure that when we compute attention, these pad tokens are ignored. This is very similar to the Causal Mask in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, and we will be doing exactly what we did there, fill in the masked locations with <span class="math notranslate nohighlight">\(-\infty\)</span> before Softmax is computed. Lets take a quick look at this for one of the sentences above.</p>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-sequence_padding.png" width=600></img>
+</div><p>The pad tokens are just fillers and they don’t add any information at all to the data. To deal with this, we need to make sure that when we compute attention, these pad tokens are ignored. This is very similar to the Causal Mask in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, and we will be doing exactly what we did there, fill in the masked locations with <span class="math notranslate nohighlight">\(-\infty\)</span> before Softmax is computed. Lets take a quick look at this for one of the sentences above.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/padding_attention_mask.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-padding_attention_mask.png" width=800></img>
 </div><p>You can see that we zero out the columns of our attention mask that has padding tokens, but not the row. The reason for this is, <span style="color:Violet">the model should learn the relation of how the padding tokens are related to the words</span> (this is most likely just positional information that padding is at the end), but it <span style="color:Violet">should not learn how other words are related to padding</span>, as the padding adds no semantic meaning. This is why, when multiplying by our values, we have zeroed out the attention weights of the 4th column, as when computing weighted averages of how one word is related to all others, the padding token is not included.</p>
 </section>
 </section>
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
 <p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>. The raw output before the Softmax is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c646f51a-0f83-47e8-9a8c-37a3116f7112">
-<span class="eqno">(1)<a class="headerlink" href="#equation-c646f51a-0f83-47e8-9a8c-37a3116f7112" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b792afaa-8513-43d6-af10-c58c6e29de62">
+<span class="eqno">(1)<a class="headerlink" href="#equation-b792afaa-8513-43d6-af10-c58c6e29de62" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1112,8 +1110,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
 <p>If we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a617330d-dd6a-4882-9ca2-05c6ec298cfd">
-<span class="eqno">(2)<a class="headerlink" href="#equation-a617330d-dd6a-4882-9ca2-05c6ec298cfd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-03dfeda4-3177-41ad-9ec2-ddbc9f473526">
+<span class="eqno">(2)<a class="headerlink" href="#equation-03dfeda4-3177-41ad-9ec2-ddbc9f473526" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1132,8 +1130,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-79bb14d9-0f28-4bc6-95f2-478644d72f5a">
-<span class="eqno">(3)<a class="headerlink" href="#equation-79bb14d9-0f28-4bc6-95f2-478644d72f5a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-31e21ef1-708a-47d4-ae49-14dc7d77ee83">
+<span class="eqno">(3)<a class="headerlink" href="#equation-31e21ef1-708a-47d4-ae49-14dc7d77ee83" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1141,8 +1139,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fea421e3-f9e4-45ae-90a5-9c334fda719f">
-<span class="eqno">(4)<a class="headerlink" href="#equation-fea421e3-f9e4-45ae-90a5-9c334fda719f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f5584787-e819-4c30-a3c0-799801e520b4">
+<span class="eqno">(4)<a class="headerlink" href="#equation-f5584787-e819-4c30-a3c0-799801e520b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
  7       &amp; -8   &amp; -\infty  \\
@@ -1184,8 +1182,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2a7040b0-5f97-4446-b737-494cdcb54dad">
-<span class="eqno">(5)<a class="headerlink" href="#equation-2a7040b0-5f97-4446-b737-494cdcb54dad" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+<div class="amsmath math notranslate nohighlight" id="equation-3ab9e1b2-9152-4d75-bb78-50d2775d6382">
+<span class="eqno">(5)<a class="headerlink" href="#equation-3ab9e1b2-9152-4d75-bb78-50d2775d6382" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
@@ -1445,8 +1443,8 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-315dc955-7360-48e1-81ff-5f2893aa6324">
-<span class="eqno">(6)<a class="headerlink" href="#equation-315dc955-7360-48e1-81ff-5f2893aa6324" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c7ecdbf3-35ca-4019-9c0c-577f6eb86c8b">
+<span class="eqno">(6)<a class="headerlink" href="#equation-c7ecdbf3-35ca-4019-9c0c-577f6eb86c8b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1457,8 +1455,8 @@ Final Output: torch.Size([3, 5, 9])
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-014e16e9-db1c-4a52-9719-d88f877cc0a9">
-<span class="eqno">(7)<a class="headerlink" href="#equation-014e16e9-db1c-4a52-9719-d88f877cc0a9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-24f59ae3-5bd0-4f71-94cb-1cc70ae6a92c">
+<span class="eqno">(7)<a class="headerlink" href="#equation-24f59ae3-5bd0-4f71-94cb-1cc70ae6a92c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1497,8 +1495,8 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c46e1ee3-9496-4688-b427-a14d2bcb78a4">
-<span class="eqno">(8)<a class="headerlink" href="#equation-c46e1ee3-9496-4688-b427-a14d2bcb78a4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ecbe1e2f-0e83-42f6-bb8e-c270f581ab6e">
+<span class="eqno">(8)<a class="headerlink" href="#equation-ecbe1e2f-0e83-42f6-bb8e-c270f581ab6e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1506,8 +1504,8 @@ x_2 = [-3, 2, -\infty]
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-22932a68-e9a1-44e9-8db2-355baa64e4e5">
-<span class="eqno">(9)<a class="headerlink" href="#equation-22932a68-e9a1-44e9-8db2-355baa64e4e5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e0d2ea27-2e46-4729-ac9e-8558f2ff5ec2">
+<span class="eqno">(9)<a class="headerlink" href="#equation-e0d2ea27-2e46-4729-ac9e-8558f2ff5ec2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
@@ -1706,7 +1704,7 @@ Final Output: torch.Size([3, 5, 9])
 <h3><span style="color:LightGreen">Tensor Shapes for Cross Attention</span><a class="headerlink" href="#span-style-color-lightgreen-tensor-shapes-for-cross-attention-span" title="Permalink to this heading">#</a></h3>
 <p>We spent a lot of time understanding the tensor shapes for self-attention, lets do the same thing now for cross attention. We will be using our English to French translation example for this, so lets start with producing our Queries/Keys/Values:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_atttenion_qkv.png?raw=true" width="600"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-cross_atttenion_qkv.png" width=600></img>
 </div><p>Lets pretend we have an input of French embeddings with <span class="math notranslate nohighlight">\(N\)</span> tokens (with an embedding dimension of <span class="math notranslate nohighlight">\(E\)</span>) and then also English Embeddings with <span class="math notranslate nohighlight">\(L\)</span> tokens (again with an embedding dimension of <span class="math notranslate nohighlight">\(E\)</span>). Again, because the French is what we want, we will project our French embeddings to be our Queries, and then our English Embeddings to our Keys/Values.</p>
 <ul class="simple">
 <li><p>French Query Embeddings: <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code></p></li>
@@ -1718,16 +1716,16 @@ Final Output: torch.Size([3, 5, 9])
 <h3><span style="color:LightGreen">Performing the Attention Computation</span><a class="headerlink" href="#span-style-color-lightgreen-performing-the-attention-computation-span" title="Permalink to this heading">#</a></h3>
 <p>Nothing changes with our attention formula as described. This attention computation is identical to earlier, its just because our Queries is of length <span class="math notranslate nohighlight">\(N\)</span> and the Keys are of length <span class="math notranslate nohighlight">\(L\)</span>, our final attention matrix will be an (B x N x L) matrix.</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_matmul.png?raw=true" width="600"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-cross_attention_matmul.png" width=600></img>
 </div><p>We can take a closer look at our attention matrix now as well, and we see that it isn’t a square matrix anymore, but it still does the same thing: How are each French token related to each English token?</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_mat_vals.png?raw=true" width="600"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-cross_attention_mat_vals.png" width=600></img>
 </div></section>
 <section id="span-style-color-lightgreen-the-most-important-part-span">
 <h3><span style="color:LightGreen">THE MOST IMPORTANT PART!!!</span><a class="headerlink" href="#span-style-color-lightgreen-the-most-important-part-span" title="Permalink to this heading">#</a></h3>
 <p>Once our attention matrix <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">L</span></code> is computed, we can again multiply it by our Values matrix which is also from our English embeddings, so we are multiplying a <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">L</span></code> by a <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">L</span> <span class="pre">x</span> <span class="pre">E</span></code>, producing the final output of <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code>! Why does this matter? Because our original French was also <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code>! Remember, our attention computation told us how every French token is related to every English token. Then, the output of our full attention computation does the weighted average, so our new <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">x</span> <span class="pre">N</span> <span class="pre">x</span> <span class="pre">E</span></code> is the weighted average of those english tokens. Lets see what that looks like:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_weight_by_val.png?raw=true" width="600"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-cross_attention_weight_by_val.png" width=600></img>
 </div></section>
 <section id="span-style-color-lightgreen-basically-nothing-changed-span">
 <h3><span style="color:LightGreen">Basically Nothing Changed</span><a class="headerlink" href="#span-style-color-lightgreen-basically-nothing-changed-span" title="Permalink to this heading">#</a></h3>
@@ -1752,7 +1750,7 @@ Final Output: torch.Size([3, 5, 9])
 </ul>
 <p>So we have padding on both dimensions, but again nothing changes. Remember before (in self attention), when we have pad tokens we just zeroed out the columns of the cooresponding pad tokens. But really, we are zeroing out the <span style="color:Violet">Keys</span> columns. We want to make sure that when we learn how the French is related to the English, that the French is <span style="color:Violet">not looking at English Pad Tokens</span>. It is ok though for French pad tokens to look at English. (i.e. the Query pad tokens can look at the keys, but the Query non-pad tokens should not look at the Key pad tokens). This is what this would again look like:</p>
 <div>
-<img src="https://github.com/priyammaz/PyTorch-Adventures/blob/main/src/visuals/cross_attention_padding.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Attention-cross_attention_padding.png" width=800></img>
 </div><p>As we can see here, all French tokens (french padding included) can look at all non-padding english tokens. This is identical to what we did before, its just now our attention matrix just isn’t square.</p>
 </section>
 </section>
