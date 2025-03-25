@@ -576,11 +576,13 @@ document.write(`
 <h2><span style="color:Orange">Vanilla Autoencoders as a Generative Model</span><a class="headerlink" href="#span-style-color-orange-vanilla-autoencoders-as-a-generative-model-span" title="Permalink to this heading">#</a></h2>
 <p>We were briefly able to look at this in the <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/AutoEncoders.html">AutoEncoders notebook</a>, but lets recap the imporant elements.</p>
 <p>What we have below is a plot of the testing MNIST data compressed to 2 dimensional latents. This means the Encoder took the 784 number in MNIST and compressed them down into just 2 numbers, and whats really neat is this compression forces clustering between similar numbers to occur (numbers that look similar occupy same pockets of the larger vector space).</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-uncompact_vanilla_autoencoder_latents.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-uncompact_vanilla_autoencoder_latents.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-uncompact_vanilla_autoencoder_latents.png" style="width: 800px;" /></a></img><br></p>
-<p>From this, if I wanted to generate an image of the number 1, I could pick a coordinate like (-3, 2) which is roughly the location of our cloud of image points for digit 1. These two numbers could be passed to the Decoder of the AutoEncoder and it should generate a sample that looks like a 1.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-uncompact_vanilla_autoencoder_latents.png" width=800></img>
+</div><p>From this, if I wanted to generate an image of the number 1, I could pick a coordinate like (-3, 2) which is roughly the location of our cloud of image points for digit 1. These two numbers could be passed to the Decoder of the AutoEncoder and it should generate a sample that looks like a 1.</p>
 <p>This method does have its own set of problems though, typically related to the uncompact nature of our embeddings. The cluster embeddings look almost like they are being stretched out from the middle, and there are large pockets of white space between cluters. In these pockets, the model cannot be expected to generate any reasonable generation, as the data has not been mapped there. Here is an example of the interpolated space of generating images from a grid of latent embeddings:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-vanilla_autoencoder_latent_interpolation.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-vanilla_autoencoder_latent_interpolation.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-vanilla_autoencoder_latent_interpolation.png" style="width: 800px;" /></a></img><br></p>
-<p>Do you notice how:</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/AutoEncoders-vanilla_autoencoder_latent_interpolation.png" width=800></img>
+</div><p>Do you notice how:</p>
 <ul class="simple">
 <li><p>In certain pockets of area in our grid, the generates images look really bad</p></li>
 <li><p>We dont have smooth transition between the classes of images</p></li>
@@ -592,9 +594,10 @@ document.write(`
 </section>
 <section id="span-style-color-orange-variational-autoencoders-regularized-latent-spaces-span">
 <h2><span style="color:Orange">Variational AutoEncoders: Regularized Latent Spaces</span><a class="headerlink" href="#span-style-color-orange-variational-autoencoders-regularized-latent-spaces-span" title="Permalink to this heading">#</a></h2>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VariationalAutoEncoders-variational-autoencoder-visual.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VariationalAutoEncoders-variational-autoencoder-visual.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VariationalAutoEncoders-variational-autoencoder-visual.png" style="width: 1000px;" /></a></img><br></p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VariationalAutoEncoders-variational-autoencoder-visual.png" width=1000></img>
 <p><a class="reference external" href="https://medium.com/dataseries/variational-autoencoder-with-pytorch-2d359cbf027b">Image Source</a></p>
-<p>So we have set the goal. What we want is a model that can perform the reconstruction task like before, with the added restriction that the latent space must be close to a normal distribution. This means, we are taking high dimensional and complex dataset and mapping to a simple gaussian! Now this wont be a regular gaussian distribution, but rather a MultiVariate gaussian.</p>
+</div><p>So we have set the goal. What we want is a model that can perform the reconstruction task like before, with the added restriction that the latent space must be close to a normal distribution. This means, we are taking high dimensional and complex dataset and mapping to a simple gaussian! Now this wont be a regular gaussian distribution, but rather a MultiVariate gaussian.</p>
 <p><em><strong><span style="color:Violet">Quick Review of Gaussians</strong></em></span></p>
 <p>What is our gaussian distribution?</p>
 <div class="math notranslate nohighlight">

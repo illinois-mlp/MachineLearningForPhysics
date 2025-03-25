@@ -558,17 +558,16 @@ document.write(`
 <li><p>Defining <span class="xref myst">learnable flows</span> and performing optimization on a target density</p></li>
 </ol>
 <p>Two examples of transformations of a Unit Gaussian and Uniform distribution using Normalizing Flows are shown below:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png" style="width: 800px;" /></a></img><br></p>
-<p>Normalizing flows typically utilize neural networks to implement the transformation functions that map a simple distribution to a more complex one, allowing them to learn complex data distributions; essentially, the “flow” in a normalizing flow is often modeled by a neural network, making it a key component of the method.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png" width=800></img>
+</div><p>Normalizing flows typically utilize neural networks to implement the transformation functions that map a simple distribution to a more complex one, allowing them to learn complex data distributions; essentially, the “flow” in a normalizing flow is often modeled by a neural network, making it a key component of the method.</p>
 <section id="span-style-color-lightgreen-invertible-transformation-span">
 <h3><span style="color:LightGreen">Invertible transformation</span><a class="headerlink" href="#span-style-color-lightgreen-invertible-transformation-span" title="Permalink to this heading">#</a></h3>
-<p>Invertible transformation:
-The core idea of normalizing flows is to use a series of invertible transformations to map a simple distribution (like a Gaussian) to a more complex target distribution, and these transformations are often implemented using neural networks.</p>
+<p><span style="color:violet">Invertible transformation</span>: The core idea of normalizing flows is to use a series of invertible transformations to map a simple distribution (like a Gaussian) to a more complex target distribution, and these transformations are often implemented using neural networks.</p>
 </section>
 <section id="span-style-color-lightgreen-jacobian-determinant-span">
 <h3><span style="color:LightGreen">Jacobian determinant</span><a class="headerlink" href="#span-style-color-lightgreen-jacobian-determinant-span" title="Permalink to this heading">#</a></h3>
-<p>Jacobian determinant:
-When applying a neural network transformation, the Jacobian determinant needs to be calculated to ensure the change of variables formula can be used to compute the probability density of the transformed data.</p>
+<p><span style="color:violet">Jacobian determinant</span>: When applying a neural network transformation, the Jacobian determinant needs to be calculated to ensure the change of variables formula can be used to compute the probability density of the transformed data.</p>
 </section>
 <section id="span-style-color-lightgreen-architectures-span">
 <h3><span style="color:LightGreen">Architectures</span><a class="headerlink" href="#span-style-color-lightgreen-architectures-span" title="Permalink to this heading">#</a></h3>
@@ -642,7 +641,7 @@ When applying a neural network transformation, the Jacobian determinant needs to
 <section id="span-style-color-lightgreen-change-of-variables-and-flow-span">
 <h3><span style="color:LightGreen">Change of Variables and Flow</span><a class="headerlink" href="#span-style-color-lightgreen-change-of-variables-and-flow-span" title="Permalink to this heading">#</a></h3>
 <p>In order to transform a probability distribution, we can perform a <em>change of variable</em>. In general, change of variables can be performed in any number of ways. However, here we are interested in probability distributions, which means that we need to <em>scale</em> our transformed density so that the total probability still sums to one. This is directly measured with the determinant of our transform (if you need more intuitive examples, you can check the great <a class="reference external" href="https://blog.evjang.com/2018/01/nf1.html">Eric Jang’s tutorial</a>).Hence, we can transform a probability distribution by using an invertible mapping and somehow scaling by the determinant of this mapping.</p>
-<p>Let <span class="math notranslate nohighlight">\(\mathbf{z}\in\mathcal{R}^d\)</span> be a random variable with distribution <span class="math notranslate nohighlight">\(q(\mathbf{z})\)</span> and <span class="math notranslate nohighlight">\(f:\mathcal{R}^d\rightarrow\mathcal{R}^d\)</span> an invertible smooth mapping (meaning that <span class="math notranslate nohighlight">\(f^{-1} = g\)</span> and <span class="math notranslate nohighlight">\(g\circ f(\mathbf{z})=\mathbf{z}'\)</span>. We can use <span class="math notranslate nohighlight">\(f\)</span> to transform <span class="math notranslate nohighlight">\(\mathbf{z}\sim q(\mathbf{z})\)</span>. The resulting random variable <span class="math notranslate nohighlight">\(\mathbf{z}'=f(\mathbf{z})\)</span> has the following probability distribution</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{z}\in\mathcal{R}^d\)</span> be a random variable with distribution <span class="math notranslate nohighlight">\(q(\mathbf{z})\)</span> and <span class="math notranslate nohighlight">\(f:\mathcal{R}^d\rightarrow\mathcal{R}^d\)</span> an invertible smooth mapping (meaning that <span class="math notranslate nohighlight">\(f^{-1} = g\)</span> and <span class="math notranslate nohighlight">\(g\circ f(\mathbf{z})=\mathbf{z}'\)</span>). We can use <span class="math notranslate nohighlight">\(f\)</span> to transform <span class="math notranslate nohighlight">\(\mathbf{z}\sim q(\mathbf{z})\)</span>. The resulting random variable <span class="math notranslate nohighlight">\(\mathbf{z}'=f(\mathbf{z})\)</span> has the following probability distribution</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 q(\mathbf{z}')=q(\mathbf{z})\left|\text{ det}\frac{\delta f^{-1}}{\delta \mathbf{z}'}\right| = q(\mathbf{z})\left|\text{ det}\frac{\delta f}{\delta \mathbf{z}}\right|^{-1}
@@ -785,13 +784,13 @@ Now, if we start with a random vector <span class="math notranslate nohighlight"
 Now, we are interested in normalizing flows as we could define our own flows. And, most importantly, we could optimize the parameters of these flow in order to fit complex and richer probability distributions. We will see how this plays out by trying to implement the <em>planar flow</em> proposed in the original paper by Rezende [1].</p>
 <section id="span-style-color-lightgreen-planar-flow-span">
 <h3><span style="color:LightGreen">Planar Flow</span><a class="headerlink" href="#span-style-color-lightgreen-planar-flow-span" title="Permalink to this heading">#</a></h3>
-<p>A planar normalizing flow is defined as a function of the form</p>
+<p>A <span style="color:violet">planar normalizing flow</span> is defined as a function of the form</p>
 <div class="math notranslate nohighlight">
 \[ \Large
    f(\mathbf{z})=\mathbf{z}+\mathbf{u}h(\mathbf{w}^T\mathbf{z}+b)
    \tag{5}
    \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{u}\in\mathbb{R}^D\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\in\mathbb{R}^D\)</span> are vectors (called here scale and weight), <span class="math notranslate nohighlight">\(b\in\mathbb{R}\)</span> is a scalar (bias) and <span class="math notranslate nohighlight">\(h\)</span> is an activation function. These transform functions are chosen depending on the fact that</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{u}\in\mathbb{R}^D\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\in\mathbb{R}^D\)</span> are vectors (called here scale and weight), <span class="math notranslate nohighlight">\(b\in\mathbb{R}\)</span> is a scalar (bias) and <span class="math notranslate nohighlight">\(h\)</span> is an activation function. These transform functions are chosen depending on the fact that:</p>
 <ol class="arabic simple">
 <li><p>the determinant of their Jacobian can be computed in linear time</p></li>
 <li><p>the transformation is invertible (under usually mild conditions only)</p></li>

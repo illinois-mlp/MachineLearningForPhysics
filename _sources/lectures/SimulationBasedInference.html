@@ -548,15 +548,17 @@ document.write(`
 <p><span style="color:Violet">Simulation-based inference</span> (SBI) is a powerful class of methods for performing inference in settings where the likelihood is computationally intractable, but simulations can be realized via forward modeling.</p>
 <p>In this lecture we will</p>
 <ul class="simple">
-<li><p>Introduce the notion of an implicit likelihood, and how to leverage it to perform inference;</p></li>
-<li><p>Look at a “traditional” method for likelihood-free inference, Approximate Bayesian Computation (ABC);</p></li>
-<li><p>Build up two common modern <em>neural</em> SBI techniques: neural likelihood-ratio estimation (NRE) and neural posterior estimation (NPE);</p></li>
-<li><p>Introduce the concept of statistical coverage testing and calibration.</p></li>
+<li><p>Introduce the notion of an <span style="color:violet">implicit likelihood</span>, and how to leverage it to perform inference;</p></li>
+<li><p>Look at a “traditional” method for likelihood-free inference: <span style="color:violet">Approximate Bayesian Computation</span> (ABC);</p></li>
+<li><p>Build up two common modern <em>neural</em> SBI techniques: <span style="color:violet">neural likelihood-ratio estimation</span> (NRE) and <span style="color:violet">neural posterior estimation</span> (NPE);</p></li>
+<li><p>Introduce the concept of <span style="color:violet">statistical coverage</span> testing and calibration.</p></li>
 </ul>
 <p>As examples, we will look at a simple Gaussian-signal-on-power-law-background (“bump hunt”), where the likelihood is tractable, and a more complicated example of inferring a distribution of point sources, where the likelihood is computationally intractable. We will emphasize what it means for a likelihood to be computationally intractable/challenging and where the advantages of SBI come in.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png" style="width: 1000px;" /></a></img><br></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png" style="width: 1000px;" /></a></img><br></p>
-</section>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-likelihood.png" width=1000></img>
+</div><div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-sbi.png" width=1000></img>
+</div></section>
 <section id="span-style-color-orange-simple-bump-on-power-law-example-span">
 <h2><span style="color:Orange">Simple Bump-on-Power-Law Example</span><a class="headerlink" href="#span-style-color-orange-simple-bump-on-power-law-example-span" title="Permalink to this heading">#</a></h2>
 <p>As an initial example, consider a Gaussian signal parameterized by {amplitude, mean location, std} on top of a power law background parameterize by {amplitude, power-law exponent}.</p>
@@ -768,8 +770,9 @@ x\sim p(x\mid\theta)
 </div>
 <section id="span-style-color-lightgreen-approximate-bayesian-computation-span">
 <h3><span style="color:LightGreen">Approximate Bayesian Computation</span><a class="headerlink" href="#span-style-color-lightgreen-approximate-bayesian-computation-span" title="Permalink to this heading">#</a></h3>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png" style="width: 1000px;" /></a></img><br></p>
-<p>The idea behind <span style="color:Violet">Approximate Bayesian Computation</span> (ABC) is to realize samples from the forward model (with the parameters <span class="math notranslate nohighlight">\(\theta\)</span> drawn from a prior) and compare it to the dataset of interest <span class="math notranslate nohighlight">\(x\)</span>. If the data and realized samples are close enough to each other according to some criterion, we keep the parameter points.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-abc.png" width=1000></img>
+</div><p>The idea behind <span style="color:Violet">Approximate Bayesian Computation</span> (ABC) is to realize samples from the forward model (with the parameters <span class="math notranslate nohighlight">\(\theta\)</span> drawn from a prior) and compare it to the dataset of interest <span class="math notranslate nohighlight">\(x\)</span>. If the data and realized samples are close enough to each other according to some criterion, we keep the parameter points.</p>
 <p>The comparison criterion here is a simple MSE on the data points. Play around with the parameters of the forward model to see how the criterion <code class="docutils literal notranslate"><span class="pre">eps</span></code> changes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -855,8 +858,9 @@ x\sim p(x\mid\theta)
 </section>
 <section id="span-style-color-lightgreen-neural-likelihood-ratio-estimation-span">
 <h3><span style="color:LightGreen">Neural Likelihood-ratio Estimation</span><a class="headerlink" href="#span-style-color-lightgreen-neural-likelihood-ratio-estimation-span" title="Permalink to this heading">#</a></h3>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png" style="width: 1000px;" /></a></img><br></p>
-<p>For numerical stability, the alternate hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span> can be assumed to be one where <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> are not correlated, i.e., drawn from the individual marginal distributions <span class="math notranslate nohighlight">\(\{x, \theta\} \sim p(x)\,p(\theta)\)</span>. Then the alternate has support over the entire parameter space, instead of being a single hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-nre.png" width=1000></img>
+</div><p>For numerical stability, the alternate hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span> can be assumed to be one where <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> are not correlated, i.e., drawn from the individual marginal distributions <span class="math notranslate nohighlight">\(\{x, \theta\} \sim p(x)\,p(\theta)\)</span>. Then the alternate has support over the entire parameter space, instead of being a single hypothesis <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
 <p>In this case, we get the likelihood-to-evidence ratio,</p>
 <div class="math notranslate nohighlight">
 \[ \Large
@@ -1120,8 +1124,9 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 </section>
 <section id="span-style-color-lightgreen-neural-posterior-estimation-span">
 <h3><span style="color:LightGreen">Neural Posterior Estimation</span><a class="headerlink" href="#span-style-color-lightgreen-neural-posterior-estimation-span" title="Permalink to this heading">#</a></h3>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png" style="width: 1000px;" /></a></img><br></p>
-<div class="cell docutils container">
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-npe.png" width=1000></img>
+</div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nflows.flows.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flow</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nflows.distributions.normal</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardNormal</span>
@@ -1575,9 +1580,10 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 </section>
 <section id="span-style-color-lightgreen-test-of-statistical-coverage-span">
 <h3><span style="color:LightGreen">Test of Statistical Coverage</span><a class="headerlink" href="#span-style-color-lightgreen-test-of-statistical-coverage-span" title="Permalink to this heading">#</a></h3>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png" class="align-center" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png" style="width: 1000px;" /></a></img><br></p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/SimulationBasedInference-coverage.png" width=1000></img>
 <p>Figure from <a class="reference external" href="https://arxiv.org/abs/2209.01845">https://arxiv.org/abs/2209.01845</a></p>
-<p>We can do some checks to make sure that our posterior has the correct statistical interpretation. In particular, let’s test the posterior statistical coverage by evaluating how well the Highest Posterior Density (HPD) intervals capture the true parameter values.</p>
+</div><p>We can do some checks to make sure that our posterior has the correct statistical interpretation. In particular, let’s test the posterior statistical coverage by evaluating how well the Highest Posterior Density (HPD) intervals capture the true parameter values.</p>
 <p>The <span style="color:Violet">Highest Posterior Density</span> (HPD) interval is a region in the parameter space that contains the most probable values for a given credible mass (e.g., 95% or 99%). In other words, it is the shortest interval that contains the specified credible mass of the posterior distribution. This is one of summarizing a posterior distribution.</p>
 <p><span style="color:Violet">Nominal coverage</span> is the probability, or the proportion of the parameter space, that the HPD interval is intended to contain. For example, if the nominal coverage is 0.95, the HPD interval should theoretically contain the true parameter value 95% of the time.</p>
 <p><span style="color:Violet">Empirical coverage</span> is the proportion of true parameter values that actually fall within the HPD interval, based on a set of test cases or simulations.</p>
