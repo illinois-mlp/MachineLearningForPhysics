@@ -645,7 +645,6 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[ \Large
 q(\mathbf{z}')=q(\mathbf{z})\left|\text{ det}\frac{\delta f^{-1}}{\delta \mathbf{z}'}\right| = q(\mathbf{z})\left|\text{ det}\frac{\delta f}{\delta \mathbf{z}}\right|^{-1}
-\tag{1}
 \]</div>
 <p>where the last equality is obtained through the inverse function theorem [1].</p>
 <p>Fortunately, this can be easily implemented in PyTorch with the <code class="docutils literal notranslate"><span class="pre">Transform</span></code> classes, that already defines some basic probability distribution transforms. For instance, if we define <span class="math notranslate nohighlight">\(\mathbf{z}\sim q_0(\mathbf{z})=\mathcal{N}(0, 1)\)</span>, we can apply the transform <span class="math notranslate nohighlight">\(\mathbf{z}'=exp(\mathbf{z})\)</span> so that <span class="math notranslate nohighlight">\(\mathbf{z}'\sim q_1(\mathbf{z}')\)</span></p>
@@ -697,7 +696,6 @@ Now, if we start with a random vector <span class="math notranslate nohighlight"
 <div class="math notranslate nohighlight">
 \[ \Large
 \mathbf{z}_k=f_k\circ f_{k-1}\circ...\circ f_1(\mathbf{z}_0)
-\tag{2}
 \]</div>
 <p>Therefore the distribution of <span class="math notranslate nohighlight">\(\mathbf{z}_k\sim q_k(\mathbf{z}_k)\)</span> will be given by</p>
 <div class="math notranslate nohighlight">
@@ -706,13 +704,11 @@ Now, if we start with a random vector <span class="math notranslate nohighlight"
    q_k(\mathbf{z}_k) &amp;= q_0(f_1^{-1} \circ f_{2}^{-1} \circ ... \circ f_k^{-1}(\mathbf{z}_k))\prod_{i=1}^k\left|\text{det}\frac{\delta f^{-1}_i}{\delta\mathbf{z}_{i}}\right|\\
    &amp;= q_0(\mathbf{z_0})\prod_{i=1}^k\left|\text{det}\frac{\delta f_i}{\delta\mathbf{z}_{i-1}}\right|^{-1}
    \end{align}
-   \tag{3}
    \end{split}\]</div>
 <p>where we compute the determinant of the Jacobian of each normalizing flow (as explained in the previous section). This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. As usual, we will rely on log-probabilities to simplify the computation and obtain</p>
 <div class="math notranslate nohighlight">
 \[ \Large
 \text{log} q_K(\mathbf{z}_k) = \text{log} q_0(\mathbf{z}_0) - \sum_{i=1}^{k} \text{log} \left|\text{det}\frac{\delta f_i}{\delta\mathbf{z}_{i-1}}\right| 
-\tag{4}
 \]</div>
 <p>To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. Of course, we can perform any amount of combined transformations, and it also works with multivariate distributions. Here, this is demonstrated by transforming a <code class="docutils literal notranslate"><span class="pre">MultivariateNormal</span></code> successively with an <code class="docutils literal notranslate"><span class="pre">ExpTransform</span></code> and <code class="docutils literal notranslate"><span class="pre">AffineTransform</span></code>. (Note that the final distribution <code class="docutils literal notranslate"><span class="pre">q2</span></code> is defined as a <code class="docutils literal notranslate"><span class="pre">TransformedDistribution</span></code> directly with a <em>sequence</em> of transformations)</p>
 <div class="cell docutils container">
@@ -788,7 +784,6 @@ Now, we are interested in normalizing flows as we could define our own flows. An
 <div class="math notranslate nohighlight">
 \[ \Large
    f(\mathbf{z})=\mathbf{z}+\mathbf{u}h(\mathbf{w}^T\mathbf{z}+b)
-   \tag{5}
    \]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{u}\in\mathbb{R}^D\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\in\mathbb{R}^D\)</span> are vectors (called here scale and weight), <span class="math notranslate nohighlight">\(b\in\mathbb{R}\)</span> is a scalar (bias) and <span class="math notranslate nohighlight">\(h\)</span> is an activation function. These transform functions are chosen depending on the fact that:</p>
 <ol class="arabic simple">
@@ -799,12 +794,10 @@ Now, we are interested in normalizing flows as we could define our own flows. An
 <div class="math notranslate nohighlight">
 \[ \Large
 \psi(\mathbf{z})=h'(\mathbf{w}^T\mathbf{z}+b)\mathbf{w}
-\tag{6}
 \]</div>
 <div class="math notranslate nohighlight">
 \[ \Large
 \left|\text{det}\frac{\delta f}{\delta\mathbf{z}}\right| = \left|\text{det}\left(\mathbf{I}+\mathbf{u}\psi(\mathbf{z})^{T}\right)\right|=\left|1+\mathbf{u}^T\psi(\mathbf{z})\right|
-\tag{7}
 \]</div>
 <p>Therefore, we have all definitions that we need to implement this flow as a <code class="docutils literal notranslate"><span class="pre">Transform</span></code> object. Note that here the non-linear activation function <span class="math notranslate nohighlight">\(h\)</span> is selected as a <span class="math notranslate nohighlight">\(tanh\)</span>. Therefore the derivative <span class="math notranslate nohighlight">\(h'\)</span> is <span class="math notranslate nohighlight">\(1-tanh(x)^2\)</span></p>
 <div class="cell docutils container">
