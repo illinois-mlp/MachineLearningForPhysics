@@ -511,7 +511,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-final-loss-function-span"><span style="color:LightGreen">Final Loss Function</span></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-implement-a-simple-linear-unconditional-mnist-gan-span"><span style="color:Orange">Implement a Simple Linear Unconditional MNIST GAN</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-challenges-with-gan-loss-functions-span"><span style="color:Orange">Challenges with GAN Loss Functions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-mode-collapse-span"><span style="color:LightGreen">Mode Collapse</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-vanishing-gradients-span"><span style="color:LightGreen">Vanishing Gradients</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-convergence-span"><span style="color:LightGreen">Convergence</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-implementing-a-simple-linear-unconditional-mnist-gan-span"><span style="color:Orange">Implementing a Simple Linear Unconditional MNIST GAN</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-generator-span"><span style="color:LightGreen">Generator</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-discriminator-span"><span style="color:LightGreen">Discriminator</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-training-parameters-span"><span style="color:LightGreen">Training Parameters</span></a></li>
@@ -613,7 +619,14 @@ H_D = -\frac{1}{N}\sum \log(D(x)) + \log(1-D(G(z)))}
 \]</div>
 <section id="span-style-color-lightpink-expanding-to-continuous-distributions-span">
 <h4><span style="color:LightPink">Expanding to Continuous Distributions</span><a class="headerlink" href="#span-style-color-lightpink-expanding-to-continuous-distributions-span" title="Permalink to this heading">#</a></h4>
-<p>Although this is the discriminator we use (because in our classification task our targets are discrete 0/1), it hides an underlying property we want to look at! Instead of just using 0/1 to indicate fake or real, lets instead say we want to model the continuous distribution of the fake images and the distribution of the real images. Applying it to our case, where <span class="math notranslate nohighlight">\(p_{x}\)</span> is the true distribution of the data, <span class="math notranslate nohighlight">\(p_{z}\)</span> is the true distribution of the random noise and then <span class="math notranslate nohighlight">\(D(x)\)</span> is the predicted distribution of real data and <span class="math notranslate nohighlight">\(D(G(z))\)</span> is the predicted distribution of the generated data. We can then write:</p>
+<p>Although this is the discriminator we use (because in our classification task our targets are discrete 0/1), it hides an underlying property we want to look at! Instead of just using 0/1 to indicate fake or real, lets instead say we want to model the continuous distribution of the fake images and the distribution of the real images.</p>
+<p>Applying it to our case, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p_{x}\)</span> is the true distribution of the data <span class="math notranslate nohighlight">\(x\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{z}\)</span> is the true distribution of the random noise <span class="math notranslate nohighlight">\(z\)</span></p></li>
+</ul>
+<p>then <span class="math notranslate nohighlight">\(D(x)\)</span> is the predicted distribution of real data and <span class="math notranslate nohighlight">\(D(G(z))\)</span> is the predicted distribution of the generated data.</p>
+<p>We can then write:</p>
 <div class="math notranslate nohighlight">
 \[ \large
 H_{real}(p_x(x), D(x)) = -\int p_x(x) \log(D(x))
@@ -627,7 +640,8 @@ H_{fake}(p_z(z), D(G(z))) = -\int p_z(z) \log((1-D(G(z))))
 \[ \large
 H_D = H_{real}(p_x(x), D(x)) + H_{fake}(p_z(z), D(G(z))) = -\int p_x(x) \log(D(x)) + p_z(z) \log((1-D(G(z))))
 \]</div>
-<p>This should look identical to our equation earlier for the discriminator loss! Just a continuous representation. We can then finally convert this to just using expected value using the following method:</p>
+<p>This should look identical to our equation earlier for the discriminator loss, just is a continuous representation.</p>
+<p>We can then finally convert this to just using expected value using the following method:</p>
 <div class="math notranslate nohighlight">
 \[ \large
 H(p,q) = \int p \log(q) = \mathbb{E}_{x\sim p} \log(q)
@@ -640,7 +654,8 @@ H_D = -\mathbb{E}_{x\sim p_x(x)} \log(D(x)) -\mathbb{E}_{x\sim p_z(z)} \log((1-D
 <p>Our end goal will be to minimize <span class="math notranslate nohighlight">\(H_D\)</span>, as you want the discriminator to get better at identifying fakes, but minimizing <span class="math notranslate nohighlight">\(H_D\)</span> is the same as maximizing <span class="math notranslate nohighlight">\(-H_D\)</span> (and we have those negatives we don’t want to write) so we can write the final form of our discriminator loss as:</p>
 <div class="math notranslate nohighlight">
 \[ \large
-L_D = \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z)))
+\boxed{
+L_D = \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z))) }
 \]</div>
 <p>And finally, the most general form, lets say <span class="math notranslate nohighlight">\(x\)</span> is now an arbritrary sample, we don’t now if its real or generated, then we can write the most general form of our loss function using some variable substitutions:</p>
 <div class="math notranslate nohighlight">
@@ -845,8 +860,38 @@ Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z
 </div>
 </section>
 </section>
-<section id="span-style-color-orange-implement-a-simple-linear-unconditional-mnist-gan-span">
-<h2><span style="color:Orange">Implement a Simple Linear Unconditional MNIST GAN</span><a class="headerlink" href="#span-style-color-orange-implement-a-simple-linear-unconditional-mnist-gan-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-orange-challenges-with-gan-loss-functions-span">
+<h2><span style="color:Orange">Challenges with GAN Loss Functions</span><a class="headerlink" href="#span-style-color-orange-challenges-with-gan-loss-functions-span" title="Permalink to this heading">#</a></h2>
+<p>More often than not, GANs tend to show some inconsistencies in performance. Most of these problems are associated with their training and are an active area of research.</p>
+<section id="span-style-color-lightgreen-mode-collapse-span">
+<h3><span style="color:LightGreen">Mode Collapse</span><a class="headerlink" href="#span-style-color-lightgreen-mode-collapse-span" title="Permalink to this heading">#</a></h3>
+<p>This issue is on the unpredictable side of things. It wasn’t foreseen until someone noticed that the generator model could only generate one or a small subset of different outcomes or modes.</p>
+<p>Usually, we would want our GAN to produce a range of outputs. We would expect, for example, another face for every random input to the face generator that we design.</p>
+<p>Instead, through subsequent training, the network learns to model a particular distribution of data, which gives us a monotonous output which is illustrated below:</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/GenerativeAdversarialNetworks-mode_collapse.png" width=400></img>
+</div><p>In the process of training, the generator is always trying to find the one output that seems most plausible to the discriminator.</p>
+<p>Because of that, the discriminator’s best strategy is always to reject the output of the generator.</p>
+<p>But if the next generation of discriminator gets stuck in a local minimum and doesn’t find its way out by getting its weights even more optimized, it’d get easy for the next generator iteration to find the most plausible output for the current discriminator.</p>
+<p>This way, it will keep on repeating the same output and refrain from any further training.</p>
+</section>
+<section id="span-style-color-lightgreen-vanishing-gradients-span">
+<h3><span style="color:LightGreen">Vanishing Gradients</span><a class="headerlink" href="#span-style-color-lightgreen-vanishing-gradients-span" title="Permalink to this heading">#</a></h3>
+<p>This phenomenon happens when the discriminator performs significantly better than the generator. Either the updates to the discriminator are inaccurate, or they disappear.</p>
+<p>One of the proposed reasons for this is that the generator gets heavily penalized, which leads to saturation in the value post-activation function, and the eventual gradient vanishing.</p>
+</section>
+<section id="span-style-color-lightgreen-convergence-span">
+<h3><span style="color:LightGreen">Convergence</span><a class="headerlink" href="#span-style-color-lightgreen-convergence-span" title="Permalink to this heading">#</a></h3>
+<p>Since there are two networks being trained at the same time, the problem of GAN convergence was one of the earliest, and quite possibly one of the most challenging problems since it was created.</p>
+<p>The utopian situation where both networks stabilize and produce a consistent result is hard to achieve in most cases. One explanation for this problem is that as the generator gets better with next epochs, the discriminator performs worse because the discriminator can’t easily tell the difference between a real and a fake one.</p>
+<p>If the generator succeeds all the time, the discriminator has a 50% accuracy, similar to that of flipping a coin. This poses a threat to the convergence of the GAN as a whole.</p>
+<p>The image below shows this problem in particular:</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/GenerativeAdversarialNetworks-convergence.png" width=600></img>
+</div></section>
+</section>
+<section id="span-style-color-orange-implementing-a-simple-linear-unconditional-mnist-gan-span">
+<h2><span style="color:Orange">Implementing a Simple Linear Unconditional MNIST GAN</span><a class="headerlink" href="#span-style-color-orange-implementing-a-simple-linear-unconditional-mnist-gan-span" title="Permalink to this heading">#</a></h2>
 <p>Now that we have done the hard work of deriving all the math for GANs, it is time to actually implement one! We will start with an Unconditional GAN, where we simply provide some noise, and the model will generate whatever it wants randomly. This is obviously less helpful as we have no control over the generative process, but this should be a good test case.</p>
 <p>We define two classes <code class="docutils literal notranslate"><span class="pre">MNISTGenerator</span></code> and <code class="docutils literal notranslate"><span class="pre">MNISTDiscriminator</span></code>.</p>
 <section id="span-style-color-lightgreen-generator-span">
@@ -1675,7 +1720,13 @@ File ‘tmp_data/MNIST/raw/train-labels-idx1-ubyte’ already there; not retriev
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-final-loss-function-span"><span style="color:LightGreen">Final Loss Function</span></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-implement-a-simple-linear-unconditional-mnist-gan-span"><span style="color:Orange">Implement a Simple Linear Unconditional MNIST GAN</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-challenges-with-gan-loss-functions-span"><span style="color:Orange">Challenges with GAN Loss Functions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-mode-collapse-span"><span style="color:LightGreen">Mode Collapse</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-vanishing-gradients-span"><span style="color:LightGreen">Vanishing Gradients</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-convergence-span"><span style="color:LightGreen">Convergence</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-implementing-a-simple-linear-unconditional-mnist-gan-span"><span style="color:Orange">Implementing a Simple Linear Unconditional MNIST GAN</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-generator-span"><span style="color:LightGreen">Generator</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-discriminator-span"><span style="color:LightGreen">Discriminator</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-training-parameters-span"><span style="color:LightGreen">Training Parameters</span></a></li>
