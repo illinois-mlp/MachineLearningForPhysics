@@ -603,7 +603,8 @@ q(x_{1:T}|x_0) = \prod_{t=1}^Tq(x_t|x_{t-1})
 <p>As you can see, we are just multiplying every consecutive pairs of timesteps together to get our full probability distribution of all the timesteps together. The original DDPM paper then says that we can write a single one of these consecutive timestep probabilities as follows:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
-q(x_t|x_{t-1}) = N(x_t;\sqrt{1-B_t}x_{t-1}, B_t)
+\boxed{
+q(x_t|x_{t-1}) = N(x_t;\sqrt{1-B_t}x_{t-1}, B_t) }
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(B_1, B_2, ..., B_T\)</span> is a fixed noise schedule for the variance.</p>
 <p>Basically, <span class="math notranslate nohighlight">\(x_t\)</span> should be sampled from a normal distribution with a mean centered at <span class="math notranslate nohighlight">\(\sqrt{1-B_t}x_{t-1}\)</span>, based on the previous timestep, and variance of <span class="math notranslate nohighlight">\(B_t\)</span>. But where did this even come from? At every step we add some noise, but if we dont scale the x down as we add noise we will have a variance explosion, therefore we can do this proof:</p>
@@ -835,7 +836,8 @@ q(x_{t-1}|x_t, x_0) \sim N(x_{t-1}; \frac{1}{\sqrt{a_t}}(x_t - \frac{1-a_t}{\sqr
 <p>So our final form of the reverse process is:</p>
 <div class="math notranslate nohighlight">
 \[ \Large
-q(x_{t-1}|x_t, x_0) \sim N(x_{t-1}; \frac{1}{\sqrt{a_t}}(x_t - \frac{1-a_t}{\sqrt{1-\bar{a_t}}}e_t), \sigma_t^2I)
+\boxed{
+    q(x_{t-1}|x_t, x_0) \sim N(x_{t-1}; \frac{1}{\sqrt{a_t}}(x_t - \frac{1-a_t}{\sqrt{1-\bar{a_t}}}e_t), \sigma_t^2I) }
 \]</div>
 <p>I know I skipped over a ton of mathematical detail again, maybe later I’ll make a deeper dive into the reverse process! But for now this should be enough to get started and have a basic understanding.</p>
 <p>Lets quickly look at the simplified code that will compute all of this! There are three things we need: (1) the noisy image, (2) what timestep we are on, and (3) the predicted noise.</p>
