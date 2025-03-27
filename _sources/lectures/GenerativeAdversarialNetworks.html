@@ -555,7 +555,7 @@ document.write(`
 <h2><span style="color:Orange">Review: AutoEncoders</span><a class="headerlink" href="#span-style-color-orange-review-autoencoders-span" title="Permalink to this heading">#</a></h2>
 <p>We have seen previously that AutoEncoders can be used to generate images. For the setup in the <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/AutoEncoders.html">AutoEncoders notebook</a>, we first train an Encoder that learns to compress an image down to some latent space, and then a Decoder that learns to take that latent space and reconstruct the original image. The outputs of the Encoder can be used to study the high dimensional structure of the data, and we typically don’t care about the Decoder unless we want to do a generative task.</p>
 <p>If we only use our Decoder, we can pass in latent variables to it, and it will generate images on the other end. Unfortunately this can be tough as the structure of the latent space can be unknown, although we do solve this partially through placing a KL penalty in the <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/VariationalAutoEncoders.html">Variational AutoEncoder</a> to ensure normality.</p>
-<p>Unfortunately, the VAE suffers from one issue: Poor Image Quality! Here is an example of all of the outputs of our autoencoders on the MNIST dataset:</p>
+<p>Unfortunately, the VAE suffers from one issue: <em>Poor Image Quality</em>. Here is an example of all of the outputs of our autoencoders on the MNIST dataset:</p>
 <div>
 <img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/GenerativeAdversarialNetworks-all_vae_gens_on_digit.png" width=800></img>
 </div><p>As it can be clearly seen, these would not be considered very high quality generations of handwritten digits. They are typically blurry, and using a VAE, which is the only way to generate from a known distribution, the results get even worse!</p>
@@ -585,7 +585,7 @@ document.write(`
 <section id="span-style-color-lightgreen-training-the-discriminator-span">
 <h3><span style="color:LightGreen">Training the Discriminator</span><a class="headerlink" href="#span-style-color-lightgreen-training-the-discriminator-span" title="Permalink to this heading">#</a></h3>
 <p>The first step will be to take our random noise and use or Generator <span class="math notranslate nohighlight">\(G(z)\)</span> to generate a batch of fake samples. We can then concatenate our fake samples to real ones to create a batch where half the images are real and the other half are fake. We can similarly create labels for this, identifying which images are real and which are fake (we will use 0 for generated and 1 for true, although it doesn’t matter which is which) and then give the discriminator this data to learn to identify real from fake images!</p>
-<p>The Loss function we use in this case is the Binary Cross Entropy (BCE) Loss Function!</p>
+<p>The Loss function we use in this case is the Binary Cross Entropy (BCE) Loss Function:</p>
 <div class="math notranslate nohighlight">
 \[ \large
 H(y,\hat{y}) = -\frac{1}{N}\sum y\log(\hat{y}) + (1-y)\log(1-\hat{y})
@@ -608,7 +608,8 @@ H_{fake}(y=0,\hat{y}) = -\frac{1}{N}\sum (0)\log(D(G(z))) + (1-0)\log(1-D(G(z)))
 <p>Therefore, our final Discriminator loss can be written out as the sum of the real and fake discriminator losses:</p>
 <div class="math notranslate nohighlight">
 \[ \large
-H_D = -\frac{1}{N}\sum \log(D(x)) + \log(1-D(G(z)))
+\boxed{
+H_D = -\frac{1}{N}\sum \log(D(x)) + \log(1-D(G(z)))}
 \]</div>
 <section id="span-style-color-lightpink-expanding-to-continuous-distributions-span">
 <h4><span style="color:LightPink">Expanding to Continuous Distributions</span><a class="headerlink" href="#span-style-color-lightpink-expanding-to-continuous-distributions-span" title="Permalink to this heading">#</a></h4>
@@ -672,7 +673,8 @@ D^*(x) = \frac{p_{data}(x)}{p_{data}(x)+p_g(x)}
 The key idea here is that the discriminator will provide a signal of real vs fake. When we backpropagate this signal to the generator (which is trying to fool the discriminator), we <strong>ONLY UPDATE THE WEIGHTS OF THE GENERATOR</strong>. The backpropagation (although will compute gradients on the discriminator) will not be used to actually update the discriminator (i.e. this step of updating the generator assumed a fixed discriminator)</p>
 <section id="span-style-color-lightpink-discrete-loss-for-the-generator-span">
 <h4><span style="color:LightPink">Discrete Loss for the Generator</span><a class="headerlink" href="#span-style-color-lightpink-discrete-loss-for-the-generator-span" title="Permalink to this heading">#</a></h4>
-<p>As explained above, the idea generator will minimize the discriminators ability to distinguish between real and fake samples, and we assume we are using our new discriminator <span class="math notranslate nohighlight">\(D^*(x)\)</span>. Well this loss function is identical again to before, just a simple BCELoss, so lets do the discrete case first (that we will actually use in practice). All images will be identified as real where <span class="math notranslate nohighlight">\(y=1\)</span> so in our BCE Loss, the case of <span class="math notranslate nohighlight">\((1-y)\)</span> will dissapear:</p>
+<p>As explained above, the ideal generator will minimize the discriminators ability to distinguish between real and fake samples, and we assume we are using our new discriminator <span class="math notranslate nohighlight">\(D^*(x)\)</span>. Well, this loss function is identical again to the simple BCELoss we had before, so lets do the discrete case first (that we will actually use in practice).</p>
+<p>All images will be identified as real where <span class="math notranslate nohighlight">\(y=1\)</span> so in our BCE Loss, the case of <span class="math notranslate nohighlight">\((1-y)\)</span> will dissapear:</p>
 <div class="math notranslate nohighlight">
 \[ \large
 H(y,\hat{y}) = -\frac{1}{N}\sum y\log(\hat{y}) + (1-y)\log(1-\hat{y})
@@ -689,7 +691,8 @@ H(y=1,\hat{y}) = - \frac{1}{N}\sum \log(D^*(G(z)))
 </section>
 <section id="span-style-color-lightpink-moving-to-the-continuous-loss-function-span">
 <h4><span style="color:LightPink">Moving to the Continuous Loss Function</span><a class="headerlink" href="#span-style-color-lightpink-moving-to-the-continuous-loss-function-span" title="Permalink to this heading">#</a></h4>
-<p>Using all the same logic as before, when we expanded our discrete discriminator loss to continuous, we can do the same process here. <span class="math notranslate nohighlight">\(x\)</span> is again some arbritrary image, although we know they are all fake, the loss doesn’t!</p>
+<p>Using all the same logic as before, when we expanded our discrete discriminator loss to continuous, we can do the same process here.</p>
+<p>As before, <span class="math notranslate nohighlight">\(x\)</span> is some arbritrary image. Although we know they are all fake, the loss does not!</p>
 <div class="math notranslate nohighlight">
 \[ \large
 L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g} \log((1-D^*(x))
@@ -717,7 +720,7 @@ L_G = \min_G \mathbb{E}_{x\sim p_{data}(x)} \log(D^*(x)) +\mathbb{E}_{x\sim p_g}
 <p>So we have already seek KL-Divergence before (if you haven’t take a look at my <a class="reference external" href="https://github.com/priyammaz/PyTorch-Adventures/blob/main/PyTorch%20for%20Generation/AutoEncoders/Intro%20to%20AutoEncoders/Variational_AutoEncoders.ipynb">notebook on Variational AutoEncoders</a> to learn more and also this [helpful video] walking you through the relation between KL divergence and Cross Entropy. As a quick reminder though:</p>
 <p>KL Divergence is a measure of entropy (or difference) between two probability distributions. But what is Entropy? Entropy is a measure of the amount of “information” in data and is typically written as:,</p>
 <div class="math notranslate nohighlight">
-\[
+\[ \large
 H = -\sum_{i=1}^Np(x_i)\cdot \log p(x_i)
 \]</div>
 <p>You can think of this like the Expected Value of information in an event. KL Divergence is then the difference in information between two separate distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. Well then we can just write that as:</p>
@@ -798,8 +801,9 @@ M(x) = \frac{p_{data}(x)+p_g(x)}{2}
 <section id="span-style-color-lightgreen-final-loss-function-span">
 <h3><span style="color:LightGreen">Final Loss Function</span><a class="headerlink" href="#span-style-color-lightgreen-final-loss-function-span" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[ \large
-Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z)))
+\[ \Large
+\boxed{
+Loss = \min_G \max_D \mathbb{E}_{x\sim p_x(x)} \log(D(x)) +\mathbb{E}_{x\sim p_z(z)} \log((1-D(G(z))) }
 \]</div>
 <p>This is the original loss function for the GAN, and it does exactly what we have outlined until now. We will be maximizing <span class="math notranslate nohighlight">\(D\)</span> and minimizing <span class="math notranslate nohighlight">\(G\)</span>. Notice we have a negative on our cross entropy, so instead of minimizing cross entropy we are maximizing negative cross entropy with <span class="math notranslate nohighlight">\(D\)</span>, if we had the normal cross entropy formula, then the min/max would be flipped but give the same result.</p>
 <p>Our goal is to simulteously train a discriminator that maximizes this loss, which in effect maximizes the log-probability and makes a confident discriminator, and also minimize this loss by training a generator that can confidently fool the discriminator.</p>
