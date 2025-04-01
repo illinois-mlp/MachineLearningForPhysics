@@ -499,7 +499,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-normalizing-flows-as-a-generative-model-span"><span style="color:Orange">Normalizing Flows as a Generative Model</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-key-elements-and-implementation-span"><span style="color:Orange">Key Elements and Implementation</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-invertible-transformation-span"><span style="color:LightGreen">Invertible transformation</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-determinant-span"><span style="color:LightGreen">Jacobian determinant</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-matrix-and-determinant-span"><span style="color:LightGreen">Jacobian Matrix and Determinant</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-architectures-span"><span style="color:LightGreen">Architectures</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-pytorch-distributions-span"><span style="color:LightGreen">PyTorch Distributions</span></a></li>
 </ul>
@@ -597,9 +597,18 @@ document.write(`
 <h3><span style="color:LightGreen">Invertible transformation</span><a class="headerlink" href="#span-style-color-lightgreen-invertible-transformation-span" title="Permalink to this heading">#</a></h3>
 <p><span style="color:violet">Invertible transformation</span>: The core idea of normalizing flows is to use a series of invertible transformations to map a simple distribution (like a Gaussian) to a more complex target distribution, and these transformations are often implemented using neural networks.</p>
 </section>
-<section id="span-style-color-lightgreen-jacobian-determinant-span">
-<h3><span style="color:LightGreen">Jacobian determinant</span><a class="headerlink" href="#span-style-color-lightgreen-jacobian-determinant-span" title="Permalink to this heading">#</a></h3>
-<p><span style="color:violet">Jacobian determinant</span>: When applying a neural network transformation, the Jacobian determinant needs to be calculated to ensure the change of variables formula can be used to compute the probability density of the transformed data.</p>
+<section id="span-style-color-lightgreen-jacobian-matrix-and-determinant-span">
+<h3><span style="color:LightGreen">Jacobian Matrix and Determinant</span><a class="headerlink" href="#span-style-color-lightgreen-jacobian-matrix-and-determinant-span" title="Permalink to this heading">#</a></h3>
+<p><span style="color:violet">Jacobian Matrix</span>: of a vector-valued function in several variables, the Jacobian generalizes the gradient of a scalar-valued function in several variables, which in turn generalizes the derivative of a scalar-valued function of a single variable. In other words, the Jacobian matrix of a scalar-valued function in several variables is (the transpose of) its gradient and the gradient of a scalar-valued function of a single variable is its derivative.</p>
+<p>At each point where a function is differentiable, its Jacobian matrix can also be thought of as describing the amount of “stretching”, “rotating” or “transforming” that the function imposes locally near that point.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-Jacobian.png" width=800></img>
+</div><p><span style="color:violet">Jacobian determinant</span>: The determinant of the Jacobian matrix.</p>
+<p>The Jacobian determinant is used when making a change of variables when evaluating a multiple integral of a function over a region within its domain. To accommodate for the change of coordinates the magnitude of the Jacobian determinant arises as a multiplicative factor within the integral. This is because the <span class="math notranslate nohighlight">\(n\)</span>-dimensional <span class="math notranslate nohighlight">\(dV\)</span> element is in general a parallelepiped in the new coordinate system, and the <span class="math notranslate nohighlight">\(n\)</span>-volume of a parallelepiped is the determinant of its edge vectors.</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-JacobianDeterminant.png" width=600></img>
+</div><p>A nonlinear map <span class="math notranslate nohighlight">\(f\)</span> sends a small square (left, in red) to a distorted parallelogram (right, in red). The Jacobian at a point gives the best linear approximation of the distorted parallelogram near that point (right, in translucent white), and the Jacobian determinant gives the ratio of the area of the approximating parallelogram to that of the original square.</p>
+<p>When applying a neural network transformation, the Jacobian determinant needs to be calculated to ensure the change of variables formula can be used to compute the probability density of the transformed data.</p>
 </section>
 <section id="span-style-color-lightgreen-architectures-span">
 <h3><span style="color:LightGreen">Architectures</span><a class="headerlink" href="#span-style-color-lightgreen-architectures-span" title="Permalink to this heading">#</a></h3>
@@ -1229,7 +1238,7 @@ Loss (it. 10000) : 0.814227
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-normalizing-flows-as-a-generative-model-span"><span style="color:Orange">Normalizing Flows as a Generative Model</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-key-elements-and-implementation-span"><span style="color:Orange">Key Elements and Implementation</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-invertible-transformation-span"><span style="color:LightGreen">Invertible transformation</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-determinant-span"><span style="color:LightGreen">Jacobian determinant</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-matrix-and-determinant-span"><span style="color:LightGreen">Jacobian Matrix and Determinant</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-architectures-span"><span style="color:LightGreen">Architectures</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-pytorch-distributions-span"><span style="color:LightGreen">PyTorch Distributions</span></a></li>
 </ul>
