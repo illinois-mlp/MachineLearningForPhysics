@@ -1399,8 +1399,12 @@ N_\text{sources} \sim \text{Pois}\left(\int_{s_\text{min}}^{s_\text{max}} \, \ma
 </div>
 <section id="span-style-color-lightgreen-the-explicit-likelikood-span">
 <h3><span style="color:LightGreen">The Explicit Likelikood</span><a class="headerlink" href="#span-style-color-lightgreen-the-explicit-likelikood-span" title="Permalink to this heading">#</a></h3>
-<p>The (marginal) likelihood, which we would need to plug into something like MCMC, is computationally intractable! This is because it involves an integral over a cumbersome latent space, which consists of all possible number <span class="math notranslate nohighlight">\(n\)</span> of sources and their positions <span class="math notranslate nohighlight">\(\{z\}=\{x, y\}_{i=1}^{n}\)</span>. Let’s write this out formally:
-$<span class="math notranslate nohighlight">\(p(x \mid \theta)=\sum_{n} \int \mathrm{d}^{n} \{z\}\, p\left(n \mid \theta\right) \prod_i^{n} p\left(z_{i} \mid \theta\right) \, p\left(x \mid \theta,\left\{z_{i}\right\}\right)\)</span>$</p>
+<p>The (marginal) likelihood, which we would need to plug into something like MCMC, is computationally intractable! This is because it involves an integral over a cumbersome latent space, which consists of all possible number <span class="math notranslate nohighlight">\(n\)</span> of sources and their positions <span class="math notranslate nohighlight">\(\{z\}=\{x, y\}_{i=1}^{n}\)</span>.</p>
+<p>Let’s write this out formally:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+p(x \mid \theta)=\sum_{n} \int \mathrm{d}^{n} \{z\}\, p\left(n \mid \theta\right) \prod_i^{n} p\left(z_{i} \mid \theta\right) \, p\left(x \mid \theta,\left\{z_{i}\right\}\right)
+\]</div>
 </section>
 <section id="span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span">
 <h3><span style="color:LightGreen">Implicit inference: Neural posterior estimation</span><a class="headerlink" href="#span-style-color-lightgreen-implicit-inference-neural-posterior-estimation-span" title="Permalink to this heading">#</a></h3>
