@@ -495,7 +495,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-normalizing-flows-as-a-generative-model-span"><span style="color:Orange">Normalizing Flows as a Generative Model</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-key-elements-and-implementation-span"><span style="color:Orange">Key Elements and Implementation</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-invertible-transformation-span"><span style="color:LightGreen">Invertible transformation</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-determinant-span"><span style="color:LightGreen">Jacobian determinant</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-architectures-span"><span style="color:LightGreen">Architectures</span></a></li>
@@ -549,18 +551,48 @@ document.write(`
 <h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
 <p>One of the key goals in modern generative models is to find ways of optimizing the probability distribution of a given set of data. To train a model, we typically tune its parameters to maximise the probability of the training dataset under the model. However, most of the real-world distributions that we are interested into are too complex and do not have a closed-form analytical solution. Hence, Gaussians are widely used, but often prove to be too simple to model complex datasets.</p>
 <p>The idea of <em><strong><span style="color:violet">Normalizing Flows</span></strong></em> [<span class="xref myst">1</span>,<span class="xref myst">2</span>] has been formalized to address this problem and be able to rely on richer probability distributions. The main idea is to start from a simple probability distribution and approximate a complex multimodal density by <em>transforming</em> the simpler density through a sequence of invertible nonlinear transforms. By repeatedly applying the rule for change of variables, the initial density ‘flows’ through the sequence of invertible mappings. At the end of this sequence we obtain a valid probability distribution and hence this type of flow is referred to as a normalizing flow. This allows to rely on distributions of arbitrary complexity and also learn the parameters of these transforms depending only on some mild conditions.</p>
-<p>To fully understand this method, we will see in this lecture:</p>
-<ol class="arabic simple">
-<li><p>The <span class="xref myst">PyTorch distributions</span> module and how to use it</p></li>
-<li><p>How transforming a distribution is expressed as a <span class="xref myst">change of variables</span> leading to a flow</p></li>
-<li><p>How we can <span class="xref myst">chain multiple transforms</span> leading to the overall framework of normalizing flows</p></li>
-<li><p>Understanding the original <span class="xref myst">planar flow</span>, its parameters and how to implement it</p></li>
-<li><p>Defining <span class="xref myst">learnable flows</span> and performing optimization on a target density</p></li>
-</ol>
 <p>Two examples of transformations of a Unit Gaussian and Uniform distribution using Normalizing Flows are shown below:</p>
 <div>
-<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png" width=800></img>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-examples.png" width=1000></img>
 </div><p>Normalizing flows typically utilize neural networks to implement the transformation functions that map a simple distribution to a more complex one, allowing them to learn complex data distributions; essentially, the “flow” in a normalizing flow is often modeled by a neural network, making it a key component of the method.</p>
+</section>
+<section id="span-style-color-orange-normalizing-flows-as-a-generative-model-span">
+<h2><span style="color:Orange">Normalizing Flows as a Generative Model</span><a class="headerlink" href="#span-style-color-orange-normalizing-flows-as-a-generative-model-span" title="Permalink to this heading">#</a></h2>
+<p>In the previous lectures, we have seen Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs) and Diffusion-based models as examples of generative models. However, none of them explicitly learn the probability density function <span class="math notranslate nohighlight">\(p(x)\)</span> of the real input data. While VAEs model a lower bound, diffusion-based models only implicitly learn the probability density. GANs on the other hand provide us a sampling mechanism for generating new data, without offering a likelihood estimate.</p>
+<p>The generative model we will look at here, called <span style="color:violet">Normalizing Flows</span>, actually models the true data distribution <span class="math notranslate nohighlight">\(p(x)\)</span> and provides us with an exact likelihood estimate. Below, we can visually compare VAEs, GANs and Flows
+(figure credit - <a class="reference external" href="https://lilianweng.github.io/lil-log/2018/10/13/flow-based-deep-generative-models.html">Lilian Weng</a>):</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-comparison_GAN_VAE_NF.png" width=1000></img>
+</div><p>The major difference compared to VAEs is that flows use <span style="color:violet">invertible</span> functions <span class="math notranslate nohighlight">\(f\)</span> to map the input data <span class="math notranslate nohighlight">\(x\)</span> to a latent representation <span class="math notranslate nohighlight">\(z\)</span>. To realize this, <span class="math notranslate nohighlight">\(z\)</span> must be of the same shape as <span class="math notranslate nohighlight">\(x\)</span>. This is in contrast to VAEs where <span class="math notranslate nohighlight">\(z\)</span> is usually much lower dimensional than the original input data. However, an invertible mapping also means that for every data point <span class="math notranslate nohighlight">\(x\)</span>, we have a corresponding latent representation <span class="math notranslate nohighlight">\(z\)</span> which allows us to perform lossless reconstruction (<span class="math notranslate nohighlight">\(z\)</span> to <span class="math notranslate nohighlight">\(x\)</span>). In the visualization above, this means that <span class="math notranslate nohighlight">\(x=x'\)</span> for flows, no matter what invertible function <span class="math notranslate nohighlight">\(f\)</span> and input <span class="math notranslate nohighlight">\(x\)</span> we choose.</p>
+<p>Nonetheless, how are normalizing flows modeling a probability density with an invertible function? The answer to this question is the rule for change of variables. Specifically, given a prior density <span class="math notranslate nohighlight">\(p_z(z)\)</span> (e.g. Gaussian) and an invertible function <span class="math notranslate nohighlight">\(f\)</span>, we can determine <span class="math notranslate nohighlight">\(p_x(x)\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{split}
+    \int p_x(x) dx &amp; = \int p_z(z) dz = 1 \hspace{1cm}\text{(by definition of a probability distribution)}\\
+    \Leftrightarrow p_x(x) &amp; = p_z(z) \left|\frac{dz}{dx}\right| = p_z(f(x)) \left|\frac{df(x)}{dx}\right|
+\end{split}
+\end{split}\]</div>
+<p>Hence, in order to determine the probability of <span class="math notranslate nohighlight">\(x\)</span>, we only need to determine its probability in latent space, and get the derivative of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Note that this is for a univariate distribution, and <span class="math notranslate nohighlight">\(f\)</span> is required to be invertible and smooth. For a multivariate case, the derivative becomes a Jacobian of which we need to take the determinant. As we usually use the log-likelihood as objective, we write the multivariate term with logarithms below:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log p_x(\mathbf{x}) = \log p_z(f(\mathbf{x})) + \log{} \left|\det \frac{df(\mathbf{x})}{d\mathbf{x}}\right|
+\]</div>
+<p>Although we now know how a normalizing flow obtains its likelihood, it might not be clear what a normalizing flow does intuitively. For this, we should look from the inverse perspective of the flow starting with the prior probability density <span class="math notranslate nohighlight">\(p_z(z)\)</span>. If we apply an invertible function on it, we effectively “transform” its probability density.</p>
+<p>For instance, if <span class="math notranslate nohighlight">\(f^{-1}(z)=z+1\)</span>, we shift the density by one while still remaining a valid probability distribution, and being invertible. We can also apply more complex transformations, like scaling: <span class="math notranslate nohighlight">\(f^{-1}(z)=2z+1\)</span>, but there you might see a difference. When you scale, you also change the volume of the probability density, as for example on uniform distributions (figure credit - <a class="reference external" href="https://blog.evjang.com/2018/01/nf1.html">Eric Jang</a>):</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-uniform_flow.png" width=600></img>
+</div><p>You can see that the height of <span class="math notranslate nohighlight">\(p(y)\)</span> should be lower than <span class="math notranslate nohighlight">\(p(x)\)</span> after scaling. This change in volume represents <span class="math notranslate nohighlight">\(\left|\frac{df(x)}{dx}\right|\)</span> in our equation above, and ensures that even after scaling, we still have a valid probability distribution.</p>
+<p>We can go on with making our function <span class="math notranslate nohighlight">\(f\)</span> more complex. However, the more complex <span class="math notranslate nohighlight">\(f\)</span> becomes, the harder it will be to find the inverse <span class="math notranslate nohighlight">\(f^{-1}\)</span> of it, and to calculate the log-determinant of the Jacobian <span class="math notranslate nohighlight">\(\log{} \left|\det \frac{df(\mathbf{x})}{d\mathbf{x}}\right|\)</span>.</p>
+<p>An easier trick to stack multiple invertible functions <span class="math notranslate nohighlight">\(f_{1,...,K}\)</span> after each other, as all together, they still represent a single, invertible function. Using multiple, learnable invertible functions, a normalizing flow attempts to transform <span class="math notranslate nohighlight">\(p_z(z)\)</span> slowly into a more complex distribution which should finally be <span class="math notranslate nohighlight">\(p_x(x)\)</span>. We visualize the idea below
+(figure credit - <a class="reference external" href="https://lilianweng.github.io/lil-log/2018/10/13/flow-based-deep-generative-models.html">Lilian Weng</a>):</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/NormalizingFlows-normalizing_flow_layou.png" width=1000></img>
+</div><p>Starting from <span class="math notranslate nohighlight">\(z_0\)</span>, which follows the prior Gaussian distribution, we sequentially apply the invertible functions <span class="math notranslate nohighlight">\(f_1,f_2,...,f_K\)</span>, until <span class="math notranslate nohighlight">\(z_K\)</span> represents <span class="math notranslate nohighlight">\(x\)</span>. Note that in the figure above, the functions <span class="math notranslate nohighlight">\(f\)</span> represent the inverted function from <span class="math notranslate nohighlight">\(f\)</span> we had above (here: <span class="math notranslate nohighlight">\(f:Z\to X\)</span>, above: <span class="math notranslate nohighlight">\(f:X\to Z\)</span>). This is just a different notation and has no impact on the actual flow design because all <span class="math notranslate nohighlight">\(f\)</span> need to be invertible anyways.</p>
+<p>When we estimate the log likelihood of a data point <span class="math notranslate nohighlight">\(x\)</span> as in the equations above, we run the flows in the opposite direction than visualized above. Multiple flow layers have been proposed that use a neural network as learnable parameters, such as the planar and radial flow. However, we will focus here on flows that are commonly used in image modeling, and will discuss them in the rest of the notebook along with the details of how to train a normalizing flow.</p>
+</section>
+<section id="span-style-color-orange-key-elements-and-implementation-span">
+<h2><span style="color:Orange">Key Elements and Implementation</span><a class="headerlink" href="#span-style-color-orange-key-elements-and-implementation-span" title="Permalink to this heading">#</a></h2>
 <section id="span-style-color-lightgreen-invertible-transformation-span">
 <h3><span style="color:LightGreen">Invertible transformation</span><a class="headerlink" href="#span-style-color-lightgreen-invertible-transformation-span" title="Permalink to this heading">#</a></h3>
 <p><span style="color:violet">Invertible transformation</span>: The core idea of normalizing flows is to use a series of invertible transformations to map a simple distribution (like a Gaussian) to a more complex target distribution, and these transformations are often implemented using neural networks.</p>
@@ -571,7 +603,7 @@ document.write(`
 </section>
 <section id="span-style-color-lightgreen-architectures-span">
 <h3><span style="color:LightGreen">Architectures</span><a class="headerlink" href="#span-style-color-lightgreen-architectures-span" title="Permalink to this heading">#</a></h3>
-<p>Popular normalizing flow architectures like “planar flows” or “masked autoregressive flows” rely on neural networks to define the transformation functions.</p>
+<p>Popular normalizing flow architectures like <span style="color:violet">planar flows</span> or <span style="color:violet">masked autoregressive flows</span> rely on neural networks to define the transformation functions.</p>
 </section>
 <section id="span-style-color-lightgreen-pytorch-distributions-span">
 <h3><span style="color:LightGreen">PyTorch Distributions</span><a class="headerlink" href="#span-style-color-lightgreen-pytorch-distributions-span" title="Permalink to this heading">#</a></h3>
@@ -640,7 +672,7 @@ document.write(`
 <h2><span style="color:Orange">Transforming distributions</span><a class="headerlink" href="#span-style-color-orange-transforming-distributions-span" title="Permalink to this heading">#</a></h2>
 <section id="span-style-color-lightgreen-change-of-variables-and-flow-span">
 <h3><span style="color:LightGreen">Change of Variables and Flow</span><a class="headerlink" href="#span-style-color-lightgreen-change-of-variables-and-flow-span" title="Permalink to this heading">#</a></h3>
-<p>In order to transform a probability distribution, we can perform a <em>change of variable</em>. In general, change of variables can be performed in any number of ways. However, here we are interested in probability distributions, which means that we need to <em>scale</em> our transformed density so that the total probability still sums to one. This is directly measured with the determinant of our transform (if you need more intuitive examples, you can check the great <a class="reference external" href="https://blog.evjang.com/2018/01/nf1.html">Eric Jang’s tutorial</a>).Hence, we can transform a probability distribution by using an invertible mapping and somehow scaling by the determinant of this mapping.</p>
+<p>In order to transform a probability distribution, we can perform a <span style="color:violet">change of variable</span>. In general, change of variables can be performed in any number of ways. However, here we are interested in probability distributions, which means that we need to <em>scale</em> our transformed density so that the total probability still sums to one. This is directly measured with the determinant of our transform (if you need more intuitive examples, you can check the great <a class="reference external" href="https://blog.evjang.com/2018/01/nf1.html">Eric Jang’s tutorial</a>).Hence, we can transform a probability distribution by using an invertible mapping and somehow scaling by the determinant of this mapping.</p>
 <p>Let <span class="math notranslate nohighlight">\(\mathbf{z}\in\mathcal{R}^d\)</span> be a random variable with distribution <span class="math notranslate nohighlight">\(q(\mathbf{z})\)</span> and <span class="math notranslate nohighlight">\(f:\mathcal{R}^d\rightarrow\mathcal{R}^d\)</span> an invertible smooth mapping (meaning that <span class="math notranslate nohighlight">\(f^{-1} = g\)</span> and <span class="math notranslate nohighlight">\(g\circ f(\mathbf{z})=\mathbf{z}'\)</span>). We can use <span class="math notranslate nohighlight">\(f\)</span> to transform <span class="math notranslate nohighlight">\(\mathbf{z}\sim q(\mathbf{z})\)</span>. The resulting random variable <span class="math notranslate nohighlight">\(\mathbf{z}'=f(\mathbf{z})\)</span> has the following probability distribution</p>
 <div class="math notranslate nohighlight">
 \[ \Large
@@ -1113,6 +1145,7 @@ Loss (it. 10000) : 0.814227
 <li><p><a class="reference external" href="https://akosiorek.github.io/ml/2018/04/03/norm_flows.html">https://akosiorek.github.io/ml/2018/04/03/norm_flows.html</a></p></li>
 <li><p><a class="github reference external" href="https://github.com/abdulfatir/normalizing-flows">abdulfatir/normalizing-flows</a></p></li>
 <li><p><a class="github reference external" href="https://github.com/acids-ircam/pytorch_flows">acids-ircam/pytorch_flows</a></p></li>
+<li><p><a class="reference external" href="https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial11/NF_image_modeling.html">https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial11/NF_image_modeling.html</a></p></li>
 </ul>
 </section>
 </section>
@@ -1192,7 +1225,9 @@ Loss (it. 10000) : 0.814227
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-normalizing-flows-as-a-generative-model-span"><span style="color:Orange">Normalizing Flows as a Generative Model</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-key-elements-and-implementation-span"><span style="color:Orange">Key Elements and Implementation</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-invertible-transformation-span"><span style="color:LightGreen">Invertible transformation</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-jacobian-determinant-span"><span style="color:LightGreen">Jacobian determinant</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-architectures-span"><span style="color:LightGreen">Architectures</span></a></li>
