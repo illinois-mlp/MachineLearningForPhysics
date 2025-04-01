@@ -1169,9 +1169,12 @@ LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 </div>
 </div>
 </div>
-<p>Construct a neural posterior estimator. It uses a normalizing flow as a (conditional) posterior density estimator, and a feature-extraction network that aligns the directions of variations in parameters <span class="math notranslate nohighlight">\(\theta\)</span> and data <span class="math notranslate nohighlight">\(x\)</span>.
-$<span class="math notranslate nohighlight">\(  \mathcal L = -\log p_\phi(\theta\mid s_\varphi(x))\)</span><span class="math notranslate nohighlight">\(
-where \)</span>{\phi, \varphi}$ are the parameters of the normalizing flow and featurizer MLP, respectively.</p>
+<p>Construct a neural posterior estimator. It uses a normalizing flow as a (conditional) posterior density estimator, and a feature-extraction network that aligns the directions of variations in parameters <span class="math notranslate nohighlight">\(\theta\)</span> and data <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\mathcal L = -\log p_\phi(\theta\mid s_\varphi(x))
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{\phi, \varphi\}\)</span> are the parameters of the normalizing flow and featurizer MLP, respectively.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">NeuralPosteriorEstimator</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
