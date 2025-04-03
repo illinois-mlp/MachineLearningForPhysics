@@ -22,12 +22,12 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Mar 03  | {doc}`_sources/Week_07`       | NO HOMEWORK                            |                            |
 | Mar 10  | {doc}`_sources/Week_08`       | NO HOMEWORK                            | {doc}`_sources/Project_01` |
 | Mar 17  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
-| Mar 24  | {doc}`_sources/Week_09`       | HW 07                                  |                            |
-| Mar 31  | {doc}`_sources/Week_10`       | HW 08                                  |                            |
-| Apr 07  | {doc}`_sources/Week_11`       | HW 09                                  |                            |
-| Apr 14  | {doc}`_sources/Week_12`       | HW 10                                  |                            |
-| Apr 21  | {doc}`_sources/Week_13`       | HW 11                                  | {doc}`_sources/Project_02` |
-| Apr 28  | {doc}`_sources/Week_14`       |                                        |                            |
+| Mar 24  | {doc}`_sources/Week_09`       | NO HOMEWORK                            |                            |
+| Mar 31  | {doc}`_sources/Week_10`       | [HW 07](_sources/homework/Homework_07) |                            |
+| Apr 07  | {doc}`_sources/Week_11`       | HW 08                                  |                            |
+| Apr 14  | {doc}`_sources/Week_12`       | HW 09                                  |                            |
+| Apr 21  | {doc}`_sources/Week_13`       | HW 10                                  | {doc}`_sources/Project_02` |
+| Apr 28  | {doc}`_sources/Week_14`       | HW 11                                  |                            |
 | May 05  | {doc}`_sources/Week_15`       |                                        |                            |
 
 ## <span style="color:Red">Overview</span>
