@@ -624,7 +624,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b1ef6928eeeef90d2a7bf12f91170046029b3f07f03b48c6405d7a39116fbc2d.png" src="../../_images/b1ef6928eeeef90d2a7bf12f91170046029b3f07f03b48c6405d7a39116fbc2d.png" />
+<img alt="../../_images/4b7983cb6186853da8711ffaf5868c13eea7566b74ed05b648d31f633b810585.png" src="../../_images/4b7983cb6186853da8711ffaf5868c13eea7566b74ed05b648d31f633b810585.png" />
 </div>
 </div>
 <p>As you can see, we have the true function in blue. The observations are observable in two regions of the function and there is some noise in their measurement. We will use this simple data to showcase the differences between BNNs and deterministic NNs.</p>
@@ -702,7 +702,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c64de67a27384b9dad511f6f3b13d276", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b98d48a50fcd41b7842921d7c43a7050", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="span-style-color-lightgreen-evaluate-span">
@@ -720,7 +720,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f96749ea731894e436a76cdcbf0f8adb5ac42d4b2476162610e0bdd3033dba22.png" src="../../_images/f96749ea731894e436a76cdcbf0f8adb5ac42d4b2476162610e0bdd3033dba22.png" />
+<img alt="../../_images/1556401259bc6bbdcb7d45194ffc21af33f5773a2a316a60f86c7047f2392456.png" src="../../_images/1556401259bc6bbdcb7d45194ffc21af33f5773a2a316a60f86c7047f2392456.png" />
 </div>
 </div>
 <p>We can see that our deterministic MLP (red line) has correctly learned the data distribution in the training regions, however, as the model has not learned the underlying sinusoidal wave function, it’s predictions outside the training region are inaccurate. As our MLP is a point estimate NN we have no measure confidence in the predictions outside the training region. In the upcoming sections let’s see how this compares to BNN.</p>
@@ -747,7 +747,7 @@ q_{\phi}(\theta | D) = \sum_{\theta_{i} ∈ ϕ} \alpha_{\theta_{i}} δ_{\theta_{
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "98988d215394435f9a1595ceaf10f6d7", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d37ec999080a4c5c9c59972ec4b5cca9", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "cd9e31349dd04570a7d964b45392769f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "28c9a212dede458c9b3dda5ac5e26012", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ccb394bfc96f4679870826889cccdc74", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "436de84a1f2c4b15a7e26bc6ce38f61f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "64e040043ea449e28f211c71279442e0", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "daba6fa1fe1841b3a6fb2d6f26287d8c", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "db4810c997eb4f9c8dbac5c026d952ce", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7c327f87a46a4d4f9a793b7f2925dce3", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id2">
@@ -780,7 +780,7 @@ q_{\phi}(\theta | D) = \sum_{\theta_{i} ∈ ϕ} \alpha_{\theta_{i}} δ_{\theta_{
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2fe3f14d1836477bdcfdb7107d303c3947207dcd3c5f0e1c50e9608e2e76090d.png" src="../../_images/2fe3f14d1836477bdcfdb7107d303c3947207dcd3c5f0e1c50e9608e2e76090d.png" />
+<img alt="../../_images/0b754bbd5070680b6628763e2cf642f624bfe573c41176d35d5084f357dd1203.png" src="../../_images/0b754bbd5070680b6628763e2cf642f624bfe573c41176d35d5084f357dd1203.png" />
 </div>
 </div>
 <p>In this plot the benefit of an ensemble approach is not immediately clear. Still on the regions outside the training data each of the trained NN is inaccurate. So, you might ask: “What is the benefit?”</p>
@@ -818,7 +818,7 @@ p(y|x, D) = \int_{\theta}p(y|x,\theta')p(\theta'|D)d\theta'
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b0d3718080b47948f068d3b227e6c04e483e92f68c09196f553d09f08aa24257.png" src="../../_images/b0d3718080b47948f068d3b227e6c04e483e92f68c09196f553d09f08aa24257.png" />
+<img alt="../../_images/85f4340a9f9427f3cb0f89c4ac36c3ea5c51cd803fba62a39fd83eb3437df25d.png" src="../../_images/85f4340a9f9427f3cb0f89c4ac36c3ea5c51cd803fba62a39fd83eb3437df25d.png" />
 </div>
 </div>
 <p>Now we see the benefit of a Bayesian approach. Outside the training region we not only have the point estimate, but also model’s uncertainty about its prediction.</p>
@@ -839,7 +839,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "5647b45958024275ba051a5ed605bbf2", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "e189ad72feb547eb84887a937a5537c6", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id4">
@@ -866,7 +866,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8e268fc7846f86cf50fb55ef2db8f57e274b027b3533689fbbacc691c32223bc.png" src="../../_images/8e268fc7846f86cf50fb55ef2db8f57e274b027b3533689fbbacc691c32223bc.png" />
+<img alt="../../_images/c5739269c64f5a4aff57581341edb3719cb39a453f200a757adad2914809400d.png" src="../../_images/c5739269c64f5a4aff57581341edb3719cb39a453f200a757adad2914809400d.png" />
 </div>
 </div>
 <p>In the above plot each colored line (apart from blue) represents a different parametrization, <span class="math notranslate nohighlight">\(\theta_{i}\)</span>, of our MC-Dropout Network.</p>
@@ -881,7 +881,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/adc1cdbe6d3091375fc0d1a27a5d7872c442f759b55ea7bb0655a446471ec9c5.png" src="../../_images/adc1cdbe6d3091375fc0d1a27a5d7872c442f759b55ea7bb0655a446471ec9c5.png" />
+<img alt="../../_images/e25c507d6bc66b539ee8dbec133352e9919421ae91f8f61911852dd747e77343.png" src="../../_images/e25c507d6bc66b539ee8dbec133352e9919421ae91f8f61911852dd747e77343.png" />
 </div>
 </div>
 <p>In the same way as Deep Ensembles, MC-Dropout allows us to have an uncertainty estimate next to our point wise predictions. However, for the given use-case this has come with the cost of an overall drop in the model’s performance on the training regions. We observe this because at every pass through our network we randomly choose which nodes to keep, so one could argue that we hinder the networks optimal performance.</p>
@@ -923,7 +923,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "948a5ebdadf448aaa0eeb8a5c64f22ca", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "38e64b28cda34c109f5e08a5f1728f8a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="id6">
@@ -945,7 +945,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/68b239fef6624965c4d5f8fdda19590b9cc012ac684e3035419ea3c489bd029c.png" src="../../_images/68b239fef6624965c4d5f8fdda19590b9cc012ac684e3035419ea3c489bd029c.png" />
+<img alt="../../_images/7f9cd82dc0c61a8e843c7a5f922973f87d37ceed67e1badf668c737fc39d78e3.png" src="../../_images/7f9cd82dc0c61a8e843c7a5f922973f87d37ceed67e1badf668c737fc39d78e3.png" />
 </div>
 </div>
 <p>We now perform the conformal prediction procedure to obtain our uncertainty bands. In the simplest case, our comparison of predicted and true values on the calibration data is achieved by simply looking at the residuals <span class="math notranslate nohighlight">\(|y-\hat{y}|\)</span>, which form our <span style="color:violet">conformity scores</span>. We then compute <span class="math notranslate nohighlight">\(\hat{q}\)</span> as the</p>
@@ -1002,7 +1002,7 @@ We can reuse our existing network architecture, the only alteration is that duri
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a46b1dff50c2af733a3b55df837637d1aabff6554432d0ab38573ec60568e11d.png" src="../../_images/a46b1dff50c2af733a3b55df837637d1aabff6554432d0ab38573ec60568e11d.png" />
+<img alt="../../_images/88b40b40afd681c4428e5e48517e4962474b9f7b5c71a9317dcf98ba4007edd0.png" src="../../_images/88b40b40afd681c4428e5e48517e4962474b9f7b5c71a9317dcf98ba4007edd0.png" />
 </div>
 </div>
 <p>We now obtain an uncertainty band around each test set prediction, which is informed by our performance on the calibration data (as quantified by the residuals). We can also compare our empirical coverage on the available test data against our target coverage of 90%:</p>
@@ -1096,7 +1096,7 @@ p(y^*|x^*, \mathcal{D}) = \int p(y^*|x^*, \theta)p(\theta|\mathcal{D}) d\theta
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/00312280ddf807a8260d54873c3501e8d41416315e2e256d5286a0dcc34cdbe3.png" src="../../_images/00312280ddf807a8260d54873c3501e8d41416315e2e256d5286a0dcc34cdbe3.png" />
+<img alt="../../_images/edf012dc4deae92b704f23ac2e5125326d92948dff995077604c6185da7df77e.png" src="../../_images/edf012dc4deae92b704f23ac2e5125326d92948dff995077604c6185da7df77e.png" />
 </div>
 </div>
 </section>
@@ -1109,26 +1109,44 @@ p(y^*|x^*, \mathcal{D}) = \int p(y^*|x^*, \theta)p(\theta|\mathcal{D}) d\theta
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-Requirement already satisfied: pyro-ppl in /usr/local/lib/python3.11/site-packages (1.9.0)
-Requirement already satisfied: numpy&gt;=1.7 in /usr/local/lib/python3.11/site-packages (from pyro-ppl) (1.23.5)
-Requirement already satisfied: opt-einsum&gt;=2.3.2 in /usr/local/lib/python3.11/site-packages (from pyro-ppl) (3.3.0)
-Requirement already satisfied: pyro-api&gt;=0.1.1 in /usr/local/lib/python3.11/site-packages (from pyro-ppl) (0.1.2)
-Requirement already satisfied: torch&gt;=2.0 in /usr/local/lib/python3.11/site-packages (from pyro-ppl) (2.2.2)
-Requirement already satisfied: tqdm&gt;=4.36 in /usr/local/lib/python3.11/site-packages (from pyro-ppl) (4.66.1)
-Requirement already satisfied: filelock in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.9.0)
-Requirement already satisfied: typing-extensions&gt;=4.8.0 in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (4.10.0)
-Requirement already satisfied: sympy in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (1.11.1)
-Requirement already satisfied: networkx in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.0)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.1.2)
-Requirement already satisfied: fsspec in /usr/local/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (2024.3.1)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.11/site-packages (from jinja2-&gt;torch&gt;=2.0-&gt;pyro-ppl) (2.1.2)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.11/site-packages (from sympy-&gt;torch&gt;=2.0-&gt;pyro-ppl) (1.2.1)
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
-<span class=" -Color -Color-Yellow">WARNING: Skipping /usr/local/lib/python3.11/site-packages/six-1.16.0-py3.11.egg-info due to invalid metadata entry &#39;name&#39;</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-ppl
+  Downloading pyro_ppl-1.9.1-py3-none-any.whl.metadata (7.8 kB)
+Requirement already satisfied: numpy&gt;=1.7 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from pyro-ppl) (2.2.4)
+Collecting opt-einsum&gt;=2.3.2 (from pyro-ppl)
+  Downloading opt_einsum-3.4.0-py3-none-any.whl.metadata (6.3 kB)
+Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
+  Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: torch&gt;=2.0 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from pyro-ppl) (2.6.0)
+Requirement already satisfied: tqdm&gt;=4.36 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from pyro-ppl) (4.67.1)
+Requirement already satisfied: filelock in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.17.0)
+Requirement already satisfied: typing-extensions&gt;=4.10.0 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (4.12.2)
+Requirement already satisfied: networkx in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.4.2)
+Requirement already satisfied: jinja2 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.1.5)
+Requirement already satisfied: fsspec in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (2025.2.0)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.4.127 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.127)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.4.127 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.127)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.4.127 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.127)
+Requirement already satisfied: nvidia-cudnn-cu12==9.1.0.70 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (9.1.0.70)
+Requirement already satisfied: nvidia-cublas-cu12==12.4.5.8 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.5.8)
+Requirement already satisfied: nvidia-cufft-cu12==11.2.1.3 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (11.2.1.3)
+Requirement already satisfied: nvidia-curand-cu12==10.3.5.147 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (10.3.5.147)
+Requirement already satisfied: nvidia-cusolver-cu12==11.6.1.9 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (11.6.1.9)
+Requirement already satisfied: nvidia-cusparse-cu12==12.3.1.170 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.3.1.170)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.6.2 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (0.6.2)
+Requirement already satisfied: nvidia-nccl-cu12==2.21.5 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (2.21.5)
+Requirement already satisfied: nvidia-nvtx-cu12==12.4.127 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.127)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.4.127 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (12.4.127)
+Requirement already satisfied: triton==3.2.0 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (3.2.0)
+Requirement already satisfied: setuptools in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (75.8.1)
+Requirement already satisfied: sympy==1.13.1 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from torch&gt;=2.0-&gt;pyro-ppl) (1.13.1)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from sympy==1.13.1-&gt;torch&gt;=2.0-&gt;pyro-ppl) (1.3.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/msn/repos/illinois-mlp/venv/lib/python3.12/site-packages (from jinja2-&gt;torch&gt;=2.0-&gt;pyro-ppl) (3.0.2)
+Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
+   <span class=" -Color -Color-Red">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">7.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading opt_einsum-3.4.0-py3-none-any.whl (71 kB)
+Downloading pyro_api-0.1.2-py3-none-any.whl (11 kB)
+Installing collected packages: pyro-api, opt-einsum, pyro-ppl
+Successfully installed opt-einsum-3.4.0 pyro-api-0.1.2 pyro-ppl-1.9.1
 Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
@@ -1240,7 +1258,7 @@ p(y|x, \mathcal{D}) = \mathbb{E}_{\theta \sim p(\theta|\mathcal{D})}\big[p(y|x,\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [01:54,  1.14s/it, step size=6.24e-04, acc. prob=0.915]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [00:57,  1.73it/s, step size=4.38e-04, acc. prob=0.978]
 </pre></div>
 </div>
 </div>
@@ -1289,7 +1307,7 @@ p(y|x, \mathcal{D}) = \mathbb{E}_{\theta \sim p(\theta|\mathcal{D})}\big[p(y|x,\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/40e6ffe2f806348a27b68c7aa12e99804e01b51a37774209e0d6ac8c82973334.png" src="../../_images/40e6ffe2f806348a27b68c7aa12e99804e01b51a37774209e0d6ac8c82973334.png" />
+<img alt="../../_images/67694a78370bb295da6bcc40faa48cbee1e9825ad4b50665c8c6963ec9b3f09a.png" src="../../_images/67694a78370bb295da6bcc40faa48cbee1e9825ad4b50665c8c6963ec9b3f09a.png" />
 </div>
 </div>
 </section>
@@ -1361,7 +1379,7 @@ Use the following network architecture: Number of hidden layers: 5, Number of hi
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [05:07,  3.07s/it, step size=1.70e-03, acc. prob=0.515]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample: 100%|██████████| 100/100 [02:24,  1.45s/it, step size=9.71e-04, acc. prob=0.866]
 </pre></div>
 </div>
 </div>
@@ -1378,7 +1396,7 @@ Use the following network architecture: Number of hidden layers: 5, Number of hi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/7d6a73b24619f71ed171267758485ef9ea24d9ce1f96f9188aad2ef4442b4505.png" src="../../_images/7d6a73b24619f71ed171267758485ef9ea24d9ce1f96f9188aad2ef4442b4505.png" />
+<img alt="../../_images/31bca53e8aafebb138a96bba0f58949d68b3a620c271bfb6e78be7606a2983fd.png" src="../../_images/31bca53e8aafebb138a96bba0f58949d68b3a620c271bfb6e78be7606a2983fd.png" />
 </div>
 </div>
 </section>
@@ -1426,7 +1444,7 @@ ELBO(q_{\phi}(\theta)) = \mathbb{E}_{\theta \sim q_{\phi}(\theta)}\big[\log p(y|
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dcaeb436505b4ac4890c2961dfe337ec", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "932391def01445b3979fdf50b7c4f7bc", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p>As before, we compute the predictive distribution sampling from the trained variational density.</p>
 <div class="cell docutils container">
@@ -1438,7 +1456,7 @@ ELBO(q_{\phi}(\theta)) = \mathbb{E}_{\theta \sim q_{\phi}(\theta)}\big[\log p(y|
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/212cddb9481b4b69a454c38538cfa803775186a6f83addeee5e4f07c82f87338.png" src="../../_images/212cddb9481b4b69a454c38538cfa803775186a6f83addeee5e4f07c82f87338.png" />
+<img alt="../../_images/967774d1736fc5e1daa7e7d8df63e5dfe741d83f0f2d9bc13a9e59f46c5c92b9.png" src="../../_images/967774d1736fc5e1daa7e7d8df63e5dfe741d83f0f2d9bc13a9e59f46c5c92b9.png" />
 </div>
 </div>
 </section>
@@ -1473,11 +1491,11 @@ ELBO(q_{\phi}(\theta)) = \mathbb{E}_{\theta \sim q_{\phi}(\theta)}\big[\log p(y|
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_67962/1208744758.py:18: UserWarning: color is redundantly defined by the &#39;color&#39; keyword argument and the fmt string &quot;ko&quot; (-&gt; color=&#39;k&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5175/1208744758.py:18: UserWarning: color is redundantly defined by the &#39;color&#39; keyword argument and the fmt string &quot;ko&quot; (-&gt; color=&#39;k&#39;). The keyword argument will take precedence.
   plt.plot(x_new, y_new, &#39;ko&#39;, markersize=4, label=&quot;New observations&quot;, c=&quot;r&quot;)
 </pre></div>
 </div>
-<img alt="../../_images/c97905ae380a8f54eed317bd8021b173147efe68f4ba1c4887aa7148ec92b7e1.png" src="../../_images/c97905ae380a8f54eed317bd8021b173147efe68f4ba1c4887aa7148ec92b7e1.png" />
+<img alt="../../_images/4f2f571735eac84ad7b58b9a7d90243ce40e297dca266b2eefacf6fb1a524c96.png" src="../../_images/4f2f571735eac84ad7b58b9a7d90243ce40e297dca266b2eefacf6fb1a524c96.png" />
 </div>
 </div>
 <section id="span-style-color-lightgreen-bayesian-update-span">
@@ -1526,7 +1544,7 @@ p(\theta|\mathcal{D}') = \frac{p(\mathcal{D}'|\theta)q_{\phi}(\theta)}{\int p(\m
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c98ecec7c6064af59fcf1f820c2ab592", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c2c8b5939bf2404db77b2af3be5b5b3c", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1537,7 +1555,7 @@ p(\theta|\mathcal{D}') = \frac{p(\mathcal{D}'|\theta)q_{\phi}(\theta)}{\int p(\m
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9f0a3ab6cd7539cf6dd9e5910143fd933348ebe154c011e0fed454bd07c6d1a5.png" src="../../_images/9f0a3ab6cd7539cf6dd9e5910143fd933348ebe154c011e0fed454bd07c6d1a5.png" />
+<img alt="../../_images/d98f5b9436928cb241d59eb20a416bd453d895102f47748edde4f99abfc6d64b.png" src="../../_images/d98f5b9436928cb241d59eb20a416bd453d895102f47748edde4f99abfc6d64b.png" />
 </div>
 </div>
 <p>Next, we can extract the variational parameters (mean and standard deviation) from the <code class="docutils literal notranslate"><span class="pre">guide</span></code> and use them to initialize the prior in a new model that is similar to the original model used for variational inference.</p>
@@ -1559,12 +1577,12 @@ p(\theta|\mathcal{D}') = \frac{p(\mathcal{D}'|\theta)q_{\phi}(\theta)}{\int p(\m
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AutoDiagonalNormal.loc Parameter containing:
-tensor([ 4.4191,  2.0754,  2.4855,  2.9760, -2.8464, -4.5504, -0.6823,  8.6234,
-         8.4496,  1.4790,  1.2584,  5.1180,  0.9287, -1.8941,  4.3386,  1.2919,
+tensor([ 4.4192,  2.0755,  2.5233,  2.9758, -2.8464, -4.5504, -0.6823,  8.6832,
+         8.4492,  1.4790,  1.2583,  5.1179,  0.9285, -1.8940,  4.3386,  1.2919,
         -1.0739], requires_grad=True)
-AutoDiagonalNormal.scale tensor([1.4528e-02, 2.4033e-03, 2.2271e+00, 1.6085e+00, 4.6760e-03, 1.4402e-02,
-        1.4623e-03, 1.6398e+00, 8.8755e-01, 2.9022e-03, 6.1746e-03, 9.5324e-03,
-        6.3802e-03, 5.4546e-03, 7.9136e-03, 5.9695e-03, 4.8264e-02],
+AutoDiagonalNormal.scale tensor([1.4527e-02, 2.4028e-03, 2.1597e+00, 1.6082e+00, 4.6766e-03, 1.4399e-02,
+        1.4626e-03, 1.5904e+00, 8.8780e-01, 2.9017e-03, 6.1737e-03, 9.5350e-03,
+        6.3800e-03, 5.4559e-03, 7.9139e-03, 5.9698e-03, 4.8265e-02],
        grad_fn=&lt;SoftplusBackward0&gt;)
 </pre></div>
 </div>
@@ -1638,7 +1656,7 @@ What do you observe? How does the predictive distribution compare to the one obt
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3cf568b176ea483d868ba95534d33a82", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "add6d6e572f94b0da079b170404956fb", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1649,7 +1667,7 @@ What do you observe? How does the predictive distribution compare to the one obt
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/becbdcb22a27fc59d074ce60f166c5feed7a128adefeb0a2dd648a088f32d3a1.png" src="../../_images/becbdcb22a27fc59d074ce60f166c5feed7a128adefeb0a2dd648a088f32d3a1.png" />
+<img alt="../../_images/2fe6bbdbf56afe38a44cf7c44015dfa0496a834ac02d821ffa19566f46145bc8.png" src="../../_images/2fe6bbdbf56afe38a44cf7c44015dfa0496a834ac02d821ffa19566f46145bc8.png" />
 </div>
 </div>
 </section>
