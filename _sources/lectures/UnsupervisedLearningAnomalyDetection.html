@@ -551,17 +551,13 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pylab</span><span class="w"> </span><span class="kn">import</span> <span class="n">rcParams</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">rc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">arff</span>
 
 <span class="n">RANDOM_SEED</span> <span class="o">=</span> <span class="mi">42</span>
@@ -571,7 +567,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x74268cb5e3d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x134200410&gt;
 </pre></div>
 </div>
 </div>
@@ -630,7 +626,15 @@ File ‘./tmp_data/ECG5000_TEST.arff’ already there; not retrieving.
 </section>
 <section id="span-style-color-orange-example-time-series-anomaly-detection-using-lstm-autoencoders-span">
 <h2><span style="color:Orange">Example: Time Series Anomaly Detection using LSTM Autoencoders</span><a class="headerlink" href="#span-style-color-orange-example-time-series-anomaly-detection-using-lstm-autoencoders-span" title="Permalink to this heading">#</a></h2>
-<p>In this example,</p>
+<p>In this example, we will learn to:</p>
+<ul class="simple">
+<li><p>Prepare a dataset for Anomaly Detection from Time Series Data</p></li>
+<li><p>Build an LSTM Autoencoder with PyTorch</p></li>
+<li><p>Train and evaluate your model</p></li>
+<li><p>Choose a threshold for anomaly detection</p></li>
+<li><p>Classify unseen examples as normal or anomaly</p></li>
+</ul>
+<p>While our Time Series data is univariate (we have only 1 feature), the code should work for multivariate datasets (multiple features) with little or no modification. Feel free to try it!</p>
 <section id="span-style-color-lightgreen-data-span">
 <h3><span style="color:LightGreen">Data</span><a class="headerlink" href="#span-style-color-lightgreen-data-span" title="Permalink to this heading">#</a></h3>
 <p>The <a class="reference external" href="http://timeseriesclassification.com/description.php?Dataset=ECG5000">dataset</a> contains 5,000 Time Series examples (obtained with ECG) with 140 timesteps. Each sequence corresponds to a single heartbeat from a single patient with congestive heart failure.</p>
@@ -658,7 +662,7 @@ Duration: 0.6–1 second (Humans) <a class="reference external" href="https://en
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cuda
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cpu
 </pre></div>
 </div>
 </div>
@@ -878,7 +882,8 @@ Duration: 0.6–1 second (Humans) <a class="reference external" href="https://en
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CLASS_NORMAL</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Normal&#39;</span><span class="p">,</span><span class="s1">&#39;R on T&#39;</span><span class="p">,</span><span class="s1">&#39;PVC&#39;</span><span class="p">,</span><span class="s1">&#39;SP&#39;</span><span class="p">,</span><span class="s1">&#39;UB&#39;</span><span class="p">]</span>
+<span class="c1">#class_names = [&#39;Normal&#39;,&#39;R on T&#39;,&#39;PVC&#39;,&#39;SP&#39;,&#39;UB&#39;] # This ordering sometimes produces wrong counts histogram. Need to check if it affects plots that use class_names</span>
+<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Normal&#39;</span><span class="p">,</span><span class="s1">&#39;PVC&#39;</span><span class="p">,</span><span class="s1">&#39;R on T&#39;</span><span class="p">,</span><span class="s1">&#39;SP&#39;</span><span class="p">,</span><span class="s1">&#39;UB&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -918,14 +923,14 @@ Name: count, dtype: int64
 <p>Let’s plot the results:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">(),</span><span class="n">class_names</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">class_names</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b3f3838f52011b28c49b264a79dc674a3d57779cdfd6c5acbd0ecc78ef4f9407.png" src="../../_images/b3f3838f52011b28c49b264a79dc674a3d57779cdfd6c5acbd0ecc78ef4f9407.png" />
+<img alt="../../_images/a3fe6250458a3ee6f63e2df3c665109490bf6f07cbd31aa336f8db11378fe2c6.png" src="../../_images/a3fe6250458a3ee6f63e2df3c665109490bf6f07cbd31aa336f8db11378fe2c6.png" />
 </div>
 </div>
 <p>The normal class, has by far, the most examples. This is great because we’ll use it to train our model.</p>
