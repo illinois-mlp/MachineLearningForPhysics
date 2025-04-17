@@ -502,6 +502,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-networks-for-unsupervised-learning-span"><span style="color:Orange">Networks for Unsupervised Learning</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-time-series-anomaly-detection-using-lstm-autoencoders-span"><span style="color:Orange">Example: Time Series Anomaly Detection using LSTM Autoencoders</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-brief-lstm-review-span"><span style="color:LightGreen">Brief LSTM Review</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-data-span"><span style="color:LightGreen">Data</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exploratory-data-analysis-span"><span style="color:LightGreen">Exploratory Data Analysis</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-lstm-autoencoder-span"><span style="color:LightGreen">LSTM Autoencoder</span></a><ul class="nav section-nav flex-column">
@@ -635,6 +636,30 @@ File ‘./tmp_data/ECG5000_TEST.arff’ already there; not retrieving.
 <li><p>Classify unseen examples as normal or anomaly</p></li>
 </ul>
 <p>While our Time Series data is univariate (we have only 1 feature), the code should work for multivariate datasets (multiple features) with little or no modification. Feel free to try it!</p>
+<section id="span-style-color-lightgreen-brief-lstm-review-span">
+<h3><span style="color:LightGreen">Brief LSTM Review</span><a class="headerlink" href="#span-style-color-lightgreen-brief-lstm-review-span" title="Permalink to this heading">#</a></h3>
+<p>A <span style="color:Violet">Long Short-Term Memory</span> (LSTM) is a type of Recurrent Neural Network (RNN) designed to handle long-term dependencies in sequential data, such as text, time series, and speech. LSTMs are known for their ability to mitigate the vanishing gradient problem that plagues standard RNNs, allowing them to learn and remember information over longer sequences of data.</p>
+<p>Key Features of LSTMs:</p>
+<ul class="simple">
+<li><p><em><strong><span style="color:Violet">Memory Cell</span></strong></em>: LSTMs introduce a memory cell that acts as a “memory” for the network, allowing it to store and retrieve information over time.</p></li>
+<li><p><em><strong><span style="color:Violet">Gates</span></strong></em>: LSTMs use “gates” (input, forget, and output gates) to control the flow of information into, out of, and within the memory cell.</p></li>
+<li><p><em><strong><span style="color:Violet">Vanishing Gradient Problem</span></strong></em>: LSTMs are designed to prevent the gradients from vanishing or exploding as they propagate through the network over time, making them more effective for learning long-term relationships in sequential data.</p></li>
+<li><p><em><strong><span style="color:Violet">Sequence Learning</span></strong></em>: LSTMs are particularly well-suited for tasks that involve processing sequential data, such as natural language processing (language modeling, machine translation), speech recognition, and time series forecasting.</p></li>
+</ul>
+<p>How LSTMs Work:</p>
+<ol class="arabic simple">
+<li><p><em><strong><span style="color:Violet">Input</span></strong></em>: The LSTM receives an input sequence, where each input represents a time step.</p></li>
+<li><p><em><strong><span style="color:Violet">Gates</span></strong></em>: The gates regulate the flow of information into the memory cell and the output from the cell.</p></li>
+<li><p><em><strong><span style="color:Violet">Memory Cell</span></strong></em>: The memory cell stores and updates its internal state based on the input and the previous state.</p></li>
+<li><p><em><strong><span style="color:Violet">Output</span></strong></em>: The LSTM produces an output at each time step based on the current cell state and the input.</p></li>
+</ol>
+<p>Advantages of LSTMs:</p>
+<ul class="simple">
+<li><p><em><strong><span style="color:Violet">Long-term dependencies</span></strong></em>: LSTMs are capable of learning long-term dependencies in sequential data.</p></li>
+<li><p><em><strong><span style="color:Violet">Vanishing gradient problem</span></strong></em>: LSTMs mitigate the vanishing gradient problem, making them more effective for processing long sequences.</p></li>
+<li><p><em><strong><span style="color:Violet">Wide range of applications</span></strong></em>: LSTMs have been successfully applied to many sequence learning tasks.</p></li>
+</ul>
+</section>
 <section id="span-style-color-lightgreen-data-span">
 <h3><span style="color:LightGreen">Data</span><a class="headerlink" href="#span-style-color-lightgreen-data-span" title="Permalink to this heading">#</a></h3>
 <p>The <a class="reference external" href="http://timeseriesclassification.com/description.php?Dataset=ECG5000">dataset</a> contains 5,000 Time Series examples (obtained with ECG) with 140 timesteps. Each sequence corresponds to a single heartbeat from a single patient with congestive heart failure.</p>
@@ -1703,6 +1728,7 @@ Epoch 150: train loss 13.779111992491199 val loss 15.29199789001673
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-networks-for-unsupervised-learning-span"><span style="color:Orange">Networks for Unsupervised Learning</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-time-series-anomaly-detection-using-lstm-autoencoders-span"><span style="color:Orange">Example: Time Series Anomaly Detection using LSTM Autoencoders</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-brief-lstm-review-span"><span style="color:LightGreen">Brief LSTM Review</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-data-span"><span style="color:LightGreen">Data</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-exploratory-data-analysis-span"><span style="color:LightGreen">Exploratory Data Analysis</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-lstm-autoencoder-span"><span style="color:LightGreen">LSTM Autoencoder</span></a><ul class="nav section-nav flex-column">
