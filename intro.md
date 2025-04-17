@@ -90,7 +90,7 @@ At appropriate times throughout the course, you will select from a list of proje
 
 For projects you will put together a Jupyter notebook that demonstrates your project. The notebook should have code and demonstrate the task but also be written in an expository way that other students could, in principle, read and learn from. It is submitted in an analogous way as the regular course assignments.
 
-Each project notebook must be submitted via Gradescope for grading. There is not late submissions allowed for the projects. If you do not submit in Gradescope by the deadline, you will receive a zero grade for that project. There are no exceptions to this policy. 
+Each project notebook must be submitted via Gradescope for grading. There is no late submissions allowed for the projects. If you do not submit in Gradescope by the deadline, you will receive a zero grade for that project. There are no exceptions to this policy. 
 
 ## <span style="color:Red">Grading</span>
 * Class attendence and participation: 5%
