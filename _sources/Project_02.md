@@ -4,3 +4,5 @@
 
 * {doc}`projects/Project_02_AnisotropyQGP`
 * {doc}`projects/Project_02_AberratedImages`
+* {doc}`projects/Project_02_Radiotherapy`
+* {doc}`projects/Project_02_TailPulsePileupRejection`
