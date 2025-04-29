@@ -1001,8 +1001,9 @@ H_{n}(y)=(-1)^{n} e^{y^{2}} \frac{d^{n}}{d y^{n}} e^{-y^{2}}
 </div>
 </div>
 <p>Here <code class="docutils literal notranslate"><span class="pre">delta_T</span></code> and <code class="docutils literal notranslate"><span class="pre">delta_X</span></code> are the grid spacing in our domain. Data will be generated on this grid. You cna move the slider to see how the probabilty density of the QHO evolves in time. Our system looks like this:</p>
-<p><a class="reference internal" href="https://github.com/GDS-Education-Community-of-Practice/DSECOP/blob/main/Learning_the_Schrodinger_Equation/res/plots/waveform/psi_0_1/animation.gif?raw=true"><img alt="https://github.com/GDS-Education-Community-of-Practice/DSECOP/blob/main/Learning_the_Schrodinger_Equation/res/plots/waveform/psi_0_1/animation.gif?raw=true" class="align-left" src="https://github.com/GDS-Education-Community-of-Practice/DSECOP/blob/main/Learning_the_Schrodinger_Equation/res/plots/waveform/psi_0_1/animation.gif?raw=true" style="width: 800px;" /></a></img><br></p>
-<p>Now that we have the analytical solution, let’s build a neural network to solve it.</p>
+<div>
+<img src="https://github.com/GDS-Education-Community-of-Practice/DSECOP/blob/main/Learning_the_Schrodinger_Equation/res/plots/waveform/psi_0_1/animation.gif?raw=true" width=800></img>
+</div><p>Now that we have the analytical solution, let’s build a neural network to solve it.</p>
 <p>We will be using Mean Squared Error to quantify the difference between the true value and predicted values.
 It is defined as</p>
 <div class="math notranslate nohighlight">
