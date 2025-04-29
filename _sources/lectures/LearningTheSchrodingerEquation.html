@@ -1307,6 +1307,21 @@ F2X = FD2 * f(x)
 <img alt="../../_images/8bdb36dab9ed48d56da04e0f62b2867c867cae7f04f456624466150039bb5e25.png" src="../../_images/8bdb36dab9ed48d56da04e0f62b2867c867cae7f04f456624466150039bb5e25.png" />
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state_n_slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;state_n:&#39;</span><span class="p">,</span> <span class="n">continuous_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">interactive_wavefunction_plotter</span><span class="p">(</span><span class="n">state_n</span><span class="p">):</span>
+    <span class="n">wavefunction_plotter</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">state_n</span><span class="p">,</span> <span class="n">true_wavefunction_fn</span><span class="p">,</span> <span class="n">true_energy_fn</span><span class="p">,</span> <span class="n">sys_name</span><span class="p">)</span>
+
+<span class="n">interactive_plot</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">interactive</span><span class="p">(</span><span class="n">interactive_wavefunction_plotter</span><span class="p">,</span> <span class="n">state_n</span><span class="o">=</span><span class="n">state_n_slider</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">interactive_plot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "18b7ac49027349009f9ba5eb8f82ce8f", "version_major": 2, "version_minor": 0}</script></div>
+</div>
 </section>
 </section>
 <section id="span-style-color-orange-quantum-harmonic-oscillator-time-independent-span">
