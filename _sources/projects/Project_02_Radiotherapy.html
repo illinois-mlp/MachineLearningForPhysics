@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Beam Angle Optimization for Radiative Cancer Therapy &#8212; PHYS 498 MLP</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_sources/projects/Project_02_Radiotherapy';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Precision Neutron Counting with Tail Pulse Pileup Rejection" href="Project_02_TailPulsePileupRejection.html" />
+    <link rel="prev" title="Aberrated Image Recovery of Ultracold Atoms" href="Project_02_AberratedImages.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="PHYS 498 MLP - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="PHYS 498 MLP - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <span style="color:Blue">Machine Learning for Physics</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_01.html"><span style="color: blue;"><b>Introduction to Data Science</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cQJycGyQ07qSOoeskr6GjjTD3byIkxDbdi228NRgFeU/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/JupyterNumpy.html">Jupyter Notebooks and Numerical Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Pandas.html">Handling Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Visualization.html">Visualizing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Clustering.html">Finding Structure in Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Dimensionality.html">Measuring and Reducing Dimensionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Nonlinear.html">Adapting Linear Methods to Non-Linear Data and Kernel Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_01.html">Homework 01: Introduction to Data Science</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_02.html"><span style="color: blue;"><b>Probability Theory and Density Estimation</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1o9tM9ppKZWIa9B3WIHy5JDF4myR5NkO02W6WAlyiTSg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ProbabilityTheory.html">Probability Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ProbabilityDistributions.html">Important Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/DensityEstimation.html">Estimating Probability Density from Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_02.html">Homework 02: Probability Theory and Density Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_03.html"><span style="color: blue;"><b>Bayesian Statistics I</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/BayesianInference.html">Bayesian Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/MarkovChainMonteCarlo.html">Markov Chain Monte Carlo in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/MarkovChains.html">Stochastic Processes and Markov-Chain Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_03.html">Homework 03: Bayesian Statistics and Markov Chains</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_04.html"><span style="color: blue;"><b>Bayesian Statistics II</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ModelSelection.html">Bayesian Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VariationalInference.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/CrossValidation.html">Cross Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_04.html">Homework 04: Metropolis-Hastings and Cross Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SupervisedLearning.html">Supervised Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Learning.html">Artificial Intelligence and Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ArtificialNeuralNetworks.html">Artificial Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/DeepLearning.html">Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_06.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ConvolutionalRecurrentNeuralNetworks.html">Convolutional and Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Attention.html">Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Transformers.html">Transformers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VisionTransformer.html">Vision Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Project_01.html"><span style="color: blue;"><b>Project 01</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_HiggsTauTau.html">Higgs Boson Decaying to Tau Leptons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_ExoticParticles.html">Searching for Exotic Particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_GalaxyZoo.html">Galaxy Zoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_NuclearGeometryQGP.html">Nuclear Geometry and Characterization of the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_DarkEnergySurvey.html">Dark Energy Survey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_GravitationalWaves.html">Detection of Gravitational Waves</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_09.html"><span style="color: blue;"><b>Generative Modeling and Simulation-Based Inference</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GenerativeModeling.html">Generative Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/AutoEncoders.html">Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VariationalAutoEncoders.html">Variational AutoEncoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GenerativeAdversarialNetworks.html">Generative Adversarial Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Diffusion.html">Diffusion Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/NormalizingFlows.html">Normalizing Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SimulationBasedInference.html">Simulation Based Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ReinforcementLearning.html">Reinforcement Learning</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_11.html"><span style="color: blue;"><b>AI Explainablility and Uncertainty Quantification</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/AIExplainabilityUncertaintyQuantification.html">AI Explainability and Uncertainty Quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_08.html">Homework 08: Detecting Distribution Shift on MNIST using Bayesian Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_12.html"><span style="color: blue;"><b>Unsupervised Learning and Anomaly Detection</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/UnsupervisedLearningAnomalyDetection.html">Unsupervised Learning and Anomaly Detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_13.html"><span style="color: blue;"><b>Physics Informed Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/PhysicsInformedNeuralNetworks.html">Physics Informed Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LearningTheSchrodingerEquation.html">Solving the Time Dependent Schrodinger Equation with Physics-Informed Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SymbolicRegression.html">Introduction to Symbolic Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../Project_02.html"><span style="color: blue;"><b>Project 02</b></span></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Project_02_AnisotropyQGP.html">Anisotropy in the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Beam Angle Optimization for Radiative Cancer Therapy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_TailPulsePileupRejection.html">Precision Neutron Counting with Tail Pulse Pileup Rejection</a></li>
+
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_14.html"><span style="color: blue;"><b>Learning from the Machines</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LearningPhysicsMachines.html">Learning Physics from the Machines</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_15.html"><span style="color: blue;"><b>Future of AI and Physics: What Lies Ahead?</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LookingForward.html">Future of AI and Physics: What Lies Ahead?</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/illinois-mlp/MachineLearningForPhysics/blob/main/_sources/projects/Project_02_Radiotherapy.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+<a href="https://github.com/illinois-mlp/MachineLearningForPhysics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/_sources/projects/Project_02_Radiotherapy.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Beam Angle Optimization for Radiative Cancer Therapy</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-absorption-scattering-span"><span style="color:LightGreen">Question 01: Absorption &amp; Scattering</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-dosimetry-span"><span style="color:LightGreen">Question 02: Dosimetry</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-proton-therapy-span"><span style="color:LightGreen">Question 03: Proton Therapy</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-preparing-tensors-span"><span style="color:LightGreen">Question 04: Preparing Tensors</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-reinforcement-learning-span"><span style="color:LightGreen">Question 05: Reinforcement Learning</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-physics-informed-reinforcement-learning-span"><span style="color:LightGreen">Question 06: Physics-informed reinforcement learning</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="beam-angle-optimization-for-radiative-cancer-therapy">
+<h1>Beam Angle Optimization for Radiative Cancer Therapy<a class="headerlink" href="#beam-angle-optimization-for-radiative-cancer-therapy" title="Permalink to this heading">#</a></h1>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Project_Radiotherapy-overview.jpg" width=600></img>
+</div><section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p>In November 1895, Wilhelm Röntgen accidentally discovered X-rays while fiddling with cathode ray tubes. He proceeded to pass these rays through his wife’s hand to create the world’s first X-ray image. This was a pivotal time for the field of medical physics (and their marriage): a means to harness physics phenomena to better the human condition.</p>
+<p>Today, radiation therapy involves firing intense beams of ionizing radiation to obliterate cancer cell DNA and halt the malicious growth of tumors. A patient is often laid before a gantry, essentially a LINAC accelerator, that ejects X-rays (or protons, when further precision is required). A rigorous treatment plan requires consideration of:</p>
+<ul class="simple">
+<li><p>The ‘dose’ of radiation that a patient can handle (determined by understanding the physical interactions of radiation with tissue)</p></li>
+<li><p>Beam-Angle Optimization (BAO): annihilating cancerous tissue while preserving healthy cells. BAO involves finding the ideal set of beam paths to accomplish precisely this goal. The machine learning methods we’ve studied thus far have been instrumental in better resolving this combinatorial problem</p></li>
+</ul>
+<p>We will be extracting patient head-neck CT scan + mask data (our ‘input’) from the medical physics OpenKBP challenge. This is real clinical data, and you could make significant contributions to healthcare and cancer treatment by going above &amp; beyond what you learn here!</p>
+</section>
+<section id="span-style-color-orange-data-sources-span">
+<h2><span style="color:Orange">Data Sources</span><a class="headerlink" href="#span-style-color-orange-data-sources-span" title="Permalink to this heading">#</a></h2>
+<p>Original Source</p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/ababier/open-kbp">ababier/open-kbp</a></p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-questions-span">
+<h2><span style="color:Orange">Questions</span><a class="headerlink" href="#span-style-color-orange-questions-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-lightgreen-question-01-absorption-scattering-span">
+<h3><span style="color:LightGreen">Question 01: Absorption &amp; Scattering</span><a class="headerlink" href="#span-style-color-lightgreen-question-01-absorption-scattering-span" title="Permalink to this heading">#</a></h3>
+<p>X-rays attenuate exponentially upon entering the body by the Beer-Lambert Law.</p>
+<div class="math notranslate nohighlight">
+\[I(x) = I_0 \, e^{-\mu x}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+x   &amp; : \text{Depth in the body} \\
+I(x) &amp; : \text{Intensity at depth } x \\
+I_0 &amp; : \text{Initial intensity (at the skin)} \\
+\mu &amp; : \text{Linear attenuation coefficient (depends on whether we traverse bone, soft tissue or organs) } 
+\end{aligned}
+\end{split}\]</div>
+<p>What physical phenomena govern this loss of intensity (state at least 3 specific processes)? Which one dominates radiotherapy (6-15 MV energies)? It’s easy to conclude that the highest dose of radiation is delivered at the skin, why is this untrue?</p>
+</section>
+<section id="span-style-color-lightgreen-question-02-dosimetry-span">
+<h3><span style="color:LightGreen">Question 02: Dosimetry</span><a class="headerlink" href="#span-style-color-lightgreen-question-02-dosimetry-span" title="Permalink to this heading">#</a></h3>
+<p>We quantify the impact of radiation on tissue (be it healthy or cancerous) via a metric known as <a class="reference external" href="https://openmedscience.com/dosimetry-calculating-radiation-dose-for-medical-applications/">Dose</a>. It is the ratio between the energy absorbed and the mass of the tissue absorbing it: measured in Gray (Gy).</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Dose} = \frac{dE}{dm}
+\quad \text{where} \quad
+dE = \text{energy deposited (Joules)}, \quad
+dm = \text{mass of tissue (kilograms)}
+\]</div>
+<p>What are the implications of too little or too much Dose? Does the type of body tissue matter? Putting it all together, what are the factors which determine the ideal beam angles a gantry should use? For instance, what are the risks to patient health? Why do these considerations make Beam Angle Optimization (BAO) an NP-hard problem?</p>
+</section>
+<section id="span-style-color-lightgreen-question-03-proton-therapy-span">
+<h3><span style="color:LightGreen">Question 03: Proton Therapy</span><a class="headerlink" href="#span-style-color-lightgreen-question-03-proton-therapy-span" title="Permalink to this heading">#</a></h3>
+<p>If we used proton therapy instead of X-rays, how would our considerations evolve?</p>
+</section>
+<section id="span-style-color-lightgreen-question-04-preparing-tensors-span">
+<h3><span style="color:LightGreen">Question 04: Preparing Tensors</span><a class="headerlink" href="#span-style-color-lightgreen-question-04-preparing-tensors-span" title="Permalink to this heading">#</a></h3>
+<p>Download <code class="docutils literal notranslate"><span class="pre">openkbp_patient_data.zip</span></code> from File URLS above. Unzip it and upload the folder to your Google Colab (<code class="docutils literal notranslate"><span class="pre">/content/..</span></code>) or local directory. Note that you will need to adjust <code class="docutils literal notranslate"><span class="pre">base_path</span></code> to lead to your uploaded folder.</p>
+<p>Each patient hosts the following three files:<br />
+<code class="docutils literal notranslate"><span class="pre">ct.csv</span></code> - 3D grayscale CT scan of patient anatomy composed of 2D slices. Each voxel represents how much X-ray is absorbed by the tissue in Hounsfield Units (HU)<br />
+<code class="docutils literal notranslate"><span class="pre">PTV63.csv</span></code> - Planning Target Volume (PTV) is a binary mask that maps the location of the tumor (tumor is 1, everything else is 0)<br />
+<code class="docutils literal notranslate"><span class="pre">SpinalCord.csv</span></code> - This is a similar binary mask of our Organ at Risk (OAR), representing what we would like our beam to avoid.</p>
+<p>These are currently flattened 1D rows. The cell below converts the csv files into 3D volumes [64, 128, 128] where each point represents an intensity (for the ct scan) or binary value (for ptv &amp; spinal cord). Add a line to the for loop that stacks <code class="docutils literal notranslate"><span class="pre">ct</span></code>, <code class="docutils literal notranslate"><span class="pre">ptv</span></code>, and <code class="docutils literal notranslate"><span class="pre">spine</span></code> into a single tensor. What’s the final shape of this tensor? Draw an analogy to an RGB image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;openkbp_patient_data&#39;</span> <span class="c1">#adjust this (e.g. /content/openkbp_patient_data)</span>
+
+<span class="n">patient_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;patient_1&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_2&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_3&quot;</span><span class="p">,</span><span class="s2">&quot;patient_5&quot;</span><span class="p">,</span><span class="s2">&quot;patient_7&quot;</span><span class="p">,</span><span class="s2">&quot;patient_9&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_10&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_12&quot;</span> <span class="p">,</span> <span class="s2">&quot;patient_14&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_16&quot;</span><span class="p">]</span>
+<span class="n">patient_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">#64 slices of 128 x 128 pixels : (depth, height, width)</span>
+<span class="k">for</span> <span class="n">pt_id</span> <span class="ow">in</span> <span class="n">patient_ids</span><span class="p">:</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;ct.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+    <span class="n">ptv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;PTV63.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+    <span class="n">spine</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;SpinalCord.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+
+    <span class="n">pt_tensor</span> <span class="o">=</span> <span class="c1">#Your Code Here </span>
+    <span class="n">patient_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt_tensor</span><span class="p">)</span>
+    
+
+<span class="c1">#patient_tensors[0] --&gt; patient 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-question-05-reinforcement-learning-span">
+<h3><span style="color:LightGreen">Question 05: Reinforcement Learning</span><a class="headerlink" href="#span-style-color-lightgreen-question-05-reinforcement-learning-span" title="Permalink to this heading">#</a></h3>
+<p>To simulate the effects of a naive beam (simple straight lines) passing through the patient, we provide a ‘beam mask’ that creates a beam onto a 2D slice of the patient scan. We assume there are 36 possible angles from which a beam can be fired (one every 10 degrees). <code class="docutils literal notranslate"><span class="pre">dose</span></code> is a 2D heatmap that represents how much radiation is delivered to each pixel in your slice after the passage of many beams.</p>
+<p>Create a Reinforcement Learning Model which selects beam angles that provide radiation dosage to the tumor while avoiding the spinal cord.</p>
+<ul class="simple">
+<li><p>Populate the training loop by:</p>
+<ul>
+<li><p>Creating a policy that determines the next <code class="docutils literal notranslate"><span class="pre">angle</span></code></p></li>
+<li><p>Creating a Q-learning update</p></li>
+</ul>
+</li>
+<li><p>Define a reward function that heavily penalizes a beam that passes through the spinal cord and rewards a beam that hits the tumor/ptv (the output should be a score)</p></li>
+<li><p>Tweak parameters if you so desire</p></li>
+<li><p>Print the top 3 beam angles after training is complete</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1">#[0, 10, 20, ..., 350]</span>
+<span class="n">max_beams</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1">#ensures beams are chosen strategically</span>
+<span class="n">episodes</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1">#learning rate</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="c1">#exploration rate</span>
+<span class="n">slice_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span> <span class="c1">#a single 2D slice</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.draw</span><span class="w"> </span><span class="kn">import</span> <span class="n">line_nd</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_beam</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span> <span class="c1">#beam mask generator! </span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">shape</span>
+    <span class="n">beam_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">center</span> <span class="o">-</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">end</span>   <span class="o">=</span> <span class="p">(</span><span class="n">center</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">end</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">end</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">rr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">line_nd</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">beam_mask</span><span class="p">[</span><span class="n">rr</span><span class="p">,</span> <span class="n">cc</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">beam_mask</span>
+
+
+<span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+    <span class="c1">#Randomly select a patient from patient_tensors HERE</span>
+
+    <span class="c1">#extracts a single 2D slice from the middle</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> 
+    <span class="n">ct_slice</span>   <span class="o">=</span> <span class="n">ct</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+    <span class="n">ptv_slice</span>  <span class="o">=</span> <span class="n">ptv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+    <span class="n">spine_slice</span> <span class="o">=</span> <span class="n">spine</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+
+    <span class="n">dose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">slice_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">selected_angles</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_beams</span><span class="p">):</span>
+        <span class="c1">#Your policy here</span>
+
+        <span class="n">beam</span> <span class="o">=</span> <span class="n">generate_beam</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">slice_shape</span><span class="p">)</span>
+        <span class="n">dose</span> <span class="o">+=</span> <span class="n">beam</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c1">#adds &#39;radiation&#39; to the pixels </span>
+        <span class="n">chosen_angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    
+    <span class="n">reward_score</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">spine</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">chosen_angles</span><span class="p">:</span>
+        <span class="c1">#Q-learning update here</span>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">spine</span><span class="p">):</span> <span class="c1">#your reward function HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+
+<span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">beam_angles</span><span class="p">))</span> <span class="c1">#Q-table</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Your model (have you named it yet?) has chosen its ideal beam angles, let’s cross our fingers, fire these into our patient, and see what we get!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">patient</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">patient_tensors</span><span class="p">)</span>
+<span class="n">mid</span> <span class="o">=</span> <span class="n">patient</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ct</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">cord</span> <span class="o">=</span> <span class="n">patient</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">],</span> <span class="n">patient</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">],</span> <span class="n">patient</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">dose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">top_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="o">-</span><span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">])[:</span><span class="n">max_beams</span><span class="p">]</span>
+<span class="n">selected_angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">beam_angles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_indices</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">selected_angles</span><span class="p">:</span>
+    <span class="n">beam</span> <span class="o">=</span> <span class="n">generate_beam</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="n">dose</span> <span class="o">+=</span> <span class="n">beam</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">ptv</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">cord</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">selected_angles</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">generate_beam</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">shape</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Reds&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selected Beams: </span><span class="si">{</span><span class="n">selected_angles</span><span class="si">}</span><span class="se">\n</span><span class="s2">PTV: Green, Cord: Blue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-lightgreen-question-06-physics-informed-reinforcement-learning-span">
+<h3><span style="color:LightGreen">Question 06: Physics-informed reinforcement learning</span><a class="headerlink" href="#span-style-color-lightgreen-question-06-physics-informed-reinforcement-learning-span" title="Permalink to this heading">#</a></h3>
+<p>Ready to boogie? We’re about to imbue physics into our RL model. Let’s start by making our beam of ionizing radiaiton more realistic using what we discussed in Question 01. Adjust the <code class="docutils literal notranslate"><span class="pre">decay</span></code> in <code class="docutils literal notranslate"><span class="pre">generate_true_beam</span></code> below so that it actually attenuates our beam (energy loss as it passes through tissue)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_physical_beam</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">),</span> <span class="n">spread_sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">attenuation_coeff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">shape</span>
+    <span class="n">beam_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">center</span> <span class="o">-</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">end</span>   <span class="o">=</span> <span class="p">(</span><span class="n">center</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">end</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">end</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">rr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">line_nd</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">rr</span><span class="p">,</span> <span class="n">cc</span><span class="p">)):</span>
+        <span class="n">decay</span> <span class="o">=</span>  <span class="c1">#attenuatation by Beer-Lambert Law</span>
+        <span class="n">beam_mask</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">+=</span> <span class="n">decay</span>
+
+        <span class="k">for</span> <span class="n">dr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>  <span class="c1">#gaussian spread via scattering</span>
+            <span class="k">for</span> <span class="n">dc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+                <span class="n">r_spread</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span>
+                <span class="n">c_spread</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">dc</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">r_spread</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">c_spread</span> <span class="o">&lt;</span> <span class="n">w</span><span class="p">:</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dr</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dc</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">spread_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="p">(</span><span class="n">distance</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">spread_sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="n">beam_mask</span><span class="p">[</span><span class="n">r_spread</span><span class="p">,</span> <span class="n">c_spread</span><span class="p">]</span> <span class="o">+=</span> <span class="n">decay</span> <span class="o">*</span> <span class="n">spread_value</span> 
+
+    <span class="n">beam_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">beam_mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  
+    <span class="k">return</span> <span class="n">beam_mask</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’d like to inject a physics loss that encodes the actual attenuation and radiation dose delivery of the beam, rewarding correct dose distribution between the spine and tumor. We need to upgrade our simple Q-learning method into a Deep-Q Network (DQN). This should only require simple structural changes (refer to our reinforcement learning <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/ReinforcementLearning.html">notebook</a>). Typically, these would use a Bellman loss. With our new physics-loss it should resemble:
+$<span class="math notranslate nohighlight">\(
+\mathcal{L}_{\text{Total}} = \mathcal{L}_{\text{Bellman}} + \lambda_{\text{Physics}} \mathcal{L}_{\text{Physics}}
+\)</span>$</p>
+<p>The physics loss takes the following form:
+$<span class="math notranslate nohighlight">\(
+\mathcal{L}_{\text{Physics}} =
+\lambda_{\text{PTV}} \cdot \text{Underdose}_{\text{PTV}} +
+\lambda_{\text{Spine}} \cdot \text{Overdose}_{\text{Spine}}
+\)</span><span class="math notranslate nohighlight">\(
+Each \)</span>\lambda<span class="math notranslate nohighlight">\( assigns 'weight' to a term, tinkering with these may prove beneficial.
+The Underdose term penalizes not giving the tumor the maximum dose (1)
+\)</span><span class="math notranslate nohighlight">\(
+\text{Underdose}_{\text{PTV}} = \mathbb{E} \left[ \max \left( 0,\ 1 - D_{\text{PTV}} \right) \right]
+\)</span>$</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(D_{\text{PTV}}\)</span>: dose received by pixels inside the tumor (PTV mask)</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 - D_{\text{PTV}}\)</span>: underdose per pixel (1 is max dose)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\max(0, 1 - D_{\text{PTV}})\)</span>: penalizes only underdosed regions</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}[\cdot]\)</span>: average</p></li>
+</ul>
+<p>The Overdose term penalizes giving the spine too much dose
+$<span class="math notranslate nohighlight">\(
+\text{Overdose}_{\text{Spine}} = \mathbb{E} \left[ \max \left( 0,\ D_{\text{Spine}} - D_{\text{safe}} \right) \right]
+\)</span>$</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(D_{\text{safe}}\)</span>: Safety threshold for organ (max dose it can receive). <strong>In clinical settings, this is often 0.6</strong></p></li>
+</ul>
+<p><strong>Now create that network, like a true ML-infused medical physicist of the 21st century would!</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Your masterpiece here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>For our grand finale we will overlay your newfound results onto a CT scan of a tumor. Congratulations! You just made a treatment plan for a cancer patient!!</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.draw</span><span class="w"> </span><span class="kn">import</span> <span class="n">line_nd</span>
+
+<span class="c1">#your conclusions</span>
+<span class="n">selected_angles</span> <span class="o">=</span> 
+
+<span class="c1"># Choose a patient!</span>
+<span class="n">patient</span> <span class="o">=</span> <span class="n">patient_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+
+<span class="n">ct_volume</span> <span class="o">=</span> <span class="n">patient</span><span class="p">[</span><span class="s2">&quot;ct&quot;</span><span class="p">]</span>
+<span class="n">ptv_volume</span> <span class="o">=</span> <span class="n">patient</span><span class="p">[</span><span class="s2">&quot;ptv&quot;</span><span class="p">]</span>
+<span class="n">spine_volume</span> <span class="o">=</span> <span class="n">patient</span><span class="p">[</span><span class="s2">&quot;spine&quot;</span><span class="p">]</span>
+<span class="n">mid</span> <span class="o">=</span> <span class="n">ct_volume</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ct_slice</span> <span class="o">=</span> <span class="n">ct_volume</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+<span class="n">ptv_slice</span> <span class="o">=</span> <span class="n">ptv_volume</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+<span class="n">spine_slice</span> <span class="o">=</span> <span class="n">spine_volume</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">visualize_beams_on_ct</span><span class="p">(</span><span class="n">ct_slice</span><span class="p">,</span> <span class="n">ptv_slice</span><span class="p">,</span> <span class="n">spine_slice</span><span class="p">,</span> <span class="n">selected_angles</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)):</span>
+    <span class="n">dose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">selected_angles</span><span class="p">:</span>
+        <span class="n">beam</span> <span class="o">=</span> <span class="n">generate_physical_beam</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="n">dose</span> <span class="o">+=</span> <span class="n">beam</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">dose_norm</span> <span class="o">=</span> <span class="n">dose</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dose</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ct_slice</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dose_norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>  <span class="c1">#beam</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">ptv_slice</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;PTV&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">spine_slice</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spine&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Treatment Plan&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Relative Beam Intensity&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">visualize_beams_on_ct</span><span class="p">(</span><span class="n">ct_slice</span><span class="p">,</span> <span class="n">ptv_slice</span><span class="p">,</span> <span class="n">spine_slice</span><span class="p">,</span> <span class="n">selected_angles</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-references-span">
+<h2><span style="color:Orange">References</span><a class="headerlink" href="#span-style-color-orange-references-span" title="Permalink to this heading">#</a></h2>
+<p><strong>[<span style="color:Red">1</span>]</strong> A. Babier, B. Zhang, R. Mahmood, K.L. Moore, T.G. Purdie, A.L. McNiven, T.C.Y. Chan, “OpenKBP: The open-access knowledge-based planning grand challenge and dataset,” Medical Physics, Vol. 48, pp. 5549-5561, 2021.</p>
+</section>
+<section id="span-style-color-orange-acknowledgements-span">
+<h2><span style="color:Orange">Acknowledgements</span><a class="headerlink" href="#span-style-color-orange-acknowledgements-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Initial version: Aarya Mehta with some guidance from Mark Neubauer</p></li>
+</ul>
+<p>© Copyright 2025</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./_sources/projects"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Project_02_AberratedImages.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Aberrated Image Recovery of Ultracold Atoms</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Project_02_TailPulsePileupRejection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Precision Neutron Counting with Tail Pulse Pileup Rejection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-span"><span style="color:Orange">Questions</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-01-absorption-scattering-span"><span style="color:LightGreen">Question 01: Absorption &amp; Scattering</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-02-dosimetry-span"><span style="color:LightGreen">Question 02: Dosimetry</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-03-proton-therapy-span"><span style="color:LightGreen">Question 03: Proton Therapy</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-04-preparing-tensors-span"><span style="color:LightGreen">Question 04: Preparing Tensors</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-05-reinforcement-learning-span"><span style="color:LightGreen">Question 05: Reinforcement Learning</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-question-06-physics-informed-reinforcement-learning-span"><span style="color:LightGreen">Question 06: Physics-informed reinforcement learning</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Mark Neubauer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
