@@ -550,10 +550,6 @@ document.write(`
 <ul class="simple">
 <li><p><a class="github reference external" href="https://github.com/ababier/open-kbp">ababier/open-kbp</a></p></li>
 </ul>
-<p>Link to data</p>
-<ul class="simple">
-<li><p><a class="github reference external" href="https://github.com/ababier/open-kbp">ababier/open-kbp</a></p></li>
-</ul>
 </section>
 <section id="span-style-color-orange-questions-span">
 <h2><span style="color:Orange">Questions</span><a class="headerlink" href="#span-style-color-orange-questions-span" title="Permalink to this heading">#</a></h2>
@@ -573,7 +569,7 @@ I_0 &amp; : \text{Initial intensity (at the skin)} \\
 \mu &amp; : \text{Linear attenuation coefficient (depends on whether we traverse bone, soft tissue or organs) } 
 \end{aligned}
 \end{split}\]</div>
-<p>What physical phenomena govern this loss of intensity (state at least 3 specific processes)? Which one dominates radiotherapy (6-15 MV energies)? It’s easy to conclude that the highest dose of radiation is delivered at the skin, why is this untrue?</p>
+<p>What physical phenomena govern this loss of intensity (state at least 3 specific processes)? Which one dominates radiotherapy (which uses ~6 MeV photons)? It’s easy to conclude that the highest dose of radiation is delivered at the skin, why is this untrue?</p>
 </section>
 <section id="span-style-color-lightgreen-question-02-dosimetry-span">
 <h3><span style="color:LightGreen">Question 02: Dosimetry</span><a class="headerlink" href="#span-style-color-lightgreen-question-02-dosimetry-span" title="Permalink to this heading">#</a></h3>
@@ -596,13 +592,24 @@ dm = \text{mass of tissue (kilograms)}
 <p>Run the cell below and unzip the contents of <code class="docutils literal notranslate"><span class="pre">openkbp_patient_data</span></code> into a folder. It should be present in Colab’s (<code class="docutils literal notranslate"><span class="pre">/content/..</span></code>) or local directory. Note that you will need to adjust <code class="docutils literal notranslate"><span class="pre">base_path</span></code> to lead to this folder.</p>
 <p>Each patient hosts the following three files:<br />
 <code class="docutils literal notranslate"><span class="pre">ct.csv</span></code> - 3D grayscale CT scan of patient anatomy composed of 2D slices. Each voxel represents how much X-ray is absorbed by the tissue in Hounsfield Units (HU)<br />
-<code class="docutils literal notranslate"><span class="pre">PTV63.csv</span></code> - Planning Target Volume (PTV) is a binary mask that maps the location of the tumor (tumor is 1, everything else is 0)<br />
-<code class="docutils literal notranslate"><span class="pre">SpinalCord.csv</span></code> - This is a similar binary mask of our Organ at Risk (OAR), representing what we would like our beam to avoid.</p>
-<p>These are currently flattened 1D rows. The cell below converts the csv files into 3D volumes [64, 128, 128] where each point represents an intensity (for the ct scan) or binary value (for ptv &amp; spinal cord). Add a line to the for loop that stacks <code class="docutils literal notranslate"><span class="pre">ct</span></code>, <code class="docutils literal notranslate"><span class="pre">ptv</span></code>, and <code class="docutils literal notranslate"><span class="pre">spine</span></code> into a single tensor. What’s the final shape of this tensor? Draw an analogy to an RGB image.</p>
+<code class="docutils literal notranslate"><span class="pre">PTV63.csv</span></code> - Planning Target Volume (PTV) is a sparse mask that maps the location of the tumor. We’d like binary mask so that 1 is tumor, 0 is no-tumor.</p>
+<p>The following are sparse masks of Organs at Risk (OAR), representing what we’d like our beams to avoid</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SpinalCord.csv</span></code> - Irradiating the spine can cause a serious condition known as radiation myelopathy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Brainstem.csv</span></code> - Radiation causes a vast myriad of devastating effects like RIBN, Ataxia, or even comas.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LeftParotid.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">RightParotid.csv</span></code> - Irradiating salivary glands can cause xerostomia (dry mouth) or worse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mandible.csv</span></code> - The mandible has a limited blood supply, and osteoradionecrosis can occur YEARS after treatment.</p></li>
+</ul>
+<p>These are flattened volumes with voxel indices. The cell below converts the csv files into binary 3D volumes [128, 128, 128] where each point represents an intensity (for the ct scan) or binary value (for ptv &amp; spinal cord). You will have an optional dictionary of <code class="docutils literal notranslate"><span class="pre">patient_data</span></code> to access for your convenience.</p>
+<p>Your tasks:</p>
+<ol class="arabic simple">
+<li><p>Add a line to the for loop that stacks <code class="docutils literal notranslate"><span class="pre">ct</span></code>, <code class="docutils literal notranslate"><span class="pre">ptv</span></code>, and <code class="docutils literal notranslate"><span class="pre">oars</span></code> (Organs at Risk) into a single tensor. Note that oars is a dictionary you may need to unpack. What’s the final shape of this tensor? Draw an analogy to an RGB image.</p></li>
+<li><p>Visualize a single 2D axial slice (z-axis slice) of a patient’s CT scan with the tumor(ptv) overlaid…as a sanity check.</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>https://github.com/florilegium7/Physics-informed-DQN-Radiotherapy/releases/download/v1.0/openkbp_patient_data.zip
-<span class="o">!</span>unzip<span class="w"> </span>patient_data.zip
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>https://github.com/florilegium7/Physics-informed-DQN-Radiotherapy/releases/download/v1/openkbp_patient_data.zip
+<span class="o">!</span>unzip<span class="w"> </span>openkbp_patient_data.zip<span class="w"> </span>-d<span class="w"> </span>openkbp_patient_data
 </pre></div>
 </div>
 </div>
@@ -615,20 +622,57 @@ dm = \text{mass of tissue (kilograms)}
 
 <span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;openkbp_patient_data&#39;</span> <span class="c1">#you may adjust this (e.g. /content/openkbp_patient_data)</span>
 
-<span class="n">patient_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;patient_1&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_2&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_3&quot;</span><span class="p">,</span><span class="s2">&quot;patient_5&quot;</span><span class="p">,</span><span class="s2">&quot;patient_7&quot;</span><span class="p">,</span><span class="s2">&quot;patient_9&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_10&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_12&quot;</span> <span class="p">,</span> <span class="s2">&quot;patient_14&quot;</span><span class="p">,</span> <span class="s2">&quot;patient_16&quot;</span><span class="p">]</span>
+<span class="n">patient_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pt_1&quot;</span><span class="p">,</span> <span class="s2">&quot;pt_2&quot;</span><span class="p">,</span> <span class="s2">&quot;pt_9&quot;</span><span class="p">,</span><span class="s2">&quot;pt_40&quot;</span><span class="p">,</span><span class="s2">&quot;pt_68&quot;</span><span class="p">,</span><span class="s2">&quot;pt_70&quot;</span><span class="p">,</span> <span class="s2">&quot;pt_90&quot;</span><span class="p">,</span> <span class="s2">&quot;pt_91&quot;</span> <span class="p">,</span> <span class="s2">&quot;pt_99&quot;</span><span class="p">,</span> <span class="s2">&quot;pt_187&quot;</span><span class="p">]</span>
 <span class="n">patient_tensors</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1">#64 slices of 128 x 128 pixels : (depth, height, width)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mask_from_sparse</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">)):</span> <span class="c1">#converts voxel indices to 3D binary masks!</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">mask_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">mask_flat</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">mask_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sparse_to_ct_volume</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)):</span> <span class="c1">#turns the csv into full 3D volume CT scans</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">ct_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">ct_flat</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
+    <span class="k">return</span> <span class="n">ct_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+
+<span class="c1">#128 x 128 x 128 pixels : (depth, height, width)</span>
 <span class="k">for</span> <span class="n">pt_id</span> <span class="ow">in</span> <span class="n">patient_ids</span><span class="p">:</span>
-    <span class="n">ct</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;ct.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
-    <span class="n">ptv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;PTV63.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
-    <span class="n">spine</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">,</span> <span class="s2">&quot;SpinalCord.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+
+    <span class="n">pt_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">pt_id</span><span class="p">)</span>
+
+    <span class="n">ct</span> <span class="o">=</span> <span class="n">sparse_to_ct_volume</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_dir</span><span class="p">,</span> <span class="s2">&quot;ct.csv&quot;</span><span class="p">))</span>
+    <span class="n">ptv</span> <span class="o">=</span> <span class="n">mask_from_sparse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_dir</span><span class="p">,</span> <span class="s2">&quot;PTV63.csv&quot;</span><span class="p">))</span>
+
+    <span class="n">oars</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#dictionary</span>
+    <span class="n">organs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SpinalCord&quot;</span><span class="p">,</span> <span class="s2">&quot;Brainstem&quot;</span><span class="p">,</span> <span class="s2">&quot;LeftParotid&quot;</span><span class="p">,</span> <span class="s2">&quot;RightParotid&quot;</span><span class="p">,</span> <span class="s2">&quot;Mandible&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">organ</span> <span class="ow">in</span> <span class="n">organs</span><span class="p">:</span>
+        <span class="n">organ_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">organ</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">organ_path</span><span class="p">):</span>
+            <span class="n">oars</span><span class="p">[</span><span class="n">organ</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask_from_sparse</span><span class="p">(</span><span class="n">organ_path</span><span class="p">)</span>
+    
+    <span class="n">patient_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pt_id</span><span class="p">,</span>
+        <span class="s2">&quot;ct&quot;</span><span class="p">:</span> <span class="n">ct</span><span class="p">,</span> <span class="c1">#ct scan -&gt; 3D volume with intensities</span>
+        <span class="s2">&quot;ptv&quot;</span><span class="p">:</span> <span class="n">ptv</span><span class="p">,</span> <span class="c1">#tumor -&gt; 3D binary mask (1 means tumor!)</span>
+        <span class="s2">&quot;oars&quot;</span><span class="p">:</span> <span class="n">oars</span> <span class="c1">#dictionary of organs at risk -&gt; each is a 3D binary mask</span>
+    <span class="p">}</span>
+    
 
     <span class="n">pt_tensor</span> <span class="o">=</span> <span class="c1">#Your Code Here </span>
     <span class="n">patient_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt_tensor</span><span class="p">)</span>
-    
-
-<span class="c1">#patient_tensors[0] --&gt; patient 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Your slice visualization here</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -651,7 +695,9 @@ dm = \text{mass of tissue (kilograms)}
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1">#[0, 10, 20, ..., 350]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="n">beam_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1">#[0, 10, 20, ..., 350]</span>
 <span class="n">max_beams</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1">#ensures beams are chosen strategically</span>
 <span class="n">episodes</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1">#learning rate</span>
@@ -685,7 +731,7 @@ dm = \text{mass of tissue (kilograms)}
     <span class="n">mid</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span> 
     <span class="n">ct_slice</span>   <span class="o">=</span> <span class="n">ct</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
     <span class="n">ptv_slice</span>  <span class="o">=</span> <span class="n">ptv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
-    <span class="n">spine_slice</span> <span class="o">=</span> <span class="n">spine</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid</span><span class="p">]</span>
+    <span class="c1">#extract organ slices HERE</span>
 
     <span class="n">dose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">slice_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">selected_angles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -695,18 +741,19 @@ dm = \text{mass of tissue (kilograms)}
 
         <span class="n">beam</span> <span class="o">=</span> <span class="n">generate_beam</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">slice_shape</span><span class="p">)</span>
         <span class="n">dose</span> <span class="o">+=</span> <span class="n">beam</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c1">#adds &#39;radiation&#39; to the pixels </span>
-        <span class="n">chosen_angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    
-    <span class="n">reward_score</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">spine</span><span class="p">)</span>
+        <span class="n">selected_angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">chosen_angles</span><span class="p">:</span>
+    
+    <span class="n">reward_score</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">organs</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">selected_angles</span><span class="p">:</span>
         <span class="c1">#Q-learning update here</span>
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">spine</span><span class="p">):</span> <span class="c1">#your reward function HERE</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reward</span><span class="p">(</span><span class="n">dose</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">organs</span><span class="p">):</span> <span class="c1">#your reward function HERE</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
+ 
 
 <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">beam_angles</span><span class="p">))</span> <span class="c1">#Q-table</span>
 </pre></div>
@@ -717,6 +764,7 @@ dm = \text{mass of tissue (kilograms)}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
 
 <span class="n">patient</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">patient_tensors</span><span class="p">)</span>
 <span class="n">mid</span> <span class="o">=</span> <span class="n">patient</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
@@ -825,11 +873,7 @@ $<span class="math notranslate nohighlight">\(
 <p><strong>For our grand finale we will overlay your newfound results onto a CT scan of a tumor. Congratulations! You just made a treatment plan for a cancer patient!!</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.draw</span><span class="w"> </span><span class="kn">import</span> <span class="n">line_nd</span>
-
-<span class="c1">#your conclusions</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#your conclusions</span>
 <span class="n">selected_angles</span> <span class="o">=</span> 
 
 <span class="c1"># Choose a patient!</span>
