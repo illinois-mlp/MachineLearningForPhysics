@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/Visualization';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -226,11 +224,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
-
-
-
-
-
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -264,10 +257,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ReinforcementLearning.html">Reinforcement Learning</a></li>
-
-
-
-
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
 </ul>
 </li>
@@ -507,12 +496,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-low-level-plots-span"><span style="color:Orange">Low-level Plots</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-higher-level-plots-span"><span style="color:Orange">Higher-level Plots</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-beyond-2d-span"><span style="color:Orange">Beyond 2D</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-how-to-use-visualization-span"><span style="color:Orange">How to use visualization</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -527,248 +510,12 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="visualizing-data">
 <h1>Visualizing Data<a class="headerlink" href="#visualizing-data" title="Permalink to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Helpers for Getting, Loading and Locating Data</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
-    <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">while</span> <span class="n">rc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="n">line</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-      <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">RuxntimeError</span><span class="p">(</span><span class="s1">&#39;No such data file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">path</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="span-style-color-orange-get-data-span">
-<h2><span style="color:Orange">Get Data</span><a class="headerlink" href="#span-style-color-orange-get-data-span" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/line_data.csv&#39;</span><span class="p">)</span>
-<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_data.hf5&#39;</span><span class="p">)</span>
-<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/pong_targets.hf5&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/line_data.csv’ already there; not retrieving.
-File ‘./tmp_data/pong_data.hf5’ already there; not retrieving.
-File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="span-style-color-orange-load-data-span">
-<h2><span style="color:Orange">Load Data</span><a class="headerlink" href="#span-style-color-orange-load-data-span" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line_data</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;line_data.csv&#39;</span><span class="p">))</span>
-<span class="n">pong_data</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;pong_data.hf5&#39;</span><span class="p">))</span>
-<span class="n">pong_targets</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;pong_targets.hf5&#39;</span><span class="p">))</span>
-<span class="n">pong_both</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pong_data</span><span class="p">,</span> <span class="n">pong_targets</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="span-style-color-orange-low-level-plots-span">
-<h2><span style="color:Orange">Low-level Plots</span><a class="headerlink" href="#span-style-color-orange-low-level-plots-span" title="Permalink to this heading">#</a></h2>
-<p>The low-level historical foundation of python visualization is <a class="reference external" href="https://matplotlib.org/">matplotlib</a>, which was originally created to emulate the successful MATLAB graphics beloved by generations of engineers. Matplotlib is still relevant today, and often the best choice for simple tasks or to produce publication-quality plots. The downside of matplotlib is that relatively simple tasks often require many low-level steps.</p>
-<p>Use <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the 1D distributions (“histograms”) of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> values in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>. Note how this goes one step further than the summary statistics by showing the full distribution of a single column.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-hist.png" style="width: 600px;" /></a></img><br></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.5</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.5</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/f9cbe5ad226f6e4b5c304abc2e74a67f8ca49df2be78840561feafaf95fdc35f.png" src="../../_images/f9cbe5ad226f6e4b5c304abc2e74a67f8ca49df2be78840561feafaf95fdc35f.png" />
-</div>
-</div>
-<p>Use <code class="docutils literal notranslate"><span class="pre">plt.errorbar</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the first 12 rows of <code class="docutils literal notranslate"><span class="pre">line_data</span></code>:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-errorbar.png" style="width: 600px;" /></a></img><br></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;dy&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">],</span>
-             <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;y +/- dy&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/abd1770778ddbabdecb66187e62d283f89566b133fa8427cc065e591b941d3a6.png" src="../../_images/abd1770778ddbabdecb66187e62d283f89566b133fa8427cc065e591b941d3a6.png" />
-</div>
-</div>
-<p>Use <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.colorbar</span></code> to reproduce the plot below that shows the 2D distribution of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>, color coded by each row’s <span class="math notranslate nohighlight">\(dy\)</span> value. Note how this type of plot reveals correlations between a pair of columns that cannot be deduced from their 1D histograms.</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Visualization-scatter.png" style="width: 600px;" /></a></img><br></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;dy&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;dy&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/dcd51d43afc0f43dacc306a313323029cf8782bfdca9c09a2eddcc37afef608a.png" src="../../_images/dcd51d43afc0f43dacc306a313323029cf8782bfdca9c09a2eddcc37afef608a.png" />
-</div>
-</div>
-</section>
-<section id="span-style-color-orange-higher-level-plots-span">
-<h2><span style="color:Orange">Higher-level Plots</span><a class="headerlink" href="#span-style-color-orange-higher-level-plots-span" title="Permalink to this heading">#</a></h2>
-<p>Visualization tools are rapidly evolving in python today (see <a class="reference external" href="https://www.youtube.com/watch?v=8du4NNoOtII">this PyTexas 2023 talk</a> and <a class="reference external" href="https://www.youtube.com/watch?v=CvcYzJIp2Bk">this PyCon AU 2023 talk</a> for recent overviews of 2D and 3D visualization in Python, respectively), and there is no single best choice for all applications.</p>
-<p>For this course, we will use <a class="reference external" href="https://seaborn.pydata.org/index.html">seaborn</a> since it is specifically designed for statistical data visualization and is reasonably mature. It also works well with matplotlib, which it uses under the hood to produce its plots.</p>
-<p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.histplot</span></code>, which automatically calculates optimized bins (using the <a class="reference external" href="https://en.wikipedia.org/wiki/Freedman%E2%80%93Diaconis_rule">Freedman-Diaconis rule</a>) and superimposes a smooth estimate of the probability density (using the <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">KDE method</a> - we will learning more about density estimation soon).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/8c4fe4d5066012f3510d1fb222375bc8d0597df3ac2e29e4f99481b7bfbfb419.png" src="../../_images/8c4fe4d5066012f3510d1fb222375bc8d0597df3ac2e29e4f99481b7bfbfb419.png" />
-</div>
-</div>
-<p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code>, which shows 1D histograms along the sides comes in several kinds for displaying the central 2D information, e.g.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">line_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/84a175d1cf811d462c22359f0a74fcdbdd18525f6a763af0f43c4ee2b434d7ba.png" src="../../_images/84a175d1cf811d462c22359f0a74fcdbdd18525f6a763af0f43c4ee2b434d7ba.png" />
-</div>
-</div>
-<p>Note how the axis labels are generated automatically.</p>
-<p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Read about the other kinds of <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code> and try each one for <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.  Which seems most useful for a small data set?  For a large data set?</p>
-<p>I recommend ‘scatter’ for a small dataset, but it is not a good choice for a large dataset since it is relatively slow and your eye is inevitably drawn to the outliers that are least representative of the general trends.</p>
-<p>For a large dataset, I would start with <code class="docutils literal notranslate"><span class="pre">hex</span></code> and then proceed to <code class="docutils literal notranslate"><span class="pre">kde</span></code> if the <code class="docutils literal notranslate"><span class="pre">hex</span></code> distribution looks sufficiently smooth.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">reg</span></code> and <code class="docutils literal notranslate"><span class="pre">resid</span></code> types are intended for cases where there is an obvious linear relationship between the pair of columns.</p>
-<p>A “jointplot” gives a lot of insight into a pair of columns in a dataset.  A “pairplot” takes this one step further with a grid of jointpoints. (There is also a dedicated python package for pairplots called <a class="reference external" href="http://corner.readthedocs.io/en/latest/">corner</a>).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">line_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/5acc42f0abaeef2dd2d2d3b30119c354ff1b88c5acee6af22dfd05a12d2f8527.png" src="../../_images/5acc42f0abaeef2dd2d2d3b30119c354ff1b88c5acee6af22dfd05a12d2f8527.png" />
-</div>
-</div>
-<p>The resulting grid shows a 2D scatter plot each pair (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) of columns with 1D histograms on the diagonal (<span class="math notranslate nohighlight">\(i\)</span>=<span class="math notranslate nohighlight">\(j\)</span>). Note that the (<span class="math notranslate nohighlight">\(j\)</span>,<span class="math notranslate nohighlight">\(i\)</span>) scatter plot is just (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) transposed, so this format is not very space efficient.</p>
-<p>A pairplot is less practical for a dataset with lots of columns but you can zoom in on any submatrix, for example:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/cae4dbdae492dc1d4e1e63404ac92e8b05f629fcb1aa81c18fc5a07f44d36665.png" src="../../_images/cae4dbdae492dc1d4e1e63404ac92e8b05f629fcb1aa81c18fc5a07f44d36665.png" />
-</div>
-</div>
-<p>The three clusters that appear in each scatter plot suggest that there are three types of observations (rows) in the dataset.  We can confirm this using the combined data+targets dataset and color-coding each row according to each target <code class="docutils literal notranslate"><span class="pre">grp</span></code> value:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">pong_both</span><span class="p">,</span> <span class="n">x_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">),</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y6&#39;</span><span class="p">,</span> <span class="s1">&#39;y7&#39;</span><span class="p">,</span> <span class="s1">&#39;y8&#39;</span><span class="p">),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;grp&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/cab7371da56e4187c990ab9286a874eff22237fd7b83efb34f70a835728de326.png" src="../../_images/cab7371da56e4187c990ab9286a874eff22237fd7b83efb34f70a835728de326.png" />
-</div>
-</div>
-<p>We will soon learn how to automatically assign rows to the clusters you discover during visualization, i.e., without “cheating” with the target <code class="docutils literal notranslate"><span class="pre">grp</span></code> column.</p>
-</section>
-<section id="span-style-color-orange-beyond-2d-span">
-<h2><span style="color:Orange">Beyond 2D</span><a class="headerlink" href="#span-style-color-orange-beyond-2d-span" title="Permalink to this heading">#</a></h2>
-<p>There are several options to go beyond 2D visualization of pairs:</p>
-<ul class="simple">
-<li><p>Use attributes such as color and size to display additional dimensions.</p></li>
-<li><p>Use 3D visualizations.</p></li>
-<li><p>Use an embedding transformation to map high dimensional data to 2D or 3D.</p></li>
-</ul>
-<p>We have already seen examples above of using color to add a third dimension to a 2D scatter plot.</p>
-<p><strong><span style="color:violet">EXERCISE</span></strong>: Try out the embedding approach by uploading <code class="docutils literal notranslate"><span class="pre">pong_data</span></code> to <a class="reference external" href="http://projector.tensorflow.org/">http://projector.tensorflow.org/</a>. You will first need to save the data in the “tab-separated value” (TSV) format:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pong_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;pong_data.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Look at the 3D PCA visualization of this dataset. What is the raw dimension (number of columns) for this data?  What is the effective number of dimensions revealed by the visualization?  We will learn more about PCA and counting effective dimensions soon.</p>
-<p>You are welcome to also experiment with the <span style="color:violet">t-Distributed Stochastic Neighbor Embedding</span> <a class="reference external" href="https://distill.pub/2016/misread-tsne/">(tSNE)</a> visualizations. tSNE is a statistical method for visualizing high-dimensional data by giving each datapoint a location in a two or three-dimensional map. It uses a Stochastic Neighbor Embedding method developed by Sam Roweis and Geoffrey Hinton in 2020 which models each high-dimensional object by a two- or three-dimensional point in such a way that similar objects are modeled by nearby points and dissimilar objects are modeled by distant points with high probability.</p>
-<p>Several dimensionality reduction (projection) techniques exist, such as <a class="reference external" href="https://umap-learn.readthedocs.io">UMAP</a>, <a class="reference external" href="https://scikit-learn.org/stable/modules/manifold.html#isomap">Isomap</a>, and many others. I have not found these to be very enlightening for scientific data, but I’m sure that I haven’t explored them sufficiently.</p>
-</section>
-<section id="span-style-color-orange-how-to-use-visualization-span">
-<h2><span style="color:Orange">How to use visualization</span><a class="headerlink" href="#span-style-color-orange-how-to-use-visualization-span" title="Permalink to this heading">#</a></h2>
-<p>What should you be looking for when you visualize your data?</p>
-<ol class="arabic simple">
-<li><p>Is there visible clustering in some pairs?</p></li>
-<li><p>Which pairs of columns are most correlated?</p></li>
-<li><p>When a correlation exists:</p>
-<ul class="simple">
-<li><p>Is it roughly linear or strongly non-linear?</p></li>
-<li><p>How much variance (spread) is there about the average trend?</p></li>
-</ul>
-</li>
-</ol>
-<p>There is usually variance around the average trend but it can arise from two different sources (and, in general, is some mixture of both):</p>
-<ul class="simple">
-<li><p>Correlations with additional variables (which might not even be in your dataset).</p></li>
-<li><p>Random noise due to the measurement process, etc.</p></li>
-</ul>
-</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Initial version: Mark Neubauer</p></li>
 </ul>
-<p>© Copyright 2025</p>
+<p>© Copyright 2026</p>
 </section>
 </section>
 
@@ -835,12 +582,6 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-low-level-plots-span"><span style="color:Orange">Low-level Plots</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-higher-level-plots-span"><span style="color:Orange">Higher-level Plots</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-beyond-2d-span"><span style="color:Orange">Beyond 2D</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-how-to-use-visualization-span"><span style="color:Orange">How to use visualization</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>

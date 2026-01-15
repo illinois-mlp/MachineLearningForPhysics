@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/PhysicsInformedNeuralNetworks';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -226,11 +224,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
-
-
-
-
-
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -264,10 +257,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ReinforcementLearning.html">Reinforcement Learning</a></li>
-
-
-
-
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
 </ul>
 </li>
@@ -507,18 +496,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-id-harmonic-oscillator-example-span"><span style="color:Orange">ID Harmonic Oscillator Example</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-problem-overview-span"><span style="color:LightGreen">Problem Overview</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-workflow-overview-span"><span style="color:LightGreen">Workflow Overview</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-enviornment-setup-span"><span style="color:LightGreen">Enviornment Setup</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-define-the-pinn-span"><span style="color:LightGreen">Define the PINN</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-generate-the-training-data-span"><span style="color:LightGreen">Generate the Training Data</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-normal-non-pinn-neural-network-span"><span style="color:LightGreen">Normal (non-PINN) Neural Network</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-pinn-span"><span style="color:LightGreen">PINN</span></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -533,284 +510,13 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="physics-informed-neural-networks">
 <h1>Physics Informed Neural Networks<a class="headerlink" href="#physics-informed-neural-networks" title="Permalink to this heading">#</a></h1>
-<section id="span-style-color-orange-introduction-span">
-<h2><span style="color:Orange">Introduction</span><a class="headerlink" href="#span-style-color-orange-introduction-span" title="Permalink to this heading">#</a></h2>
-<p><span style="color:Violet">Physics-Informed Neural Networks</span> (PINNs) are a novel class of machine learning algorithms for solution of partial differential equations. This is achieved by incorporating structured prior information derived from physical laws into the learning algorithm. PINNs are constructed by encoding the constraints posed by a given differential equation and its boundary conditions into the loss function of a NN. This constraint guides the network to approximate the solution of the differential equation.</p>
-</section>
-<section id="span-style-color-orange-id-harmonic-oscillator-example-span">
-<h2><span style="color:Orange">ID Harmonic Oscillator Example</span><a class="headerlink" href="#span-style-color-orange-id-harmonic-oscillator-example-span" title="Permalink to this heading">#</a></h2>
-<section id="span-style-color-lightgreen-problem-overview-span">
-<h3><span style="color:LightGreen">Problem Overview</span><a class="headerlink" href="#span-style-color-lightgreen-problem-overview-span" title="Permalink to this heading">#</a></h3>
-<p>The example problem we solve here is the 1D damped harmonic oscillator:</p>
-<div class="math notranslate nohighlight">
-\[ \Large
-m \dfrac{d^2 x}{d t^2} + \mu \dfrac{d x}{d t} + kx = 0~,
-\]</div>
-<p>with the initial conditions</p>
-<div class="math notranslate nohighlight">
-\[ \Large
-x(0) = 1~~,~~\dfrac{d x}{d t} = 0~.
-\]</div>
-<p>We will focus on solving the problem for the under-damped state, i.e. when</p>
-<div class="math notranslate nohighlight">
-\[ \Large
-\delta &lt; \omega_0~,~~~~~\mathrm{with}~~\delta = \dfrac{\mu}{2m}~,~\omega_0 = \sqrt{\dfrac{k}{m}}~.
-\]</div>
-<p>This has the following exact solution:</p>
-<div class="math notranslate nohighlight">
-\[ \Large
-x(t) = e^{-\delta t}(2 A \cos(\phi + \omega t))~,~~~~~\mathrm{with}~~\omega=\sqrt{\omega_0^2 - \delta^2}~.
-\]</div>
-</section>
-<section id="span-style-color-lightgreen-workflow-overview-span">
-<h3><span style="color:LightGreen">Workflow Overview</span><a class="headerlink" href="#span-style-color-lightgreen-workflow-overview-span" title="Permalink to this heading">#</a></h3>
-<blockquote>
-<div><p>First we will train a standard neural network to interpolate a small part of the solution, using some observed training points from the solution.</p>
-</div></blockquote>
-<blockquote>
-<div><p>Next, we will train a PINN to extrapolate the full solution outside of these training points by penalising the underlying differential equation in its loss function.</p>
-</div></blockquote>
-</section>
-<section id="span-style-color-lightgreen-enviornment-setup-span">
-<h3><span style="color:LightGreen">Enviornment Setup</span><a class="headerlink" href="#span-style-color-lightgreen-enviornment-setup-span" title="Permalink to this heading">#</a></h3>
-<p>We train the PINN using PyTorch, using the following environment and helper functions:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">save_gif_PIL</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="s2">&quot;Helper function for saving GIFs&quot;</span>
-    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
-    <span class="n">imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;GIF&#39;</span><span class="p">,</span> <span class="n">append_images</span><span class="o">=</span><span class="n">imgs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">1000</span><span class="o">/</span><span class="n">fps</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">oscillator</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the analytical solution to the 1D underdamped harmonic oscillator problem. </span>
-<span class="sd">    Equations taken from: https://beltoforion.de/en/harmonic_oscillator/&quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">w0</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w0</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="o">-</span><span class="n">d</span><span class="o">/</span><span class="n">w</span><span class="p">)</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
-    <span class="n">cos</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="o">+</span><span class="n">w</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">sin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="o">+</span><span class="n">w</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">exp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">d</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">y</span>  <span class="o">=</span> <span class="n">exp</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">cos</span>
-    <span class="k">return</span> <span class="n">y</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="span-style-color-lightgreen-define-the-pinn-span">
-<h3><span style="color:LightGreen">Define the PINN</span><a class="headerlink" href="#span-style-color-lightgreen-define-the-pinn-span" title="Permalink to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">FCN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="s2">&quot;Defines a connected network&quot;</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N_INPUT</span><span class="p">,</span> <span class="n">N_OUTPUT</span><span class="p">,</span> <span class="n">N_HIDDEN</span><span class="p">,</span> <span class="n">N_LAYERS</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fcs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
-                        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">N_INPUT</span><span class="p">,</span> <span class="n">N_HIDDEN</span><span class="p">),</span>
-                        <span class="n">activation</span><span class="p">()])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fch</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
-                        <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
-                            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">N_HIDDEN</span><span class="p">,</span> <span class="n">N_HIDDEN</span><span class="p">),</span>
-                            <span class="n">activation</span><span class="p">()])</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_LAYERS</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fce</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">N_HIDDEN</span><span class="p">,</span> <span class="n">N_OUTPUT</span><span class="p">)</span>
-        
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fcs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fch</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fce</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="span-style-color-lightgreen-generate-the-training-data-span">
-<h3><span style="color:LightGreen">Generate the Training Data</span><a class="headerlink" href="#span-style-color-lightgreen-generate-the-training-data-span" title="Permalink to this heading">#</a></h3>
-<blockquote>
-<div><p>First, we generate some training data from a small part of the true analytical solution.</p>
-</div></blockquote>
-<p>For this problem, we use <span class="math notranslate nohighlight">\(\delta=2\)</span>, <span class="math notranslate nohighlight">\(\omega_0=20\)</span>, and try to learn the solution over the domain <span class="math notranslate nohighlight">\(x\in [0,1]\)</span>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">w0</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span>
-
-<span class="c1"># get the analytical solution over the full domain</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">oscillator</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="c1"># slice out a small number of points from the LHS of the domain</span>
-<span class="n">x_data</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">200</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
-<span class="n">y_data</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">200</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x_data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact solution&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training data&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([500, 1]) torch.Size([500, 1])
-torch.Size([10, 1]) torch.Size([10, 1])
-</pre></div>
-</div>
-<img alt="../../_images/cb6e613b4cc0da56c295adbddbb3008cc9457def067638f21f72248cf897a67f.png" src="../../_images/cb6e613b4cc0da56c295adbddbb3008cc9457def067638f21f72248cf897a67f.png" />
-</div>
-</div>
-</section>
-<section id="span-style-color-lightgreen-normal-non-pinn-neural-network-span">
-<h3><span style="color:LightGreen">Normal (non-PINN) Neural Network</span><a class="headerlink" href="#span-style-color-lightgreen-normal-non-pinn-neural-network-span" title="Permalink to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_result</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">x_data</span><span class="p">,</span><span class="n">y_data</span><span class="p">,</span><span class="n">yh</span><span class="p">,</span><span class="n">xp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="s2">&quot;Pretty plot training results&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact solution&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">yh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Neural network prediction&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">xp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="o">-</span><span class="mi">0</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xp</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> 
-                    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Physics loss training locations&#39;</span><span class="p">)</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">1.01</span><span class="p">,</span><span class="mf">0.34</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">get_texts</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.065</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="s2">&quot;Training step: </span><span class="si">%i</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-    
-    
-<span class="c1"># train standard neural network to fit training data</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">FCN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span><span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
-<span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-    <span class="n">yh</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">yh</span><span class="o">-</span><span class="n">y_data</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="c1"># use mean squared error</span>
-    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    
-    
-    <span class="c1"># plot the result as training progresses</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
-        
-        <span class="n">yh</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-        
-        <span class="n">plot_result</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">x_data</span><span class="p">,</span><span class="n">y_data</span><span class="p">,</span><span class="n">yh</span><span class="p">)</span>
-        
-        <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;tmp_data/nn_</span><span class="si">%.8i</span><span class="s2">.png&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
-        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    
-        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
-            
-<span class="n">save_gif_PIL</span><span class="p">(</span><span class="s2">&quot;nn.gif&quot;</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/849b19b7b6445642a37799eabf5f312645ba4a03e5be194fe91cce6836db3d5e.png" src="../../_images/849b19b7b6445642a37799eabf5f312645ba4a03e5be194fe91cce6836db3d5e.png" />
-<img alt="../../_images/8f3b2f94d538eb9621330b1d4725d9fb14a41722d4fb84e223d3defe4f9c6f4e.png" src="../../_images/8f3b2f94d538eb9621330b1d4725d9fb14a41722d4fb84e223d3defe4f9c6f4e.png" />
-</div>
-</div>
-</section>
-<section id="span-style-color-lightgreen-pinn-span">
-<h3><span style="color:LightGreen">PINN</span><a class="headerlink" href="#span-style-color-lightgreen-pinn-span" title="Permalink to this heading">#</a></h3>
-<blockquote>
-<div><p>Finally, we add the underlying differential equation (“physics loss”) to the loss function.</p>
-</div></blockquote>
-<p>The physics loss aims to ensure that the learned solution is consistent with the underlying differential equation. This is done by penalising the residual of the differential equation over a set of locations sampled from the domain.</p>
-<p>Here we evaluate the physics loss at 30 points uniformly spaced over the problem domain <span class="math notranslate nohighlight">\(([0,1])\)</span>. We can calculate the derivatives of the network solution with respect to its input variable at these points using <code class="docutils literal notranslate"><span class="pre">pytorch</span></code>’s autodifferentiation features, and can then easily compute the residual of the differential equation using these quantities.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_physics</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="c1"># sample locations over the problem domain</span>
-<span class="n">mu</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">d</span><span class="p">,</span> <span class="n">w0</span><span class="o">**</span><span class="mi">2</span>
-
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">FCN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span><span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
-<span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20000</span><span class="p">):</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-    
-    <span class="c1"># compute the &quot;data loss&quot;</span>
-    <span class="n">yh</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span>
-    <span class="n">loss1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">yh</span><span class="o">-</span><span class="n">y_data</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="c1"># use mean squared error</span>
-    
-    <span class="c1"># compute the &quot;physics loss&quot;</span>
-    <span class="n">yhp</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_physics</span><span class="p">)</span>
-    <span class="n">dx</span>  <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">yhp</span><span class="p">,</span> <span class="n">x_physics</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">yhp</span><span class="p">),</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="c1"># computes dy/dx</span>
-    <span class="n">dx2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span>  <span class="n">x_physics</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">dx</span><span class="p">),</span>  <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="c1"># computes d^2y/dx^2</span>
-    <span class="n">physics</span> <span class="o">=</span> <span class="n">dx2</span> <span class="o">+</span> <span class="n">mu</span><span class="o">*</span><span class="n">dx</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="n">yhp</span><span class="c1"># computes the residual of the 1D harmonic oscillator differential equation</span>
-    <span class="n">loss2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">physics</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    
-    <span class="c1"># backpropagate joint loss</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss1</span> <span class="o">+</span> <span class="n">loss2</span><span class="c1"># add two loss terms together</span>
-    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    
-    
-    <span class="c1"># plot the result as training progresses</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">150</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
-        
-        <span class="n">yh</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-        <span class="n">xp</span> <span class="o">=</span> <span class="n">x_physics</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-        
-        <span class="n">plot_result</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">x_data</span><span class="p">,</span><span class="n">y_data</span><span class="p">,</span><span class="n">yh</span><span class="p">,</span><span class="n">xp</span><span class="p">)</span>
-        
-        <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;tmp_data/pinn_</span><span class="si">%.8i</span><span class="s2">.png&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
-        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">6000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
-            
-<span class="n">save_gif_PIL</span><span class="p">(</span><span class="s2">&quot;pinn.gif&quot;</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/13aafd748efbe43d3645d8a289e7757a27bf3888646d05d25c1679aff14c8433.png" src="../../_images/13aafd748efbe43d3645d8a289e7757a27bf3888646d05d25c1679aff14c8433.png" />
-<img alt="../../_images/acacfa963966979cdca45859ffaa1034a413b9c1069503281419b7d6b51c88c3.png" src="../../_images/acacfa963966979cdca45859ffaa1034a413b9c1069503281419b7d6b51c88c3.png" />
-<img alt="../../_images/e00981d4f529160a909b06f18bc6db6791f4777ca15b66916c816788fdc632ed.png" src="../../_images/e00981d4f529160a909b06f18bc6db6791f4777ca15b66916c816788fdc632ed.png" />
-</div>
-</div>
-</section>
-</section>
-<section id="span-style-color-orange-references-span">
-<h2><span style="color:Orange">References</span><a class="headerlink" href="#span-style-color-orange-references-span" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>M. Raissi, P. Perdikaris, and G. E. Karniadakis. Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational Physics, 378:686–707, February 2019.</p></li>
-<li><p>George Em Karniadakis, Ioannis G. Kevrekidis, Lu Lu, Paris Perdikaris, Sifan Wang, and Liu Yang. Physics-informed machine learning. Nature Reviews Physics, 3(6):422–440, June 2021</p></li>
-</ol>
-</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Initial version: Mark Neubauer</p></li>
 <li><p>1D harmonic oscillator example is based on the blog post <a class="reference external" href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">“So, what is a physics-informed neural network?”</a>. This problem was inspired by the following blog post: <a class="reference external" href="https://beltoforion.de/en/harmonic_oscillator/">https://beltoforion.de/en/harmonic_oscillator/</a>.</p></li>
 </ul>
-<p>© Copyright 2025</p>
+<p>© Copyright 2026</p>
 </section>
 </section>
 
@@ -877,18 +583,6 @@ torch.Size([10, 1]) torch.Size([10, 1])
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-id-harmonic-oscillator-example-span"><span style="color:Orange">ID Harmonic Oscillator Example</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-problem-overview-span"><span style="color:LightGreen">Problem Overview</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-workflow-overview-span"><span style="color:LightGreen">Workflow Overview</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-enviornment-setup-span"><span style="color:LightGreen">Enviornment Setup</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-define-the-pinn-span"><span style="color:LightGreen">Define the PINN</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-generate-the-training-data-span"><span style="color:LightGreen">Generate the Training Data</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-normal-non-pinn-neural-network-span"><span style="color:LightGreen">Normal (non-PINN) Neural Network</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-pinn-span"><span style="color:LightGreen">PINN</span></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>

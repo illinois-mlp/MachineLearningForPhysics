@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/GenerativeModeling';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -226,11 +224,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
-
-
-
-
-
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -264,10 +257,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ReinforcementLearning.html">Reinforcement Learning</a></li>
-
-
-
-
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
 </ul>
 </li>
@@ -507,7 +496,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-are-generative-models-span"><span style="color:LightGreen">What are Generative Models?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -522,16 +510,12 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="generative-modeling">
 <h1>Generative Modeling<a class="headerlink" href="#generative-modeling" title="Permalink to this heading">#</a></h1>
-<section id="span-style-color-lightgreen-what-are-generative-models-span">
-<h2><span style="color:LightGreen">What are Generative Models?</span><a class="headerlink" href="#span-style-color-lightgreen-what-are-generative-models-span" title="Permalink to this heading">#</a></h2>
-<p>Generative models are learning something intuitively easy but in practce is an expensive process. Lets pretend we have an image <span class="math notranslate nohighlight">\(x\)</span> and the collection of <span style="color:Violet">ALL</span> possible images is <span class="math notranslate nohighlight">\(X\)</span>. Then our <span class="math notranslate nohighlight">\(x\)</span> is a single sample from the population <span class="math notranslate nohighlight">\(X\)</span>. The purpose of a generative model is to learn the probability of <span class="math notranslate nohighlight">\(x\)</span>, written as the <span class="math notranslate nohighlight">\(p(x)\)</span>. If we learn this distribution, then we can sample from it to generate new samples. How we learn <span class="math notranslate nohighlight">\(p(x)\)</span> changes based on which method we use.</p>
-</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Initial version: Mark Neubauer</p></li>
 </ul>
-<p>© Copyright 2025</p>
+<p>© Copyright 2026</p>
 </section>
 </section>
 
@@ -598,7 +582,6 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-what-are-generative-models-span"><span style="color:LightGreen">What are Generative Models?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
