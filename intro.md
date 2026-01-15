@@ -58,12 +58,12 @@ Upon completion of the course students will be able to:
   * Location: [Zoom](https://illinois.zoom.us/j/85255234488?pwd=eTF3NDVtU1FSZXNpK3BFck9vKzNZdz09)
 
 ### TAs
-*  YuTing Bai
+* YuTing Bai
   * email:  mailto:yutingb2@illinois.edu
   * Office Hour: Xday X:XXpm - X:XXpm
   * Location: TBD
 
-*  Evelyn(Yueying) Wu
+* Evelyn(Yueying) Wu
   * email:  mailto:yw114@illinois.edu
   * Office Hour: Xday X:XXpm - X:XXpm
   * Location: TBD
