@@ -5,7 +5,7 @@
   * Professor [Mark Neubauer](https://marksneubauer.com)
 * *Class Meetings*: 
   * Tuesdays and Thursdays from 1:00 pm to 2:20 pm
-  * *Room*: 3101 Sidney Lu MEB
+  * *Room*: 305 Materials Science & Engineering Building
 * 4 credit hours
 
 ## <span style="color:Red">Calendar</span>
@@ -14,17 +14,17 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Week          | Topic                   | Homework                               | Projects                   |
 |---------------|-------------------------|----------------------------------------|----------------------------|
 | Jan 19  | {doc}`_sources/Week_01`       | HW 01                                  |                            |
-| Jan 26  | {doc}`_sources/Week_02`       | HW 02                                  |                            |
-| Feb 02  | {doc}`_sources/Week_03`       | HW 03                                  |                            |
-| Feb 09  | {doc}`_sources/Week_04`       | HW 04                                  |                            |
-| Feb 16  | {doc}`_sources/Week_05`       | HW 05                                  |                            |
-| Feb 23  | {doc}`_sources/Week_06`       | HW 06                                  |                            |
+| Jan 26  | {doc}`_sources/Week_02`       |                                        |                            |
+| Feb 02  | {doc}`_sources/Week_03`       |                                        |                            |
+| Feb 09  | {doc}`_sources/Week_04`       |                                        |                            |
+| Feb 16  | {doc}`_sources/Week_05`       |                                        |                            |
+| Feb 23  | {doc}`_sources/Week_06`       |                                        |                            |
 | Mar 02  | {doc}`_sources/Week_07`       |                                        |                            |
 | Mar 09  | {doc}`_sources/Week_08`       |                                        | {doc}`_sources/Project_01` |
 | Mar 16  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
 | Mar 23  | {doc}`_sources/Week_09`       |                                        |                            |
-| Mar 30  | {doc}`_sources/Week_10`       | HW 07                                  |                            |
-| Apr 06  | {doc}`_sources/Week_11`       | HW 08                                  |                            |
+| Mar 30  | {doc}`_sources/Week_10`       |                                        |                            |
+| Apr 06  | {doc}`_sources/Week_11`       |                                        |                            |
 | Apr 13  | {doc}`_sources/Week_12`       |                                        |                            |
 | Apr 20  | {doc}`_sources/Week_13`       |                                        | {doc}`_sources/Project_02` |
 | Apr 27  | {doc}`_sources/Week_14`       |                                        |                            |
