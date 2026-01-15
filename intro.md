@@ -53,15 +53,20 @@ Upon completion of the course students will be able to:
 
 ### Instructor
 * Professor [Mark Neubauer](https://marksneubauer.com)
-  * email: msn@illinois.edu
+  * email: mailto:msn@illinois.edu
   * Office Hour: Thursday 5:30pm - 6:30 pm
   * Location: [Zoom](https://illinois.zoom.us/j/85255234488?pwd=eTF3NDVtU1FSZXNpK3BFck9vKzNZdz09)
 
-### TA
-* Chun Yu Chow
-  * email: cychow2@illinois.edu
-  * Office Hour: Monday 2:30pm - 3:30pm
-  * Location: Outside ESB 3137 (common area)
+### TAs
+*  YuTing Bai
+  * email:  mailto:yutingb2@illinois.edu
+  * Office Hour: Xday X:XXpm - X:XXpm
+  * Location: TBD
+
+*  Evelyn(Yueying) Wu
+  * email:  mailto:yw114@illinois.edu
+  * Office Hour: Xday X:XXpm - X:XXpm
+  * Location: TBD
 
 ## <span style="color:Red">Online Tools</span>
 
