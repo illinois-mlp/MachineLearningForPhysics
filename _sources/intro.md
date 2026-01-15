@@ -1,6 +1,6 @@
 # <span style="color:Blue">__Machine Learning for Physics__</span>
 
-<font size="6"> __Physics 498 MLP__ &nbsp; *Spring 2025* </font>
+<font size="6"> __Physics 498 MLP__ &nbsp; *Spring 2026* </font>
 * *Instructor:* 
   * Professor [Mark Neubauer](https://marksneubauer.com)
 * *Class Meetings*: 
