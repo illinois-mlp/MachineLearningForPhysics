@@ -53,18 +53,18 @@ Upon completion of the course students will be able to:
 
 ### Instructor
 * Professor [Mark Neubauer](https://marksneubauer.com)
-  * email: mailto:msn@illinois.edu
+  * email: msn@illinois.edu
   * Office Hour: Thursday 5:30pm - 6:30 pm
   * Location: [Zoom](https://illinois.zoom.us/j/85255234488?pwd=eTF3NDVtU1FSZXNpK3BFck9vKzNZdz09)
 
 ### TAs
 * YuTing Bai
-  * email:  mailto:yutingb2@illinois.edu
+  * email: yutingb2@illinois.edu
   * Office Hour: Xday X:XXpm - X:XXpm
   * Location: TBD
 
 * Evelyn(Yueying) Wu
-  * email:  mailto:yw114@illinois.edu
+  * email: yw114@illinois.edu
   * Office Hour: Xday X:XXpm - X:XXpm
   * Location: TBD
 
