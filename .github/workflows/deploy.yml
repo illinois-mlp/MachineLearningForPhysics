@@ -18,25 +18,34 @@ jobs:
         with:
           python-version: 3.11
 
-      # 3️⃣ Install system dependencies (needed by PyTables)
+      # 3️⃣ Cache pip packages for speed
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # 4️⃣ Install system dependencies for PyTables
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libhdf5-dev build-essential python3-dev
 
-      # 4️⃣ Install Python dependencies
-      - name: Install dependencies
+      # 5️⃣ Install Python dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip wheel setuptools
           pip install -r requirements.txt
 
-      # 5️⃣ Build the Jupyter Book (using python -m to ensure it works in venv)
+      # 6️⃣ Build the Jupyter Book (skip notebook execution for speed)
       - name: Build the Jupyter Book
         run: |
-          python -m jupyter_book build --config _config.yml --toc _toc.yml .
+          python -m jupyter_book build --config _config.yml --toc _toc.yml --execute=never
 
-      # 6️⃣ Deploy to GitHub Pages
-      - name: GitHub Pages action
+      # 7️⃣ Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3.6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
