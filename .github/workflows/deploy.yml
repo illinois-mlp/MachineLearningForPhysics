@@ -9,7 +9,7 @@ jobs:
   deploy-book:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout the repository
+      # 1️⃣ Checkout repo
       - uses: actions/checkout@v2
 
       # 2️⃣ Set up Python 3.11
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: 3.11
 
-      # 3️⃣ Cache pip packages for speed
+      # 3️⃣ Cache pip packages for faster builds
       - name: Cache pip
         uses: actions/cache@v3
         with:
