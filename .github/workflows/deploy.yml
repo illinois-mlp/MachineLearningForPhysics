@@ -39,10 +39,10 @@ jobs:
           python -m pip install --upgrade pip wheel setuptools
           pip install -r requirements.txt
 
-      # 6️⃣ Build the Jupyter Book (skip notebook execution for speed)
+      # 6️⃣ Build the Jupyter Book (no notebook execution, fast CI)
       - name: Build the Jupyter Book
         run: |
-          jupyter-book build --config _config.yml --toc _toc.yml --execute=never
+          jupyter-book build --config _config.yml --toc _toc.yml .
 
       # 7️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
