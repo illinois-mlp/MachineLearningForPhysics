@@ -1,5 +1,5 @@
 # Jupyter Book ecosystem
-jupyter-book==0.15.3
+jupyter-book==0.15.1
 notebook>=7.3,<7.4
 
 # Core scientific packages
