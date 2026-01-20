@@ -7,3 +7,4 @@ tfs
 tmp_data
 .ipynb_checkpoints
 .DS_Store
+.venv
