@@ -81,6 +81,9 @@ On [Gradescope](https://www.gradescope.com), you will submit your assignments an
 
 ## <span style="color:Red">Coursework</span>
 
+### Quizzes
+In-class quizzes will be given ~weekly. These are designed to test your conceptual knowledge about the topics discussed in the course.
+
 ### Homework Assignments
 You will be assigned weekly homework assignments that will put into practice what you learned in lecture for the week. 
 * You will work on the assignments both during the in-class session on Thursdays and as homework.
@@ -99,8 +102,9 @@ Each project notebook must be submitted via Gradescope for grading. There is no 
 
 ## <span style="color:Red">Grading</span>
 * Class attendence and participation: 5%
-* Homework: 45%
-* Projects: 50%
+* In-class quizzes: 10%
+* Homework: 40%
+* Projects: 45%
 
 Letter grades will be assigned as follows:
 
@@ -210,10 +214,12 @@ Applications:
 * Policies as it relates to COVID-19 can be found at https://covid19.illinois.edu
 * If you feel ill or are unable to come to class or complete class assignments due to issues related to COVID-19, including but not limited to testing positive yourself, feeling ill, caring for a family member with COVID-19, or having unexpected child-care obligations, you should contact your instructor immediately, and you are encouraged to copy your academic advisor. 
   
-### About using code you find on the web or generative AI for homework and projects
-The quickest way to deal with the arcana of programing is to ask Google or ChatGPT for examples of what you are seeking to accomplish. But you will need to use your own judgment in terms of value added for your learning in using these techologies Your generation will need to how learn to work productively in-concert with AI. That - that's a technological genie out of the bottle. Finding its way back into the bottle is as a likely as a broken glass spontaeously reassembling. As with any external resource, you must always credit the original source of code and other information that you paste into your own programs, notebooks, projects, etc in a comment that includes the original source. If an author says that his/her code is not to be copied or incorporated into your programs, then DON’T. 
+### About using generative AI for homework and projects
+Generative AI systems, such as ChatGPT, can be valuable tools for learning and idea refinement in this course. You are encouraged to use AI as a tutor to clarify programming concepts, debug code, or explore ideas through iterative conversations—similar to working with a peer, TA, or instructor. However, AI should not be used to directly copy-paste solutions or complete homework problems.
 
-Students must cite all references, including any code they have used that they did not write themselves. Failure to cite references will be considered an academic integrity violation and be pursued according to University policy, which may include receiving a failing grade on an assignment or in the entire course. Citations do not need to follow any specific format (such as ACM style, etc.) but should mention the author's name and where the cited work can be found (including a URL, if applicable). In code, a citation can be left in a comment.
+If you use generative AI, you must credit the source by including a comment with the original source of any code or information you incorporate into your work. Additionally, provide a brief description of how the AI was used, such as for debugging a function, refining the methodology, or improving the code efficiency. This helps ensure transparency regarding the use of AI in your work.
+
+The goal of this course is to help you develop the skills to solve problems independently. While AI can extend your capabilities, it should be used as a tool for learning, not as a substitute for the problem-solving process. Relying on AI-generated answers or code without engaging in the problem-solving process can hinder your intellectual growth and is considered academically dishonest. As with all academic tools, AI should be used responsibly to support, not replace, your learning.
 
 ### Academic Integrity
 You must never submit the work of someone else as your own. We understand that many of you will find it helpful to work with other students to master the course. But when you collaborate with your study group on homework assignments, you must be a full, active participant in developing the solutions that you submit for credit.
