@@ -42,7 +42,7 @@ jobs:
       # 6️⃣ Build the Jupyter Book (skip notebook execution for speed)
       - name: Build the Jupyter Book
         run: |
-          python -m jupyter_book build --config _config.yml --toc _toc.yml --execute=never
+          jupyter-book build --config _config.yml --toc _toc.yml --execute=never
 
       # 7️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
