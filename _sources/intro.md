@@ -6,7 +6,7 @@
 * *Class Meetings*: 
   * Tuesdays and Thursdays from 1:00 pm to 2:20 pm
   * *Room*: 305 Materials Science & Engineering Building
-* 4 credit hours
+* 3 credit hours
 
 ## <span style="color:Red">Calendar</span>
 __Note__: *This schedule will evolve throughout the semseter*
