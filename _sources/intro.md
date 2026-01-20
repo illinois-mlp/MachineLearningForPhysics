@@ -60,8 +60,8 @@ Upon completion of the course students will be able to:
 ### TAs
 * YuTing Bai
   * email: yutingb2@illinois.edu
-  * Office Hour: Xday X:XXpm - X:XXpm
-  * Location: TBD
+  * Office Hour: Wednsday 3:30pm - 4:30pm
+  * Location: ESB 4121
 
 * Evelyn Wu
   * email: yw114@illinois.edu
