@@ -1,4 +1,4 @@
-anyio==4.12.1
+anyio>=4.5.2,<5
 appnope==0.1.4
 argon2-cffi==25.1.0
 argon2-cffi-bindings==25.1.0
