@@ -63,10 +63,10 @@ Upon completion of the course students will be able to:
   * Office Hour: Xday X:XXpm - X:XXpm
   * Location: TBD
 
-* Evelyn(Yueying) Wu
+* Evelyn Wu
   * email: yw114@illinois.edu
-  * Office Hour: Xday X:XXpm - X:XXpm
-  * Location: TBD
+  * Office Hour: Tuesday 11:00am - 12:00pm
+  * Location: Loomis 275
 
 ## <span style="color:Red">Online Tools</span>
 
