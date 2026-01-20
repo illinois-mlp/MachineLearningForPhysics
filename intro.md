@@ -5,7 +5,7 @@
   * Professor [Mark Neubauer](https://marksneubauer.com)
 * *Class Meetings*: 
   * Tuesdays and Thursdays from 1:00 pm to 2:20 pm
-  * *Room*: 305 Materials Science & Engineering Building
+  * *Room*: [305 Materials Science & Engineering Building](https://answers.uillinois.edu/illinois/page.php?id=57583)
 * 3 credit hours
 
 ## <span style="color:Red">Calendar</span>
