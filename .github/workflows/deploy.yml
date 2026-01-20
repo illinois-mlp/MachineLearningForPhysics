@@ -9,7 +9,7 @@ jobs:
   deploy-book:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout repository
       - uses: actions/checkout@v2
 
       # 2️⃣ Set up Python 3.11
