@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/Nonlinear';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -501,6 +503,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-the-cure-of-dimensionality-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">The Cure of Dimensionality</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-kernel-functions-span"><span style="color:Orange">Kernel Functions</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-kernel-pca-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Kernel PCA</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-locally-linear-embedding-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Locally Linear Embedding</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -515,6 +523,492 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="adapting-linear-methods-to-non-linear-data-and-kernel-functions">
 <h1>Adapting Linear Methods to Non-Linear Data and Kernel Functions<a class="headerlink" href="#adapting-linear-methods-to-non-linear-data-and-kernel-functions" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">manifold</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Helpers for Getting, Loading and Locating Data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">local_path</span> <span class="o">=</span> <span class="s1">&#39;./tmp_data&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">while</span> <span class="n">rc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">line</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+      <span class="n">rc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">RuxntimeError</span><span class="p">(</span><span class="s1">&#39;No such data file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-get-data-span">
+<h2><span style="color:Orange">Get Data</span><a class="headerlink" href="#span-style-color-orange-get-data-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_data.hf5&#39;</span><span class="p">)</span>
+<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_targets.hf5&#39;</span><span class="p">)</span>
+<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_data.hf5&#39;</span><span class="p">)</span>
+<span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_targets.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2026-01-20 01:37:02--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.108.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 19192 (19K) [application/octet-stream]
+Saving to: ‘./tmp_data/circles_data.hf5’
+     0K .......... ........                                   100% 9.47M=0.002s
+2026-01-20 01:37:02 (9.47 MB/s) - ‘./tmp_data/circles_data.hf5’ saved [19192/19192]
+--2026-01-20 01:37:03--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_targets.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15192 (15K) [application/octet-stream]
+Saving to: ‘./tmp_data/circles_targets.hf5’
+     0K .......... ....                                       100% 8.93M=0.002s
+2026-01-20 01:37:03 (8.93 MB/s) - ‘./tmp_data/circles_targets.hf5’ saved [15192/15192]
+--2026-01-20 01:37:03--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 23192 (23K) [application/octet-stream]
+Saving to: ‘./tmp_data/ess_data.hf5’
+     0K .......... .......... ..                              100% 5.76M=0.004s
+2026-01-20 01:37:03 (5.76 MB/s) - ‘./tmp_data/ess_data.hf5’ saved [23192/23192]
+--2026-01-20 01:37:03--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_targets.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15192 (15K) [application/octet-stream]
+Saving to: ‘./tmp_data/ess_targets.hf5’
+     0K .......... ....                                       100% 21.1M=0.001s
+2026-01-20 01:37:03 (21.1 MB/s) - ‘./tmp_data/ess_targets.hf5’ saved [15192/15192]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-load-data-span">
+<h2><span style="color:Orange">Load Data</span><a class="headerlink" href="#span-style-color-orange-load-data-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circles_data</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;circles_data.hf5&#39;</span><span class="p">))</span>
+<span class="n">circles_targets</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;circles_targets.hf5&#39;</span><span class="p">))</span>
+<span class="n">ess_data</span>        <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;ess_data.hf5&#39;</span><span class="p">))</span>
+<span class="n">ess_targets</span>     <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;ess_targets.hf5&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-violet-example-span-span-style-color-orange-the-cure-of-dimensionality-span">
+<h2><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">The Cure of Dimensionality</span><a class="headerlink" href="#span-style-color-violet-example-span-span-style-color-orange-the-cure-of-dimensionality-span" title="Permalink to this heading">#</a></h2>
+<p>We already encountered the “curse of dimensionality” in the context of dimensionality reduction, but sometimes a large dimensionality can actually be a cure. As a motivating example, consider the 2D data plotted below which clearly contains two clusters with highly nonlinear shapes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_circles</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_circles</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">circles_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/79f9b9b1d6427a41b85823098bdb7b2573117e18137270c8dc4ee12a26b82072.png" src="../../_images/79f9b9b1d6427a41b85823098bdb7b2573117e18137270c8dc4ee12a26b82072.png" />
+</div>
+</div>
+<p>The plot above is colored using the true labels stored as column <code class="docutils literal notranslate"><span class="pre">y</span></code> of <code class="docutils literal notranslate"><span class="pre">circles_targets</span></code>.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Use KMeans to fit this data as two clusters and plot the results using <code class="docutils literal notranslate"><span class="pre">plot_circles(labels=fit.labels_)</span></code>.  Are the results surprising?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">circles_data</span><span class="p">)</span>
+<span class="n">plot_circles</span><span class="p">(</span><span class="n">labels</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9170e435487c7c96f242f4089339d5d2d0eadb07bc80d0f99f66538cd05029ba.png" src="../../_images/9170e435487c7c96f242f4089339d5d2d0eadb07bc80d0f99f66538cd05029ba.png" />
+</div>
+</div>
+<p>The clusters found by KMeans are not what we want, but also not surprising given that KMeans partitions samples with a simple dividing line (or hyperplane in higher dimensions).</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Create a new dataset called <code class="docutils literal notranslate"><span class="pre">circles_3d</span></code> that is a copy of <code class="docutils literal notranslate"><span class="pre">circles_data</span></code> but with a new feature added:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x_2 = x_0^2 + x_1^2 \; .
+\]</div>
+<p>Think about how this new feature changes the clustering problem, if at all.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circles_3d</span> <span class="o">=</span> <span class="n">circles_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">circles_3d</span><span class="p">[</span><span class="s1">&#39;x2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">circles_3d</span><span class="p">[</span><span class="s1">&#39;x0&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">circles_3d</span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>By <em>increasing</em> the dimensionality of our data, we have turned a very nonlinear clustering problem into a trivial linear problem!  To see this, plot the data in 3D:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_circles_3d</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_3d</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    
+<span class="n">plot_circles_3d</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">circles_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d5c3aff4560bd3a16aa7311b9dbbfc75ce41e428b5580c828e5318366495449e.png" src="../../_images/d5c3aff4560bd3a16aa7311b9dbbfc75ce41e428b5580c828e5318366495449e.png" />
+</div>
+</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Finally, fit for two KMeans clusters in your new <code class="docutils literal notranslate"><span class="pre">circles_3d</span></code> data and plot the results, as above. Are the results surprising?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">circles_3d</span><span class="p">)</span>
+<span class="n">plot_circles</span><span class="p">(</span><span class="n">labels</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/79f9b9b1d6427a41b85823098bdb7b2573117e18137270c8dc4ee12a26b82072.png" src="../../_images/79f9b9b1d6427a41b85823098bdb7b2573117e18137270c8dc4ee12a26b82072.png" />
+</div>
+</div>
+<p>This is exactly the result we wanted, but not so surprising after seeing the 3D plot above.</p>
+</section>
+<section id="span-style-color-orange-kernel-functions-span">
+<h2><span style="color:Orange">Kernel Functions</span><a class="headerlink" href="#span-style-color-orange-kernel-functions-span" title="Permalink to this heading">#</a></h2>
+<p>There are many classes of problems where nonlinearities in your data can be handled with linear methods by first embedding in a higher dimension.</p>
+<p>The embedding we used in the example above was hand picked for that data, but a generic embedding will often work if it adds enough dimensions.  For example, the function below is commonly used to embed 2D features <span class="math notranslate nohighlight">\((x_0, x_1)\)</span> into a 7D space:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\phi(x_0, x_1) = \begin{pmatrix}
+x_0^2 \\
+x_0 x_1 \\
+x_1 x_0 \\
+x_1^2 \\
+\sqrt{2 c} x_0 \\
+\sqrt{2 c} x_1 \\
+c
+\end{pmatrix}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># Embed X using the poly kernel with n=2, c=1 (see p.16 of CS229 SVM notes)</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x0&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">x0</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">x1</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">x1</span><span class="p">,</span>
+        <span class="n">c</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x0</span>
+    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x0&#39;</span><span class="p">,</span> <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">,</span> <span class="s1">&#39;x4&#39;</span><span class="p">,</span> <span class="s1">&#39;x5&#39;</span><span class="p">,</span> <span class="s1">&#39;x6&#39;</span><span class="p">))</span>
+
+<span class="n">circles_embedded</span> <span class="o">=</span> <span class="n">embed</span><span class="p">(</span><span class="n">circles_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A pairplot of the 7D embedded <code class="docutils literal notranslate"><span class="pre">circles_data</span></code> shows that this is peculiar embedding, but it does allow a linear separation of the two clusters (via its <span class="math notranslate nohighlight">\(x_0^2\)</span> and <span class="math notranslate nohighlight">\(x_1^2\)</span> components). It also seems inefficient, with one feature repeated (<span class="math notranslate nohighlight">\(x_0 x_1\)</span>) and another one constant (<span class="math notranslate nohighlight">\(c\)</span>).  However, this is just the simplest member of a family of embeddings where <span class="math notranslate nohighlight">\(c\)</span> plays an important role in fixing the relative normalization of the different groups of <a class="reference external" href="https://en.wikipedia.org/wiki/Monomial">monomials</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">circles_embedded</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="n">diag_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/567a675538d0f1c19364c088457db9a9c52a6bf19bc9ad4bbea7f33800062618.png" src="../../_images/567a675538d0f1c19364c088457db9a9c52a6bf19bc9ad4bbea7f33800062618.png" />
+</div>
+</div>
+<p>The reason for chosing this peculiar embedding is that it has the following very useful property:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\phi(X_i) \cdot \phi(X_j) = \left(X_i\cdot X_j + c\right)^2 \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span> are arbitrary samples (rows) of our data.</p>
+<p>First, lets check this explicity for <code class="docutils literal notranslate"><span class="pre">circles_data</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LHS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ik,jk-&gt;ij&#39;</span><span class="p">,</span> <span class="n">circles_embedded</span><span class="p">,</span> <span class="n">circles_embedded</span><span class="p">)</span>
+<span class="n">RHS</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ik,jk-&gt;ij&#39;</span><span class="p">,</span> <span class="n">circles_data</span><span class="p">,</span> <span class="n">circles_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">LHS</span><span class="p">,</span> <span class="n">RHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The reason this property is so useful is that the RHS can be evaluated much faster than the LHS and never requires us to actually embed our original samples in the higher-dimensional space.</p>
+<p>Functions on the sample space that evalute a dot product in a different space are called <span style="color:violet">kernel functions</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+K(X_i, X_j) = \phi(X_i) \cdot \phi(X_j) \; .
+\]</div>
+<p>A kernel function is a <a class="reference external" href="https://en.wikipedia.org/wiki/Similarity_measure">similarity measure</a> since it measures the similarity of samples <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, with a maximum value for identical samples and zero for orthogonal samples.  Similarity measures are related to distance measures (e.g. metrics in relativity) but with the opposite behaviour:</p>
+<ul class="simple">
+<li><p>very similar samples: distance ~ 0, large similarity.</p></li>
+<li><p>very different samples: large distance, similarity ~ 0.</p></li>
+</ul>
+<p>The importance of kernel functions is deeper than just their computational efficiency: many algorithms can be expressed using only dot products between samples, and therefore can be applied to data embedded in a higher dimensional without ever doing the embedding.  This insight is known as the <span style="color:violet">kernel trick</span>:</p>
+<ul class="simple">
+<li><p>Pick a kernel function <span class="math notranslate nohighlight">\(K\)</span>.</p></li>
+<li><p>Pick an algorithm that can be expressed using only dot products.</p></li>
+</ul>
+<p>When these pre-requisites are met, the algorithm can be easily and efficiently applied to data that is effectively boosted to a high dimensional space.  As we saw in the example above, the main benefit is that nonlinear data can now be analyzed using linear methods.</p>
+<p>Unfortunately, there are a limited number of suitable kernel functions <span class="math notranslate nohighlight">\(K\)</span> (start with <a class="reference external" href="https://en.wikipedia.org/wiki/Mercer%27s_theorem">Mercer’s theorem</a> if you are interested to learn more about why this is). We have already met the <a class="reference external" href="https://en.wikipedia.org/wiki/Polynomial_kernel">polynomial kernel</a>, which can be written most generally as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+K(X_i, X_j) = \left( \gamma X_i\cdot X_j + c\right)^d \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span>, <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(d\)</span> are all hyperparameters (our earlier example used <span class="math notranslate nohighlight">\(\gamma = 1\)</span>, <span class="math notranslate nohighlight">\(c = 1\)</span> and <span class="math notranslate nohighlight">\(d = 2\)</span>). The <code class="docutils literal notranslate"><span class="pre">metrics.pairwise</span></code> module of sklearn can calculate the matrix of all possible sample dot products for this and other kernels, for example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PK</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pairwise</span><span class="o">.</span><span class="n">polynomial_kernel</span><span class="p">(</span><span class="n">circles_data</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">coef0</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">LHS</span><span class="p">,</span> <span class="n">PK</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Other popular kernels are the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.sigmoid_kernel.html">sigmoid kernel</a>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+K(X_i, X_j) = \tanh\left( \gamma X_i\cdot X_j + c\right) \; ,
+\]</div>
+<p>and the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html">radial basis function (rbf) kernel</a> (whose embedding is infinite dimensional due to the infinite series expansion of <span class="math notranslate nohighlight">\(e^{-x}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
+\]</div>
+</section>
+<section id="span-style-color-violet-example-span-span-style-color-orange-kernel-pca-span">
+<h2><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Kernel PCA</span><a class="headerlink" href="#span-style-color-violet-example-span-span-style-color-orange-kernel-pca-span" title="Permalink to this heading">#</a></h2>
+<p>As an example of the <strong>kernel trick</strong>, the PCA algorithm can be adapted to use only dot products to project each sample onto the higher-dimensional eigenvectors. The resulting <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.KernelPCA.html">KernelPCA algorithm</a> is used just like the linear decomposition methods, but with some additional hyperparameters, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">KernelPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>One limitation of the kernel trick for PCA is that the original samples cannot be reconstructed using only dot products, so reconstruction of the latent variables becomes a challenging new problem that requires a <a class="reference external" href="http://papers.nips.cc/paper/2417-learning-to-find-pre-images.pdf">separate supervised machine learning approach</a>. Fortunately, the sklearn implementation takes care of all of this for you:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">KernelPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">reconstructed</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will use the following function to demonstrate the KernelPCA method, which allows you to set the <span class="math notranslate nohighlight">\(\gamma\)</span> hyperparameter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">kpca_demo</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">circles_data</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">circles_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Use PCA with RBF kernel.</span>
+    <span class="n">kpca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">KernelPCA</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">reduced</span> <span class="o">=</span> <span class="n">kpca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># Plot 2D latent space.Results are very sensitive to choice of gamma!</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reduced</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">reduced</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">,</span> <span class="s1">&#39;$\gamma=</span><span class="si">{:.1f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gamma</span><span class="p">),</span>
+             <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result is spectacular: our nonlinear data is completely linearized when transformed to a 2D latent variable space. Note that, in this example, we are not performing any overall dimensionality reduction: we started with 2 features, implicitly expanded to an infinite number of features using the RBF kernel, then shrank back down to two latent variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kpca_demo</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ed0abf14514afcbfcbf47101f835daac9ccbf9861e6ce8261da280ee00ddfed6.png" src="../../_images/ed0abf14514afcbfcbf47101f835daac9ccbf9861e6ce8261da280ee00ddfed6.png" />
+</div>
+</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: The results above are quite sensitive to the choice of hyperparameters. To explore this, rerun <code class="docutils literal notranslate"><span class="pre">kpca_demo</span></code> with different values of <span class="math notranslate nohighlight">\(\gamma\)</span>.  What do you conclude?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">gamma</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">):</span>
+    <span class="n">kpca_demo</span><span class="p">(</span><span class="n">gamma</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9f510be86618aa0ddc89969589d385528ff7c7710167070ad4c70b14fc5f360a.png" src="../../_images/9f510be86618aa0ddc89969589d385528ff7c7710167070ad4c70b14fc5f360a.png" />
+<img alt="../../_images/687d4a4b029f0c391cd3d1b9883958d92b9a08bb23d0ce3078277650f5f70087.png" src="../../_images/687d4a4b029f0c391cd3d1b9883958d92b9a08bb23d0ce3078277650f5f70087.png" />
+<img alt="../../_images/7c4d4e6a816872cdcd21c6ecdece96aba8c49167a61bb1c4f63e2dcdbe47d0a0.png" src="../../_images/7c4d4e6a816872cdcd21c6ecdece96aba8c49167a61bb1c4f63e2dcdbe47d0a0.png" />
+<img alt="../../_images/4c43e57b5c089b597075583bd863cac31811ed0d59181d798bc95a9fc75c37fc.png" src="../../_images/4c43e57b5c089b597075583bd863cac31811ed0d59181d798bc95a9fc75c37fc.png" />
+</div>
+</div>
+<p>The results are finely tuned and small variations in <span class="math notranslate nohighlight">\(\gamma\)</span> can destroy the linear separation. Sensitivity to <span class="math notranslate nohighlight">\(\gamma\)</span> is not too surprising since it is a parameter of the kernel function.  However, KernelPCA results can also change dramatically with a small change to the input data.  See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10530">this github issue</a> for details.</p>
+</section>
+<section id="span-style-color-violet-example-span-span-style-color-orange-locally-linear-embedding-span">
+<h2><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Locally Linear Embedding</span><a class="headerlink" href="#span-style-color-violet-example-span-span-style-color-orange-locally-linear-embedding-span" title="Permalink to this heading">#</a></h2>
+<p>The <strong>kernel trick</strong> is not the only way to harness linear methods to nonlinear problems. For our next example, we consider <span style="color:violet">locally linear embedding</span> (LLE), which is a type of <a class="reference external" href="https://scikit-learn.org/stable/modules/manifold.html">manifold learning</a>, i.e., a dimensionality reduction method for data on a non-linear manifold.</p>
+<p>First lets look at some 3D data that is clearly 2D, but requires a nonlinear decomposition.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/17ad59800bfb70ef43c0ec2e3bd91244c618d876ad35d906f1ddae1be5bec2f2.png" src="../../_images/17ad59800bfb70ef43c0ec2e3bd91244c618d876ad35d906f1ddae1be5bec2f2.png" />
+</div>
+</div>
+<p>The pairplot is confusing until you see the following plot where, in addition, each point is colored according to its true 1D coordinate along the main direction of the manifold (stored in the ‘y’ column of <code class="docutils literal notranslate"><span class="pre">ess_targets</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_ess_3d</span><span class="p">():</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">ess_data</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">)</span>
+    
+<span class="n">plot_ess_3d</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ae963ce20c89278e20c615264c3a61215fa140633703ae0fe5739b3f7fedf3a3.png" src="../../_images/ae963ce20c89278e20c615264c3a61215fa140633703ae0fe5739b3f7fedf3a3.png" />
+</div>
+</div>
+<p>LLE takes advantage of the fact that the manifold is “flat” in the neighborhood of each sample, so can be described locally with a linear approximation.  We construct such a local linear approximation to a sample <span class="math notranslate nohighlight">\(\vec{X}_i\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\vec{X}_i \simeq \sum_{j\ne i} W_{ij} \vec{X}_j \; ,
+\]</div>
+<p>where the sum is restricted to the <span class="math notranslate nohighlight">\(n\)</span> “nearest” samples to <span class="math notranslate nohighlight">\(X_i\)</span>. In other words, we find the set of weights <span class="math notranslate nohighlight">\(W_{ij}\)</span> that best predict where sample <span class="math notranslate nohighlight">\(i\)</span> based on its nearest neighbors.</p>
+<p>We can do this for all samples simultaneously by minimizing the goal function</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sum_i \left|\, \vec{X}_i - \sum_{j\ne i} W_{ij} \vec{X}_j\,\right|^2
+\]</div>
+<p>with respect to the <span class="math notranslate nohighlight">\(n\times N\)</span> weights in <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p>The key insight of LLE is that once a suitable set of weights <span class="math notranslate nohighlight">\(W\)</span> have been found:</p>
+<ul class="simple">
+<li><p>they fully describe the manifold’s local geometry, and</p></li>
+<li><p>this geometry can then be <em>transferred</em> to another (smaller) space of latent variables.</p></li>
+</ul>
+<p>The way this works is we minimize a second, very similar, goal function</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sum_i \left|\, \vec{Y}_i - \sum_{j\ne i} W_{ij} \vec{Y}_j\,\right|^2
+\]</div>
+<p>where each sample <span class="math notranslate nohighlight">\(X_i\)</span> has a corresponding <span class="math notranslate nohighlight">\(Y_i\)</span> but these can have completely different dimensions!  Note that although the goals functions look similar, the parameters we minimize are different each time:</p>
+<ul class="simple">
+<li><p>We first minimize with respect to the elements of <span class="math notranslate nohighlight">\(W\)</span>, with the input data <span class="math notranslate nohighlight">\(X\)</span> fixed.</p></li>
+<li><p>Next, we minimize with respect to the latent variables <span class="math notranslate nohighlight">\(Y_i\)</span>, with the weight matrix <span class="math notranslate nohighlight">\(W\)</span> fixed.</p></li>
+</ul>
+<p>This method was discovered in 2000 and the <a class="reference external" href="https://doi.org/10.1126/science.290.5500.2323">original paper</a> is quite accessible.</p>
+<p>The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.manifold.LocallyLinearEmbedding.html">LLE method</a> lives in the sklearn <code class="docutils literal notranslate"><span class="pre">manifold</span></code> module and follows the usual calling pattern, with two significant hyperparameters:</p>
+<ol class="arabic simple">
+<li><p>The number of nearest neighbors to use to calculate <span class="math notranslate nohighlight">\(W\)</span>.</p></li>
+<li><p>The number of latent variables (components) to use in <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+</ol>
+<p>In order to get reproducible results, you should also pass in a RandomState.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After projecting into the latent space, we find that the S-shape has been effectively flattened out, although not to a nice rectangle:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/46ac748ee8d1973a841ff11c6555fc45e1891b5e19ce34f323ae4a5c2b9e7395.png" src="../../_images/46ac748ee8d1973a841ff11c6555fc45e1891b5e19ce34f323ae4a5c2b9e7395.png" />
+</div>
+</div>
+<p>Compare this with what a linear PCA finds:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">Y2</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5436b0f8eb7f4fee459d9007ab9f1a8f9ab0bb40fa4af680118329c1d373a490.png" src="../../_images/5436b0f8eb7f4fee459d9007ab9f1a8f9ab0bb40fa4af680118329c1d373a490.png" />
+</div>
+</div>
+<p>Or a KernelPCA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">KernelPCA</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">Y3</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y3</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y3</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d819be865d5ec89ebaeec0321a325684b41942beda00a4a42a44de104e6a0c21.png" src="../../_images/d819be865d5ec89ebaeec0321a325684b41942beda00a4a42a44de104e6a0c21.png" />
+</div>
+</div>
+<p>The sklearn LLE class also provides some variants of LLE that can perform even better on this problem, for example (note the larger <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> required - another example fine tuning):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ltsa&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">Y4</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">ess_data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y4</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y4</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">ess_targets</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/20d816b67d512b452a73fb950045591bb367284087d682efaa3fc7a403b4c3dc.png" src="../../_images/20d816b67d512b452a73fb950045591bb367284087d682efaa3fc7a403b4c3dc.png" />
+</div>
+</div>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -588,6 +1082,12 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-the-cure-of-dimensionality-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">The Cure of Dimensionality</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-kernel-functions-span"><span style="color:Orange">Kernel Functions</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-kernel-pca-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Kernel PCA</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-violet-example-span-span-style-color-orange-locally-linear-embedding-span"><span style="color:violet">EXAMPLE</span>: <span style="color:Orange">Locally Linear Embedding</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
