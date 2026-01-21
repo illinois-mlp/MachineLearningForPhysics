@@ -114,6 +114,8 @@ In-person attendence for each lecture is mandatory (unless otherwise informed by
 * Homework: 40%
 * Projects: 45%
 
+Official grades for the course assignments will be maintained at the [online MyPhysics Gradebook](https://my.physics.illinois.edu/gradebook).
+
 Letter grades will be assigned as follows:
 
 * A+  &nbsp; [97.0 - 100.0]
