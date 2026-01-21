@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -675,9 +677,9 @@ document.write(`
 <section id="span-style-color-orange-format-span">
 <h3><span style="color:Orange">Format</span><a class="headerlink" href="#span-style-color-orange-format-span" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p>This course will consist of two meetings per week: one lecture period and one in-class practical session.</p></li>
-<li><p>Lecture: Tuesday from 1:00 pm to 2:20 pm in 3101 Sidney Lu MEB</p></li>
-<li><p>Practical Session: Thursday from 1:00 pm to 2:20 pm in 3101 Sidney Lu MEB</p></li>
+<li><p>This course will consist of two meetings per week: one lecture period and one in-class mixed lecture/practical session.</p></li>
+<li><p>Lecture: Tuesday from 1:00 pm to 2:20 pm in <a class="reference external" href="https://answers.uillinois.edu/illinois/page.php?id=57583">305 Materials Science &amp; Engineering Building</a></p></li>
+<li><p>Lecture/Practical Session: Thursday from 1:00 pm to 2:20 pm in <a class="reference external" href="https://answers.uillinois.edu/illinois/page.php?id=57583">305 Materials Science &amp; Engineering Building</a></p></li>
 </ul>
 </section>
 <section id="span-style-color-orange-instructor-span">
@@ -803,19 +805,19 @@ document.write(`
 </section>
 <section id="span-style-color-orange-pong-span">
 <h3><span style="color:Orange">Pong</span><a class="headerlink" href="#span-style-color-orange-pong-span" title="Permalink to this heading">#</a></h3>
-<p>Each sample is a 2D trajectory of a ping-pong ball launched with different initial conditions.  Trajectories are calculated with an analytic model that includes a linear drag term.  There are three clusters of trajectories with similar initial conditions, identified by target ‘grp’. Target ‘th0’ gives the true initial launch angle in degrees. Target <code class="docutils literal notranslate"><span class="pre">hit</span></code> target identifies trajectories that pass through a fixed “hoop” at x=0.5.</p>
+<p>Each sample is a 2D trajectory of a ping-pong ball launched with different initial conditions.  Trajectories are calculated with an analytic model that includes a linear drag term.  There are three clusters of trajectories with similar initial conditions, identified by target <code class="docutils literal notranslate"><span class="pre">grp</span></code>. Target <code class="docutils literal notranslate"><span class="pre">th0</span></code> gives the true initial launch angle in degrees. Target <code class="docutils literal notranslate"><span class="pre">hit</span></code> target identifies trajectories that pass through a fixed “hoop” at <span class="math notranslate nohighlight">\(x\)</span>=0.5.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Reading HF5 into a Pandas dataframe.</p></li>
 <li><p>Dimensionality reduction (20D points lie on a 2D manifold).</p></li>
-<li><p>Nonlinear regression (target ‘th0’).</p></li>
-<li><p>Clustering (target ‘grp’).</p></li>
-<li><p>Classification (target ‘hit’).</p></li>
+<li><p>Nonlinear regression (target <code class="docutils literal notranslate"><span class="pre">th0</span></code>).</p></li>
+<li><p>Clustering (target <code class="docutils literal notranslate"><span class="pre">grp</span></code>).</p></li>
+<li><p>Classification (target <code class="docutils literal notranslate"><span class="pre">hit</span></code>).</p></li>
 </ul>
 </section>
 <section id="span-style-color-orange-cosmo-span">
 <h3><span style="color:Orange">Cosmo</span><a class="headerlink" href="#span-style-color-orange-cosmo-span" title="Permalink to this heading">#</a></h3>
-<p>Each sample is LCDM cosmology defined by input parameters ‘omega_b’, ‘omega_cdm’, ‘ln10^{10}A_s’ and ‘H0’.  Corresponding targets are values of ‘sigma8’, ‘rd’, ‘DA(0.57)/rd’, ‘DH(0.57)/rd’, ‘DA(2.34)/rd’, and ‘DH(2.34)/rd’ calculated with CLASS. The CLASS calculations are relatively slow (~1 hr per 1K), so the goal of this dataset is to train a faster emulator. Input values are uniformly distributed on a grid centered on the Planck2015 best fit result and spanning +/-10 sigmas.</p>
+<p>Each sample is LCDM cosmology defined by input parameters <code class="docutils literal notranslate"><span class="pre">omega_b</span></code>, <code class="docutils literal notranslate"><span class="pre">omega_cdm</span></code>, <code class="docutils literal notranslate"><span class="pre">ln10^{10}A_s</span></code> and <code class="docutils literal notranslate"><span class="pre">H0</span></code>.  Corresponding targets are values of <code class="docutils literal notranslate"><span class="pre">sigma8</span></code>, <code class="docutils literal notranslate"><span class="pre">rd</span></code>, <code class="docutils literal notranslate"><span class="pre">DA(0.57)/rd</span></code>, <code class="docutils literal notranslate"><span class="pre">DH(0.57)/rd</span></code>, <code class="docutils literal notranslate"><span class="pre">DA(2.34)/rd</span></code>, and <code class="docutils literal notranslate"><span class="pre">DH(2.34)/rd</span></code> calculated with CLASS. The CLASS calculations are relatively slow (~1 hr per 1K), so the goal of this dataset is to train a faster emulator. Input values are uniformly distributed on a grid centered on the Planck2015 best fit result and spanning +/-10 sigmas.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Dimensionality reduction.</p></li>
@@ -835,7 +837,7 @@ document.write(`
 </section>
 <section id="span-style-color-orange-clusters-span">
 <h3><span style="color:Orange">Clusters</span><a class="headerlink" href="#span-style-color-orange-clusters-span" title="Permalink to this heading">#</a></h3>
-<p>Demo files for clustering: 4 in 2D with 2 clusters, and 1 in 3D with 3 clusters. Data features are ‘x0’, ‘x1’ (‘x2’) and target is ‘y’.</p>
+<p>Demo files for clustering: 4 in 2D with 2 clusters, and 1 in 3D with 3 clusters. Data features are <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">x1</span></code> (<code class="docutils literal notranslate"><span class="pre">x2</span></code>) and target is <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Clustering.</p></li>
@@ -853,7 +855,7 @@ document.write(`
 </section>
 <section id="span-style-color-orange-circles-span">
 <h3><span style="color:Orange">Circles</span><a class="headerlink" href="#span-style-color-orange-circles-span" title="Permalink to this heading">#</a></h3>
-<p>The circles files contain 500 2D points on two concentric circles with feature names ‘x0’, ‘x1’ and target integer ‘y’ = 0,1 indicating which circle they belong to.</p>
+<p>The circles files contain 500 2D points on two concentric circles with feature names <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">x1</span></code> and target integer <code class="docutils literal notranslate"><span class="pre">y</span></code> = 0,1 indicating which circle they belong to.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Linear clustering in higher dimensions.</p></li>
@@ -863,7 +865,7 @@ document.write(`
 </section>
 <section id="span-style-color-orange-ess-span">
 <h3><span style="color:Orange">Ess</span><a class="headerlink" href="#span-style-color-orange-ess-span" title="Permalink to this heading">#</a></h3>
-<p>The ess files contain 500 3D points on a 2D sheet bent into an S-shape with features named ‘x0’, ‘x1’, ‘x2’ and target value ‘y’ from 0-1 giving the coordinate along the sheet.</p>
+<p>The ess files contain 500 3D points on a 2D sheet bent into an S-shape with features named <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">x1</span></code>, <code class="docutils literal notranslate"><span class="pre">x2</span></code> and target value <code class="docutils literal notranslate"><span class="pre">y</span></code> from 0-1 giving the coordinate along the sheet.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Manifold learning.</p></li>
@@ -872,7 +874,7 @@ document.write(`
 </section>
 <section id="span-style-color-orange-blobs-span">
 <h3><span style="color:Orange">Blobs</span><a class="headerlink" href="#span-style-color-orange-blobs-span" title="Permalink to this heading">#</a></h3>
-<p>The blobs files contain 2K 3D points sampled from 3 Gaussian blobs with features named ‘x0’, ‘x1’, ‘x2’ and target value ‘y’ = 0, 1, 2 giving their generated group membership.</p>
+<p>The blobs files contain 2K 3D points sampled from 3 Gaussian blobs with features named <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">x1</span></code>, <code class="docutils literal notranslate"><span class="pre">x2</span></code> and target value <code class="docutils literal notranslate"><span class="pre">y</span></code> = 0, 1, 2 giving their generated group membership.</p>
 <p>Applications:</p>
 <ul class="simple">
 <li><p>Clustering.</p></li>
