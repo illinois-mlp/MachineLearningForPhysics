@@ -32,13 +32,13 @@ __Note__: *This schedule will evolve throughout the semseter*
 
 ## <span style="color:Red">Overview</span>
 
-### Course Overview
+### <span style="color:Orange">Course Overview</span>
 
 Welcome! This course presents an introduction to modern data science, artificial intelligence (AI) and machine learning (ML) from a physics perspective. Students will learn the basic concepts, tools, and methods of AI/ML applied to scientific challenges. Students will study how  physics knowledge can be incorporated into AI/ML models to improve their learning efficiency, performance, and interpretability. Topics covered include artificial neural networks (NNs), AI/ML-enhanced modeling/simulation, deep generative models, simulation-free inference, variational inference, convolutional NNs, recursive NNs, geometric deep learning, attention mechanism and transformers, auto-encoders, and anomaly detection. Students will also explore the different types of learning from data, including supervised, semi-supervised and unsupervised learning. Applications to physics will be emphasized.
 
 You can find more detail in the [Calendar](#calendar) section on the specific topics that will be covered in this course. 
 
-### Learning Objectives
+### <span style="color:Orange">Learning Objectives</span>
 
 Upon completion of the course students will be able to:
 1. Understand the basic concepts and tools of modern data science, artificial intelligence (AI), and machine learning (ML)
@@ -46,18 +46,18 @@ Upon completion of the course students will be able to:
 3. Physics for AI/ML: Learn how to include physics knowledge into AI/ML models to improve their learning efficiency, performance and interpretability
 
 ## <span style="color:Red">Course Logistics</span>
-### Format
+### <span style="color:Orange">Format</span>
 * This course will consist of two meetings per week: one lecture period and one in-class practical session.
 * Lecture: Tuesday from 1:00 pm to 2:20 pm in 3101 Sidney Lu MEB
 * Practical Session: Thursday from 1:00 pm to 2:20 pm in 3101 Sidney Lu MEB
 
-### Instructor
+### <span style="color:Orange">Instructor</span>
 * Professor [Mark Neubauer](https://marksneubauer.com)
   * email: msn@illinois.edu
   * Office Hour: Thursday 5:30pm - 6:30 pm
   * Location: [Zoom](https://illinois.zoom.us/j/85255234488?pwd=eTF3NDVtU1FSZXNpK3BFck9vKzNZdz09)
 
-### TAs
+### <span style="color:Orange">TAs</span>
 * YuTing Bai
   * email: yutingb2@illinois.edu
   * Office Hour: Wednsday 3:30pm - 4:30pm
@@ -72,20 +72,21 @@ Upon completion of the course students will be able to:
 
 There are several online tools you will need to use as part of this course.
 
-### Campuswire
+### <span style="color:Orange">Campuswire</span>
 We will use [Campuswire](https://campuswire.com) as a class forum, a way to message the course staff and each other, and a means to submit your attendance question.
 
-### Google Colab
+### <span style="color:Orange">Google Colab</span>
 Using [Google Colab](https://colab.research.google.com), you will be able to program your code in a Jupyter notebook and submit it for us to grade. Please sign in to your Illinois account.  While working on the assignment, you will share each of your colab assignments with the professor and the TA (but no one else).
-### Gradescope
+
+### <span style="color:Orange">Gradescope</span>
 On [Gradescope](https://www.gradescope.com), you will submit your assignments and find your graded assignments.
 
 ## <span style="color:Red">Coursework</span>
 
-### Quizzes
+### <span style="color:Orange">Quizzes</span>
 In-class quizzes will be given ~weekly. These are designed to test your conceptual knowledge about the topics discussed in the course.
 
-### Homework Assignments
+### <span style="color:Orange">Homework Assignments</span>
 You will be assigned weekly homework assignments that will put into practice what you learned in lecture for the week. 
 * You will work on the assignments both during the in-class session on Thursdays and as homework.
 * You will submit your __executed__ (i.e. with "RunAll") homework notebook via [Gradescope](https://www.gradescope.com).
@@ -94,12 +95,18 @@ You will be assigned weekly homework assignments that will put into practice wha
 * You may collaborate on assignments but must submit your own work.
 * Graded homework will be available through [Gradescope](https://www.gradescope.com).
 
-### Projects
+### <span style="color:Orange">Projects</span>
 At appropriate times throughout the course, you will select from a list of projects that involve demonstrating and extending your work in class by doing something cool and interesting in data analysys. You must work alone on this (i.e. without collaboration). 
 
 For projects you will put together a Jupyter notebook that demonstrates your project. The notebook should have code and demonstrate the task but also be written in an expository way that other students could, in principle, read and learn from. It is submitted in an analogous way as the regular course assignments.
 
 Each project notebook must be submitted via Gradescope for grading. There is no late submissions allowed for the projects. If you do not submit in Gradescope by the deadline, you will receive a zero grade for that project. There are no exceptions to this policy. 
+
+### <span style="color:Orange">Class Attendence</span>
+In-person attendence for each lecture is mandatory (unless otherwise informed by the instructor, e.g. due to weather-related issues). Your attendence is automatically recorded by joining the lecture live room on Campuswire. The alorithm used by Campuswire is the following:
+1. *Present*: - Participated for more than 75% of the event duration - Arrived within 10 minutes of the start time - Did not leave more than 10 minutes before the end time 
+2. *Late*: - Participated for at least the event duration minus 25 minutes (15 minutes late arrival + 10 minutes early exit) - Arrived within 15 minutes of the start time 
+3. *Absent*: - Does not meet the criteria for Present or Late
 
 ## <span style="color:Red">Grading</span>
 * Class attendence and participation: 5%
@@ -127,7 +134,7 @@ Letter grades will be assigned as follows:
 
 In this section we describe the datasets used in the lectures and homeworks. There are additional scientific datasets used for the projects that as described in the projects area of the course page. 
 
-### Line
+### <span style="color:Orange">Line</span>
 
 A simple line with errors.  Columns are `x`, `y` and `dy`.  The reported errors are systematically too large by a constant factor, and are set to NaN for a fraction of the samples.  Target is `y_true`.
 
@@ -137,7 +144,7 @@ Applications:
 - Handling missing values.
 - Handling (overestimated) input errors.
 
-### Pong
+### <span style="color:Orange">Pong</span>
 
 Each sample is a 2D trajectory of a ping-pong ball launched with different initial conditions.  Trajectories are calculated with an analytic model that includes a linear drag term.  There are three clusters of trajectories with similar initial conditions, identified by target 'grp'. Target 'th0' gives the true initial launch angle in degrees. Target `hit` target identifies trajectories that pass through a fixed "hoop" at x=0.5.
 
@@ -148,7 +155,7 @@ Applications:
 - Clustering (target 'grp').
 - Classification (target 'hit').
 
-### Cosmo
+### <span style="color:Orange">Cosmo</span>
 
 Each sample is LCDM cosmology defined by input parameters 'omega_b', 'omega_cdm', 'ln10^{10}A_s' and 'H0'.  Corresponding targets are values of 'sigma8', 'rd', 'DA(0.57)/rd', 'DH(0.57)/rd', 'DA(2.34)/rd', and 'DH(2.34)/rd' calculated with CLASS. The CLASS calculations are relatively slow (~1 hr per 1K), so the goal of this dataset is to train a faster emulator. Input values are uniformly distributed on a grid centered on the Planck2015 best fit result and spanning +/-10 sigmas.
 
@@ -156,7 +163,7 @@ Applications:
  - Dimensionality reduction.
  - Approximately linear regression.
 
-### Higgs
+### <span style="color:Orange">Higgs</span>
 
 Data from the [2014 Higgs Challenge](https://www.kaggle.com/c/higgs-boson) which is now archived [here](http://opendata.cern.ch/record/328).
 
@@ -167,14 +174,14 @@ Applications:
  - Train/test/split.
  - Classification.
 
-### Clusters
+### <span style="color:Orange">Clusters</span>
 
 Demo files for clustering: 4 in 2D with 2 clusters, and 1 in 3D with 3 clusters. Data features are 'x0', 'x1' ('x2') and target is 'y'.
 
 Applications:
  - Clustering.
 
-### Spectra
+### <span style="color:Orange">Spectra</span>
 
 Spectra containing two peaks with variable flux and fixed locations and widths, over a constant background, with Poisson noise added.  Data features are fluxes in wavelength bins (with un-named columns).  Targets are the true fluxes in each peak ('flux1', 'flux2').
 
@@ -183,7 +190,7 @@ Applications:
  - Clustering.
  - Regression.
 
-### Circles
+### <span style="color:Orange">Circles</span>
 
 The circles files contain 500 2D points on two concentric circles with feature names 'x0', 'x1' and target integer 'y' = 0,1 indicating which circle they belong to.
 
@@ -192,7 +199,7 @@ Applications:
  - Kernel trick.
  - Kernel PCA.
 
-### Ess
+### <span style="color:Orange">Ess</span>
 
 The ess files contain 500 3D points on a 2D sheet bent into an S-shape with features named 'x0', 'x1', 'x2' and target value 'y' from 0-1 giving the coordinate along the sheet.
 
@@ -200,7 +207,7 @@ Applications:
  - Manifold learning.
  - Locally linear embedding (LLE).
 
-### Blobs
+### <span style="color:Orange">Blobs</span>
 
 The blobs files contain 2K 3D points sampled from 3 Gaussian blobs with features named 'x0', 'x1', 'x2' and target value 'y' = 0, 1, 2 giving their generated group membership.
 
@@ -210,26 +217,26 @@ Applications:
 
 ## <span style="color:Red">Policies</span>
 
-### Covid 
+### <span style="color:Orange">Covid</span>
 
 * Policies as it relates to COVID-19 can be found at https://covid19.illinois.edu
 * If you feel ill or are unable to come to class or complete class assignments due to issues related to COVID-19, including but not limited to testing positive yourself, feeling ill, caring for a family member with COVID-19, or having unexpected child-care obligations, you should contact your instructor immediately, and you are encouraged to copy your academic advisor. 
   
-### About using generative AI for homework and projects
+### <span style="color:Orange">About using generative AI for homework and projects</span>
 Generative AI systems, such as ChatGPT, can be valuable tools for learning and idea refinement in this course. You are encouraged to use AI as a tutor to clarify programming concepts, debug code, or explore ideas through iterative conversations—similar to working with a peer, TA, or instructor. However, AI should not be used to directly copy-paste solutions or complete homework problems.
 
 If you use generative AI, you must credit the source by including a comment with the original source of any code or information you incorporate into your work. Additionally, provide a brief description of how the AI was used, such as for debugging a function, refining the methodology, or improving the code efficiency. This helps ensure transparency regarding the use of AI in your work.
 
 The goal of this course is to help you develop the skills to solve problems independently. While AI can extend your capabilities, it should be used as a tool for learning, not as a substitute for the problem-solving process. Relying on AI-generated answers or code without engaging in the problem-solving process can hinder your intellectual growth and is considered academically dishonest. As with all academic tools, AI should be used responsibly to support, not replace, your learning.
 
-### Academic Integrity
+### <span style="color:Orange">Academic Integrity</span>
 You must never submit the work of someone else as your own. We understand that many of you will find it helpful to work with other students to master the course. But when you collaborate with your study group on homework assignments, you must be a full, active participant in developing the solutions that you submit for credit. Unlike the homework, your project assignments are to be done on your own without collaboration.
 
 It is cheating to receive answers from another student and then use them as your own. It is cheating to submit as your own work solutions that you find by searching on the internet or using online generative AI tools such as ChatGPT, or by subscribing to an online service that suborns cheating. It is cheating—and a violation of U.S. copyright law—to give (or sell) course material to someone else who intends to redistribute and/or sell it.
 
 All activities in this course, are subject to the Academic Integrity rules as described in [Article 1, Part 4, Academic Integrity](https://studentcode.illinois.edu/article1/part4/1-401), of the [Student Code](https://studentcode.illinois.edu).
 
-### Sexual Misconduct Reporting Obligation
+### <span style="color:Orange">Sexual Misconduct Reporting Obligation</span>
 
 The University of Illinois is committed to combating sexual misconduct. Faculty and staff members are required to report any instances of sexual misconduct to the University's Title IX Office. In turn, an individual with the Title IX Office will provide information about rights and options, including accommodations, support services, the campus disciplinary process, and law enforcement options.
 
@@ -254,18 +261,18 @@ To obtain disability-related academic adjustments and/or auxiliary aids, student
 
 ## <span style="color:Red">Resources</span>
 
-### Useful references
+### <span style="color:Orange">Useful references</span>
 * [Python Programming Resources](https://wiki.python.org/moin/BeginnersGuide/Programmers)
 * [Google's Python Programming Class](https://developers.google.com/edu/python)
 
-### Quick guides
+### <span style="color:Orange">Quick guides</span>
 * [Linux Bash Shell](https://learncodethehardway.org/unix/bash_cheat_sheet.pdf)
 * [Github](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
 * [Python](http://ehmatthes.github.io/pcc/cheatsheets/README.html)
 * [Markdown](http://packetlife.net/media/library/16/Markdown.pdf)
 * Jupyter Notebooks: [Interface](http://datacamp-community.s3.amazonaws.com/48093c40-5303-45f4-bbf9-0c96c0133c40), [Keyboard shortcuts](https://www.cheatography.com/weidadeyue/cheat-sheets/jupyter-notebook/pdf_bw)
 
-### Tools
+### <span style="color:Orange">Tools</span>
 * Sharing code snippets: [gist.github.com](https://gist.github.com/)
 * Asking questions of broader development community: [Stack Overflow](http://stackoverflow.com/)
 
