@@ -74,6 +74,7 @@ There are several online tools you will need to use as part of this course.
 
 ### Campuswire
 We will use [Campuswire](https://campuswire.com) as a class forum, a way to message the course staff and each other, and a means to submit your attendance question.
+
 ### Google Colab
 Using [Google Colab](https://colab.research.google.com), you will be able to program your code in a Jupyter notebook and submit it for us to grade. Please sign in to your Illinois account.  While working on the assignment, you will share each of your colab assignments with the professor and the TA (but no one else).
 ### Gradescope
@@ -222,9 +223,9 @@ If you use generative AI, you must credit the source by including a comment with
 The goal of this course is to help you develop the skills to solve problems independently. While AI can extend your capabilities, it should be used as a tool for learning, not as a substitute for the problem-solving process. Relying on AI-generated answers or code without engaging in the problem-solving process can hinder your intellectual growth and is considered academically dishonest. As with all academic tools, AI should be used responsibly to support, not replace, your learning.
 
 ### Academic Integrity
-You must never submit the work of someone else as your own. We understand that many of you will find it helpful to work with other students to master the course. But when you collaborate with your study group on homework assignments, you must be a full, active participant in developing the solutions that you submit for credit.
+You must never submit the work of someone else as your own. We understand that many of you will find it helpful to work with other students to master the course. But when you collaborate with your study group on homework assignments, you must be a full, active participant in developing the solutions that you submit for credit. Unlike the homework, your project assignments are to be done on your own without collaboration.
 
-It is cheating to receive answers from another student and then use them as your own. It is cheating to submit as your own work solutions that you find by searching on the worldwide web (though see "About using code you find on the web") or using online tools such as ChatGPT, or by subscribing to an online service that suborns cheating. It is cheating—and a violation of U.S. copyright law—to give (or sell) course material to someone else who intends to redistribute and/or sell it.
+It is cheating to receive answers from another student and then use them as your own. It is cheating to submit as your own work solutions that you find by searching on the internet or using online generative AI tools such as ChatGPT, or by subscribing to an online service that suborns cheating. It is cheating—and a violation of U.S. copyright law—to give (or sell) course material to someone else who intends to redistribute and/or sell it.
 
 All activities in this course, are subject to the Academic Integrity rules as described in [Article 1, Part 4, Academic Integrity](https://studentcode.illinois.edu/article1/part4/1-401), of the [Student Code](https://studentcode.illinois.edu).
 
