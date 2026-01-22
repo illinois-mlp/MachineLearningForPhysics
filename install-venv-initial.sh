@@ -48,7 +48,7 @@ source .venv/bin/activate
 # Upgrade pip and build tools
 pip install --upgrade pip wheel setuptools
 
-# Install core packages (Physics + Data Science)
+# Install core packages
 pip install numpy pandas matplotlib scipy tables seaborn scikit-learn jupyter notebook jupyter-book
 
 # Configure VS Code for this .venv
