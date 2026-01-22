@@ -527,7 +527,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
@@ -609,7 +609,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2294e7f093fc863d35327aba40c3ce2abb3704d81b7d5b86000d8e2196be438f.png" src="../../_images/2294e7f093fc863d35327aba40c3ce2abb3704d81b7d5b86000d8e2196be438f.png" />
+<img alt="../../_images/23ae873ed905c703f89bd927549b3fcc54ac73b869e4406498fd77469a3229f6.png" src="../../_images/23ae873ed905c703f89bd927549b3fcc54ac73b869e4406498fd77469a3229f6.png" />
 </div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.errorbar</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.legend</span></code> to reproduce the plot below that shows the first 12 rows of <code class="docutils literal notranslate"><span class="pre">line_data</span></code>:</p>
@@ -627,7 +627,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2a316d887ad26c04d3544d87224a600b18d7fefa57a55de3c03b1242f9459b27.png" src="../../_images/2a316d887ad26c04d3544d87224a600b18d7fefa57a55de3c03b1242f9459b27.png" />
+<img alt="../../_images/e1c897a73df405e4f3f8f5fcda0a49ab1dd58f4e136ad0005c36255617e0ecb2.png" src="../../_images/e1c897a73df405e4f3f8f5fcda0a49ab1dd58f4e136ad0005c36255617e0ecb2.png" />
 </div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.xlabel</span></code>, <code class="docutils literal notranslate"><span class="pre">plt.ylabel</span></code> and <code class="docutils literal notranslate"><span class="pre">plt.colorbar</span></code> to reproduce the plot below that shows the 2D distribution of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> in <code class="docutils literal notranslate"><span class="pre">line_data</span></code>, color coded by each row’s <span class="math notranslate nohighlight">\(dy\)</span> value. Note how this type of plot reveals correlations between a pair of columns that cannot be deduced from their 1D histograms.</p>
@@ -643,7 +643,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8313cd27d9b1d889bded17d142423540543e92b271d3bd350cf501800871addd.png" src="../../_images/8313cd27d9b1d889bded17d142423540543e92b271d3bd350cf501800871addd.png" />
+<img alt="../../_images/c75f2f60bf45418deede1779b32ccfb922af76736aa9ce46b4e0edf65f9ae168.png" src="../../_images/c75f2f60bf45418deede1779b32ccfb922af76736aa9ce46b4e0edf65f9ae168.png" />
 </div>
 </div>
 </section>
@@ -664,7 +664,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8453b5a0ef56effc43c87500e8623f7449ec3d16dd49a88cfeadff931716746c.png" src="../../_images/8453b5a0ef56effc43c87500e8623f7449ec3d16dd49a88cfeadff931716746c.png" />
+<img alt="../../_images/3acda0c3a4cf4b0a127edece2e2cfadca74272f8343a7ae33bcaf557b3d788bb.png" src="../../_images/3acda0c3a4cf4b0a127edece2e2cfadca74272f8343a7ae33bcaf557b3d788bb.png" />
 </div>
 </div>
 <p>The Seaborn version of <code class="docutils literal notranslate"><span class="pre">plt.scatter</span></code> is <code class="docutils literal notranslate"><span class="pre">sns.jointplot</span></code>, which shows 1D histograms along the sides comes in several kinds for displaying the central 2D information, e.g.</p>
@@ -675,7 +675,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d5e714f4bf9d6fad73f0e0c7a7158d6ff523f7abd68dba86c5f29dd59cc3cba3.png" src="../../_images/d5e714f4bf9d6fad73f0e0c7a7158d6ff523f7abd68dba86c5f29dd59cc3cba3.png" />
+<img alt="../../_images/fe85795a2895a1bf5c9f5ffe4ea54f50e8c480bcf258fef3007b217df3890e08.png" src="../../_images/fe85795a2895a1bf5c9f5ffe4ea54f50e8c480bcf258fef3007b217df3890e08.png" />
 </div>
 </div>
 <p>Note how the axis labels are generated automatically.</p>
@@ -692,7 +692,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e7ee96af96663f714853a1f338749b77e5208acc2fe5a371bcbbf3195220c759.png" src="../../_images/e7ee96af96663f714853a1f338749b77e5208acc2fe5a371bcbbf3195220c759.png" />
+<img alt="../../_images/ec8adc96727840fcd2a5fb07534f28992a779170f3f7c8a1e7ba5579fe27c84d.png" src="../../_images/ec8adc96727840fcd2a5fb07534f28992a779170f3f7c8a1e7ba5579fe27c84d.png" />
 </div>
 </div>
 <p>The resulting grid shows a 2D scatter plot each pair (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) of columns with 1D histograms on the diagonal (<span class="math notranslate nohighlight">\(i\)</span>=<span class="math notranslate nohighlight">\(j\)</span>). Note that the (<span class="math notranslate nohighlight">\(j\)</span>,<span class="math notranslate nohighlight">\(i\)</span>) scatter plot is just (<span class="math notranslate nohighlight">\(i\)</span>,<span class="math notranslate nohighlight">\(j\)</span>) transposed, so this format is not very space efficient.</p>
@@ -705,7 +705,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b9c86583d358d023db62b978d5ecfdb9bd43efc8f604acff1680fb309775d154.png" src="../../_images/b9c86583d358d023db62b978d5ecfdb9bd43efc8f604acff1680fb309775d154.png" />
+<img alt="../../_images/161ba609b494919f92bb7c28584054d5697c753ff9d0d13965535b7fa367db78.png" src="../../_images/161ba609b494919f92bb7c28584054d5697c753ff9d0d13965535b7fa367db78.png" />
 </div>
 </div>
 <p>The three clusters that appear in each scatter plot suggest that there are three types of observations (rows) in the dataset.  We can confirm this using the combined data+targets dataset and color-coding each row according to each target <code class="docutils literal notranslate"><span class="pre">grp</span></code> value:</p>
@@ -717,7 +717,7 @@ File ‘./tmp_data/pong_targets.hf5’ already there; not retrieving.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8bd258a4f26e1d4a297a543f50be5aa6303c1a46604f45b79131a8c7e8b3b1a8.png" src="../../_images/8bd258a4f26e1d4a297a543f50be5aa6303c1a46604f45b79131a8c7e8b3b1a8.png" />
+<img alt="../../_images/16148f0da23b1c9e72b60ab1b278a7b6f6dba0aa5ccd1bfe368e8cfc33ddaaee.png" src="../../_images/16148f0da23b1c9e72b60ab1b278a7b6f6dba0aa5ccd1bfe368e8cfc33ddaaee.png" />
 </div>
 </div>
 <p>We will soon learn how to automatically assign rows to the clusters you discover during visualization, i.e., without “cheating” with the target <code class="docutils literal notranslate"><span class="pre">grp</span></code> column.</p>
