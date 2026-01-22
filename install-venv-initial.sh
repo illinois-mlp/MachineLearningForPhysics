@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== MachineLearningForPhysics: VENV Setup ==="
+echo "=== VENV Setup ==="
 
 # Detect OS
 OS="$(uname -s)"
