@@ -3,70 +3,64 @@ set -e
 
 echo "=== MachineLearningForPhysics: VENV Setup ==="
 
-OS="$(uname)"
+# Detect OS
+OS="$(uname -s)"
 echo "Detected OS: $OS"
 
-# --- macOS setup ---
 if [[ "$OS" == "Darwin" ]]; then
     echo "Setting up for macOS..."
     
-    # Ensure Python 3.11 is installed via Homebrew
-    if ! command -v python3.11 >/dev/null 2>&1; then
-        echo "Installing Python 3.11 via Homebrew..."
-        brew install python@3.11
+    # Ensure Homebrew is installed
+    if ! command -v brew &>/dev/null; then
+        echo "Homebrew not found. Installing..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-    
-    python3.11 -m venv .venv
-    source .venv/bin/activate
-    
-    # Install HDF5 if not already installed
-    brew list hdf5 >/dev/null 2>&1 || brew install hdf5
+
+    # Install Python 3.11 via Homebrew
+    brew install python@3.11 || true
+
+    PYTHON_BIN="$(brew --prefix python@3.11)/bin/python3.11"
+    VENV_PYTHON="$PYTHON_BIN"
+
+    # Install HDF5 for PyTables
+    brew install hdf5 || true
     export HDF5_DIR="$(brew --prefix hdf5)"
 
-# --- Linux / Ubuntu setup ---
 elif [[ "$OS" == "Linux" ]]; then
     echo "Setting up for Ubuntu/Linux..."
     
-    # Use system Python 3.13 for Ubuntu 23.10+
-    if ! command -v python3 >/dev/null 2>&1; then
-        echo "Please install Python 3 first!"
-        exit 1
-    fi
-
-    PYTHON_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
-    echo "System Python version: $PYTHON_VERSION"
-
-    python3 -m venv .venv
-    source .venv/bin/activate
+    sudo apt update
+    sudo apt install -y software-properties-common curl build-essential
+    
+    # Ubuntu 24.x has python3.13 available
+    PYTHON_BIN="/usr/bin/python3.13"
+    sudo apt install -y python3.13 python3.13-venv python3.13-dev python3-pip
 
 else
     echo "Unsupported OS: $OS"
     exit 1
 fi
 
-# --- Common setup ---
-echo "Upgrading pip, wheel, setuptools..."
+# Create .venv
+$PYTHON_BIN -m venv .venv
+source .venv/bin/activate
+
+# Upgrade pip and build tools
 pip install --upgrade pip wheel setuptools
 
-echo "Installing Python packages..."
+# Install core packages (Physics + Data Science)
 pip install numpy pandas matplotlib scipy tables seaborn scikit-learn jupyter notebook jupyter-book
 
-# Optional: install requirements-freeze.txt if present
-if [[ -f requirements-freeze.txt ]]; then
-    echo "Installing pinned dependencies from requirements-freeze.txt..."
-    pip install -r requirements-freeze.txt
-else
-    echo "No requirements-freeze.txt found — skipping"
-fi
-
-# --- Configure VS Code ---
+# Configure VS Code for this .venv
 mkdir -p .vscode
 cat > .vscode/settings.json <<EOL
 {
     "python.pythonPath": "\${workspaceFolder}/.venv/bin/python",
-    "python.terminal.activateEnvironment": true
+    "python.terminal.activateEnvironment": true,
+    "jupyter.notebookFileRoot": "\${workspaceFolder}"
 }
 EOL
 
-echo "✅ Setup complete! Activate with: source .venv/bin/activate"
-
+echo "✅ Setup complete!"
+echo "Activate the environment with: source .venv/bin/activate"
+echo "VS Code is configured to use this .venv for terminals and notebooks."
