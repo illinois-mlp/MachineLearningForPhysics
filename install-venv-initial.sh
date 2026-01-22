@@ -28,7 +28,13 @@ if [[ "$OS" == "Darwin" ]]; then
 
 elif [[ "$OS" == "Linux" ]]; then
     echo "Setting up for Ubuntu/Linux..."
-    
+
+    # Remove unsupported PPAs (e.g. deadsnakes on questing)
+    if ls /etc/apt/sources.list.d/deadsnakes* 1>/dev/null 2>&1; then
+        echo "Removing unsupported deadsnakes PPA..."
+        sudo rm -f /etc/apt/sources.list.d/deadsnakes*
+    fi
+
     sudo apt update
     sudo apt install -y software-properties-common curl build-essential
     
