@@ -572,38 +572,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2026-01-21 19:54:26--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.108.133, 185.199.111.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 19192 (19K) [application/octet-stream]
-Saving to: ‘./tmp_data/circles_data.hf5’
-     0K .......... ........                                   100% 4.84M=0.004s
-2026-01-21 19:54:26 (4.84 MB/s) - ‘./tmp_data/circles_data.hf5’ saved [19192/19192]
---2026-01-21 19:54:26--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/circles_targets.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 15192 (15K) [application/octet-stream]
-Saving to: ‘./tmp_data/circles_targets.hf5’
-     0K .......... ....                                       100% 5.94M=0.002s
-2026-01-21 19:54:26 (5.94 MB/s) - ‘./tmp_data/circles_targets.hf5’ saved [15192/15192]
---2026-01-21 19:54:26--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.109.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 23192 (23K) [application/octet-stream]
-Saving to: ‘./tmp_data/ess_data.hf5’
-     0K .......... .......... ..                              100% 6.07M=0.004s
-2026-01-21 19:54:26 (6.07 MB/s) - ‘./tmp_data/ess_data.hf5’ saved [23192/23192]
---2026-01-21 19:54:26--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/ess_targets.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.108.133, 185.199.109.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 15192 (15K) [application/octet-stream]
-Saving to: ‘./tmp_data/ess_targets.hf5’
-     0K .......... ....                                       100% 5.10M=0.003s
-2026-01-21 19:54:27 (5.10 MB/s) - ‘./tmp_data/ess_targets.hf5’ saved [15192/15192]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File ‘./tmp_data/circles_data.hf5’ already there; not retrieving.
+File ‘./tmp_data/circles_targets.hf5’ already there; not retrieving.
+File ‘./tmp_data/ess_data.hf5’ already there; not retrieving.
+File ‘./tmp_data/ess_targets.hf5’ already there; not retrieving.
 </pre></div>
 </div>
 </div>
@@ -658,7 +630,7 @@ Saving to: ‘./tmp_data/ess_targets.hf5’
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9a525881675bf910285bc7c2d6c84e009b4d393b09401d58ab2a7f53e7816cd4.png" src="../../_images/9a525881675bf910285bc7c2d6c84e009b4d393b09401d58ab2a7f53e7816cd4.png" />
+<img alt="../../_images/a572a98d1a0d6f7baa399d3b4a930bca219aaa286a465c67df4b484b0a85fc59.png" src="../../_images/a572a98d1a0d6f7baa399d3b4a930bca219aaa286a465c67df4b484b0a85fc59.png" />
 </div>
 </div>
 <p>The clusters found by KMeans are not what we want, but also not surprising given that KMeans partitions samples with a simple dividing line (or hyperplane in higher dimensions).</p>
@@ -753,7 +725,7 @@ c
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/36cb462db9191d5ed6cbe160093116385a0262bd37e9f42918cbd5eabe14a1d6.png" src="../../_images/36cb462db9191d5ed6cbe160093116385a0262bd37e9f42918cbd5eabe14a1d6.png" />
+<img alt="../../_images/bb85479d89b5d7c43a40e8294058422899309e7278467535bc779e860ae66fc3.png" src="../../_images/bb85479d89b5d7c43a40e8294058422899309e7278467535bc779e860ae66fc3.png" />
 </div>
 </div>
 <p>The reason for chosing this peculiar embedding is that it has the following very useful property:</p>
@@ -852,7 +824,7 @@ K(X_i, X_j) = \exp\left(-\gamma \left| X_i - X_j\right|^2\right) \; .
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
 &lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
-/tmp/ipykernel_36833/1846596932.py:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
+/tmp/ipykernel_43025/1846596932.py:12: SyntaxWarning: invalid escape sequence &#39;\g&#39;
   plt.text(0.02, 0.92, &#39;$\gamma={:.1f}$&#39;.format(gamma),
 </pre></div>
 </div>
