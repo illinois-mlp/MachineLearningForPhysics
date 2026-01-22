@@ -547,7 +547,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
@@ -595,86 +595,93 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2026-01-20 01:32:38--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_a_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.108.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2026-01-21 19:50:35--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_a_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 19192 (19K) [application/octet-stream]
 Saving to: ‘./tmp_data/cluster_a_data.hf5’
-     0K .......... ........                                   100% 5.51M=0.003s
-2026-01-20 01:32:38 (5.51 MB/s) - ‘./tmp_data/cluster_a_data.hf5’ saved [19192/19192]
---2026-01-20 01:32:38--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_b_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+     0K .......... ........                                   100% 4.66M=0.004s
+2026-01-21 19:50:36 (4.66 MB/s) - ‘./tmp_data/cluster_a_data.hf5’ saved [19192/19192]
+--2026-01-21 19:50:36--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_b_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 19192 (19K) [application/octet-stream]
 Saving to: ‘./tmp_data/cluster_b_data.hf5’
-     0K .......... ........                                   100% 14.1M=0.001s
-2026-01-20 01:32:39 (14.1 MB/s) - ‘./tmp_data/cluster_b_data.hf5’ saved [19192/19192]
---2026-01-20 01:32:39--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_c_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
+     0K .......... ........                                   100% 4.05M=0.005s
+2026-01-21 19:50:36 (4.05 MB/s) - ‘./tmp_data/cluster_b_data.hf5’ saved [19192/19192]
+--2026-01-21 19:50:36--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_c_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.111.133, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 19192 (19K) [application/octet-stream]
 Saving to: ‘./tmp_data/cluster_c_data.hf5’
-     0K .......... ........                                   100% 9.04M=0.002s
-2026-01-20 01:32:39 (9.04 MB/s) - ‘./tmp_data/cluster_c_data.hf5’ saved [19192/19192]
-File ‘./tmp_data/cluster_d_data.hf5’ already there; not retrieving.
---2026-01-20 01:32:39--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_3d_data.hf5
+     0K .......... ........                                   100% 7.82M=0.002s
+2026-01-21 19:50:36 (7.82 MB/s) - ‘./tmp_data/cluster_c_data.hf5’ saved [19192/19192]
+--2026-01-21 19:50:36--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_d_data.hf5
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 19192 (19K) [application/octet-stream]
+Saving to: ‘./tmp_data/cluster_d_data.hf5’
+     0K .......... ........                                   100% 4.71M=0.004s
+2026-01-21 19:50:36 (4.71 MB/s) - ‘./tmp_data/cluster_d_data.hf5’ saved [19192/19192]
+--2026-01-21 19:50:36--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cluster_3d_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.110.133, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 23192 (23K) [application/octet-stream]
 Saving to: ‘./tmp_data/cluster_3d_data.hf5’
-     0K .......... .......... ..                              100% 26.6M=0.001s
-2026-01-20 01:32:39 (26.6 MB/s) - ‘./tmp_data/cluster_3d_data.hf5’ saved [23192/23192]
---2026-01-20 01:32:39--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cosmo_data.hf5
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
+     0K .......... .......... ..                              100% 4.86M=0.005s
+2026-01-21 19:50:36 (4.86 MB/s) - ‘./tmp_data/cluster_3d_data.hf5’ saved [23192/23192]
+--2026-01-21 19:50:36--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/cosmo_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.111.133, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 2007192 (1.9M) [application/octet-stream]
 Saving to: ‘./tmp_data/cosmo_data.hf5’
-     0K .......... .......... .......... .......... ..........  2% 2.31M 1s
-    50K .......... .......... .......... .......... ..........  5% 6.98M 1s
-   100K .......... .......... .......... .......... ..........  7% 3.50M 1s
-   150K .......... .......... .......... .......... .......... 10% 7.00M 0s
-   200K .......... .......... .......... .......... .......... 12% 6.03M 0s
-   250K .......... .......... .......... .......... .......... 15% 6.16M 0s
-   300K .......... .......... .......... .......... .......... 17% 6.07M 0s
-   350K .......... .......... .......... .......... .......... 20% 9.89M 0s
-   400K .......... .......... .......... .......... .......... 22% 3.73M 0s
-   450K .......... .......... .......... .......... .......... 25% 8.14M 0s
-   500K .......... .......... .......... .......... .......... 28% 8.23M 0s
-   550K .......... .......... .......... .......... .......... 30% 5.35M 0s
-   600K .......... .......... .......... .......... .......... 33% 4.93M 0s
-   650K .......... .......... .......... .......... .......... 35% 9.85M 0s
-   700K .......... .......... .......... .......... .......... 38% 6.93M 0s
-   750K .......... .......... .......... .......... .......... 40% 6.10M 0s
-   800K .......... .......... .......... .......... .......... 43% 8.11M 0s
-   850K .......... .......... .......... .......... .......... 45% 9.74M 0s
-   900K .......... .......... .......... .......... .......... 48% 7.00M 0s
-   950K .......... .......... .......... .......... .......... 51% 6.07M 0s
-  1000K .......... .......... .......... .......... .......... 53% 9.70M 0s
-  1050K .......... .......... .......... .......... .......... 56% 8.21M 0s
-  1100K .......... .......... .......... .......... .......... 58% 5.46M 0s
-  1150K .......... .......... .......... .......... .......... 61% 7.76M 0s
-  1200K .......... .......... .......... .......... .......... 63% 10.2M 0s
-  1250K .......... .......... .......... .......... .......... 66% 8.23M 0s
-  1300K .......... .......... .......... .......... .......... 68% 6.07M 0s
-  1350K .......... .......... .......... .......... .......... 71% 9.87M 0s
-  1400K .......... .......... .......... .......... .......... 73% 9.75M 0s
-  1450K .......... .......... .......... .......... .......... 76% 6.79M 0s
-  1500K .......... .......... .......... .......... .......... 79% 4.87M 0s
-  1550K .......... .......... .......... .......... .......... 81% 10.3M 0s
-  1600K .......... .......... .......... .......... .......... 84% 12.2M 0s
-  1650K .......... .......... .......... .......... .......... 86% 12.2M 0s
-  1700K .......... .......... .......... .......... .......... 89% 11.9M 0s
-  1750K .......... .......... .......... .......... .......... 91% 5.33M 0s
-  1800K .......... .......... .......... .......... .......... 94% 8.33M 0s
-  1850K .......... .......... .......... .......... .......... 96% 12.6M 0s
-  1900K .......... .......... .......... .......... .......... 99% 9.78M 0s
-  1950K ..........                                            100%  203K=0.3s
-2026-01-20 01:32:40 (6.81 MB/s) - ‘./tmp_data/cosmo_data.hf5’ saved [2007192/2007192]
+     0K .......... .......... .......... .......... ..........  2% 2.05M 1s
+    50K .......... .......... .......... .......... ..........  5% 8.15M 1s
+   100K .......... .......... .......... .......... ..........  7% 2.32M 1s
+   150K .......... .......... .......... .......... .......... 10% 16.4M 0s
+   200K .......... .......... .......... .......... .......... 12% 2.87M 0s
+   250K .......... .......... .......... .......... .......... 15% 23.6M 0s
+   300K .......... .......... .......... .......... .......... 17% 16.9M 0s
+   350K .......... .......... .......... .......... .......... 20% 3.73M 0s
+   400K .......... .......... .......... .......... .......... 22% 12.5M 0s
+   450K .......... .......... .......... .......... .......... 25% 12.1M 0s
+   500K .......... .......... .......... .......... .......... 28% 3.03M 0s
+   550K .......... .......... .......... .......... .......... 30% 36.4M 0s
+   600K .......... .......... .......... .......... .......... 33% 19.3M 0s
+   650K .......... .......... .......... .......... .......... 35% 24.4M 0s
+   700K .......... .......... .......... .......... .......... 38% 22.6M 0s
+   750K .......... .......... .......... .......... .......... 40% 4.50M 0s
+   800K .......... .......... .......... .......... .......... 43% 6.99M 0s
+   850K .......... .......... .......... .......... .......... 45% 23.1M 0s
+   900K .......... .......... .......... .......... .......... 48% 24.5M 0s
+   950K .......... .......... .......... .......... .......... 51% 16.9M 0s
+  1000K .......... .......... .......... .......... .......... 53% 16.3M 0s
+  1050K .......... .......... .......... .......... .......... 56% 24.5M 0s
+  1100K .......... .......... .......... .......... .......... 58% 4.77M 0s
+  1150K .......... .......... .......... .......... .......... 61% 24.8M 0s
+  1200K .......... .......... .......... .......... .......... 63% 25.7M 0s
+  1250K .......... .......... .......... .......... .......... 66% 24.4M 0s
+  1300K .......... .......... .......... .......... .......... 68% 24.5M 0s
+  1350K .......... .......... .......... .......... .......... 71% 23.7M 0s
+  1400K .......... .......... .......... .......... .......... 73% 17.1M 0s
+  1450K .......... .......... .......... .......... .......... 76% 16.4M 0s
+  1500K .......... .......... .......... .......... .......... 79% 48.8M 0s
+  1550K .......... .......... .......... .......... .......... 81% 4.83M 0s
+  1600K .......... .......... .......... .......... .......... 84% 16.8M 0s
+  1650K .......... .......... .......... .......... .......... 86% 16.2M 0s
+  1700K .......... .......... .......... .......... .......... 89% 24.7M 0s
+  1750K .......... .......... .......... .......... .......... 91% 16.3M 0s
+  1800K .......... .......... .......... .......... .......... 94% 15.7M 0s
+  1850K .......... .......... .......... .......... .......... 96% 16.2M 0s
+  1900K .......... .......... .......... .......... .......... 99% 24.5M 0s
+  1950K ..........                                            100% 18.9T=0.2s
+2026-01-21 19:50:37 (9.25 MB/s) - ‘./tmp_data/cosmo_data.hf5’ saved [2007192/2007192]
 </pre></div>
 </div>
 </div>
@@ -1031,7 +1038,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c22b10bf42b25390c16d4a1db46a0082db2a326c0d049f5b18098050a0c4c276.png" src="../../_images/c22b10bf42b25390c16d4a1db46a0082db2a326c0d049f5b18098050a0c4c276.png" />
+<img alt="../../_images/dc0c6f4367d4cf048af6088adc3d217f7c55e386cbaaba55dad14f3534e517b2.png" src="../../_images/dc0c6f4367d4cf048af6088adc3d217f7c55e386cbaaba55dad14f3534e517b2.png" />
 </div>
 </div>
 <hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Use KMeans to fit the three other (b,c,d) 2D datasets with <code class="docutils literal notranslate"><span class="pre">n_clusters=2</span></code> and generate similar plots. Which fits give the expected results?</p>
@@ -1043,7 +1050,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5b471390ec028e8a3dfae94c1f109dd2ad8939d488308976de927d87feb1fc83.png" src="../../_images/5b471390ec028e8a3dfae94c1f109dd2ad8939d488308976de927d87feb1fc83.png" />
+<img alt="../../_images/62b189e871ae647873d1dde334ef7fe3779dc3626619ece464011ed835bb8c10.png" src="../../_images/62b189e871ae647873d1dde334ef7fe3779dc3626619ece464011ed835bb8c10.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1054,7 +1061,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2aacddc20fa4e36adb0901787afce53c528482ff33016df38fbb58d5ca4b15ff.png" src="../../_images/2aacddc20fa4e36adb0901787afce53c528482ff33016df38fbb58d5ca4b15ff.png" />
+<img alt="../../_images/52de452e8e6049217422be2379707d18b0b20db9f0874348da09ce88e352c742.png" src="../../_images/52de452e8e6049217422be2379707d18b0b20db9f0874348da09ce88e352c742.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1065,7 +1072,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/07515ad5da07e07ff822504e186f7c66b583c4b4cb3a64168cd142bc265d9faf.png" src="../../_images/07515ad5da07e07ff822504e186f7c66b583c4b4cb3a64168cd142bc265d9faf.png" />
+<img alt="../../_images/5531ff0194c03c2b202834317c8afd771d4fdd2f60a44be720dac45f26830f4e.png" src="../../_images/5531ff0194c03c2b202834317c8afd771d4fdd2f60a44be720dac45f26830f4e.png" />
 </div>
 </div>
 <p>The fit results look reasonable for (b), although the sharp dividing line between the two clusters looks artificial.</p>
@@ -1097,7 +1104,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4060a504b12ec35e24eeaf3b0bdb361775a9f0b2bc3519e2516f2c8d76cefc87.png" src="../../_images/4060a504b12ec35e24eeaf3b0bdb361775a9f0b2bc3519e2516f2c8d76cefc87.png" />
+<img alt="../../_images/633bca2acf4e74a6c86909a1fd68d4dea079c092eb1130bb38cbb26a3ddaaca7.png" src="../../_images/633bca2acf4e74a6c86909a1fd68d4dea079c092eb1130bb38cbb26a3ddaaca7.png" />
 </div>
 </div>
 <p>The plot above makes a convincing case (to me, at least) that there are three clusters.  However, the “truth” in this case is two clusters.</p>
@@ -1115,7 +1122,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/617ddec4895ddf592072a41f32f468cf14f8e4dbcf2bb91dd4d49341887ba489.png" src="../../_images/617ddec4895ddf592072a41f32f468cf14f8e4dbcf2bb91dd4d49341887ba489.png" />
+<img alt="../../_images/edd97191ac695cf22666122453797a993125866af705ebdd2e98cd72da74d063.png" src="../../_images/edd97191ac695cf22666122453797a993125866af705ebdd2e98cd72da74d063.png" />
 </div>
 </div>
 <p>These clusters look quite arbitrary in each of the 2D scatter plots. However, they are actually very well separated, as we can see if we rotate the axes:</p>
@@ -1132,7 +1139,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/04f882734129cad559d8aa4f9d30b34acb4d480002fa2fc8843591f5734c2d83.png" src="../../_images/04f882734129cad559d8aa4f9d30b34acb4d480002fa2fc8843591f5734c2d83.png" />
+<img alt="../../_images/aacde2921e3d74f0bb5d28fe75cb51ea98ae43e4a5771f69fb63acfa475a5fb0.png" src="../../_images/aacde2921e3d74f0bb5d28fe75cb51ea98ae43e4a5771f69fb63acfa475a5fb0.png" />
 </div>
 </div>
 <p>This example is contrived, but the lesson is that clustering algorithms can discover higher-dimensional structure that you might miss with visualization.</p>
@@ -1207,7 +1214,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b3fe3c9b5d510a890593e713db7c8faa5d160870ec1996d021b85ca911310f0f.png" src="../../_images/b3fe3c9b5d510a890593e713db7c8faa5d160870ec1996d021b85ca911310f0f.png" />
+<img alt="../../_images/1d4083181fee1d4329cdf5d3d90ca66006d1d2f1d5bd3c684eb49b0587b281ba.png" src="../../_images/1d4083181fee1d4329cdf5d3d90ca66006d1d2f1d5bd3c684eb49b0587b281ba.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1218,7 +1225,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a9950b1b3062baa0426d87a8dd7f05ebb039864115759ace06a772acac09c692.png" src="../../_images/a9950b1b3062baa0426d87a8dd7f05ebb039864115759ace06a772acac09c692.png" />
+<img alt="../../_images/6124e9e7bd457ed333f7dcbf3d6faad187d6c6f75260375c589310a1f3bb6fab.png" src="../../_images/6124e9e7bd457ed333f7dcbf3d6faad187d6c6f75260375c589310a1f3bb6fab.png" />
 </div>
 </div>
 <hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Use <code class="docutils literal notranslate"><span class="pre">cluster.DBSCAN</span></code> to fit <code class="docutils literal notranslate"><span class="pre">c_data</span></code> and <code class="docutils literal notranslate"><span class="pre">d_data</span></code> and display the results.  Adjust the default hyperparameters, if necessary, to obtain the expected results.</p>
@@ -1230,7 +1237,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b3fe3c9b5d510a890593e713db7c8faa5d160870ec1996d021b85ca911310f0f.png" src="../../_images/b3fe3c9b5d510a890593e713db7c8faa5d160870ec1996d021b85ca911310f0f.png" />
+<img alt="../../_images/060170b786b457e9d1c70499b9ffe0914f9f0e666b8815e4cab0eee8cdbdd7c7.png" src="../../_images/060170b786b457e9d1c70499b9ffe0914f9f0e666b8815e4cab0eee8cdbdd7c7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1241,7 +1248,7 @@ W^T W = M^{-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/115e2f5302d3dad8e464d8b891257ed91e1fb32d829dfa6946c29c8cca3a5001.png" src="../../_images/115e2f5302d3dad8e464d8b891257ed91e1fb32d829dfa6946c29c8cca3a5001.png" />
+<img alt="../../_images/78cf20264cc34c8e906680482709e4f06bd12b49f093a33ce3ed1f77be629c46.png" src="../../_images/78cf20264cc34c8e906680482709e4f06bd12b49f093a33ce3ed1f77be629c46.png" />
 </div>
 </div>
 </section>
