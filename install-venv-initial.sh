@@ -62,5 +62,5 @@ cat > .vscode/settings.json <<EOL
 EOL
 
 echo "✅ Setup complete!"
-echo "Activate the environment with: source .venv/bin/activate"
+echo "Activate the environment anytime with: source .venv/bin/activate"
 echo "VS Code is configured to use this .venv for terminals and notebooks."
