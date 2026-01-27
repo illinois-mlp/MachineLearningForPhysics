@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/ProbabilityTheory';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -501,6 +503,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-axioms-of-probability-span"><span style="color:Orange">Axioms of Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-disjoint-vs-independence-span"><span style="color:Orange">Disjoint vs. Independence</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-conditional-probability-and-bayes-rule-span"><span style="color:Orange">Conditional Probability and Bayes’ Rule</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-random-variables-span"><span style="color:Orange">Random Variables</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-cumulative-distribution-function-span"><span style="color:Orange">Cumulative Distribution Function</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-probability-density-function-span"><span style="color:Orange">Probability Density Function</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-sampling-a-probability-density-span"><span style="color:Orange">Sampling a Probability Density</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-joint-marginal-and-conditional-probability-density-span"><span style="color:Orange">Joint, Marginal and Conditional Probability Density</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-practical-probability-calculus-span"><span style="color:Orange">Practical Probability Calculus</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -515,6 +527,550 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="probability-theory">
 <h1>Probability Theory<a class="headerlink" href="#probability-theory" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-introduction-span">
+<h2><span style="color:Orange">Introduction</span><a class="headerlink" href="#span-style-color-orange-introduction-span" title="Permalink to this heading">#</a></h2>
+<p>Probability theory is a mathematical language for reasoning about uncertain outcomes. Possible sources of uncertainty include:</p>
+<ul class="simple">
+<li><p>Inherent randomness in a physical process, e.g., arising from <a class="reference external" href="http://algassert.com/quirk#circuit=%7B%22cols%22:%5B%5D%7D">quantum phenomena</a> or a noisy measurement process.</p></li>
+<li><p>Incomplete information, e.g., due to a measurement that only observes the partial state of a system or a model that only represents partial state.</p></li>
+</ul>
+<p>Probability theory enables us to build quantitative models that describe our data, both seen and not yet seen, so plays an important role in machine learning. A precise formulation is very technical since it must deal with edge cases that we never encounter in practical work. We will skip over most of the technical details here while still introducing the main concepts that are useful to understand the interpretation of measurements.</p>
+</section>
+<section id="span-style-color-orange-axioms-of-probability-span">
+<h2><span style="color:Orange">Axioms of Probability</span><a class="headerlink" href="#span-style-color-orange-axioms-of-probability-span" title="Permalink to this heading">#</a></h2>
+<p>There are different (equally valid) approaches to formulating a theory of probability. Here we follow the approach of Kolmogorov based on set theory, which has three ingredients:</p>
+<ol class="arabic simple">
+<li><p>A <span style="color:violet">sample space</span> <span class="math notranslate nohighlight">\(\Omega\)</span> that defines the set of all possible uncertain outcomes.</p></li>
+<li><p>An <span style="color:violet">event space</span> <span class="math notranslate nohighlight">\(\cal F\)</span> of combinations of outcomes (subsets of <span class="math notranslate nohighlight">\(\Omega\)</span>).</p></li>
+<li><p>A <span style="color:violet">probability measure</span> <span class="math notranslate nohighlight">\(P: {\cal F}\rightarrow [0,1]\)</span> that assigns numerical probabilities to each event.</p></li>
+</ol>
+<p>The tuple <span class="math notranslate nohighlight">\((\Omega, {\cal F}, P)\)</span> is a <span style="color:violet">probability space</span>.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXAMPLE</span>:</strong></em> Consider an electron with the following <strong><span style="color:LightGreen">probability space</span></strong>:</p>
+<ol class="arabic simple">
+<li><p>We are interested in a single electron that we can only observe via its spin. Therefore the <strong><span style="color:LightGreen">sample space</span></strong> consists of its two possible spins: <span class="math notranslate nohighlight">\(\uparrow\)</span> and <span class="math notranslate nohighlight">\(\downarrow\)</span>.</p></li>
+<li><p>Our <strong><span style="color:LightGreen">event space</span></strong> consists of all subsets of the sample space: { }, {<span class="math notranslate nohighlight">\(\uparrow\)</span>}, {<span class="math notranslate nohighlight">\(\downarrow\)</span>}, {<span class="math notranslate nohighlight">\(\uparrow, \downarrow\)</span>}.</p></li>
+<li><p>Our <strong><span style="color:LightGreen">probability measure</span></strong> assigns the probabilities: <span class="math notranslate nohighlight">\(P(\{\,\}) = 0\)</span>, <span class="math notranslate nohighlight">\(P(\{\uparrow\}) = P(\{\downarrow\}) = 0.5\)</span>, <span class="math notranslate nohighlight">\(P(\{\uparrow, \downarrow\}) = 1\)</span>.</p></li>
+</ol>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>A <strong><span style="color:Violet">probability space</span></strong> defines an uncertain process that you can think of as a black box that generate outcomes <span class="math notranslate nohighlight">\(\omega_1, \omega_2, \ldots \in \Omega\)</span>. After each outcome <span class="math notranslate nohighlight">\(\omega_i\)</span>, all events containing <span class="math notranslate nohighlight">\(\omega_i\)</span> are said to have <strong>occurred</strong> (so, in general, multiple events occur simultaneously).  Events <span class="math notranslate nohighlight">\(A, B, \ldots\)</span> occur with probabilities <span class="math notranslate nohighlight">\(P(A), P(B), \ldots\)</span>, so the probability measure <span class="math notranslate nohighlight">\(P\)</span> encodes the dynamics of the uncertain process.</p>
+<p>Recall the basic operations of set theory that we will use frequently below. The box represents the set of all possible outcomes, <span class="math notranslate nohighlight">\(\Omega\)</span>, with individual outcomes <span class="math notranslate nohighlight">\(\omega\)</span> indicated with dots. The labels show some possible subsets within the event space, constructed using the union (<span class="math notranslate nohighlight">\(\cup\)</span>), intersection (<span class="math notranslate nohighlight">\(\cap\)</span>) and complement (<span class="math notranslate nohighlight">\(\setminus\)</span>) operations (in logic, <em>union</em> and <em>intersection</em> are called OR and AND, respectively, and the <em>complement</em> can be thought of as the NOT IN operation):</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/ProbabilityTheory-SetOperations.png" width=800></img>
+</div><p>Should the sample space for a coin toss include the possibility of the coin landing on its edge?  It is up to you.</p>
+<p>The choice of <strong><span style="color:Violet">event space</span></strong> is more constrained since it must satisfy the following conditions:</p>
+<ul class="simple">
+<li><p><span style="color:violet">R1</span>: If event <span class="math notranslate nohighlight">\(A\)</span> is included, then so is its complement <span class="math notranslate nohighlight">\(\Omega \setminus A\)</span>.</p></li>
+<li><p><span style="color:violet">R2</span>: If events <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span> are included, then so is their union <span class="math notranslate nohighlight">\(A_1 \cup A_2\)</span>.</p></li>
+</ul>
+<p>If you start with the events you care about and then repeatedly apply the rules above, you will automatically satisfy the additional conditions that:</p>
+<ul class="simple">
+<li><p>The “everything” event <span class="math notranslate nohighlight">\(A = \Omega\)</span> is included (as the union of all other subset events).</p></li>
+<li><p>The “nothing” event <span class="math notranslate nohighlight">\(A = \{\}\)</span> is included (as the complement of the “everything” event).</p></li>
+</ul>
+<p>The set of all possible subsets of <span class="math notranslate nohighlight">\(\Omega\)</span> is always a valid event space, but other (simpler) choices are possible when you don’t care about some subsets (or don’t know how to assign probabilities to them).</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span>:</strong></em> Use the rules above to create the smallest possible event space containing {a} for a sample space consisting of the four possible outcomes {a,b,c,d}.</p>
+<p>One way to apply the rules is:</p>
+<ul class="simple">
+<li><p>R1: <span class="math notranslate nohighlight">\(\{a\} \Rightarrow \{b,c,d\}\)</span></p></li>
+<li><p>R2: <span class="math notranslate nohighlight">\(\{a\}, \{b,c,d\} \Rightarrow \{a,b,c,d\}\)</span></p></li>
+<li><p>R1: <span class="math notranslate nohighlight">\(\{a,b,c,d\} \Rightarrow \{\}\)</span></p></li>
+</ul>
+<p>The complete event space is then: <span class="math notranslate nohighlight">\(\{\}, \{a\}, \{b,c,d\}, \{a,b,c,d\}.\)</span></p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Use the rules above to create the smallest possible event space containing <span class="math notranslate nohighlight">\(\{a\}\)</span> and <span class="math notranslate nohighlight">\(\{b\}\)</span> for the same sample space.</p>
+<p>One way to apply the rules is:</p>
+<ul class="simple">
+<li><p>R1: <span class="math notranslate nohighlight">\(\{a\} \Rightarrow \{b,c,d\}\)</span></p></li>
+<li><p>R1: <span class="math notranslate nohighlight">\(\{b\} \Rightarrow \{a,c,d\}\)</span></p></li>
+<li><p>R2: <span class="math notranslate nohighlight">\(\{a\}, \{b\} \Rightarrow \{a,b\}\)</span></p></li>
+<li><p>R1: <span class="math notranslate nohighlight">\(\{a,b\} \Rightarrow \{c,d\}\)</span></p></li>
+<li><p>R2: <span class="math notranslate nohighlight">\(\{a,b\}, \{c,d\} \Rightarrow \{a,b,c,d\}\)</span></p></li>
+<li><p>R1: <span class="math notranslate nohighlight">\(\{a,b,c,d\} \Rightarrow \{\}\)</span></p></li>
+</ul>
+<p>The complete event space is then: <span class="math notranslate nohighlight">\(\{\}, \{a\}, \{b\}, \{a,b\}, \{c,d\}, \{b,c,d\}, \{a,c,d\}, \{a,b,c,d\}\)</span>.</p>
+<p>Note that both of these examples allow us to reason about the probabilities of some outcomes without ever needing specify the probabilities of other outcomes. This only makes sense if we assume that <span class="math notranslate nohighlight">\(P(\Omega) = 1\)</span>, which is one of the Kolmogorov axioms described below.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>Once you have specified your sample and event spaces, you are ready to assign probabilities to each event. This where you make quantitative statements that define how your probability universe works. In the example above we set <span class="math notranslate nohighlight">\(P(\{\uparrow\}) = P(\{\downarrow\}) = 0.5\)</span>, but you could equally well define an alternate reality where <span class="math notranslate nohighlight">\(P(\{\uparrow\}) = 0.2\)</span> and <span class="math notranslate nohighlight">\(P(\{\downarrow\}) = 0.8\)</span>.</p>
+<p>The <span style="color:violet">Kolmogorov axioms</span> are that:</p>
+<ul class="simple">
+<li><p>For any event <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\Large P(A) \ge 0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large P(\Omega) = 1\)</span> (the “everything” event).</p></li>
+<li><p>If events <span class="math notranslate nohighlight">\(A_1, A_2, \ldots\)</span> have no outcomes in common (i.e., they are <em>disjoint</em> <span class="math notranslate nohighlight">\(A_i \cap A_j = \{\}\)</span>), then:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A_1 \cup A_2 \cup \ldots) = P(A_1) + P(A_2) + \ldots \; .
+\]</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">DISCUSS</strong></em>: How might you formulate a probability space for an electron whose spin is time dependent, e.g., because it is in an energy eigenstate that mixes the two spin states.</p>
+<p>We first need to define all possible outcomes.  Since outcomes are the results of measurements, we need to specify when measurements are performed and whether multiple measurements might be performed on the same electron.</p>
+<p>Suppose measurements are always made at a fixed time <span class="math notranslate nohighlight">\(t_1\)</span> and time <span class="math notranslate nohighlight">\(t_2 &gt; t_1\)</span>, then there are four possible outcomes: <span class="math notranslate nohighlight">\((\uparrow,\uparrow), (\uparrow,\downarrow), (\downarrow,\uparrow), (\downarrow,\downarrow)\)</span>. Next, build an event space containing the outcomes you care about (as in the exercises above). Finally, assign each event’s probability using quantum mechanics.</p>
+<p>This construction could be easily generalized to more measurements at predetermined times, but if measurements are allowed at arbitrary times we need a different approach.  In the most general case, the possible measurements are specified by a sequence of <span class="math notranslate nohighlight">\(M\)</span> increasing times <span class="math notranslate nohighlight">\(0 \le t_1 \le t_2 \le \ldots \le t_M\)</span>, where <span class="math notranslate nohighlight">\(M = 1, 2, 3, \ldots\)</span>. This leads to an infinite (but enumerable) set of resulting possible outcomes.  However, we could still chose a relatively simple event space, for example:</p>
+<ul class="simple">
+<li><p>a: nothing event</p></li>
+<li><p>b: at least one measurement before <span class="math notranslate nohighlight">\(t = 1\,\mu\text{sec}\)</span></p></li>
+<li><p>c: no measurements before <span class="math notranslate nohighlight">\(t = 1\,\mu\text{sec}\)</span></p></li>
+<li><p>d: everything event.</p></li>
+</ul>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>The three axioms above are sufficient to derive many useful properties of a probability measure <span class="math notranslate nohighlight">\(P\)</span>, including (<span class="math notranslate nohighlight">\(\subseteq\)</span> means “subset”):</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\Large P(A) + P(\Omega\setminus A) = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large A\subseteq B \implies P(A) \le P(B)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large P(A\cap B) \le \min(P(A), P(B))\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Large P(A\cup B) = P(A) + P(B) - P(A\cap B)\)</span></p></li>
+</ol>
+<p>These all make sense when translated into corresponding Venn diagrams (try it, to convince yourself). The last property is useful for replacing the probability of <strong><span style="color:LightGreen">A or B</span></strong> with the probability of <strong><span style="color:LightGreen">A and B</span></strong> in an expression (or vice versa).</p>
+<p>We have already seen one special case of the third property above (“disjoint” means non-overlapping):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{When } A, B\ \text{are disjoint}\,\Rightarrow P(A\cap B) = 0 \; .
+\]</div>
+<p>Another important special case is:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A\cap B) = P(A) P(B) \; .
+\]</div>
+<p>In this case, we say the events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are <strong><span style="color:LightGreen">independent</span></strong>.</p>
+</section>
+<section id="span-style-color-orange-disjoint-vs-independence-span">
+<h2><span style="color:Orange">Disjoint vs. Independence</span><a class="headerlink" href="#span-style-color-orange-disjoint-vs-independence-span" title="Permalink to this heading">#</a></h2>
+<p>By independence (considering events A and B), we mean that an occurance of A does not depend on the occurance of B</p>
+<p>By disjoint of two events we mean that whatever is happening in A cannot happen in B.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXAMPLE</strong></em>: Lets say that you are tossing a dice twice. In the first trial, possible outcomes are either faces with numbers 1,2,3,4,5,6. Let us consider  probability of coming a even number(A) and odd number(B). Now if the outcome is an even number (A), then it can not be an odd number(B) i.e. whatever happens in A can not happen in B. So A and B are disjoint.</p>
+<p>Now consider occurrence of no 6 (A) in first toss and the result (B) of the second trial. Getting 6 in second trial does not depend upon whether or not we got a 6 on the first trial. i.e. we say B is independent of A.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>In the following we will introduce several new concepts related to probability, but keep in mind that probability is only defined on subsets of outcomes (events), so any new concept must translate to a statement about events.</p>
+</section>
+<section id="span-style-color-orange-conditional-probability-and-bayes-rule-span">
+<h2><span style="color:Orange">Conditional Probability and Bayes’ Rule</span><a class="headerlink" href="#span-style-color-orange-conditional-probability-and-bayes-rule-span" title="Permalink to this heading">#</a></h2>
+<p>The probability of event <span class="math notranslate nohighlight">\(A\)</span> <strong>given that <span class="math notranslate nohighlight">\(B\)</span> has occurred</strong>, written <span class="math notranslate nohighlight">\(P(A\mid B)\)</span>, is a central concept in machine learning but does not appear above. Since <span class="math notranslate nohighlight">\(P\)</span> is only defined for events, and <span class="math notranslate nohighlight">\(A\mid B\)</span> is not an event, the notation does not even make sense!  Instead, it is shorthand for this ratio of valid probabilities:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+P(A\mid B) \equiv \frac{P(A\cap B)}{P(B)}} \;.
+\]</div>
+<p>This definition requires that <span class="math notranslate nohighlight">\(P(B) &gt; 0\)</span>, which is not true for all events <span class="math notranslate nohighlight">\(B\)</span>, but then necessarily has a value between zero and one (draw a Venn diagram to convince yourself), so makes sense to describe as a <strong><span style="color:LightGreen">probability</span></strong>.</p>
+<p>Note that we are introducing conditional probability as a <em>definition</em>, not a result of some calculation, but there are other ways to formulate probability theory in which <span class="math notranslate nohighlight">\(P(A\mid B)\)</span> is included in the initial axioms.</p>
+<p><span class="math notranslate nohighlight">\(\to\)</span> <strong>A <span style="color:LightGreen">conditional probability</span> effectively shrinks the sample space <span class="math notranslate nohighlight">\(\Omega\)</span> to the outcomes in <span class="math notranslate nohighlight">\(B\)</span>, resulting in a new probability space with renormalized probabilities.</strong></p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span>:</strong></em> Study this <a class="reference external" href="https://setosa.io/conditional/">visualization</a> of conditional probability.</p>
+<ol class="arabic simple">
+<li><p>What is the full sample space of outcomes <span class="math notranslate nohighlight">\(\Omega\)</span>?</p></li>
+<li><p>Explain how the horizontal bars represent events. Are they are complete event space?</p></li>
+<li><p>Explain how the colors of the balls represent event probabilities or conditional probabilities.</p></li>
+</ol>
+<p>Answers:</p>
+<ol class="arabic simple">
+<li><p>The full sample space consists of all possible horizontal positions for a single ball. (We could also define a multi-ball sample space, but that’s not what this visualization is intended for).</p></li>
+<li><p>Each horizontal bar represents a set of outcomes where the horizontal position lies in some interval. The  events shown are not a complete event space since, for example, they are missing the “nothing” and “everything” events.</p></li>
+<li><p>With the “world” button selected, the histogram shows event probabilities. With any other button select, the  conditional probabilities are shown.</p></li>
+</ol>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>When <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent events, the conditional probability ratio simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{When } A, B\,\text{ are independent}\implies P(A\mid B) = P(A)
+\]</div>
+<p>If we compare <span class="math notranslate nohighlight">\(P(A\mid B)\)</span> and <span class="math notranslate nohighlight">\(P(B\mid A)\)</span> we find that:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+P(A\mid B) = P(B\mid A) \frac{P(A)}{P(B)}
+}
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(P(A) \ll P(B)\)</span>, then <span class="math notranslate nohighlight">\(P(A\mid B) \ll P(B\mid A)\)</span>. However, there is a <a class="reference external" href="https://en.wikipedia.org/wiki/Confusion_of_the_inverse">natural tendency</a> to assume that <span class="math notranslate nohighlight">\(P(A\mid B) \simeq P(B\mid A)\)</span> in informal reasoning, so be careful!</p>
+<p>This relationship between <span class="math notranslate nohighlight">\(P(A\mid B)\)</span> and <span class="math notranslate nohighlight">\(P(B\mid A)\)</span> is known as <strong><span style="color:LightGreen">Bayes’ rule</span></strong> or <strong><span style="color:LightGreen">Bayes’ Theorem</span></strong>. Although there is some controversy and debate surrounding <em>Bayesian statistics</em>, Bayes’ rule follows directly from the definition of conditional probability and is firmly established.  (The Bayesian controversy, which we will discuss later, is over what constitutes a valid <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>).</p>
+<p>If <span class="math notranslate nohighlight">\(A_1...A_N\)</span> are exclusive and exhaustive (meaning that each event must belong to one and only one <span class="math notranslate nohighlight">\(A_i\)</span>, then we can write <strong><span style="color:LightGreen">Bayes’ Theorem</span></strong> as</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+P(A\mid B) \equiv \frac{P(A\cap B)}{\Sigma_{i}P(B|A_i)P(A_i)}}
+\]</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXAMPLE</span></strong></em>: We have a disease that is carried by fraction <span class="math notranslate nohighlight">\(X\)</span> of the population:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\text{disease}) = X ~~~~~~~~~~~~~ P(\text{no disease}) = 1 - X
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(X=1\)</span>%.</p>
+<p>You make a test for the disease and it yields a positive result fraction <span class="math notranslate nohighlight">\(Y\)</span> of the time when a person has the disease:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(+|\text{disease}) = Y ~~~~~~~~~~~~~ P(-|\text{disease}) = 1 - Y
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Y = 99\)</span>%.</p>
+<p>Since <span class="math notranslate nohighlight">\(Y\)</span> is pretty big, you feel pretty good!</p>
+<p>However, your test has a false positive fraction of <span class="math notranslate nohighlight">\(Z = 4\)</span>%. Since <span class="math notranslate nohighlight">\(Z\)</span> is small so you feel OK about the test. Just to be clear:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(+|\text{no disease}) = Z ~~~~~~~~~~~~~ P(-|\text{no disease}) = 1 - Z
+\]</div>
+<p><em>So the question is if a person gets a positive test result, what are the chances they have the disease?</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example numbers</span>
+<span class="n">X</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="c1"># P(disease) rare disease</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="mf">0.99</span> <span class="c1"># P(+|disease) excellent test</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="mf">0.04</span> <span class="c1"># P(+|no disease) modest false positive result</span>
+
+<span class="c1"># using the summed form of Bayes&#39; Theorem above</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">X</span> <span class="o">/</span> <span class="p">((</span><span class="n">Y</span> <span class="o">*</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">Z</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">X</span><span class="p">)))</span> <span class="c1"># val = P(disease|+)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2
+</pre></div>
+</div>
+</div>
+</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"></section>
+<section id="span-style-color-orange-random-variables-span">
+<h2><span style="color:Orange">Random Variables</span><a class="headerlink" href="#span-style-color-orange-random-variables-span" title="Permalink to this heading">#</a></h2>
+<p>A probability space connects sets of possible outcomes with numerical probabilities, but we also need a way to characterize the outcomes themselves numerically.  <strong><span style="color:LightGreen">Random variables</strong> fill this gap.</p>
+<p>A <strong><span style="color:LightGreen">random variable</span></strong> <span class="math notranslate nohighlight">\(X: \Omega\rightarrow\mathbb{R}\)</span> labels each possible outcome <span class="math notranslate nohighlight">\(\omega\in\Omega\)</span> with a real number <span class="math notranslate nohighlight">\(x = X(\omega)\)</span>.  The probability <span class="math notranslate nohighlight">\(P(x)\)</span> of a specific random variable value <span class="math notranslate nohighlight">\(x\)</span> is then <em>defined</em> to be:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+P(X=x) \equiv P\left(\{ \omega: X(\omega) = x \}\right)} \; .
+\]</div>
+<p>We often write <span class="math notranslate nohighlight">\(P(x)\)</span> as shorthand for <span class="math notranslate nohighlight">\(P(X=x)\)</span>.  Note that, as with <span class="math notranslate nohighlight">\(P(A|B)\)</span> earlier, this is a <em>definition</em>, not a result, which translates a new notation into a probability assigned to an event.</p>
+<p><em>Technical points:</em></p>
+<ul class="simple">
+<li><p><em>We are assuming that <span class="math notranslate nohighlight">\(X\)</span> varies continuously, since that is the most common case in scientific data. Random variables can also be discrete, leading to a set of parallel definitions but with some different notation.</em></p></li>
+<li><p><em><span class="math notranslate nohighlight">\(P\)</span> is only defined for events, but what if the set <span class="math notranslate nohighlight">\(\{ \omega: X(\omega) = x \}\)</span> is not in the event space? There are some restrictions on <span class="math notranslate nohighlight">\(X(\omega)\)</span> that prevent this happening.</em></p></li>
+</ul>
+<p><strong><span style="color:Violet">DISCUSS</span>:</strong> Try this <a class="reference external" href="https://seeing-theory.brown.edu/probability-distributions/index.html#section1">visual demonstration</a> of how a random variable is simply an arbitrary labeling of possible outcomes</p>
+<p>We can generalize the equality condition above, <span class="math notranslate nohighlight">\(X(\omega) = x\)</span>, to any well-defined condition, for example:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(a\le X \le b) \equiv P\left(\{ \omega: a \le X(\omega) \le b \}\right) \; .
+\]</div>
+<p>The result will always be in the interval <span class="math notranslate nohighlight">\([0,1]\)</span> because it reduces to the probability assigned to some event.</p>
+</section>
+<section id="span-style-color-orange-cumulative-distribution-function-span">
+<h2><span style="color:Orange">Cumulative Distribution Function</span><a class="headerlink" href="#span-style-color-orange-cumulative-distribution-function-span" title="Permalink to this heading">#</a></h2>
+<p>One particularly useful condition yields the <strong><span style="color:LightGreen">cumulative distribution function</span> (CDF)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F_X(x) \equiv P\left(\{ \omega: X(\omega) \le x\} \right) \; .
+\]</div>
+<p>The CDF always rises monotonically from 0 to 1 and is always well defined.</p>
+</section>
+<section id="span-style-color-orange-probability-density-function-span">
+<h2><span style="color:Orange">Probability Density Function</span><a class="headerlink" href="#span-style-color-orange-probability-density-function-span" title="Permalink to this heading">#</a></h2>
+<p>When the CDF is differentiable everywhere, we can also calculate the <strong><span style="color:LightGreen">probability density function</span> (PDF)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f_X(x) \equiv \frac{d}{dx} F_X(x) \; .
+\]</div>
+<p>Note that, while CDF is a true probability and always in <span class="math notranslate nohighlight">\([0,1]\)</span>, this is not true of the PDF, for which we can only say that PDF <span class="math notranslate nohighlight">\(\ge 0\)</span>. Also, the PDF will, in general, have dimensions introduced by the derivative.</p>
+<p>A PDF is a <em>density</em> in the sense that:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+P\left(\{\omega: x \le X \le x + \Delta x\}\right) \simeq f_X(x)\, \Delta x}
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\Large 
+f_X(x) \Delta x \text{ in } [0,1]
+\]</div>
+<p>since the LHS is the probability of a single event. (We will use this result several times below.)</p>
+<p>We can recover the CDF from a PDF with integration,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F_X(x) = \int_{-\infty}^x\, f_X(x') dx' \; ,
+\]</div>
+<p>or, in equivalent set theory notation,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+F_X(x) &amp;= \lim_{\Delta x\rightarrow 0}\, \sum_i f_X(x_i)\,\Delta x \\
+&amp;= \lim_{\Delta x\rightarrow 0}\, \sum_i P\left(
+\{\omega: x_i \le X(\omega) \le x_i + \Delta x\} \right) \\
+&amp;= \lim_{\Delta x\rightarrow 0}\, P\left(
+\cup_i \{\omega: x_i \le X(\omega) \le x_i + \Delta x\} \right) \; .
+\end{aligned}
+\end{split}\]</div>
+<p>where the last line uses the fact that the sets <span class="math notranslate nohighlight">\(\{\omega: x_i \le X(\omega) \le x_i + \Delta x\}\)</span> are all disjoint and combine to cover the full sample space <span class="math notranslate nohighlight">\(\Omega\)</span>.</p>
+<p>Random variables are conventionally denoted with capital letters near the end of the alphabet. We have already used <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> to denote arrays of data samples or latent variables, but that was no accident.</p>
+<p>Think of a dataset <span class="math notranslate nohighlight">\(X\)</span> as a sequence of random outcomes <span class="math notranslate nohighlight">\(\omega_i\)</span> in the “universe” mapped via a random variable <span class="math notranslate nohighlight">\(X_j(\omega)\)</span> for each feature. The elements <span class="math notranslate nohighlight">\(X_{ij}\)</span> of the dataset are then just <span class="math notranslate nohighlight">\(X_j(\omega_i)\)</span>. Similarly, when you perform dimensionality reduction <span class="math notranslate nohighlight">\(X\rightarrow Y\)</span>, you are effectively adopting new random variables <span class="math notranslate nohighlight">\(Y_j(\omega_i)\)</span>.</p>
+<p>The following code blocks will plots the PDF and CDF for a Guassian (normal) distribution.  This uses the scipy library.  Use the scipy documentation to figure out how to change the location and the width of the Guassian.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rv</span> <span class="o">=</span> <span class="n">norm</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">),</span>  <span class="n">rv</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.9999</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rv</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+
+       <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/06ddf967a8cfc2f6c49f445dd4cfa13263ca825ccf54971288afc256fc0841f0.png" src="../../_images/06ddf967a8cfc2f6c49f445dd4cfa13263ca825ccf54971288afc256fc0841f0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ay</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rv</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cdf&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1d5ba0aa17f3a7b071c4df58e1533e4b049f5d65c2dff6e75a83683929ec6f75.png" src="../../_images/1d5ba0aa17f3a7b071c4df58e1533e4b049f5d65c2dff6e75a83683929ec6f75.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-sampling-a-probability-density-span">
+<h2><span style="color:Orange">Sampling a Probability Density</span><a class="headerlink" href="#span-style-color-orange-sampling-a-probability-density-span" title="Permalink to this heading">#</a></h2>
+<p>Your measurement samples the underlying PDF.  With a single measurement, you know very little about the PDF; as the number of measurements increases, you can better see the PDF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rv1</span> <span class="o">=</span> <span class="n">norm</span><span class="p">()</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1">#size is the number of random values</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">az</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">rv1</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">),</span>
+
+                <span class="n">rv1</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.9999</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">az</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rv1</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+
+       <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#density normalizes the histogram to have unit area (like the pdf itself)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rv1</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+
+       <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0cfeeb1eacf393522f42650aa0ba359dcf974814a555dd70c7c02d07f3055044.png" src="../../_images/0cfeeb1eacf393522f42650aa0ba359dcf974814a555dd70c7c02d07f3055044.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-joint-marginal-and-conditional-probability-density-span">
+<h2><span style="color:Orange">Joint, Marginal and Conditional Probability Density</span><a class="headerlink" href="#span-style-color-orange-joint-marginal-and-conditional-probability-density-span" title="Permalink to this heading">#</a></h2>
+<p>When data is described by multiple random variables (features), <span class="math notranslate nohighlight">\(x_0, x_1, \ldots\)</span>, it has a <strong><span style="color:violet">joint CDF</span></strong>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F_{X_0,X_1,\ldots}(x_0, x_1, \ldots) \equiv P\left(
+\{\omega: X_0(\omega) \le x_0\} \cap \{\omega: X_1(\omega) \le x_1\} \cap \ldots \right) \; .
+\]</div>
+<p>Note how each random variable translates to a set of outcomes in the same underlying sample space <span class="math notranslate nohighlight">\(\Omega\)</span>, whose intersection specifies a single event from <span class="math notranslate nohighlight">\({\cal F}\)</span>.</p>
+<p>In the following, we will restrict to the 2D case <span class="math notranslate nohighlight">\(F(x,y)\)</span> and drop the subscript on <span class="math notranslate nohighlight">\(F\)</span>, to simplify the notation, but you can replace <span class="math notranslate nohighlight">\(x = x_0\)</span> and <span class="math notranslate nohighlight">\(y = x_1, x_2, \ldots\)</span> throughout.</p>
+<p>The <strong><span style="color:violet">joint PDF</span></strong> corresponding to a joint CDF is:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x, y) \equiv \frac{\partial}{\partial x}\frac{\partial}{\partial y}\, F(x, y) \; .
+\]</div>
+<p>The total integral of the joint PDF is one,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+1 = \int dx dy \ldots f(x, y) \; ,
+\]</div>
+<p>but we can also integrate out a single random variable, yielding a <strong><span style="color:violet">marginal PDF</span></strong>, e.g.</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x) = \int dy\, f(x, y) \; .
+\]</div>
+<p>The set theory “proof” of this result is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+\int dy\, f(x, y)
+&amp;= \lim_{\Delta y\rightarrow 0}\, \sum_i\, f(x, y_i)\,\Delta y \\
+&amp;= \lim_{\Delta y\rightarrow 0}\, \sum_i \frac{\partial}{\partial x} P\left(
+\{ \omega: X(x) \le x\} \cap \{ \omega: y_i \le Y(y) \le y_i + \Delta y\}\right)\\
+&amp;= \lim_{\Delta y\rightarrow 0}\, \frac{\partial}{\partial x} P\left( \bigcup_i
+\{ \omega: X(x) \le x\} \cap \{ \omega: y_i \le Y(y) \le y_i + \Delta y\}\right)\\
+&amp;= \frac{\partial}{\partial x} P\left(\{ \omega: X(x) \le x\} \right) \\
+&amp;= f(x) \; ,
+\end{aligned}
+\end{split}\]</div>
+<p>where the fourth line follows from the third Kolmogorov axiom, since the sets <span class="math notranslate nohighlight">\(\{ \omega: y_i \le Y(y) \le y_i + \Delta y\}\)</span> are all disjoint and combine to cover the full sample space <span class="math notranslate nohighlight">\(\Omega\)</span>.  In other words, <strong><span style="color:LightGreen">marginalizing out</span></strong> a random variable yields exactly the same joint probability we would have obtained if we had never introduced it in the first place.</p>
+<p>Finally, a <strong><span style="color:violet">conditional PDF</span></strong> is defined in terms of the following conditional probability:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x\mid y) \equiv \frac{\partial}{\partial x} \lim_{\Delta y\rightarrow 0}
+P\left( \{\omega: X(\omega) \le x\} \mid \{\omega: y \le Y(\omega) \le y + \Delta y\}\right) \; .
+\]</div>
+<p>Using the definition of <strong><span style="color:LightGreen">conditional probability</span></strong> above, we find:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+f(x\mid y) &amp;= \lim_{\Delta y\rightarrow 0}\, \frac{\partial}{\partial x}
+\frac{P\left( \{\omega: X(\omega) \le x\} \cap \{\omega: y \le Y(\omega) \le y + \Delta y\}\right)}
+{P\left( \{\omega: y \le Y(\omega) \le y + \Delta y\}\right)} \\
+&amp;= \lim_{\Delta y\rightarrow 0}\, \frac{\partial}{\partial x}
+\frac{\frac{\partial}{\partial y} P\left( \{\omega: X(\omega) \le x\} \cap
+\{\omega: Y(\omega) \le y\} \right) \Delta y}
+{\frac{\partial}{\partial y} P\left( \{\omega: Y(\omega) \le y\}\right) \Delta y} \\
+&amp;= \frac{\frac{\partial}{\partial x} \frac{\partial}{\partial y} P\left( \{\omega: X(\omega) \le x\} \cap
+\{\omega: Y(\omega) \le y\} \right)}
+{\frac{\partial}{\partial y} P\left( \{\omega: Y(\omega) \le y\}\right)} \\
+&amp;=\frac{f(x, y)}{f(y)} \; . 
+\end{aligned}
+\end{split}\]</div>
+<p>Rewritten in a slightly different form, this is also known as the “chain rule” of probability:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x,y) = f(x\mid y)\, f(y) \; .
+\]</div>
+<p>Comparing <span class="math notranslate nohighlight">\(f(x\mid y)\)</span> with <span class="math notranslate nohighlight">\(f(y\mid x)\)</span> we derive the random-variable version of Bayes’ rule,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+f(x\mid y) = \frac{f(y\mid x)\,f(x)}{f(y)} = \frac{f(y\mid x)\,f(x)}{\int dx\, f(x,y)} \; ,}
+\]</div>
+<p>where we have written out the conditional PDF <span class="math notranslate nohighlight">\(f(y)\)</span> as an integral in the last expression.</p>
+<p><strong><span style="color:Violet">SUMMARY</span>:</strong></p>
+<ul class="simple">
+<li><p>Commas signal a <strong>joint</strong> probability formed by set intersections (logical <em>AND</em>).</p></li>
+<li><p>Missing random variables signal a <strong>marginal</strong> probability with the missing variables “integrated out”.</p></li>
+<li><p>A vertical bar <span class="math notranslate nohighlight">\((\mid)\)</span> signals a <strong>conditional</strong> probability with variables on the RHS fixed.</p></li>
+</ul>
+<p>As always, a picture is worth a thousand words:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">simpson</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSpec</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prob2d</span><span class="p">(</span><span class="n">cov1</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">cov1</span><span class="p">],</span> <span class="p">[</span><span class="n">cov1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="c1">#means and covariance matrix</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="mi">100_000</span><span class="p">)</span>
+
+    <span class="n">fz</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="o">*</span><span class="n">z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">ex</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ex</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">ey</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ey</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">simpson</span><span class="p">(</span><span class="n">fz</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">fy</span> <span class="o">=</span> <span class="n">simpson</span><span class="p">(</span><span class="n">fz</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">ax_fz</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ax_fx</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax_fz</span><span class="p">)</span>
+    <span class="n">ax_fy</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">sharey</span><span class="o">=</span><span class="n">ax_fz</span><span class="p">)</span>
+
+    <span class="n">ax_fz</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fz</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">ax_fx</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fx</span><span class="p">)</span>
+    <span class="n">ax_fy</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prob2d</span><span class="p">(</span><span class="n">cov1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/043b1de41bac79bcb857c79734a13cf8040cb994fd1da4d41d0b65cd32798dcb.png" src="../../_images/043b1de41bac79bcb857c79734a13cf8040cb994fd1da4d41d0b65cd32798dcb.png" />
+</div>
+</div>
+<p>We say that random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are **<strong><span style="color:LightGreen">independent</span></strong> if</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F(x, y) = F(x) F(y) \; ,
+\]</div>
+<p>which leads to</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x, y) = f(x) f(y)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(x\mid y) = f(x) \quad , \quad f(y\mid x) = f(y) \; .
+\]</div>
+<p>The corresponding picture is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prob2d</span><span class="p">(</span><span class="n">cov1</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8c1b34acb1a71af8a3107f341436d13e8757a54a7823de148598d5d6369c7bb7.png" src="../../_images/8c1b34acb1a71af8a3107f341436d13e8757a54a7823de148598d5d6369c7bb7.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-practical-probability-calculus-span">
+<h2><span style="color:Orange">Practical Probability Calculus</span><a class="headerlink" href="#span-style-color-orange-practical-probability-calculus-span" title="Permalink to this heading">#</a></h2>
+<p>It is often useful to use probability densities that are hybrids of the fully joint / marginal / conditional cases, such as <span class="math notranslate nohighlight">\(f(x\mid y, z)\)</span> and <span class="math notranslate nohighlight">\(f(x, y\mid z)\)</span>, but these do not require any new formalism.  In the following, we adopt a slightly more abstract notation with the following conventions:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(\ldots)\)</span> is a generic probability (density).</p></li>
+<li><p><span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(B_j\)</span> are generic random variables or, more generically, logical propositions about outcomes.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D\)</span> represents generic data features.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta\)</span> represents generic model parameters.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span> represents generic model hyperparameters.</p></li>
+</ul>
+<p>A practical calculus for such expressions boils down to the following transformation rules:</p>
+<p><strong><span style="color:violet">Rule-1</span></strong>: the order of arguments on either side of <span class="math notranslate nohighlight">\(\mid\)</span> is not significant:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A_1, A_2, \ldots\mid B_1, B_2\ldots) =
+P(A_2, A_1, \ldots\mid B_1, B_2\ldots) =
+P(A_1, A_2, \ldots\mid B_2, B_1\ldots) = \ldots
+\]</div>
+<p><strong><span style="color:violet">Rule-2</span></strong>: use the definition of conditional probability to move a variable from the LHS to the RHS:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A_2,\ldots\mid A_1,B_1,B_2,\ldots) = \frac{P(A_1,A_2,\ldots\mid B_1,B_2\ldots)}{P(A_1\mid B_1,B_2\ldots)} \; .
+\]</div>
+<p><strong><span style="color:violet">Rule-3</span></strong>: use the chain rule to move a variable from the RHS to the LHS (really just a restatement of Rule-2):</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(B_1,A_1,A_2,\ldots\mid B_2,\ldots) = P(A_1,A_2,\ldots\mid B_1,B_2,\ldots)\,P(B_1\mid B_2,\ldots) \; .
+\]</div>
+<p><strong><span style="color:violet">Rule-4</span></strong>: use a marginalization integral to remove a variable from the LHS:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A_2,\ldots\mid B_1,B_2,\ldots) = \int d A_1'\, P(A_1', A_2, \ldots\mid B_1, B_2\ldots) \; .
+\]</div>
+<p><strong><span style="color:violet">Rule-5</span></strong>: combine Rule-3 and Rule-4 to remove a variable from the RHS:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(A_1,A_2,\ldots\mid B_2,\ldots) = \int d B_1'\, P(A_1,A_2,\ldots\mid B_1',B_2,\ldots)\,P(B_1'\mid B_2,\ldots) \; .
+\]</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Use these rules to show that:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\Theta_M \mid D,M) = \frac{P(D\mid\Theta_M ,M)\, P(\Theta_M,M)}{P(D,M)} \; .
+\]</div>
+<p>We will use this result later when we discuss <strong><span style="color:LightGreen">Bayesian inference</span></strong>.</p>
+<p>Apply the rules to the LHS in order to make it look more like the RHS:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{aligned}
+P(\Theta_M \mid D,M) &amp;= \frac{P(D,\Theta_M\mid M)}{P(D\mid M)} &amp; \text{Rule-2} \\
+&amp;= \frac{P(D\mid\Theta_M,M)\,P(\Theta_M|M)}{P(D\mid M)} &amp; \text{Rule-3} \\
+&amp;= \frac{P(D\mid\Theta_M,M)\left[ P(\Theta_M,M) / P(M)\right]}{\left[ P(D,M) / P(M)\right]} &amp; \text{Rule-3} \\
+&amp;= \frac{P(D\mid\Theta_M,M)\, P(\Theta_M,M)}{P(D,M)} &amp; \text{simplify}
+\end{aligned}
+\end{split}\]</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"></section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -589,6 +1145,16 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-introduction-span"><span style="color:Orange">Introduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-axioms-of-probability-span"><span style="color:Orange">Axioms of Probability</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-disjoint-vs-independence-span"><span style="color:Orange">Disjoint vs. Independence</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-conditional-probability-and-bayes-rule-span"><span style="color:Orange">Conditional Probability and Bayes’ Rule</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-random-variables-span"><span style="color:Orange">Random Variables</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-cumulative-distribution-function-span"><span style="color:Orange">Cumulative Distribution Function</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-probability-density-function-span"><span style="color:Orange">Probability Density Function</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-sampling-a-probability-density-span"><span style="color:Orange">Sampling a Probability Density</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-joint-marginal-and-conditional-probability-density-span"><span style="color:Orange">Joint, Marginal and Conditional Probability Density</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-practical-probability-calculus-span"><span style="color:Orange">Practical Probability Calculus</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
