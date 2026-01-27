@@ -57,6 +57,9 @@ pip install --upgrade pip wheel setuptools
 # Install core packages
 pip install numpy pandas matplotlib scipy tables seaborn scikit-learn jupyter notebook jupyter-book
 
+# Other packages for notebook execution
+pip install emcee
+
 # Configure VS Code for this .venv
 mkdir -p .vscode
 cat > .vscode/settings.json <<EOL
