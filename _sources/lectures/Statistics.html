@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/Statistics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -501,6 +503,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-statistical-methods-span"><span style="color:Orange">Statistical Methods</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-expectation-span"><span style="color:LightGreen">Expectation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-covariance-span"><span style="color:LightGreen">Covariance</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-jensen-s-inequality-span"><span style="color:Orange">Jensen’s Inequality</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -515,6 +525,319 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="statistics">
 <h1>Statistics<a class="headerlink" href="#statistics" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Data helpers</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wget_data</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;wget&quot;</span><span class="p">,</span> <span class="s2">&quot;-nc&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">url</span><span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">locate_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;./tmp_data&#39;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">check_exists</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">RuxntimeError</span><span class="p">(</span><span class="s1">&#39;No such data file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-get-data-span">
+<h2><span style="color:Orange">Get Data</span><a class="headerlink" href="#span-style-color-orange-get-data-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget_data</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_data.hf5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2026-01-26 23:01:08--  https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/data/blobs_data.hf5
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 71192 (70K) [application/octet-stream]
+Saving to: ‘./tmp_data/blobs_data.hf5’
+
+     0K .......... .......... .......... .......... .......... 71% 1.97M 0s
+    50K .......... .........                                  100% 18.9M=0.03s
+
+2026-01-26 23:01:08 (2.63 MB/s) - ‘./tmp_data/blobs_data.hf5’ saved [71192/71192]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-load-data-span">
+<h2><span style="color:Orange">Load Data</span><a class="headerlink" href="#span-style-color-orange-load-data-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">blobs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">locate_data</span><span class="p">(</span><span class="s1">&#39;blobs_data.hf5&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-statistical-methods-span">
+<h2><span style="color:Orange">Statistical Methods</span><a class="headerlink" href="#span-style-color-orange-statistical-methods-span" title="Permalink to this heading">#</a></h2>
+<p>The boundary between probability and statistics is somewhat gray (similar to astronomy and astrophysics).  However, you can roughly think of statistics as the applied cousin of probability theory.</p>
+<section id="span-style-color-lightgreen-expectation-span">
+<h3><span style="color:LightGreen">Expectation</span><a class="headerlink" href="#span-style-color-lightgreen-expectation-span" title="Permalink to this heading">#</a></h3>
+<p>Given a probability density <span class="math notranslate nohighlight">\(P(x,y)\)</span>, and an arbitrary function <span class="math notranslate nohighlight">\(g(x,y)\)</span> of the same random variables, the <span style="color:violet">expectation value</span> of <span class="math notranslate nohighlight">\(g\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\langle g\rangle \equiv \iint dx dy\, g(x,y) P(x,y) \; .
+\]</div>
+<p>Note that the result is just a number, and not a function of either <span class="math notranslate nohighlight">\(x\)</span> or <span class="math notranslate nohighlight">\(y\)</span>. Also, <span class="math notranslate nohighlight">\(g\)</span> might have dimensions, which do not need to match those of the probability density <span class="math notranslate nohighlight">\(P\)</span>, so <span class="math notranslate nohighlight">\(\langle g\rangle\)</span> generally has dimensions.</p>
+<p>Sometimes the assumed PDF is indicated with a subscript, <span class="math notranslate nohighlight">\(\langle g\rangle_P\)</span>, which is helpful, but more often not shown.</p>
+<p>When <span class="math notranslate nohighlight">\(g(x,y) = x^n\)</span>, the resulting expectation value is called a <strong>moment of x</strong>. (The same definitions apply to <span class="math notranslate nohighlight">\(y\)</span>, via <span class="math notranslate nohighlight">\(g(x,y) = y^n\)</span>.) The case <span class="math notranslate nohighlight">\(n=0\)</span> is just the normalization integral <span class="math notranslate nohighlight">\(\langle \mathbb{1}\rangle = 1\)</span>.  Low-order moments have familiar names:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n=1\)</span> yields the <span style="color:violet">mean of x</span>, <span class="math notranslate nohighlight">\(\overline{x} \equiv \langle x\rangle\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n=2\)</span> yields the <span style="color:violet">root-mean square (RMS) of x</span>, <span class="math notranslate nohighlight">\(\langle x^2\rangle\)</span>.</p></li>
+</ul>
+<p>Another named expectation value is the <span style="color:violet">variance of x</span>, which combines the mean and RMS,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sigma_x^2 \equiv \langle\left( x - \overline{x} \right)^2\rangle \; ,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_x\)</span> is called the <span style="color:violet">standard deviation of x</span>.</p>
+<p>Finally, the <strong><span style="color:violet">correlation between x and y</span></strong> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\text{Corr}_{xy} \equiv \langle\left( x - \overline{x}\right) \left( y - \overline{y}\right)\rangle \; .
+\]</div>
+<p>A useful combination of the correlation and variances is the <span style="color:violet">correlation coefficient</span>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\rho_{xy} \equiv \frac{\text{Corr}_{x,y}}{\sigma_x \sigma_y} \; ,
+\]</div>
+<p>which, by construction, must be in the range <span class="math notranslate nohighlight">\([-1, +1]\)</span>. Larger values of <span class="math notranslate nohighlight">\(|\rho_{xy}|\)</span> indicate that <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are measuring related properties of the outcome so, together, carry less information than when <span class="math notranslate nohighlight">\(\rho_{xy} \simeq 0\)</span>. In the limit of <span class="math notranslate nohighlight">\(|\rho_{xy}| = 1\)</span>, <span class="math notranslate nohighlight">\(y = y(x)\)</span> is entirely determined by <span class="math notranslate nohighlight">\(x\)</span>, so carries no new information.</p>
+<p>We say that the variance and correlation are both <em>second-order moments</em> since they are expectation values of second-degree polynomials.</p>
+<p>We call the random variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> <span style="color:violet">uncorrelated</span> when:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x,y\, \text{uncorrelated}\quad\Rightarrow\quad \text{Corr}_{xy} = \rho_{xy} = 0 \; .
+\]</div>
+<p>To obtain an <span style="color:violet">empirical estimate</span> of the quantities above derived from your data, use the corresponding numpy functions, e.g.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x0    6.920270
+x1    4.502004
+x2    8.492347
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x0    12.684951
+x1     6.807913
+x2    15.503924
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x0    3.561594
+x1    2.609198
+x2    3.937502
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">blobs</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The definition</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sigma_x^2 = \langle\left( x - \overline{x} \right)^2\rangle
+\]</div>
+<p>suggests that two passes through the data are necessary to calculate variance: one to calculate <span class="math notranslate nohighlight">\(\overline{x}\)</span> and another to calculate the residual expectation. Expanding this definition, we obtain a formula</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\sigma_x^2 = \langle x^2\rangle - \langle x\rangle^2
+\]</div>
+<p>that can be evaluated in a single pass by simultaneously accumulating the first and second moments of <span class="math notranslate nohighlight">\(x\)</span>. However, this approach should generally not be used since it involves a cancellation between relatively large quantities that is subject to large round-off error. More details and recommended one-pass (aka “online”) formulas are <a class="reference external" href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">here</a>.</p>
+</section>
+<section id="span-style-color-lightgreen-covariance-span">
+<h3><span style="color:LightGreen">Covariance</span><a class="headerlink" href="#span-style-color-lightgreen-covariance-span" title="Permalink to this heading">#</a></h3>
+<p>It is useful to construct the <span style="color:violet">covariance matrix</span> <span class="math notranslate nohighlight">\(C\)</span> with elements:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+C \equiv \begin{bmatrix}
+\sigma_x^2 &amp; \rho_{x,y} \sigma_x \sigma_y \\
+\rho_{x,y} \sigma_x \sigma_y &amp; \sigma_y^2 \\
+\end{bmatrix}
+\end{split}\]</div>
+<p>With more than 2 random variables, <span class="math notranslate nohighlight">\(x_0, x_1, \ldots\)</span>, this matrix generalizes to:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+C_{ij} = \langle \left( x_i - \overline{x}_i\right) \left( x_j - \overline{x}_j\right)\rangle \; .
+\]</div>
+<p>Comparing with the definitions above, we find variances on the diagonal:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+C_{ii} = \sigma_i^2
+\]</div>
+<p>and symmetric correlations on the off-diagonals:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+C_{ij} = C_{ji} = \rho_{ij} \sigma_i \sigma_j \; .
+\]</div>
+<p>(The covariance is not only symmetric but also <a class="reference external" href="https://en.wikipedia.org/wiki/Positive-definite_matrix">positive definite</a>).</p>
+<p>The covariance matrix is similar to a pairplot, with each <span class="math notranslate nohighlight">\(2\times 2\)</span> submatrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+\begin{bmatrix}
+\sigma_i^2 &amp; \rho_{ij} \sigma_i \sigma_j \\
+\rho_{ij} \sigma_i \sigma_j &amp; \sigma_j^2 \\
+\end{bmatrix}
+\end{split}\]</div>
+<p>describing a 2D elllipse in the <span class="math notranslate nohighlight">\((x_i, x_j)\)</span> plane:</p>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Statistics-Ellipse.png" width=800></img>
+</div><p>Note that you can directly read off the correlation coefficient <span class="math notranslate nohighlight">\(\rho_{ij}\)</span> from any of the points where the ellipse touches its bounding box. The ellipse rotation angle <span class="math notranslate nohighlight">\(\theta\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\tan 2\theta = \frac{2 C_{ij}}{C_{ii} - C_{jj}} = \frac{2\rho_{ij}\sigma_i\sigma_j}{\sigma_i^2 - \sigma_j^2}
+\]</div>
+<p>and its <a class="reference external" href="https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes">principal axes</a> have lengths:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+a_\pm = 2\sqrt{C_{ii} + C_{jj} \pm d} \quad \text{with} \quad
+d = \sqrt{C_{11}^2 - 2 (1 - 2\rho^2) C_{11} C_{22} + C_{22}^2} \; .
+\]</div>
+<p>For practical calculations, the <span style="color:violet">Singular Value Decomposition</span> (SVD) of the covariance is useful:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ap</span><span class="p">,</span> <span class="n">am</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above assumes <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(2\times 2\)</span>. In the general <span class="math notranslate nohighlight">\(D\times D\)</span> case, use <code class="docutils literal notranslate"><span class="pre">C[[[j],</span> <span class="pre">[i]],</span> <span class="pre">[[j,</span> <span class="pre">i]]]</span></code> to pick out the <span class="math notranslate nohighlight">\((i,j)\)</span> <span class="math notranslate nohighlight">\(2\times 2\)</span> submatrix.</p>
+<p>A multivariate Gaussian PDF integrated over this ellipse (and marginalized over any additional dimensions) has a total probability of about 39%, also known as its <span style="color:violet">confidence level</span> (CL).  We will see below how to calculate this CL and scale the ellipse for other CLs.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Calculate the empirical covariance matrix of the <code class="docutils literal notranslate"><span class="pre">blobs</span></code> dataset using <code class="docutils literal notranslate"><span class="pre">np.cov</span></code> (pay attention to the <code class="docutils literal notranslate"><span class="pre">rowvar</span></code> arg). Next, calculate the ellipse rotation angles <span class="math notranslate nohighlight">\(\theta\)</span> in degrees for each of this matrix’s 2D projections.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">C</span><span class="p">[[[</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="p">[[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]]])</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 1 123.3
+0 2 -138.2
+1 2 151.0
+</pre></div>
+</div>
+</div>
+</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p>Recall that the <code class="docutils literal notranslate"><span class="pre">blobs</span></code> data was generated as a mixture of three Gaussian blobs, each with different parameters. However, describing a dataset with a single covariance matrix suggests a single Gaussian model. The lesson is that
+we can calculate an empirical covariance for <em>any</em> data, whether or not it is well described a single Gaussian.</p>
+</section>
+</section>
+<section id="span-style-color-orange-jensen-s-inequality-span">
+<h2><span style="color:Orange">Jensen’s Inequality</span><a class="headerlink" href="#span-style-color-orange-jensen-s-inequality-span" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Convex_function">Convex functions</a> play a special role in optimization algorithms (which we will talk more about soon) since they have a single global minimum with no secondary local minima. The parabola <span class="math notranslate nohighlight">\(g(x) = a (x - x_0)^2 + b\)</span> is a simple 1D example, having its minimum value of <span class="math notranslate nohighlight">\(b\)</span> at <span class="math notranslate nohighlight">\(x = x_0\)</span>, but convex functions can have any dimensionality and need not be parabolic (second order).</p>
+<p>Expectations involving a convex function <span class="math notranslate nohighlight">\(g\)</span> satisfy <a class="reference external" href="https://en.wikipedia.org/wiki/Jensen's_inequality">Jensen’s inequality</a>, which we will use later:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+g(\langle \vec{x} \ldots\rangle) \le \langle g(\vec{x})\rangle \; .
+\]</div>
+<p>In other words, the expectation value of <span class="math notranslate nohighlight">\(g\)</span> is bounded below by <span class="math notranslate nohighlight">\(g\)</span> evaluated at the PDF mean, for any PDF. Note that the two sides of this equation swap the order in which the operators <span class="math notranslate nohighlight">\(g(\cdot)\)</span> and <span class="math notranslate nohighlight">\(\langle\cdot\rangle\)</span> are applied to <span class="math notranslate nohighlight">\(\vec{x}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jensen</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">c</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$P(x)$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g(x)$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">c</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+    
+<span class="n">jensen</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/17f03458a08101a4e42caedfa73deed630e409ba232a19744d0c0d183f23315b.png" src="../../_images/17f03458a08101a4e42caedfa73deed630e409ba232a19744d0c0d183f23315b.png" />
+</div>
+</div>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:violet">EXERCISE</span></strong></em>: Match the following values to the dotted lines in the graph above of the function <span class="math notranslate nohighlight">\(g(x)\)</span> and probability density <span class="math notranslate nohighlight">\(P(x)\)</span>:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\langle x\rangle = \int dx\, x P(x)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle g(x)\rangle = \int dx\, g(x)\,P(x)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(g(\langle x\rangle) = g\left( \int dx\, x P(x)\right)\)</span></p></li>
+</ol>
+<p>Is <span class="math notranslate nohighlight">\(g(x)\)</span> convex? Is Jensen’s inequality satisfied?</p>
+<p><span style="color:LightGreen">Answer</span>:</p>
+<ol class="arabic simple">
+<li><p>Vertical (black) line.</p></li>
+<li><p>Upper horizontal (blue) line.</p></li>
+<li><p>Lower horizontal (red) line.</p></li>
+</ol>
+<p>Jensen’s inequality is satisfied, as required since <span class="math notranslate nohighlight">\(g(x)\)</span> is convex.</p>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -588,6 +911,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-get-data-span"><span style="color:Orange">Get Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-load-data-span"><span style="color:Orange">Load Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-statistical-methods-span"><span style="color:Orange">Statistical Methods</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-expectation-span"><span style="color:LightGreen">Expectation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-covariance-span"><span style="color:LightGreen">Covariance</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-jensen-s-inequality-span"><span style="color:Orange">Jensen’s Inequality</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
