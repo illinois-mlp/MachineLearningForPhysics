@@ -47,9 +47,7 @@ Upon completion of the course students will be able to:
 
 ## <span style="color:Red">Course Logistics</span>
 ### <span style="color:Orange">Format</span>
-* This course will consist of two meetings per week: one lecture period and one in-class mixed lecture/practical session.
-* Lecture: Tuesday from 1:00 pm to 2:20 pm in [305 Materials Science & Engineering Building](https://answers.uillinois.edu/illinois/page.php?id=57583)
-* Lecture/Practical Session: Thursday from 1:00 pm to 2:20 pm in [305 Materials Science & Engineering Building](https://answers.uillinois.edu/illinois/page.php?id=57583)
+* This course will consist of two mandatory lectures per week on Tuesday and Thursday from 1:00 pm to 2:20 pm in [305 Materials Science & Engineering Building](https://answers.uillinois.edu/illinois/page.php?id=57583)
 
 ### <span style="color:Orange">Instructor</span>
 * Professor [Mark Neubauer](https://marksneubauer.com)
@@ -84,7 +82,7 @@ On [Gradescope](https://www.gradescope.com), you will submit your assignments an
 ## <span style="color:Red">Coursework</span>
 
 ### <span style="color:Orange">Quizzes</span>
-In-class quizzes will be given ~weekly. These are designed to test your conceptual knowledge about the topics discussed in the course.
+Short in-class quizzes will be given ~weekly. These are designed to test your conceptual knowledge about the topics discussed in the course.
 
 ### <span style="color:Orange">Homework Assignments</span>
 You will be assigned weekly homework assignments that will put into practice what you learned in lecture for the week. 
