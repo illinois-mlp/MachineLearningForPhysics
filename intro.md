@@ -74,7 +74,7 @@ There are several online tools you will need to use as part of this course.
 We will use [Campuswire](https://campuswire.com) as a class forum, a way to message the course staff and each other, and a means to submit your attendance question.
 
 ### <span style="color:Orange">Google Colab</span>
-Using [Google Colab](https://colab.research.google.com), you will be able to program your code in a Jupyter notebook and submit it for us to grade. Please sign in to your Illinois account.  While working on the assignment, you will share each of your colab assignments with the professor and the TA (but no one else).
+Using [Google Colab](https://colab.research.google.com), you will be able to program your code in a Jupyter notebook and submit it for us to grade.
 
 ### <span style="color:Orange">Gradescope</span>
 On [Gradescope](https://www.gradescope.com), you will submit your assignments and find your graded assignments.
