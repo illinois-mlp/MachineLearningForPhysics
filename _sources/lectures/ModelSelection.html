@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/ModelSelection';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -501,6 +503,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-model-selection-span"><span style="color:Orange">Bayesian Model Selection</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-case-study-how-many-peaks-span"><span style="color:Orange">Case Study: How Many Peaks?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -515,6 +519,851 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="bayesian-model-selection">
 <h1>Bayesian Model Selection<a class="headerlink" href="#bayesian-model-selection" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">mixture</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will be using MCMC for our Bayesian model evaluations, so we include the MCMC helper functions we had before in our <a class="reference external" href="https://illinois-ipaml.github.io/MachineLearningForPhysics/_sources/lectures/MarkovChainMonteCarlo.html">MCMC notebook</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare an arbitrary function to use with emcee sampling.</span>
+
+<span class="sd">    Emcee expects its parameters in a single list, but it is sometimes more</span>
+<span class="sd">    convenient to write a function in terms of named parameters and</span>
+<span class="sd">    hyperparameters. This method uses introspection to wrap an arbitrary</span>
+<span class="sd">    function with named parameters so that it has the signature expected</span>
+<span class="sd">    by emcee.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">        def f(x,y,a,b): ...</span>
+<span class="sd">        wrap(f, x=[1], y=[2], a=3, b=4, c=3, d=4)</span>
+
+<span class="sd">    returns a tuple (wrapped, [&#39;x&#39;,&#39;y&#39;], [1,2], {&#39;c&#39;:3, &#39;d&#39;:4}) where:</span>
+
+<span class="sd">      - wrapped([p,q]) calls f(x=p,y=q,a=3,b=4)</span>
+<span class="sd">      - [1,2] are the initial values to use for parameters named [&#39;x&#39;,&#39;y&#39;].</span>
+<span class="sd">      - {&#39;c&#39;:3, &#39;d&#39;:4} are the input kwargs with args of f() removed.</span>
+
+<span class="sd">    The square brackets identify floating arguments and specify their initial</span>
+<span class="sd">    value. An optional callable to evaluate a log-prior can also be passed,</span>
+<span class="sd">    for example:</span>
+
+<span class="sd">        wrap(f, x=[1,px], y=[2,py], a=3, b=4, c=3, d=4)</span>
+
+<span class="sd">    where px(x) and py(y) return the (un-normalized) log of the priors on</span>
+<span class="sd">    x and y to use during posterior sampling.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : callable</span>
+<span class="sd">        The function that should be prepared. It is assumed to have only</span>
+<span class="sd">        numerical arguments that accept any floating point values.</span>
+<span class="sd">    **kwargs : keyword arguments</span>
+<span class="sd">        All arguments of func must be included and assigned a value.</span>
+<span class="sd">        Arguments assigned a floating point value are considered fixed</span>
+<span class="sd">        during sampling.  Arguments assigned a floating point value</span>
+<span class="sd">        within a list, e.g., [1.2], will be sampled using the initial</span>
+<span class="sd">        value provided.  Sampled arguments can optionally also specify</span>
+<span class="sd">        a log-prior distribution using, e.g. [1.2, lnprior], where lnprior</span>
+<span class="sd">        is a function of the sampled argument that returns the log prior</span>
+<span class="sd">        probability density (which does not need to be normalized).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Tuple (wrapped, names, values, kwargs). See example above for details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">lnpriors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">funcsig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">funcargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">funcsig</span><span class="o">.</span><span class="n">parameters</span><span class="p">}</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Missing arguments.&#39;</span><span class="p">)</span>
+    <span class="n">bound</span> <span class="o">=</span> <span class="n">funcsig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">**</span><span class="n">funcargs</span><span class="p">)</span>
+    <span class="n">bound</span><span class="o">.</span><span class="n">apply_defaults</span><span class="p">()</span>
+    <span class="n">NoPrior</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">bound</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">lnpriors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="n">NoPrior</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid syntax for argument </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fixed</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="n">partial</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">fixed</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;expected list of </span><span class="si">{}</span><span class="s1"> values.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">for</span> <span class="n">lnprior</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lnpriors</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">lnprior</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                <span class="c1"># theta is not allowed by this prior.</span>
+                <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">partial</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="c1"># Remove function args from kwargs.</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">funcargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapped</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">abs_rms</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+           <span class="n">frac_rms</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">burnin</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate MCMC samples of the un-normalized PDF func() using emcee.</span>
+
+<span class="sd">    Can be used standalone but intended to work with :func:`wrap`.</span>
+
+<span class="sd">    Initial values for each walker are Gaussian samples centered on the</span>
+<span class="sd">    input values with an RMS of max(abs_rms, frac_rms * values).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : callable</span>
+<span class="sd">        Evaluate the log PDF to sample. Passed a single list of parameter</span>
+<span class="sd">        values. Can be prepared using :func:`wrap`.</span>
+<span class="sd">    names : iterable</span>
+<span class="sd">        List of names for each floating parameter.  Used to label columns</span>
+<span class="sd">        in the returned DataFrame. Can be prepared using :func:`wrap`.</span>
+<span class="sd">    values : iterable</span>
+<span class="sd">        List of initial values for each floating parameter.  Used to center</span>
+<span class="sd">        random initial values for each walker. Can be prepared using</span>
+<span class="sd">        :func:`wrap`.</span>
+<span class="sd">    nwalkers : int</span>
+<span class="sd">        The number of emcee walkers to use.</span>
+<span class="sd">    nsamples : int</span>
+<span class="sd">        The total number of samples to return, after combining walkers</span>
+<span class="sd">        and trimming initial burnin.</span>
+<span class="sd">    abs_rms : float</span>
+<span class="sd">        Used to set walker initial values.  See above for details.</span>
+<span class="sd">    rel_rms : float</span>
+<span class="sd">        Used to set walker initial values.  See above for details.</span>
+<span class="sd">    burnin : int</span>
+<span class="sd">        The number of samples to remove from each walker&#39;s chain.</span>
+<span class="sd">    random_state : np.random.RandomState or None</span>
+<span class="sd">        The random state to use for reproducible chains.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Generated samples in a dataframe, using the inputs names for columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">random_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">()</span>
+    <span class="c1"># Generate sampler starting points.</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">abs_rms</span><span class="p">,</span> <span class="n">frac_rms</span> <span class="o">*</span> <span class="n">values</span><span class="p">)</span>
+    <span class="n">initial</span> <span class="o">+=</span> <span class="n">rms</span> <span class="o">*</span> <span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">))</span>
+    <span class="c1"># Initialize and run sampler.</span>
+    <span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+    <span class="n">n_per_chain</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nsamples</span> <span class="o">//</span> <span class="n">nwalkers</span> <span class="o">+</span> <span class="n">burnin</span>
+    <span class="n">sampler</span><span class="o">.</span><span class="n">run_mcmc</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">n_per_chain</span><span class="p">,</span> <span class="n">rstate0</span><span class="o">=</span><span class="n">random_state</span><span class="o">.</span><span class="n">get_state</span><span class="p">())</span>
+    <span class="c1"># Remove burnin and return results in a DataFrame.</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="n">burnin</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndim</span><span class="p">)[:</span><span class="n">nsamples</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">MCMC_sample</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate random samples from an un-normalized PDF.</span>
+
+<span class="sd">    See :func:`wrap` and :func:`sample` for details.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : callable</span>
+<span class="sd">        Function to evaluate log(f(...)) where f(...) is proportional</span>
+<span class="sd">        to the desired probability density.  Will be wrapped to</span>
+<span class="sd">        determine which arguments are sampled and which are fixed.</span>
+<span class="sd">    **kwargs : keyword arguments</span>
+<span class="sd">        Used to configure the wrapping of func and the sampler.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Generated samples in a dataframe, with one named column per</span>
+<span class="sd">        sampled argument of the input function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Wrap the input function.</span>
+    <span class="n">wrapped</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="c1"># Generate emcee samples.</span>
+    <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-bayesian-model-selection-span">
+<h2><span style="color:Orange">Bayesian Model Selection</span><a class="headerlink" href="#span-style-color-orange-bayesian-model-selection-span" title="Permalink to this heading">#</a></h2>
+<p>We <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/BayesianInference.html">originally stated</a> Bayes’ learning rule as:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(\Theta_M\mid D, M) = \frac{P(D\mid \Theta_M, M)\,P(\Theta_M\mid M)}{P(D\mid M)}
+\]</div>
+<p>in terms of the:</p>
+<ol class="arabic simple">
+<li><p><em><strong><span style="color:Violet">Posterior</span></strong></em>: <span class="math notranslate nohighlight">\(P(\Theta_M\mid D, M)\)</span> is the probability of the parameter values <span class="math notranslate nohighlight">\(\Theta_M\)</span> given the data and the choice of hyperparameters.</p></li>
+<li><p><em><strong><span style="color:Violet">Likelihood</span>:</strong></em> <span class="math notranslate nohighlight">\(P(D\mid \Theta_M, M)\)</span> is the probability of the data given the model.</p></li>
+<li><p><em><strong><span style="color:Violet">Prior</span>:</strong></em> <span class="math notranslate nohighlight">\(P(\Theta_M\mid M)\)</span> is the probability of the model parameters given the hyperparameters and <em>marginalized over all possible data</em>.</p></li>
+<li><p><em><strong><span style="color:Violet">Evidence</span></strong></em>: <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> is the probability of the data given the hyperparameters and <em>marginalized over all possible parameter values given the hyperparameters</em>.</p></li>
+</ol>
+<p>We often omit the model <span class="math notranslate nohighlight">\(M\)</span> in our notation when we are only considering a single model. However, unless there is only one possible model, then we still have to solve a meta-inference problem of comparing possible models. Although this step is often referred to as “<span style="color:Violet">model selection</span>”, it is better to think of it as  <em><strong><span style="color:Violet">model comparison</span></strong></em>, since it can only assign relative probabilities to different models.</p>
+<p>Recalling <span style="color:Violet">Bayes’ Rule</span> (see <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/ProbabilityTheory.html">Probability</a>), The posterior probability of a model <span class="math notranslate nohighlight">\(M\)</span> given the observed data <span class="math notranslate nohighlight">\(D\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(M\mid D) = \frac{P(D\mid M)\,P(M)}{P(D)} \; ,
+\]</div>
+<p>where the “evidence” given <span class="math notranslate nohighlight">\(M\)</span>, <span class="math notranslate nohighlight">\(P(D\mid M)\)</span>, is now in the numerator, and the denominator is now a “<span style="color:Violet">super evidence</span>”:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D) = \int dM\, P(D\mid M)\,P(M) \; .
+\]</div>
+<p>In case of a countable (perhaps infinite) set of possible models, the integral becomes a sum,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D) = \sum_k \, P(D\mid M_k)\, P(M_k) \; ,
+\]</div>
+<p>and each “model likelihood” <span class="math notranslate nohighlight">\(P(D\mid M_k)\)</span> is a probability in the range <span class="math notranslate nohighlight">\([0,1]\)</span>. We have also introduced a prior <span class="math notranslate nohighlight">\(P(M)\)</span> on the model itself, marginalized over its parameter space:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(M) = \int d\Theta_M\, P(\Theta_M, M) \; .
+\]</div>
+<p>Note the similarity between this “Bayes’ rule for models” and the original Bayes’ rule.</p>
+<p>We can now anticipate two problems for practical model comparisons:</p>
+<ul class="simple">
+<li><p>We were able to perform inference for a given model without ever calculating its evidence <span class="math notranslate nohighlight">\(P(D\mid M)\)</span>, but that is no longer possible for model comparison.</p></li>
+<li><p>To calculate the “super evidence” we must be able to specify <em>all possible models</em>.</p></li>
+</ul>
+<p>However, we can sidestep the second problem if we only want to compare two possible models, <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span>, without specifying (or perhaps even knowing) the set of possible models. We use the  <em><strong><span style="color:Violet">odds ratio</span></strong></em> for this comparison,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+\text{odds ratio =}\quad
+\frac{P(M_1\mid D)}{P(M_2\mid D)} = \frac{P(D\mid M_1)\, P(M_1)}{P(D\mid M_2)\,P(M_2)} \;
+}
+\]</div>
+<p>where, conveniently, the “super evidence” <span class="math notranslate nohighlight">\(P(D)\)</span> cancels in the ratio. The ratio of “model likelihoods” appearing on the right-hand side is known as the <span style="color:Violet">Bayes factor</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+\text{Bayes factor =}\quad
+\frac{P(D\mid M_1)}{P(D\mid M_2)} \;
+}
+\]</div>
+<p>It is easy to lose sight of the big picture with all of this probability calculus, so let’s zoom out to a simple example:</p>
+<p><a class="reference internal" href="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/ModelSelection-OccamFactor.jpg"><img alt="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/ModelSelection-OccamFactor.jpg" class="align-left" src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/ModelSelection-OccamFactor.jpg" style="width: 800px;" /></a></img><br></p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:Violet">DISCUSS</span></strong></em> Study the observed image <span class="math notranslate nohighlight">\(D\)</span> above with two models in mind:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M_1\)</span>: The image shows a single piece of paper.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_2\)</span>: The image shows two pieces of paper.</p></li>
+</ul>
+<p>Are both models possible? Give some arguments for why <span class="math notranslate nohighlight">\(M_2\)</span> is unlikely. Are your arguments based on prior knowledge?</p>
+<p>Both models are certainly possible since the ruler could be hiding the fact that these are two pieces of paper side by side.</p>
+<p>However, <span class="math notranslate nohighlight">\(M_2\)</span> is unlikely because:</p>
+<ul class="simple">
+<li><p>This looks like a standard (US) sheet of paper, as supported its dimensions according to the ruler.</p></li>
+<li><p>It would be a remarkable coincidence for two sheets of paper to be perfectly lined up like this.</p></li>
+</ul>
+<p>The first argument is based on our prior knowledge, such as:</p>
+<ul class="simple">
+<li><p>Standard (US) paper has the proportions 8.5 to 11.</p></li>
+<li><p>Most (US) rulers are in inches.</p></li>
+</ul>
+<p>Therefore, this type of argument shows up in the ratio of model priors, <span class="math notranslate nohighlight">\(P(M_1) / P(M_2)\)</span> in the odds ratio above.</p>
+<p>However, the second argument is a statement about probabilities that does not rely on any prior knowledge. Instead, it shows up in the Bayes factor above. To see how this happens, we need to define the parameters for each model. For each piece of paper, use four parameters:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\((x,y)\)</span> of the top-left corner, which could be anywhere in the image.</p></li>
+<li><p>width <span class="math notranslate nohighlight">\(w\)</span> and height <span class="math notranslate nohighlight">\(h\)</span> of the paper, which range over the full image width and height.</p></li>
+</ul>
+<p>The likelihoods of <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span> are then integrals over four and eight parameters, respectively:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(M_2\)</span>, the likelihood of the observed image <span class="math notranslate nohighlight">\(D\)</span> will be zero except when the parameters of the second piece of paper have it line up perfectly under the ruler. Since this represents a small fraction of the full range of <span class="math notranslate nohighlight">\(M_2\)</span> parameters, <span class="math notranslate nohighlight">\(P(D\mid M_2)\)</span> is heavily penalized compared with <span class="math notranslate nohighlight">\(P(D\mid M_1)\)</span>, leading to a large Bayes factor.</p>
+<p>This is an example of <a class="reference external" href="https://en.wikipedia.org/wiki/Occam's_razor">Occam’s razor</a> in action: Bayesian inference prefers the simplest explanation (model), independently of any prior knowledge.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"></section>
+<section id="span-style-color-orange-case-study-how-many-peaks-span">
+<h2><span style="color:Orange">Case Study: How Many Peaks?</span><a class="headerlink" href="#span-style-color-orange-case-study-how-many-peaks-span" title="Permalink to this heading">#</a></h2>
+<p>Generate some random samples of a single feature <span class="math notranslate nohighlight">\(x\)</span> drawn from a mixture of two Gaussians:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_mix</span><span class="p">(</span><span class="n">n_total</span><span class="p">,</span> <span class="n">frac1</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">plot_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)):</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="c1"># Assign each sample to one of the peaks.</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">bernoulli</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">frac1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_total</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+    <span class="c1"># Set the Gaussian parameters for each sample.</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">])[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma1</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">])[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="c1"># Generate each sample.</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+    <span class="c1"># Optional plot.</span>
+    <span class="k">if</span> <span class="n">plot_range</span><span class="p">:</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">plot_range</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">plot_range</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">frac1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pdf1</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">frac1</span> <span class="o">*</span> <span class="n">pdf1</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">frac1</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pdf2</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">frac1</span><span class="p">)</span> <span class="o">*</span> <span class="n">pdf2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_gen</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">Da</span> <span class="o">=</span> <span class="n">generate_mix</span><span class="p">(</span><span class="n">n_gen</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="c1"># nan values are never used</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ea7ba34a5884806c4e493ce4fed53ce635136b88db57c2f55b5d8e36f431881b.png" src="../../_images/ea7ba34a5884806c4e493ce4fed53ce635136b88db57c2f55b5d8e36f431881b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Db</span> <span class="o">=</span> <span class="n">generate_mix</span><span class="p">(</span><span class="n">n_gen</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c6ee6cd033109139666bdef976d33d9ce7d7cef9cfea757f2692257eda6f739c.png" src="../../_images/c6ee6cd033109139666bdef976d33d9ce7d7cef9cfea757f2692257eda6f739c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Dc</span> <span class="o">=</span> <span class="n">generate_mix</span><span class="p">(</span><span class="n">n_gen</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cb5e85cc65eb1d6b743eadb68a358f9386859b7ea3a0661887e0759aff88ebd1.png" src="../../_images/cb5e85cc65eb1d6b743eadb68a358f9386859b7ea3a0661887e0759aff88ebd1.png" />
+</div>
+</div>
+<p>Note that each sample has an integer number of entries drawn from each Gaussian, so the true <code class="docutils literal notranslate"><span class="pre">frac1</span></code> is only realized on average.</p>
+<p>We will compare two models to explain this data:</p>
+<ul class="simple">
+<li><p>M1: A single Gaussian with unknown mean <span class="math notranslate nohighlight">\(\mu\)</span> and sigma <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+<li><p>M2: Two Gaussians with equal proportions (<code class="docutils literal notranslate"><span class="pre">frac1=0.5</span></code>), means with a fixed separation <span class="math notranslate nohighlight">\(\mu_2 - \mu_1 = 0.6\)</span>, and unknown sigmas <span class="math notranslate nohighlight">\(\sigma_1\)</span>, <span class="math notranslate nohighlight">\(\sigma_2\)</span>.</p></li>
+</ul>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">Da</span></code> is drawn from M1 and <code class="docutils literal notranslate"><span class="pre">Db</span></code>, <code class="docutils literal notranslate"><span class="pre">Dc</span></code> are drawn from M2.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><em><strong><span style="color:Violet">DISCUSS:</span></strong></em> For each of these three datasets, predict whether the Bayes’ factor for M1 relative to M2 will be:</p>
+<ul class="simple">
+<li><p>Much larger than 1, i.e., strongly favoring M1.</p></li>
+<li><p>About 1, i.e. unable to discriminate between M1 and M2 based on the data alone.</p></li>
+<li><p>Much smaller than 1, i.e., strongly favoring M2.</p></li>
+</ul>
+<p>Explain your reasoning.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Da</span></code> should strongly favor M1 since the fixed separation of the M2 means makes it very unlikely to have been generated by M2.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Db</span></code> should very strongly favor M2, since no reasonable statistical fluctuation of M1 would ever reproduce it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Dc</span></code> should be unable to discriminate between M1 and M2 since, although it was produced by M2, M1 might produce data like this with the right statistical fluctuations.</p>
+<hr style="border:1px solid rgba(255, 255, 255, 1); margin: 2em 0;"><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bayes_factor#Interpretation">Jeffreys proposed a scale</a> for thresholds in the Bayes’ factor:</p>
+<ul class="simple">
+<li><p>larger than 100 is “decisive evidence” in favor of M1.</p></li>
+<li><p>larger than 10 is “strong evidence” in favor of M1.</p></li>
+<li><p>smaller than 0.1 is “strong evidence” in favor of M2.</p></li>
+<li><p>smaller than 0.01 is “decisive evidence” in favor of M2.</p></li>
+</ul>
+<p>To compare models for given data <span class="math notranslate nohighlight">\(D\)</span>, we perform the following steps for each candidate model <span class="math notranslate nohighlight">\(M\)</span>:</p>
+<ul class="simple">
+<li><p>Perform a Bayesian inference with HMC assuming <span class="math notranslate nohighlight">\(M\)</span> to obtain samples of <span class="math notranslate nohighlight">\((\mu, \sigma)\)</span> drawn from the posterior <span class="math notranslate nohighlight">\(P(\theta\mid D, M)\)</span>.</p></li>
+<li><p>Construct a density estimate of the posterior using the generated samples.</p></li>
+<li><p>Estimate the evidence <span class="math notranslate nohighlight">\(P(D\mid M)\)</span> for <span class="math notranslate nohighlight">\(D\)</span> given <span class="math notranslate nohighlight">\(M\)</span> using the density estimate.</p></li>
+</ul>
+<p>Once we have estimated the evidence for each model, we can calculate the Bayes’ factor for any pair of models.</p>
+<p>The final step is to assign relative prior probabilities for each model in order to calculate the odds ratios.</p>
+<p>The following parameter ranges are enforced by setting the prior probability to zero outside these ranges:</p>
+<ul class="simple">
+<li><p>M1: <span class="math notranslate nohighlight">\(|\mu| \le 1\)</span> and <span class="math notranslate nohighlight">\(0.05 \le \sigma \le 1.0\)</span>.</p></li>
+<li><p>M2: <span class="math notranslate nohighlight">\(|\mu| \le 1\)</span> and <span class="math notranslate nohighlight">\(0.05 \le \sigma_i \le 1.0\)</span>, with <span class="math notranslate nohighlight">\(\mu \equiv (\mu_1 + \mu_2) / 2\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu_range</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.</span><span class="p">)</span>
+<span class="n">sigma_range</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code below to calculate the evidence assuming M1 is quite involved, and brings together several topics we have met already:</p>
+<ul class="simple">
+<li><p>Bayesian inference.</p></li>
+<li><p>Tensorflow and scipy.stats frameworks.</p></li>
+<li><p>Hamiltonian Markov-chain Monte Carlo.</p></li>
+<li><p>Density estimation.</p></li>
+<li><p>Evidence estimation with MCMC samples.</p></li>
+</ul>
+<p>Do not worry about the details, at least until you need to perform a similar calculation yourself!</p>
+<p>To build this calculation, first define the log-posterior PDFs of both models:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M1_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="c1"># Perform change of variables.</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="c1"># Apply priors on (mu, sigma)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">or</span> <span class="n">sigma</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="c1"># Calculate and return the log-likelihood.</span>
+    <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">M2_logpost</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+    <span class="c1"># Perform change of variables.</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">-</span> <span class="mf">0.3</span>
+    <span class="n">mu2</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="mf">0.3</span>
+    <span class="n">sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+    <span class="c1"># Apply priors on (mu, t1, t2)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">if</span> <span class="n">sigma1</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">or</span> <span class="n">sigma1</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>    
+    <span class="k">if</span> <span class="n">sigma2</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">or</span> <span class="n">sigma2</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>    
+    <span class="c1"># Calculate and return the log-likelihood.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+       <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">)</span> <span class="o">+</span>
+       <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we are ready to estimate the evidence for the observed data D assuming model M1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_M1_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Pick intial point for MCMC chains based on the data.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">med</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">84</span><span class="p">))</span>
+    <span class="n">mu_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">med</span><span class="p">)</span>
+    <span class="n">t_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Use MCMC to generate samples from the M1 posterior.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">MCMC_sample</span><span class="p">(</span><span class="n">M1_logpost</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span>
+                          <span class="n">mu</span><span class="o">=</span><span class="p">[</span><span class="n">mu_init</span><span class="p">],</span> <span class="n">t</span><span class="o">=</span><span class="p">[</span><span class="n">t_init</span><span class="p">],</span>
+                          <span class="n">nsamples</span><span class="o">=</span><span class="n">n_mc</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+    <span class="c1"># Replace t=log(sigma) with sigma.</span>
+    <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+    <span class="n">samples</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Build a parameter grid for estimating the evidence.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">mu_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">99.5</span><span class="p">)),</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="n">sigma_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">99.5</span><span class="p">)),</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Evaluate the posterior numerator P(D|mu,sigma) P(mu,sigma) on the grid.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">sigma_</span> <span class="o">=</span> <span class="n">sigma_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">D_</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">log_numerator_grid</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">D_</span><span class="p">,</span> <span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma_</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">log_numerator_grid</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Estimate the posterior density from the generated samples with a GMM.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">fit</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Evaluate the density on the grid.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">log_density_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_grid</span><span class="p">,</span> <span class="n">n_grid</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">mu_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">sigma_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sigma_grid</span><span class="p">):</span>
+            <span class="n">log_density_grid</span><span class="p">[</span><span class="n">i2</span><span class="p">,</span> <span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">score_samples</span><span class="p">([[</span><span class="n">mu_value</span><span class="p">,</span> <span class="n">sigma_value</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Use the the 25% of grid points with the largest numerator for the evidence estimate.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">log_numerator_cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+    <span class="n">use</span> <span class="o">=</span> <span class="n">log_numerator_grid</span> <span class="o">&gt;</span> <span class="n">log_numerator_cut</span>
+    <span class="n">log_evidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">((</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)[</span><span class="n">use</span><span class="p">])</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Summarize the results with a plot</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_numerator_grid</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">log_density_grid</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mu_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">sigma_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">mu$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="p">(</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">[</span><span class="n">use</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="p">(</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)[</span><span class="n">use</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">log_evidence</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">log P(D</span><span class="se">\\</span><span class="s1">mid </span><span class="se">\\</span><span class="s1">mu,</span><span class="se">\\</span><span class="s1">sigma, M_1) + </span><span class="se">\\</span><span class="s1">log P(</span><span class="se">\\</span><span class="s1">mu,</span><span class="se">\\</span><span class="s1">sigma</span><span class="se">\\</span><span class="s1">mid M_1)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">log P(D</span><span class="se">\\</span><span class="s1">mid M_1)$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">log_evidence</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Da_M1</span> <span class="o">=</span> <span class="n">calculate_M1_evidence</span><span class="p">(</span><span class="n">Da</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c17a2855e1c278373629a2f48b8312d9ad59da463cb63e482f4fe92f17c59ffa.png" src="../../_images/c17a2855e1c278373629a2f48b8312d9ad59da463cb63e482f4fe92f17c59ffa.png" />
+</div>
+</div>
+<p>In the left-hand plot above, the solid black contours show the shape of the un-normalized posterior and the dashed red contours show the GMM density model fit to the MCMC samples. These do not need to agree exactly, but better agreement will lead to a more accurate estimate of the evidence <span class="math notranslate nohighlight">\(P(Da\mid M1)\)</span>.  In this example, we are using a GMM with a single component but the posterior is slightly non-Gaussian, so we could try increasing the number of MCMC samples and adding another GMM component.</p>
+<p>The right-hand plot shows many independent estimates of the evidence, calculated as the ratio of the un-normalized posterior (solid black contours) and GMM density model (dashed red contours) on a uniform 2D grid of <span class="math notranslate nohighlight">\((\mu, \sigma)\)</span> points.  To combine these independent estimates, we take the median of the green values, where the posterior probability is largest (so this procedure should be more accurate). Review the <a class="reference external" href="https://illinois-ipaml.github.io/MachineLearningForPhysics/_sources/lectures/MarkovChainMonteCarlo.html">Markov Chain Montel Carlo notebook</a> for a simpler 1D example of evidence estimation with the same approach.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Db_M1</span> <span class="o">=</span> <span class="n">calculate_M1_evidence</span><span class="p">(</span><span class="n">Db</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c365d8158ed3fb52463557fe0094b20c740d606eef7e7ffad6ff7377b0a37402.png" src="../../_images/c365d8158ed3fb52463557fe0094b20c740d606eef7e7ffad6ff7377b0a37402.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Dc_M1</span> <span class="o">=</span> <span class="n">calculate_M1_evidence</span><span class="p">(</span><span class="n">Dc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5b6f288535cefcccf64962798990e0687ef72164c4561f840c579526c4873b84.png" src="../../_images/5b6f288535cefcccf64962798990e0687ef72164c4561f840c579526c4873b84.png" />
+</div>
+</div>
+<p>The calculation of the evidence for D assuming model M2 is very similar, but now in the 3D parameter space (mu, t1, t2):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_M2_evidence</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">n_mc</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">n_grid</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Pick starting point for MCMC chains based on the data.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">med</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">84</span><span class="p">))</span>
+    <span class="n">mu_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">med</span><span class="p">)</span>
+    <span class="n">t_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Use MCMC to generate samples from the M1 posterior.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">MCMC_sample</span><span class="p">(</span><span class="n">M2_logpost</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span>
+                          <span class="n">mu</span><span class="o">=</span><span class="p">[</span><span class="n">mu_init</span><span class="p">],</span> <span class="n">t1</span><span class="o">=</span><span class="p">[</span><span class="n">t_init</span><span class="p">],</span> <span class="n">t2</span><span class="o">=</span><span class="p">[</span><span class="n">t_init</span><span class="p">],</span>
+                          <span class="n">nsamples</span><span class="o">=</span><span class="n">n_mc</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+    <span class="c1"># Replace ti=log(sigmai) with sigmai.</span>
+    <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;t1&#39;</span><span class="p">])</span>
+    <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;t2&#39;</span><span class="p">])</span>
+    <span class="n">samples</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;t1&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">samples</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;t2&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Build a parameter grid for estimating the evidence.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">mu_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">99.5</span><span class="p">)),</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="n">sigma1_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">99.5</span><span class="p">)),</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="n">sigma2_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">99.5</span><span class="p">)),</span> <span class="n">n_grid</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Evaluate the posterior numerator P(D|mu,sigma1,sigma2) P(mu,sigma1,sigma2) on the grid.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">mu1_</span><span class="p">,</span> <span class="n">mu2_</span> <span class="o">=</span> <span class="n">mu_grid</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">mu_grid</span> <span class="o">+</span> <span class="mf">0.3</span>
+    <span class="n">sigma1_</span> <span class="o">=</span> <span class="n">sigma1_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sigma2_</span> <span class="o">=</span> <span class="n">sigma2_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">D_</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">log_numerator_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">D_</span><span class="p">,</span> <span class="n">mu1_</span><span class="p">,</span> <span class="n">sigma1_</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">D_</span><span class="p">,</span> <span class="n">mu2_</span><span class="p">,</span> <span class="n">sigma2_</span><span class="p">)))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">log_numerator_grid</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma1_</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma2_</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Calculate projections onto each pair of parameters with numerical 1D integration.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">numerator_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">)</span>
+    <span class="n">proj_mu_sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">numerator_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">proj_mu_sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">numerator_grid</span><span class="p">,</span> <span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">proj_sigma1_sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">numerator_grid</span><span class="p">,</span> <span class="n">mu_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Estimate the posterior density from the generated samples with a GMM.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">fit</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Evaluate the density on the grid.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">log_density_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_grid</span><span class="p">,</span> <span class="n">n_grid</span><span class="p">,</span> <span class="n">n_grid</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">mu_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">sigma1_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sigma1_grid</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i3</span><span class="p">,</span> <span class="n">sigma2_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sigma2_grid</span><span class="p">):</span>
+                <span class="n">log_density_grid</span><span class="p">[</span><span class="n">i3</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span>
+                    <span class="p">[[</span><span class="n">mu_value</span><span class="p">,</span> <span class="n">sigma1_value</span><span class="p">,</span> <span class="n">sigma2_value</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Calculate projections onto each pair of parameters with numerical 1D integration.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">density_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_density_grid</span><span class="p">)</span>
+    <span class="n">dproj_mu_sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">density_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">dproj_mu_sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">density_grid</span><span class="p">,</span> <span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dproj_sigma1_sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">density_grid</span><span class="p">,</span> <span class="n">mu_grid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Use the the 5% of grid points with the largest numerator for the evidence estimate.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">log_numerator_cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+    <span class="n">use</span> <span class="o">=</span> <span class="n">log_numerator_grid</span> <span class="o">&gt;</span> <span class="n">log_numerator_cut</span>
+    <span class="n">log_evidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">((</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)[</span><span class="n">use</span><span class="p">])</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Summarize the results with a plot</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">proj_mu_sigma1</span><span class="p">)</span> <span class="o">-</span> <span class="n">proj_mu_sigma1</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dproj_mu_sigma1</span><span class="p">)</span> <span class="o">-</span> <span class="n">dproj_mu_sigma1</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mu_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">sigma1_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma1_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">mu$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma_1$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">proj_mu_sigma2</span><span class="p">)</span> <span class="o">-</span> <span class="n">proj_mu_sigma2</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dproj_mu_sigma2</span><span class="p">)</span> <span class="o">-</span> <span class="n">dproj_mu_sigma2</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">mu_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mu_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">sigma2_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma2_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">mu$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma_2$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">proj_sigma1_sigma2</span><span class="p">)</span> <span class="o">-</span> <span class="n">proj_sigma1_sigma2</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">sigma1_grid</span><span class="p">,</span> <span class="n">sigma2_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dproj_sigma1_sigma2</span><span class="p">)</span> <span class="o">-</span> <span class="n">dproj_sigma1_sigma2</span><span class="p">,</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">sigma1_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma1_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">sigma2_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma2_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma_1$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma_2$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="p">(</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">log_numerator_grid</span><span class="p">[</span><span class="n">use</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="p">(</span><span class="n">log_numerator_grid</span> <span class="o">-</span> <span class="n">log_density_grid</span><span class="p">)[</span><span class="n">use</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                  <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">log_evidence</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">log P(D</span><span class="se">\\</span><span class="s1">mid </span><span class="se">\\</span><span class="s1">mu,</span><span class="se">\\</span><span class="s1">sigma_1,</span><span class="se">\\</span><span class="s1">sigma_2, M_2) + </span><span class="se">\\</span><span class="s1">log P(</span><span class="se">\\</span><span class="s1">mu,</span><span class="se">\\</span><span class="s1">sigma_1,</span><span class="se">\\</span><span class="s1">sigma_2</span><span class="se">\\</span><span class="s1">mid M_2)$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">log P(D</span><span class="se">\\</span><span class="s1">mid M_2)$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.22</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">log_evidence</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Da_M2</span> <span class="o">=</span> <span class="n">calculate_M2_evidence</span><span class="p">(</span><span class="n">Da</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3d9dfe20901143b7f58f2bd02bf7260771ad71d59fba4fdf8a7c2644c5d2bec2.png" src="../../_images/3d9dfe20901143b7f58f2bd02bf7260771ad71d59fba4fdf8a7c2644c5d2bec2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Db_M2</span> <span class="o">=</span> <span class="n">calculate_M2_evidence</span><span class="p">(</span><span class="n">Db</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/aa85c9763411854b9b265cb9e4fe242b5681190d88c34bda421bb4bb4a65047c.png" src="../../_images/aa85c9763411854b9b265cb9e4fe242b5681190d88c34bda421bb4bb4a65047c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_Dc_M2</span> <span class="o">=</span> <span class="n">calculate_M2_evidence</span><span class="p">(</span><span class="n">Dc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d0a2db3d1bc9c2b1327beff062d3db3c76d8c51f26d38f5be682a2f790a47d04.png" src="../../_images/d0a2db3d1bc9c2b1327beff062d3db3c76d8c51f26d38f5be682a2f790a47d04.png" />
+</div>
+</div>
+<p>Each of these involved calculations provides a single number, the estimated log of the evidence for <span class="math notranslate nohighlight">\(D\)</span> given <span class="math notranslate nohighlight">\(M\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\log P(D\mid M)
+\]</div>
+<p>Note these are tiny numbers (<span class="math notranslate nohighlight">\(e^{-100} \simeq 10^{-44}\)</span>), but it their difference that matters:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+\text{Bayes' factor} = \exp\left[ \log P(D\mid M_1) - \log P(D\mid M_2)\right] \;
+}
+\]</div>
+<p>Finally, we apply our subjective prior weights for relative likelihood of M1 and M2 in the absence of any data to obtain the M1:M2 odds ratio:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+\boxed{
+\frac{P(M_1\mid D)}{P(M_2\mid D)} = (\text{Bayes' factor}) \times \frac{P(M_1)}{P(M_2)} \;
+}
+\]</div>
+<p>If we assume that M1 and M2 have equal a-priori weights, then the odds ratio equals the Bayes’ factor:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">M1_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">M2_prior</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;logM1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">E_Da_M1</span><span class="p">,</span> <span class="n">E_Db_M1</span><span class="p">,</span> <span class="n">E_Dc_M1</span><span class="p">],</span>
+        <span class="s1">&#39;logM2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">E_Da_M2</span><span class="p">,</span> <span class="n">E_Db_M2</span><span class="p">,</span> <span class="n">E_Dc_M2</span><span class="p">]},</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Da&#39;</span><span class="p">,</span> <span class="s1">&#39;Db&#39;</span><span class="p">,</span> <span class="s1">&#39;Dc&#39;</span><span class="p">))</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log10(Bayes)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;logM1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;logM2&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10.</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log10(Odds)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log10(Bayes)&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">M1_prior</span> <span class="o">/</span> <span class="n">M2_prior</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="n">summarize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>logM1</th>
+      <th>logM2</th>
+      <th>log10(Bayes)</th>
+      <th>log10(Odds)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Da</th>
+      <td>-139.9</td>
+      <td>-142.7</td>
+      <td>1.2</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <th>Db</th>
+      <td>-81.5</td>
+      <td>-39.6</td>
+      <td>-18.2</td>
+      <td>-18.2</td>
+    </tr>
+    <tr>
+      <th>Dc</th>
+      <td>-143.3</td>
+      <td>-141.7</td>
+      <td>-0.7</td>
+      <td>-0.7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To summarize in words:</p>
+<ul class="simple">
+<li><p>M1 is “strongly” (but not “decisively”) supported by <code class="docutils literal notranslate"><span class="pre">Da</span></code>.</p></li>
+<li><p>M2 is “decisively” supported by <code class="docutils literal notranslate"><span class="pre">Db</span></code></p></li>
+<li><p>M2 is mildy supported by <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, but the evidence is not “strong”.</p></li>
+</ul>
+<p>If we have a prior bias that M1 is 10x more likely than M1, this would mostly affect our assessment for <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, which now slightly prefers M1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summarize</span><span class="p">(</span><span class="n">M1_prior</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">M2_prior</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>logM1</th>
+      <th>logM2</th>
+      <th>log10(Bayes)</th>
+      <th>log10(Odds)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Da</th>
+      <td>-139.9</td>
+      <td>-142.7</td>
+      <td>1.2</td>
+      <td>2.2</td>
+    </tr>
+    <tr>
+      <th>Db</th>
+      <td>-81.5</td>
+      <td>-39.6</td>
+      <td>-18.2</td>
+      <td>-17.2</td>
+    </tr>
+    <tr>
+      <th>Dc</th>
+      <td>-143.3</td>
+      <td>-141.7</td>
+      <td>-0.7</td>
+      <td>0.3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -588,6 +1437,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-bayesian-model-selection-span"><span style="color:Orange">Bayesian Model Selection</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-case-study-how-many-peaks-span"><span style="color:Orange">Case Study: How Many Peaks?</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
