@@ -886,6 +886,7 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 <ul class="simple">
 <li><p>larger than 100 is “decisive evidence” in favor of M1.</p></li>
 <li><p>larger than 10 is “strong evidence” in favor of M1.</p></li>
+<li><p>larger (smaller) than one favors M1 over M2 (M2 over M1)</p></li>
 <li><p>smaller than 0.1 is “strong evidence” in favor of M2.</p></li>
 <li><p>smaller than 0.01 is “decisive evidence” in favor of M2.</p></li>
 </ul>
@@ -1302,11 +1303,11 @@ P(D\mid M_i) = \int d\Theta_i\, P(D, \Theta_i\mid M_i) \; .
 </div>
 <p>To summarize in words:</p>
 <ul class="simple">
-<li><p>M1 is “strongly” (but not “decisively”) supported by <code class="docutils literal notranslate"><span class="pre">Da</span></code>.</p></li>
-<li><p>M2 is “decisively” supported by <code class="docutils literal notranslate"><span class="pre">Db</span></code></p></li>
-<li><p>M2 is mildy supported by <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, but the evidence is not “strong”.</p></li>
+<li><p>Odds ratio = 15.8 <span class="math notranslate nohighlight">\(\to\)</span> M1 is “strongly” (but not “decisively”) supported by <code class="docutils literal notranslate"><span class="pre">Da</span></code>.</p></li>
+<li><p>Odds ratio = 6.3 <span class="math notranslate nohighlight">\(\times 10^{-19}\)</span> <span class="math notranslate nohighlight">\(\to\)</span> M2 is “decisively” supported by <code class="docutils literal notranslate"><span class="pre">Db</span></code></p></li>
+<li><p>Odds ratio = 0.2 <span class="math notranslate nohighlight">\(\to\)</span> M2 is mildy supported by <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, but the evidence is not “strong”.</p></li>
 </ul>
-<p>If we have a prior bias that M1 is 10x more likely than M1, this would mostly affect our assessment for <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, which now slightly prefers M1:</p>
+<p>If we have a prior bias that M1 is 10x more likely than M1, this would mostly affect our assessment for <code class="docutils literal notranslate"><span class="pre">Dc</span></code>, which now slightly prefers M1 since Odds ratio 0.2 <span class="math notranslate nohighlight">\(\to\)</span> 2.0:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summarize</span><span class="p">(</span><span class="n">M1_prior</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">M2_prior</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
