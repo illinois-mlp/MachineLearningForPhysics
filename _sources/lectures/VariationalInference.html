@@ -1011,6 +1011,7 @@ p(\theta) = P(\theta\mid D) = \frac{P(D\mid \theta)\, P(\theta)}{P(D)} \; ,
 <li><p>Minimizing <span class="math notranslate nohighlight">\(-\text{ELBO}(q)\)</span> with respect to <span class="math notranslate nohighlight">\(q\)</span> is equivalent to minimizing <span class="math notranslate nohighlight">\(\text{KL}(q\parallel p)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\text{ELBO}(q)\)</span> is much easier to calculate since it does not depend on the evidence <span class="math notranslate nohighlight">\(P(D)\)</span>.</p></li>
 </ul>
+<p>The ELBO is strongly connected to <a class="reference external" href="https://en.wikipedia.org/wiki/Information_theory">information theory and entropy</a>. Specifically, the ELBO is not just a loss function for variational inference; it is an information-theoretic objective that balances how much information from the input data is encoded into the latent space (bits) versus how accurately that data can be reconstructed.</p>
 <p>Note that, as with the KL divergence, the ELBO can be evaluated in terms of expectation values,</p>
 <div class="math notranslate nohighlight">
 \[ \Large
