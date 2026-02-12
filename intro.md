@@ -49,11 +49,16 @@ Upon completion of the course students will be able to:
 ### <span style="color:Orange">Format</span>
 * This course will consist of two mandatory lectures per week on Tuesday and Thursday from 1:00 pm to 2:20 pm in [305 Materials Science & Engineering Building](https://answers.uillinois.edu/illinois/page.php?id=57583)
 
-### <span style="color:Orange">Instructor</span>
+### <span style="color:Orange">Instructors</span>
 * Professor [Mark Neubauer](https://marksneubauer.com)
   * email: msn@illinois.edu
   * Office Hour: Thursday 5:30pm - 6:30 pm
   * Location: [Zoom](https://illinois.zoom.us/j/85255234488?pwd=eTF3NDVtU1FSZXNpK3BFck9vKzNZdz09)
+
+* Dr. [Aaron Pearlman](https://physics.illinois.edu/people/directory/profile/aaronjp)
+  * email: aaronjp@illinois.edu
+  * Office Hour: By appointment
+  * Location: Loomis 290B
 
 ### <span style="color:Orange">TAs</span>
 * YuTing Bai
