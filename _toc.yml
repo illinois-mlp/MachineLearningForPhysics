@@ -50,11 +50,12 @@ chapters:
   - file: _sources/lectures/ArtificialNeuralNetworks
   - file: _sources/lectures/DeepLearning.ipynb
   - file: _sources/homework/Homework_05
-- file: _sources/Week_06 # Convolutional and Recurrent Neural Networks
+- file: _sources/Week_06 # Recurrent and Convolutional Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing
     title: Slides
-  - file: _sources/lectures/ConvolutionalRecurrentNeuralNetworks
+  - file: _sources/lectures/RecurrentNeuralNetworks
+  - file: _sources/lectures/ConvolutionalNeuralNetworks
   - file: _sources/homework/Homework_06
 - file: _sources/Week_07 # Geometric Deep Learning and Graph Neural Networks
   sections:
