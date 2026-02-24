@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Convolutional and Recurrent Neural Networks &#8212; PHYS 498 MLP</title>
+    <title>Recurrent and Convolutional Neural Networks &#8212; PHYS 498 MLP</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/Week_06';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Convolutional and Recurrent Neural Networks" href="lectures/ConvolutionalRecurrentNeuralNetworks.html" />
+    <link rel="next" title="Recurrent Neural Networks" href="lectures/RecurrentNeuralNetworks.html" />
     <link rel="prev" title="Homework 05: Artificial Neural Networks" href="homework/Homework_05.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -221,9 +221,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#"><span style="color: blue;"><b>Recurrent and Convolutional Neural Networks</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/ConvolutionalRecurrentNeuralNetworks.html">Convolutional and Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/RecurrentNeuralNetworks.html">Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/ConvolutionalNeuralNetworks.html">Convolutional Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
 </ul>
 </details></li>
@@ -461,7 +462,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></h1>
+    <h1><span style="color: blue;"><b>Recurrent and Convolutional Neural Networks</b></span></h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -487,23 +488,24 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="span-style-color-blue-b-convolutional-and-recurrent-neural-networks-b-span">
-<h1><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span><a class="headerlink" href="#span-style-color-blue-b-convolutional-and-recurrent-neural-networks-b-span" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="span-style-color-blue-b-recurrent-and-convolutional-neural-networks-b-span">
+<h1><span style="color: blue;"><b>Recurrent and Convolutional Neural Networks</b></span><a class="headerlink" href="#span-style-color-blue-b-recurrent-and-convolutional-neural-networks-b-span" title="Permalink to this heading">#</a></h1>
 <section id="overview">
 <h2><em>Overview</em><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>You will learn the basics of Convolutional and Recurrent Neural Networks</p>
+<p>You will learn the basics of Recurrent and Convolutional Neural Networks</p>
 </section>
 <section id="goals">
 <h2><em>Goals</em><a class="headerlink" href="#goals" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Learn about Convolutional and Recurrent Neural Networks</p></li>
+<li><p>Learn about Recurrent and Convolutional Neural Networks</p></li>
 </ul>
 </section>
 <section id="lecture-materials">
 <h2><em>Lecture Materials</em><a class="headerlink" href="#lecture-materials" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></p></li>
-<li><p><a class="reference internal" href="lectures/ConvolutionalRecurrentNeuralNetworks.html"><span class="doc">Convolutional and Recurrent Neural Networks</span></a></p></li>
+<li><p><a class="reference internal" href="lectures/RecurrentNeuralNetworks.html"><span class="doc">Recurrent Neural Networks</span></a></p></li>
+<li><p><a class="reference internal" href="lectures/ConvolutionalNeuralNetworks.html"><span class="doc">Convolutional Neural Networks</span></a></p></li>
 </ul>
 </section>
 <section id="homework-assignment">
@@ -562,11 +564,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="lectures/ConvolutionalRecurrentNeuralNetworks.html"
+       href="lectures/RecurrentNeuralNetworks.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Convolutional and Recurrent Neural Networks</p>
+        <p class="prev-next-title">Recurrent Neural Networks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

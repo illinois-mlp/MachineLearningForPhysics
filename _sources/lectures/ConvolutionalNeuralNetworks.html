@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Convolutional and Recurrent Neural Networks &#8212; PHYS 498 MLP</title>
+    <title>Convolutional Neural Networks &#8212; PHYS 498 MLP</title>
   
   
   
@@ -64,11 +64,11 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/ConvolutionalRecurrentNeuralNetworks';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/ConvolutionalNeuralNetworks';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks" href="../homework/Homework_06.html" />
-    <link rel="prev" title="Convolutional and Recurrent Neural Networks" href="../Week_06.html" />
+    <link rel="prev" title="Recurrent Neural Networks" href="RecurrentNeuralNetworks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -223,9 +223,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_06.html"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_06.html"><span style="color: blue;"><b>Recurrent and Convolutional Neural Networks</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Convolutional and Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RecurrentNeuralNetworks.html">Recurrent Neural Networks</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Convolutional Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
 </ul>
 </details></li>
@@ -364,7 +365,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/illinois-mlp/MachineLearningForPhysics/blob/main/_sources/lectures/ConvolutionalRecurrentNeuralNetworks.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/illinois-mlp/MachineLearningForPhysics/blob/main/_sources/lectures/ConvolutionalNeuralNetworks.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -410,7 +411,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/_sources/lectures/ConvolutionalRecurrentNeuralNetworks.ipynb" target="_blank"
+      <li><a href="../../_sources/_sources/lectures/ConvolutionalNeuralNetworks.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -494,7 +495,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Convolutional and Recurrent Neural Networks</h1>
+    <h1>Convolutional Neural Networks</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -504,10 +505,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-recurrent-networks-span"><span style="color:Orange">Recurrent Networks</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-stucture-span"><span style="color:LightGreen">Stucture</span></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-convolutional-networks-span"><span style="color:Orange">Convolutional Networks</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
@@ -521,8 +518,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="convolutional-and-recurrent-neural-networks">
-<h1>Convolutional and Recurrent Neural Networks<a class="headerlink" href="#convolutional-and-recurrent-neural-networks" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="convolutional-neural-networks">
+<h1>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -553,183 +550,14 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-02-27 22:53:23.244570: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-02-24 00:11:25.968202: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-24 00:11:25.995645: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-02-24 00:11:26.535934: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
 </pre></div>
 </div>
 </div>
 </div>
-<section id="span-style-color-orange-recurrent-networks-span">
-<h2><span style="color:Orange">Recurrent Networks</span><a class="headerlink" href="#span-style-color-orange-recurrent-networks-span" title="Permalink to this heading">#</a></h2>
-<p>All the architectures we have seen so far are <strong>feed-foward</strong> networks, with input data always from left (input layer) to right (output layer). A <span style="color:Violet">recurrent neural network</span> (RNN) adds links that feed back into a previous layer. This simple modification adds significant complexity but also expressive power (comparable to the electronics revolution associated with the idea of transistor feedback).</p>
-<p>Architectures with feedback are still maturing but some useful building blocks have emerged, such as the <a class="reference external" href="https://en.wikipedia.org/wiki/Long_short-term_memory">long short-term memory unit</a>, which allows a network to remember some internal state but also forget it based on new input.</p>
-<p>Some practical considerations for RNN designs:</p>
-<ul class="simple">
-<li><p>The order of training data is now significant and defines a “model time”, but the network can be reset whenever needed.</p></li>
-<li><p>Input data can be packaged into variable-length messages that generate variable (and different) length output messages. This is exactly what language translation needs.</p></li>
-<li><p>Optimization of the weights using gradients is still possible but requires “unrolling” the network by cloning it enough times to process the longest allowed messages.</p></li>
-</ul>
-<p>A feed-foward network implements a universal approximating function. Since the internal state of an RNN acts like local variables, you can think of an RNN as a universal approximating program.</p>
-<p>See this <a class="reference external" href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog post</a> for an example based on natural language synthesis.</p>
-<p>A “recurrent” neural network is not exactly feedforward.
-There are a variety of forms for a recurrent network, but using the previous diagramming method, we can write the most common form as:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop.drawio.svg"><img alt="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop.drawio.svg" class="align-center" src="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop.drawio.svg" width="300" /></a></img><br></p>
-<p>As you can see, there is a loop (the recurrent part) which passes information from one evaluation of the function to the next time the function is evaluated.
-This might seem strange at first glance but makes more sense when you consider a sequence of events.
-For example, words.
-If we have three words of a sentence, predicting the next word likely depends on all three words rather than only the previous.</p>
-<section id="span-style-color-lightgreen-stucture-span">
-<h3><span style="color:LightGreen">Stucture</span><a class="headerlink" href="#span-style-color-lightgreen-stucture-span" title="Permalink to this heading">#</a></h3>
-<p>The “looped” diagram shown above can also be written in an “unrolled” form as follows:</p>
-<p><em><strong><span style="color:Tan">Many-to-many</span></strong></em></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn1.drawio.svg"><img alt="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn1.drawio.svg" class="align-center" src="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn1.drawio.svg" width="600" /></a></img><br></p>
-<p>Note that this form of recurrent neural network requires inputs at each step and gives outputs at each step.
-This is is not strictly necessary and you could instead have only the end output or only one input and one output as show below:</p>
-<p><em><strong><span style="color:Tan">Many-to-one</span></strong></em></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn2.drawio.svg"><img alt="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn2.drawio.svg" class="align-center" src="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn2.drawio.svg" width="600" /></a></img><br></p>
-<p><em><strong><span style="color:Tan">One-to-one</span></strong></em></p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn3.drawio.svg"><img alt="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn3.drawio.svg" class="align-center" src="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn3.drawio.svg" width="600" /></a></img><br></p>
-<p>Each of the demonstrated diagrams features a very simple version of the neural network, but it could have many layers at each step such as the following:</p>
-<p><a class="reference internal" href="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop2.drawio.svg"><img alt="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop2.drawio.svg" class="align-center" src="https://raw.githubusercontent.com/GDS-Education-Community-of-Practice/DSECOP/main/Time_Series_Analysis_and_Forecasting/diagrams/recurrent_nn_loop2.drawio.svg" width="300" /></a></img><br></p>
-<p>Fortunately, these can all be easily implemented using the <code class="docutils literal notranslate"><span class="pre">keras</span></code> framework.
-Let’s return to our example of input data of the form <span class="math notranslate nohighlight">\([\sin(t),\cos(t)]\)</span> and outputs of the form <span class="math notranslate nohighlight">\(\sin(t)\cos(t)\)</span> but lets try to use 2 values of <span class="math notranslate nohighlight">\(t\)</span> to get the next value.
-So, we will pass in something like</p>
-<div class="math notranslate nohighlight">
-\[\begin{split} \Large
-\begin{bmatrix}
-\sin(t_1) &amp; \cos(t_1) \\
-\sin(t_2) &amp; \cos(t_2)
-\end{bmatrix}
-\end{split}\]</div>
-<p>to get the output <span class="math notranslate nohighlight">\(\sin(t_3)\cos(t_3)\)</span>.
-We’ll use two layers.
-See below for examples of these recurrent neural network forms:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># Make input layer of appropriate size (2 samples of size 2 or 1 sample of size 2)</span>
-<span class="n">x_many</span>   <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">x_one</span>    <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="c1"># Pass input x into first layer of size 3 x 2</span>
-<span class="c1"># return_sequences=True means there is an output for each input</span>
-<span class="n">y_many</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">x_many</span><span class="p">)</span>
-<span class="n">y_one</span>  <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">x_one</span><span class="p">)</span>
-<span class="n">y_many_to_many</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">y_many</span><span class="p">)</span>
-<span class="n">y_many_to_one</span>  <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">)(</span><span class="n">y_many</span><span class="p">)</span>
-<span class="n">y_one_to_one</span>   <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">)(</span><span class="n">y_one</span><span class="p">)</span>
-
-<span class="n">many_to_many</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x_many</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="n">y_many_to_many</span><span class="p">)</span>
-<span class="n">many_to_one</span>  <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x_many</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="n">y_many_to_one</span><span class="p">)</span>
-<span class="n">one_to_one</span>   <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x_one</span> <span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="n">y_one_to_one</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1 batch of 2 random samples of size 2</span>
-<span class="n">sample_many</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">sample_one</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample of 2: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_many</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Many to many output: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">many_to_many</span><span class="p">(</span><span class="n">sample_many</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Many to one output: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">many_to_one</span><span class="p">(</span><span class="n">sample_many</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample of 1: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_one</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One to one output: </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">one_to_one</span><span class="p">(</span><span class="n">sample_one</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample of 2: 
-[[[0.5488135  0.71518937]
-  [0.60276338 0.54488318]]]
-Many to many output: 
-[[[0.2860116]
-  [0.5201849]]]
-Many to one output: 
-[[-0.04503517]]
-Sample of 1: 
-[[[0.4236548  0.64589411]]]
-One to one output: 
-[[0.37018642]]
-</pre></div>
-</div>
-</div>
-</div>
-<p>The number passed into the <code class="docutils literal notranslate"><span class="pre">SimpleRNN</span></code> is the number of loops performed.
-In the case described above, we want to take samples at times <span class="math notranslate nohighlight">\(t_1\)</span> and <span class="math notranslate nohighlight">\(t_2\)</span> and output the value of the function at time <span class="math notranslate nohighlight">\(t_3\)</span>.
-This is a “many-to-one” case.</p>
-<p>In order to train the network to perform well in this case, we need to arrange our data in pairs of</p>
-<div class="math notranslate nohighlight">
-\[\begin{split} \Large
-\begin{bmatrix}
-\sin(t_i) &amp; \cos(t_{i}) \\
-\sin(t_{i+1}) &amp; \cos(t_{i+1})
-\end{bmatrix}
-\end{split}\]</div>
-<p>aligned with outputs <span class="math notranslate nohighlight">\(\sin(t_{i+2})\cos(t_{i+2})\)</span>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make our data samples</span>
-<span class="n">t_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t_values</span><span class="p">)])</span><span class="o">.</span><span class="n">T</span>
-<span class="n">output_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t_values</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t_values</span><span class="p">)</span>
-
-<span class="c1"># Arrange our data samples</span>
-<span class="n">input_samples</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">output_samples</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">98</span><span class="p">):</span>
-  <span class="c1"># Take two samples at time t_i and t_{i+1}</span>
-  <span class="n">input_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span>
-  <span class="c1"># Get function output at time t_{i+2}</span>
-  <span class="n">output_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_values</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span>
-
-<span class="n">input_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_samples</span><span class="p">)</span>
-<span class="n">output_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">output_samples</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can now compile the many to one model and train it on this test data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train model</span>
-<span class="n">many_to_one</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(),</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">history</span> <span class="o">=</span> <span class="n">many_to_one</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">input_samples</span><span class="p">,</span>
-    <span class="n">output_samples</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>         <span class="c1"># The training takes groups of samples (in this case 10 samples at a time)</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>            <span class="c1"># The number of times to iterate through our dataset</span>
-    <span class="n">validation_split</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span><span class="c1"># Use 20% of data to check accuracy</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>             <span class="c1"># Don&#39;t print info as it trains</span>
-    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">TqdmCallback</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
-<span class="p">)</span>
-
-<span class="c1"># Plot prediction and the true values</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_values</span><span class="p">,</span> <span class="n">output_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$\sin(t)\cos(t)$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_values</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">many_to_one</span><span class="p">(</span><span class="n">input_samples</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;many_to_one(t)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f27eb3e426ca4d1982c29fa0fc693318", "version_major": 2, "version_minor": 0}</script><img alt="../../_images/0f51fb1bfd88526356690f4f633d5ee23137b7f2ba7a84623923238e4a80cc24.png" src="../../_images/0f51fb1bfd88526356690f4f633d5ee23137b7f2ba7a84623923238e4a80cc24.png" />
-</div>
-</div>
-<p>Similar to the feedforward neural network, the recurrent architecture was able to roughly approximate the curve!
-Although it is not very noticeable in this case, the recurrent model can also uses less weights and biases (because it has the looping behavior built in) making it less computationally expensive and easier to train!
-This has made the recurrent architecture very popular for time series like applications for real world problems (in fact, modern transformers such as ChatGPT are built on the same concepts as RNNs).</p>
-</section>
-</section>
 <section id="span-style-color-orange-convolutional-networks-span">
 <h2><span style="color:Orange">Convolutional Networks</span><a class="headerlink" href="#span-style-color-orange-convolutional-networks-span" title="Permalink to this heading">#</a></h2>
 <p>A <em><span style="color:Violet">Convolutional Neural Network</span></em> (CNN) is a special architecture that:</p>
@@ -804,7 +632,7 @@ This has made the recurrent architecture very popular for time series like appli
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5b8c01e534840bfa94d56e78e1aba1bb0a798c7e10825cb3a6d4b4ad798ed151.png" src="../../_images/5b8c01e534840bfa94d56e78e1aba1bb0a798c7e10825cb3a6d4b4ad798ed151.png" />
+<img alt="../../_images/d9c7a78a1ae94156a846530209beca485d5a18905d5f8fad678587e41feb766c.png" src="../../_images/d9c7a78a1ae94156a846530209beca485d5a18905d5f8fad678587e41feb766c.png" />
 </div>
 </div>
 <p>The derivative of <span class="math notranslate nohighlight">\(f(x)\)</span> can be approximated as</p>
@@ -854,7 +682,7 @@ f'(x) \simeq \frac{f(x + \delta) - f(x - \delta)}{2\delta}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b019c82ce6d73f7b962596fa24c9c7ff420ef27320f828737116d02ec4090728.png" src="../../_images/b019c82ce6d73f7b962596fa24c9c7ff420ef27320f828737116d02ec4090728.png" />
+<img alt="../../_images/6ebbd2c526f0ccd63edc34d7d2108d8a762dc461ca569ef324d4d9c86eab435c.png" src="../../_images/6ebbd2c526f0ccd63edc34d7d2108d8a762dc461ca569ef324d4d9c86eab435c.png" />
 </div>
 </div>
 <p>We can also pick out regions of large curvature (using the finite-difference coefficients for a second derivative):</p>
@@ -865,7 +693,7 @@ f'(x) \simeq \frac{f(x + \delta) - f(x - \delta)}{2\delta}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9b88c0a0e63b5380324dbd36fa78215579d74185307b358577b9baef17925e49.png" src="../../_images/9b88c0a0e63b5380324dbd36fa78215579d74185307b358577b9baef17925e49.png" />
+<img alt="../../_images/5997e6b305ec7680137882cd8092be88300c368e0e2bd90fadd9cf933af958b0.png" src="../../_images/5997e6b305ec7680137882cd8092be88300c368e0e2bd90fadd9cf933af958b0.png" />
 </div>
 </div>
 <p>We can apply both of these convolutions to transform our input data to a new representation that highlights regions of large first or second derivative. Use a <code class="docutils literal notranslate"><span class="pre">tanh</span></code> activation to accentuate the effect:</p>
@@ -909,7 +737,7 @@ f'(x) \simeq \frac{f(x + \delta) - f(x - \delta)}{2\delta}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/fc7a60a661774afcd8be35d065922b5081e4c22d1a0f0546e892b81326c7ec96.png" src="../../_images/fc7a60a661774afcd8be35d065922b5081e4c22d1a0f0546e892b81326c7ec96.png" />
+<img alt="../../_images/1dfceaf4f7526f00ad3eb5e84b75ba679c547ef78abf442abfc25a09c57aa066.png" src="../../_images/1dfceaf4f7526f00ad3eb5e84b75ba679c547ef78abf442abfc25a09c57aa066.png" />
 </div>
 </div>
 <p>The patterns that identify individual and coincident peaks are all translation invariant so can be identified in this array using a new convolution, but now in the 2D space of these synthetic images.</p>
@@ -1230,7 +1058,7 @@ Use tf.keras instead.
 <ul class="simple">
 <li><p>Initial version: Mark Neubauer</p></li>
 </ul>
-<p>© Copyright 2025</p>
+<p>© Copyright 2026</p>
 </section>
 </section>
 
@@ -1265,12 +1093,12 @@ Use tf.keras instead.
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../Week_06.html"
+       href="RecurrentNeuralNetworks.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span style="color: blue;"><b>Convolutional and Recurrent Neural Networks</b></span></p>
+        <p class="prev-next-title">Recurrent Neural Networks</p>
       </div>
     </a>
     <a class="right-next"
@@ -1298,10 +1126,6 @@ Use tf.keras instead.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-recurrent-networks-span"><span style="color:Orange">Recurrent Networks</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-stucture-span"><span style="color:LightGreen">Stucture</span></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-convolutional-networks-span"><span style="color:Orange">Convolutional Networks</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
