@@ -544,16 +544,17 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_DEVICE_ORDER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PCI_BUS_ID&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_VISIBLE_DEVICES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">keras</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">TqdmCallback</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-02-24 00:11:25.968202: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
-2026-02-24 00:11:25.995645: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-02-24 01:04:38.498178: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-24 01:04:38.520085: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2026-02-24 00:11:26.535934: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-24 01:04:38.969064: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
 </pre></div>
 </div>
 </div>
@@ -749,18 +750,17 @@ f'(x) \simeq \frac{f(x + \delta) - f(x - \delta)}{2\delta}
 <p>but with the matrix <span class="math notranslate nohighlight">\(W\)</span> now having many repeated elements so its effective number of dimensions is greatly reduced in typical applications.</p>
 <p>A <span style="color:Violet">convolutional layer</span> takes an arbitrary input array and applies a number of filters with the same shape in parallel. By default, the filter kernels march with single-element steps through the input array, but you can also specify larger <span style="color:Violet">stride vector</span>.</p>
 <p>In the general case, the input array, kernels and stride vector are all multidimensional, but with the same dimension. Tensorflow provides convenience functions for 1D, 2D and 3D convolutional layers, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hidden</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hidden</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
     <span class="n">filters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">)</span>
+    <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">padding</span></code> specifies how edges effects are handled, but only <code class="docutils literal notranslate"><span class="pre">same</span></code> and <code class="docutils literal notranslate"><span class="pre">valid</span></code> are supported (and <code class="docutils literal notranslate"><span class="pre">valid</span></code> is the default). You can also implement higher-dimensional convolutional layers using the lower-level APIs.</p>
 <p>A <em><span style="color:Violet">convolutional neural network</span></em> (CNN) is a network containing convolutional layers. A typical architecture starts with convolutional layers, processing the input, then finishes with some fully connected dense layers to calculate the output. Since one of the goals of a CNN is reduce the number of parameters, a CNN often also incorporates <a class="reference external" href="https://en.wikipedia.org/wiki/Convolutional_neural_network#Pooling_layer">pooling layers</a> to reduce the size of the array fed to to later layers by “downsampling” (typically using a maximum or mean value). See <a class="reference external" href="http://cs231n.github.io/convolutional-networks/">these Stanford CS231n notes</a> for more details in the context of image classification.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">pulse_model</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a graph to TRAIN/TEST/PREDICT a pulse coincidence detection model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_pulse_model</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a tf.keras model for pulse coincidence detection.&quot;&quot;&quot;</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;time_steps&#39;</span><span class="p">]</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;number_of_traces&#39;</span><span class="p">]</span>
     <span class="n">n1</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;conv1_width&#39;</span><span class="p">]</span>
@@ -768,125 +768,97 @@ f'(x) \simeq \frac{f(x + \delta) - f(x - \delta)}{2\delta}
     <span class="n">eta</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>
     <span class="k">assert</span> <span class="n">n1</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">n2</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span>
 
-    <span class="c1"># Build the input layer.</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="c1"># Add the first convolutional layer.</span>
-    <span class="n">conv1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span>
-        <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">n1</span><span class="p">],</span>
-        <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv1&#39;</span><span class="p">)</span>
-    <span class="c1"># Add the second convolutional (and output) layer.</span>
-    <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span>
-        <span class="n">inputs</span><span class="o">=</span><span class="n">conv1</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">[</span><span class="n">M</span><span class="p">,</span> <span class="n">n2</span><span class="p">],</span>
-        <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv2&#39;</span><span class="p">)</span>
-    <span class="c1"># Flatten the outputs.</span>
-    <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span> <span class="o">-</span> <span class="n">n2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="mi">1</span><span class="p">))(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+        <span class="n">filters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n1</span><span class="p">),</span>
+        <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv1&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+        <span class="n">filters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span>
+        <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv2&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">D</span> <span class="o">-</span> <span class="n">n2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;logits&#39;</span><span class="p">)(</span><span class="n">logits</span><span class="p">)</span>
 
-    <span class="c1"># Calculate the offset between input labels and the output-layer node index</span>
-    <span class="c1"># that is introduced by using padding=&#39;valid&#39; for the output layer below.</span>
-    <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">n2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-
-    <span class="c1"># Calculate the network&#39;s predicted best label.</span>
-    <span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
-
-    <span class="c1"># Calculate the network&#39;s predicted probability of each label.</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
-
-    <span class="c1"># Calculate the network&#39;s predicted mean label.</span>
-    <span class="n">bins</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">D</span> <span class="o">-</span> <span class="n">n2</span> <span class="o">+</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
-    <span class="n">mean_labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">bins</span> <span class="o">*</span> <span class="n">probs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># Return predicted labels and probabilities in PREDICT mode.</span>
-    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">PREDICT</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">EstimatorSpec</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">predictions</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">predicted_labels</span><span class="p">,</span>
-            <span class="s1">&#39;probs&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
-        <span class="p">})</span>
-
-    <span class="c1"># Calculate the loss for TRAIN and EVAL modes. We need to offset the labels</span>
-    <span class="c1"># used here so they correspond to output-layer node indices.</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">sparse_softmax_cross_entropy</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span> <span class="o">-</span> <span class="n">offset</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
-
-    <span class="c1"># Compute evaluation metrics.</span>
-    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">EVAL</span><span class="p">:</span>
-        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="o">=</span><span class="n">predicted_labels</span><span class="p">)</span>
-        <span class="n">rmse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">root_mean_squared_error</span><span class="p">(</span>
-            <span class="n">labels</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">predictions</span><span class="o">=</span><span class="n">mean_labels</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">EstimatorSpec</span><span class="p">(</span>
-            <span class="n">mode</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">eval_metric_ops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span> <span class="s1">&#39;rmse&#39;</span><span class="p">:</span> <span class="n">rmse</span><span class="p">})</span>
-
-    <span class="c1"># Create optimizer.</span>
-    <span class="k">assert</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">eta</span><span class="p">)</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_global_step</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">EstimatorSpec</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">train_op</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pulse&#39;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">eta</span><span class="p">),</span>
+        <span class="n">loss</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">SparseCategoricalAccuracy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow.compat.v1</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">disable_v2_behavior</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 
-<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+<span class="c1"># Keep runs reproducible.</span>
+<span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/compat/v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
-Instructions for updating:
-non-resource variables are not supported in the long term
-2.12.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.20.0
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>rm<span class="w"> </span>-rf<span class="w"> </span>tfs/pulses
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">time_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">number_of_traces</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">conv1_width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">conv2_width</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;conv2_width&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">RunConfig</span><span class="p">(</span>
-    <span class="n">model_dir</span><span class="o">=</span><span class="s1">&#39;tfs/pulses&#39;</span><span class="p">,</span>
-    <span class="n">tf_random_seed</span><span class="o">=</span><span class="mi">123</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pulse</span> <span class="o">=</span> <span class="n">build_pulse_model</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">pulse</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_48888/4062419382.py:1: RunConfig.__init__ (from tensorflow_estimator.python.estimator.run_config) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-02-24 01:04:39.623169: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+2026-02-24 01:04:39.623200: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:160] env: CUDA_VISIBLE_DEVICES=&quot;&quot;
+2026-02-24 01:04:39.623208: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:163] CUDA_VISIBLE_DEVICES is set to an empty string - this hides all GPUs from CUDA
+2026-02-24 01:04:39.623210: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:171] verbose logging is disabled. Rerun with verbose logging (usually --v=1 or --vmodule=cuda_diagnostics=1) to get more diagnostic output from this module
+2026-02-24 01:04:39.623214: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:176] retrieving CUDA diagnostic information for host: sob
+2026-02-24 01:04:39.623215: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:183] hostname: sob
+2026-02-24 01:04:39.623306: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:190] libcuda reported version is: 580.126.9
+2026-02-24 01:04:39.623318: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:194] kernel reported version is: 580.126.9
+2026-02-24 01:04:39.623319: I external/local_xla/xla/stream_executor/cuda/cuda_diagnostics.cc:284] kernel version seems to match DSO: 580.126.9
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pulse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">Estimator</span><span class="p">(</span>
-    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-    <span class="n">model_fn</span><span class="o">=</span><span class="n">pulse_model</span><span class="p">,</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">time_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">number_of_traces</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">conv1_width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">conv2_width</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_48888/1432193453.py:1: Estimator.__init__ (from tensorflow_estimator.python.estimator.estimator) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-</pre></div>
-</div>
-</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "pulse"</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Layer (type)                    </span>┃<span style="font-weight: bold"> Output Shape           </span>┃<span style="font-weight: bold">       Param # </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ X (<span style="color: #0087ff; text-decoration-color: #0087ff">InputLayer</span>)                  │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">3</span>, <span style="color: #00af00; text-decoration-color: #00af00">100</span>)         │             <span style="color: #00af00; text-decoration-color: #00af00">0</span> │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ reshape (<span style="color: #0087ff; text-decoration-color: #0087ff">Reshape</span>)               │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">3</span>, <span style="color: #00af00; text-decoration-color: #00af00">100</span>, <span style="color: #00af00; text-decoration-color: #00af00">1</span>)      │             <span style="color: #00af00; text-decoration-color: #00af00">0</span> │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv1 (<span style="color: #0087ff; text-decoration-color: #0087ff">Conv2D</span>)                  │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">3</span>, <span style="color: #00af00; text-decoration-color: #00af00">100</span>, <span style="color: #00af00; text-decoration-color: #00af00">2</span>)      │             <span style="color: #00af00; text-decoration-color: #00af00">8</span> │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2 (<span style="color: #0087ff; text-decoration-color: #0087ff">Conv2D</span>)                  │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">1</span>, <span style="color: #00af00; text-decoration-color: #00af00">94</span>, <span style="color: #00af00; text-decoration-color: #00af00">1</span>)       │            <span style="color: #00af00; text-decoration-color: #00af00">43</span> │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ logits (<span style="color: #0087ff; text-decoration-color: #0087ff">Reshape</span>)                │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">94</span>)             │             <span style="color: #00af00; text-decoration-color: #00af00">0</span> │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Total params: </span><span style="color: #00af00; text-decoration-color: #00af00">51</span> (204.00 B)
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">51</span> (204.00 B)
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold"> Non-trainable params: </span><span style="color: #00af00; text-decoration-color: #00af00">0</span> (0.00 B)
+</pre>
+</div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -898,94 +870,48 @@ Use tf.keras instead.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pulse</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
-    <span class="n">input_fn</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">numpy_input_fn</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X_train</span><span class="p">},</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">steps</span><span class="o">=</span><span class="mi">500</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train_shifted</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="n">offset</span>
+<span class="n">y_test_shifted</span> <span class="o">=</span> <span class="n">y_test</span> <span class="o">-</span> <span class="n">offset</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="p">,</span>
+    <span class="n">y_train_shifted</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">TqdmCallback</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_48888/3043844609.py:2: The name tf.estimator.inputs is deprecated. Please use tf.compat.v1.estimator.inputs instead.
-
-WARNING:tensorflow:From /var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_48888/3043844609.py:2: numpy_input_fn (from tensorflow_estimator.python.estimator.inputs.numpy_io) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/estimator.py:385: StopAtStepHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/training_util.py:396: Variable.initialized_value (from tensorflow.python.ops.variables) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use Variable.read_value. Variables in 2.X are initialized automatically both in eager and graph (inside tf.defun) contexts.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/inputs/queues/feeding_queue_runner.py:60: QueueRunner.__init__ (from tensorflow.python.training.queue_runner_impl) is deprecated and will be removed in a future version.
-Instructions for updating:
-To construct input pipelines, use the `tf.data` module.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/inputs/queues/feeding_functions.py:491: add_queue_runner (from tensorflow.python.training.queue_runner_impl) is deprecated and will be removed in a future version.
-Instructions for updating:
-To construct input pipelines, use the `tf.data` module.
-WARNING:tensorflow:From /var/folders/8v/dp0_b8m1779_y4yzc28yjqs40000gn/T/ipykernel_48888/3388585666.py:61: EstimatorSpec.__new__ (from tensorflow_estimator.python.estimator.model_fn) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/estimator.py:1414: NanTensorHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/estimator.py:1417: LoggingTensorHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/basic_session_run_hooks.py:232: SecondOrStepTimer.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow_estimator/python/estimator/estimator.py:1454: CheckpointSaverHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:579: StepCounterHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:586: SummarySaverHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:910: start_queue_runners (from tensorflow.python.training.queue_runner_impl) is deprecated and will be removed in a future version.
-Instructions for updating:
-To construct input pipelines, use the `tf.data` module.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:1455: SessionRunArgs.__new__ (from tensorflow.python.training.session_run_hook) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:1454: SessionRunContext.__init__ (from tensorflow.python.training.session_run_hook) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/monitored_session.py:1474: SessionRunValues.__new__ (from tensorflow.python.training.session_run_hook) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-02-27 22:53:40.198799: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): CANCELLED: Enqueue operation was cancelled
-	 [[{{node enqueue_input/random_shuffle_queue_EnqueueMany}}]]
-2024-02-27 22:53:40.220261: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): CANCELLED: Queue &#39;_0_enqueue_input/random_shuffle_queue&#39; is already closed.
-	 [[{{node enqueue_input/random_shuffle_queue_Close}}]]
-</pre></div>
-</div>
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "7138fc4dc25741929855010f79692911", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b4fb73e874b747df9e7ba67698ef266b", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p>Evaluate how well the trained network performs on the test data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-    <span class="n">input_fn</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">numpy_input_fn</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X_test</span><span class="p">},</span> <span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span>
-        <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_loss</span><span class="p">,</span> <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_shifted</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">probs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+<span class="n">mean_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">bins</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">mean_labels</span> <span class="o">-</span> <span class="n">y_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">test_loss</span><span class="p">),</span>
+    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">),</span>
+    <span class="s1">&#39;rmse&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">rmse</span><span class="p">)</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/training/evaluation.py:260: FinalOpsHook.__init__ (from tensorflow.python.training.basic_session_run_hooks) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-</pre></div>
 </div>
-</div>
-</div>
-<p>We find that about 95% of test samples are classified “correctly”, defined as the network predicting the bin containing the the coincidence maximum exactly.  However, The RMS error between the predicted and true bins is only 0.4 bins, indicating that the network usually predicts a neighboring bin in the 5% of “incorrect” test cases.</p>
+<p>We find that about 91% of test samples are classified “correctly”, defined as the network predicting the bin containing the the coincidence maximum exactly.  However, The RMS error between the predicted and true bins is only 0.4 bins, indicating that the network usually predicts a neighboring bin in the 5% of “incorrect” test cases.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
@@ -993,10 +919,9 @@ Use tf.keras instead.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy&#39;: 0.92975,
- &#39;loss&#39;: 0.20731635,
- &#39;rmse&#39;: 0.3812682,
- &#39;global_step&#39;: 500}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;loss&#39;: 0.30110910534858704,
+ &#39;accuracy&#39;: 0.9110000133514404,
+ &#39;rmse&#39;: 0.6199796199798584}
 </pre></div>
 </div>
 </div>
@@ -1005,28 +930,35 @@ Use tf.keras instead.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_predictions</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="c1"># Calculate predicted labels and PDFs over labels.</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
-        <span class="n">input_fn</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">numpy_input_fn</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">},</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">pred_probs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">pred_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred_probs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span>
+
     <span class="n">Nsample</span><span class="p">,</span> <span class="n">Ntrace</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+
     <span class="c1"># Plot input data, truth, and predictions.</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">Nsample</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">Nsample</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">predictions</span><span class="p">):</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nsample</span><span class="p">):</span>
         <span class="c1"># Plot the input traces.</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
             <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
         <span class="c1"># Indicate the true coincidence position.</span>
         <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
         <span class="c1"># Indicate the predicted probability distribution.</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="n">D</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="s1">&#39;probs&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">n2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">probs</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="o">-</span><span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[</span><span class="s1">&#39;probs&#39;</span><span class="p">]</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">pred_probs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">n2</span> <span class="o">=</span> <span class="n">D</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="p">(</span><span class="n">n2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">probs</span><span class="p">[</span><span class="n">pad</span><span class="p">:</span><span class="o">-</span><span class="n">pad</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
+
+        <span class="c1"># Indicate predicted best label.</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">pred_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
         <span class="n">rhs</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">rhs</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">probs</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
         <span class="n">rhs</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
@@ -1036,6 +968,7 @@ Use tf.keras instead.
         <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
         <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="n">plot_predictions</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">y_test</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
@@ -1043,12 +976,7 @@ Use tf.keras instead.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:From /usr/local/lib/python3.11/site-packages/tensorflow/python/saved_model/model_utils/export_utils.py:366: PredictOutput.__init__ (from tensorflow.python.saved_model.model_utils.export_output) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.keras instead.
-</pre></div>
-</div>
-<img alt="../../_images/4b80c2aafe4d79ff57564d008f5bfc2d0fc0999fa5d5e6ec3c38a07dbaf263fc.png" src="../../_images/4b80c2aafe4d79ff57564d008f5bfc2d0fc0999fa5d5e6ec3c38a07dbaf263fc.png" />
+<img alt="../../_images/54e33c4f888bebf229d8ece0d1b456554fdcb477cc1bffdcd5eff82ff91630b6.png" src="../../_images/54e33c4f888bebf229d8ece0d1b456554fdcb477cc1bffdcd5eff82ff91630b6.png" />
 </div>
 </div>
 <p>Note that our loss function does not know that consecutive labels are close and being off by one is almost as good as getting the right label. We could change this by treating this as a regression problem, but a nice feature of our multi-category approach is that we can predict a a full probability density over labels (the gray histograms above) which is often useful.</p>
