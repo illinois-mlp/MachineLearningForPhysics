@@ -8,4 +8,5 @@ tmp_data
 .ipynb_checkpoints
 .DS_Store
 .venv
+.venv310
 .vscode
