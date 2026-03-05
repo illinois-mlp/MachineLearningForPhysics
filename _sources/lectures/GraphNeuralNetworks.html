@@ -656,6 +656,13 @@ A graph is a data type that is modelled as a set of objects which can be represe
 </div>
 <p>PyG provides access to a couple of graph datasets. For this notebook, we are going to use <a class="reference external" href="https://en.wikipedia.org/wiki/Zachary%27s_karate_club">Zachary’s karate club</a> network <a class="reference external" href="https://karateclub.readthedocs.io/en/latest/modules/dataset.html">dataset</a>.</p>
 <p>Zachary’s karate club is a great example of social relationships within a small group. This set of data indicated the interactions of club members outside of the club. This dataset also documented the conflict between the instructor, Mr.Hi, and the club president, John because of course price. In the end, half of the members formed a new club around Mr.Hi, and the other half either stayed at the old karate club or gave up karate.</p>
+<p>Every node (member) is labeled with one of four classes. These communities reflect the following segments of the club:</p>
+<ul class="simple">
+<li><p><span style="color:Violet">Faction 1</span> (Mr. Hi’s Core): Members strongly aligned with the instructor, Mr. Hi.</p></li>
+<li><p><span style="color:Violet">Faction 2</span> (John A’s Core): Members strongly aligned with the club administrator, John A.</p></li>
+<li><p><span style="color:Violet">Ambivalent/Loyalty Split</span>: A group of members who “battled with the decision” of which club to join due to split loyalties.</p></li>
+<li><p><span style="color:Violet">Relationship-Only</span>: Members who maintained social ties with both leaders but ultimately quit practicing karate after the club’s fission.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">KarateClub</span>
@@ -727,7 +734,7 @@ Is undirected: True
 <h2><span style="color:LightBlue">Implementing a Graph Neural Network</span><a class="headerlink" href="#span-style-color-lightblue-implementing-a-graph-neural-network-span" title="Permalink to this heading">#</a></h2>
 <p>For this notebook, we will use a simple GNN which is the <a class="reference external" href="https://towardsdatascience.com/graph-convolutional-networks-introduction-to-gnns-24b3f60d6c95">Graph Convolution Network</a> (GCN) layer.</p>
 <ul class="simple">
-<li><p>GCN is a specific type of GNN that uses convolutional operations to propagate information between nodes in a graph.</p></li>
+<li><p>GCN is a specific type of GNN that uses convolutional operations to propagate information between nodes in a graph. The convolutional architecture utilizes a localized first-order approximation of spectral graph convolutions, as described in this <a class="reference external" href="https://arxiv.org/abs/1609.02907">paper</a>. Spectral graph convolution is a method for defining convolutional operations on graphs by performing filtering in the frequency (spectral) domain.</p></li>
 <li><p>GCNs leverage a localized aggregation of neighboring node features to update the representations of the nodes.</p></li>
 <li><p>GCNs are based on the convolutional operation commonly used in image processing, adapted to the graph domain.</p></li>
 <li><p>The layers in a GCN typically apply a graph convolution operation followed by non-linear activation functions.</p></li>
