@@ -734,9 +734,9 @@ Is undirected: True
 <h2><span style="color:LightBlue">Implementing a Graph Neural Network</span><a class="headerlink" href="#span-style-color-lightblue-implementing-a-graph-neural-network-span" title="Permalink to this heading">#</a></h2>
 <p>For this notebook, we will use a simple GNN which is the <a class="reference external" href="https://towardsdatascience.com/graph-convolutional-networks-introduction-to-gnns-24b3f60d6c95">Graph Convolution Network</a> (GCN) layer.</p>
 <ul class="simple">
-<li><p>GCN is a specific type of GNN that uses convolutional operations to propagate information between nodes in a graph. The convolutional architecture utilizes a localized first-order approximation of spectral graph convolutions, as described in this <a class="reference external" href="https://arxiv.org/abs/1609.02907">paper</a>. Spectral graph convolution is a method for defining convolutional operations on graphs by performing filtering in the frequency (spectral) domain.</p></li>
+<li><p>GCN is a specific type of GNN that uses convolutional operations to propagate information between nodes in a graph.</p></li>
 <li><p>GCNs leverage a localized aggregation of neighboring node features to update the representations of the nodes.</p></li>
-<li><p>GCNs are based on the convolutional operation commonly used in image processing, adapted to the graph domain.</p></li>
+<li><p>GCNs are based on the convolutional operation commonly used in image processing, adapted to the graph domain. The convolutional architecture utilizes a localized first-order approximation of spectral graph convolutions, as described in this <a class="reference external" href="https://arxiv.org/abs/1609.02907">paper</a>. Spectral graph convolution is a method for defining convolutional operations on graphs by performing filtering in the frequency (spectral) domain.</p></li>
 <li><p>The layers in a GCN typically apply a graph convolution operation followed by non-linear activation functions.</p></li>
 <li><p>GCNs have been successful in tasks such as node classification, where nodes are labeled based on their features and graph structure.</p></li>
 </ul>
@@ -1217,7 +1217,7 @@ Epoch: 400, Loss: 0.15198998153209686
 </div>
 </div>
 <p>There is much more analysis that can be done with GNNs on the Karate Club dataseet. See <a class="reference external" href="https://www.linkedin.com/pulse/community-detection-social-networks-case-study-zacharys-marin/">here</a> for examples. Our goal in this lecture was to use it an way to introduce the implementation and use of GNNs within the Pytorch framework.</p>
-<p>We will now turn to examples using simulated open data from the CMS experiment at the LHC.  The algorithms’ inputs are features of the reconstructed charged particles in a jet and the secondary vertices associated with them. Describing the jet shower as a combination of particle-to-particle and particle-to-vertex interactions, the model is trained to learn a jet representation on which the classification problem isoptimized.</p>
+<p>We will now turn to examples using simulated open data from the CMS experiment at the LHC.  The algorithms’ inputs are features of the reconstructed charged particles in a jet and the secondary vertices associated with them. Describing the jet shower as a combination of particle-to-particle and particle-to-vertex interactions, the model is trained to learn a jet representation on which the classification problem is optimized.</p>
 <p>We show below an example using a community model called “DeepSets” and then compare to an Interaction Model GNN.</p>
 </section>
 </section>
@@ -1952,26 +1952,30 @@ Loss: 0.47545477747917175
 <p>To better understand this curve, let define the <span style="color:Violet">confusion matrix</span>:</p>
 <div>
 <img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/GraphNeuralNetworks-ConfusionMatrix.png" width=400></img>
-</div><p><span style="color:Violet">True Positive Rate</span> (TPR) is a synonym for recall/sensitivity and is therefore defined as follows:
-$<span class="math notranslate nohighlight">\( \Large
+</div><p><span style="color:Violet">True Positive Rate</span> (TPR) is a synonym for recall/sensitivity and is therefore defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 TPR = \frac{TP}{TP + FN}
-\)</span>$
-TPR tells us what proportion of the positive class got correctly classified. A simple example would be determining what proportion of the actual sick people were correctly detected by the model.</p>
-<p><span style="color:Violet">False Negative Rate</span> (FNR) is defined as follows:
-$<span class="math notranslate nohighlight">\( \Large
+\]</div>
+<p>TPR tells us what proportion of the positive class got correctly classified. A simple example would be determining what proportion of the actual sick people were correctly detected by the model.</p>
+<p><span style="color:Violet">False Negative Rate</span> (FNR) is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 FNR = \frac{FN}{TP + FN}
-\)</span>$
-FNR tells us what proportion of the positive class got incorrectly classified by the classifier. A higher TPR and a lower FNR are desirable since we want to classify the positive class correctly.</p>
-<p><span style="color:Violet">True Negative Rate</span> (TNR) is a synonym for specificity and is defined as follows:
-$<span class="math notranslate nohighlight">\( \Large
-TNR = \frac{TN}{TN + FP}
-\)</span>$
-Specificity tells us what proportion of the negative class got correctly classified. Taking the same example as in Sensitivity, Specificity would mean determining the proportion of healthy people who were correctly identified by the model.</p>
-<p><span style="color:Violet">False Positive Rate</span> (FPR) is defined as follows:
-$<span class="math notranslate nohighlight">\( \Large
+\]</div>
+<p>FNR tells us what proportion of the positive class got incorrectly classified by the classifier. A higher TPR and a lower FNR are desirable since we want to classify the positive class correctly.</p>
+<p><span style="color:Violet">True Negative Rate</span> (TNR) is a synonym for specificity and is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+TNR = \frac{TN}{FP + TN}
+\]</div>
+<p>Specificity tells us what proportion of the negative class got correctly classified. Taking the same example as in Sensitivity, Specificity would mean determining the proportion of healthy people who were correctly identified by the model.</p>
+<p><span style="color:Violet">False Positive Rate</span> (FPR) is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
 TPR = \frac{FP}{FP + TN}
-\)</span>$
-FPR tells us what proportion of the negative class got incorrectly classified by the classifier. A higher TNR and a lower FPR are desirable since we want to classify the negative class correctly.</p>
+\]</div>
+<p>FPR tells us what proportion of the negative class got incorrectly classified by the classifier. A higher TNR and a lower FPR are desirable since we want to classify the negative class correctly.</p>
 <p>A <span style="color:Violet">ROC curve</span> (receiver operating characteristic curve) is a graph showing the performance of a classification model at all classification thresholds. This curve plots two parameters:</p>
 <ul class="simple">
 <li><p>True Positive Rate</p></li>
@@ -2034,10 +2038,21 @@ FPR tells us what proportion of the negative class got incorrectly classified by
 <section id="span-style-color-lightblue-graph-datasets-span">
 <h2><span style="color:LightBlue">Graph Datasets</span><a class="headerlink" href="#span-style-color-lightblue-graph-datasets-span" title="Permalink to this heading">#</a></h2>
 <p>Here we have to define the graph dataset. We do this in a separate class following this example: <a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html#creating-larger-datasets">https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html#creating-larger-datasets</a></p>
-<p>Formally, a graph is represented by a triplet <span class="math notranslate nohighlight">\(\mathcal G = (\mathbf{u}, V, E)\)</span>, consisting of a graph-level, or <em>global</em>, feature vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, a set of <span class="math notranslate nohighlight">\(N^v\)</span> nodes <span class="math notranslate nohighlight">\(V\)</span>, and a set of <span class="math notranslate nohighlight">\(N^e\)</span> edges <span class="math notranslate nohighlight">\(E\)</span>.
-The nodes are given by <span class="math notranslate nohighlight">\(V = \{\mathbf{v}_i\}_{i=1:N^v}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> represents the <span class="math notranslate nohighlight">\(i\)</span>th node’s attributes.
-The edges connect pairs of nodes and are given by <span class="math notranslate nohighlight">\(E = \{\left(\mathbf{e}_k, r_k, s_k\right)\}_{k=1:N^e}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{e}_k\)</span> represents the <span class="math notranslate nohighlight">\(k\)</span>th edge’s attributes, and <span class="math notranslate nohighlight">\(r_k\)</span> and <span class="math notranslate nohighlight">\(s_k\)</span> are the indices of the “receiver” and
-“sender” nodes, respectively, connected by the <span class="math notranslate nohighlight">\(k\)</span>th edge (from the sender node to the receiver node).
+<p>Formally, a graph is represented by a triplet</p>
+<p>$<span class="math notranslate nohighlight">\( \Large
+\mathcal G = (\mathbf{u}, V, E)
+\)</span>$,</p>
+<p>consisting of a graph-level, or <em>global</em>, feature vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, a set of <span class="math notranslate nohighlight">\(N^v\)</span> nodes <span class="math notranslate nohighlight">\(V\)</span>, and a set of <span class="math notranslate nohighlight">\(N^e\)</span> edges <span class="math notranslate nohighlight">\(E\)</span>.</p>
+<p>The nodes are given by</p>
+<p>$<span class="math notranslate nohighlight">\( \Large
+V = \{\mathbf{v}_i\}_{i=1:N^v}
+\)</span>$,</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> represents the <span class="math notranslate nohighlight">\(i^{th}\)</span> node’s attributes.</p>
+<p>The edges connect pairs of nodes and are given by</p>
+<p>$<span class="math notranslate nohighlight">\( \Large
+E = \{\left(\mathbf{e}_k, r_k, s_k\right)\}_{k=1:N^e}
+\)</span>$,</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{e}_k\)</span> represents the <span class="math notranslate nohighlight">\(k^{th}\)</span> edge’s attributes, and <span class="math notranslate nohighlight">\(r_k\)</span> and <span class="math notranslate nohighlight">\(s_k\)</span> are the indices of the “receiver” and “sender” nodes, respectively, connected by the <span class="math notranslate nohighlight">\(k\)</span>th edge (from the sender node to the receiver node).
 The receiver and sender index vectors are an alternative way of encoding the directed adjacency matrix.</p>
 <div>
 <img src="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/attributes.png" alt="attributes" width="1000">
@@ -2090,7 +2105,7 @@ The receiver and sender index vectors are an alternative way of encoding the dir
 <p>Here, we recapitulate the “graph network” (GN) formalism described in this <a class="reference external" href="https://arxiv.org/abs/1612.00222">paper</a>, which generalizes various GNNs and other similar methods.</p>
 <p>GNs are graph-to-graph mappings, whose output graphs have the same node and edge structure as the input. Formally, a GN block contains three “update” functions, <span class="math notranslate nohighlight">\(\phi\)</span>, and three “aggregation” functions, <span class="math notranslate nohighlight">\(\rho\)</span>. The stages of processing in a single GN block are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
+\[\begin{split} \Large
 \begin{align}
     \mathbf{e}'_k &amp;= \phi^e\left(\mathbf{e}_k, \mathbf{v}_{r_k}, \mathbf{v}_{s_k}, \mathbf{u} \right) &amp; \mathbf{\bar{e}}'_i &amp;= \rho^{e \rightarrow v}\left(E'_i\right) &amp; \text{(Edge block),} \\
     \mathbf{v}'_i &amp;= \phi^v\left(\mathbf{\bar{e}}'_i, \mathbf{v}_i, \mathbf{u}\right) &amp;
@@ -2099,11 +2114,24 @@ The receiver and sender index vectors are an alternative way of encoding the dir
     \mathbf{\bar{v}}' &amp;= \rho^{v \rightarrow u}\left(V'\right) &amp;\text{(Global block).}
 \end{align}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(E'_i = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{r_k=i,\; k=1:N^e}\)</span> contains the updated edge features for edges whose receiver node is the <span class="math notranslate nohighlight">\(i^\text{th}\)</span> node, <span class="math notranslate nohighlight">\(E' = \bigcup_i E_i' = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{k=1:N^e}\)</span> is the set of updated edges, and <span class="math notranslate nohighlight">\(V'=\left\{\mathbf{v}'_i\right\}_{i=1:N^v}\)</span> is the set of updated nodes.</p>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+E'_i = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{r_k=i,\; k=1:N^e}
+\]</div>
+<p>contains the updated edge features for edges whose receiver node is the <span class="math notranslate nohighlight">\(i^\text{th}\)</span> node,
+$<span class="math notranslate nohighlight">\( \Large
+E' = \bigcup_i E_i' = \left\{\left(\mathbf{e}'_k, r_k, s_k \right)\right\}_{k=1:N^e}
+\)</span>$</p>
+<p>is the set of updated edges, and</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+V'=\left\{\mathbf{v}'_i\right\}_{i=1:N^v}
+\]</div>
+<p>is the set of updated nodes.</p>
 <div>
 <img src="https://github.com/jmduarte/capstone-particle-physics-domain/raw/master/weeks/GN-full-block.png" alt="GN full block" width="1000">
-</div>
-<p>We will define an interaction network model similar to this <a class="reference external" href="https://arxiv.org/abs/1909.12285">paper</a>, but just modeling the particle-particle interactions. It will take as input all of the tracks (with 48 features) without truncating or zero-padding. Another modification is the use of batch normalization <span id="id2">[]</span> layers to improve the stability of the training.</p>
+</div><p>We will define an interaction network model similar to this <a class="reference external" href="https://arxiv.org/abs/1909.12285">paper</a>, but just modeling the particle-particle interactions. It will take as input all of the tracks (with 48 features) without truncating or zero-padding. Another modification is the use of batch normalization <span id="id2">[]</span> layers to improve the stability of the training.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
