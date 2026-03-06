@@ -519,7 +519,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-training-the-model-span"><span style="color:LightBlue">Training the model</span></a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span"><span style="color:Orange">Deep Sets</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span-neural-networks-for-unordered-sets"><span style="color:Orange">Deep Sets</span>: Neural Networks for Unordered Sets</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-core-architecture-span"><span style="color:LightBlue">Core Architecture</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-key-properties-span"><span style="color:LightBlue">Key Properties</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-practical-applications-span"><span style="color:LightBlue">Practical Applications</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-limitations-span"><span style="color:LightBlue">Limitations</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-data-loader-span"><span style="color:LightBlue">Data Loader</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-deep-sets-network-span"><span style="color:LightBlue">Deep Sets Network</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-auc-and-roc-curves-span"><span style="color:LightGreen">AUC and ROC Curves</span></a></li>
@@ -1222,9 +1226,45 @@ Epoch: 400, Loss: 0.15198998153209686
 </section>
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-deep-sets-span">
-<h1><span style="color:Orange">Deep Sets</span><a class="headerlink" href="#span-style-color-orange-deep-sets-span" title="Permalink to this heading">#</a></h1>
-<p>We will start by looking at Deep Sets networks using PyTorch. The architecture is based on the following paper: <a class="reference external" href="https://papers.nips.cc/paper/2017/file/f22e4747da1aa27e363d86d40ff442fe-Paper.pdf">DeepSets</a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="span-style-color-orange-deep-sets-span-neural-networks-for-unordered-sets">
+<h1><span style="color:Orange">Deep Sets</span>: Neural Networks for Unordered Sets<a class="headerlink" href="#span-style-color-orange-deep-sets-span-neural-networks-for-unordered-sets" title="Permalink to this heading">#</a></h1>
+<p>DeepSets is a specialized neural network architecture designed to process collections of data where the order of elements does not matter. The architecture is based on the following paper: <a class="reference external" href="https://papers.nips.cc/paper/2017/file/f22e4747da1aa27e363d86d40ff442fe-Paper.pdf">DeepSets</a>. While standard networks expect sequential or grid-like data (like text or images), DeepSets ensures permutation invariance—meaning the output is identical regardless of how you shuffle the input set.</p>
+<section id="span-style-color-lightblue-core-architecture-span">
+<h2><span style="color:LightBlue">Core Architecture</span><a class="headerlink" href="#span-style-color-lightblue-core-architecture-span" title="Permalink to this heading">#</a></h2>
+<p>The model decomposes a set function into a three-step map-reduce process:</p>
+<ul class="simple">
+<li><p><span style="color:Violet">Mapping</span> (<span class="math notranslate nohighlight">\(\phi\)</span>): Each element <span class="math notranslate nohighlight">\(x\)</span> in the set <span class="math notranslate nohighlight">\(S\)</span> is passed independently through a shared neural network (typically a Multi-Layer Perceptron) to create an individual embedding.</p></li>
+<li><p><span style="color:Violet">Aggregation</span> (<span class="math notranslate nohighlight">\(\sum\)</span>): These embeddings are combined using a symmetric, commutative operation such as summing, averaging, or max-pooling. This step “destroys” the ordering information to ensure invariance.</p></li>
+<li><p><span style="color:Violet">Readout</span> (<span class="math notranslate nohighlight">\(\rho\)</span>): The aggregated representation is passed through a final network to produce the overall result.</p></li>
+</ul>
+<p>The Mathematical Formula:</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+f(S) = \rho\left(\sum_{x \in S} \phi(x)\right)
+\]</div>
+</section>
+<section id="span-style-color-lightblue-key-properties-span">
+<h2><span style="color:LightBlue">Key Properties</span><a class="headerlink" href="#span-style-color-lightblue-key-properties-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span style="color:Violet">Permutation Invariance</span>: The model treats <span class="math notranslate nohighlight">\(\{A, B, C\}\)</span> and <span class="math notranslate nohighlight">\(\{C, B, A\}\)</span> as the same input.</p></li>
+<li><p><span style="color:Violet">Variable Set Size</span>: Because it pools element-wise embeddings, the network can handle sets of different lengths (e.g., 10 points vs. 1,000 points) using the same trained parameters.</p></li>
+<li><p><span style="color:Violet">Universal Approximation</span>: Theoretically, DeepSets can approximate any permutation-invariant function, provided the embedding dimension is sufficiently large.</p></li>
+<li><p><span style="color:Violet">Linear Scalability</span>: The computational cost scales linearly <span class="math notranslate nohighlight">\(O(n)\)</span> with the number of elements.</p></li>
+</ul>
+</section>
+<section id="span-style-color-lightblue-practical-applications-span">
+<h2><span style="color:LightBlue">Practical Applications</span><a class="headerlink" href="#span-style-color-lightblue-practical-applications-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span style="color:Violet">3D Point Clouds</span>: Classifying objects from unordered <span class="math notranslate nohighlight">\((x, y, z)\)</span> coordinates (e.g., <a class="reference external" href="https://fabianfuchsml.github.io/learningonsets/">PointNet</a>).</p></li>
+<li><p><span style="color:Violet">Cosmology</span>: Estimating properties like the mass or red-shift of galaxy clusters (sets of galaxies).</p></li>
+<li><p><span style="color:Violet">Recommender Systems</span>: Summarizing user preferences based on an unordered set of past social media engagements.</p></li>
+<li><p><span style="color:Violet">Particle Physics</span>: Identifying “jets” in particle collisions from sets of detected particles.</p></li>
+</ul>
+</section>
+<section id="span-style-color-lightblue-limitations-span">
+<h2><span style="color:LightBlue">Limitations</span><a class="headerlink" href="#span-style-color-lightblue-limitations-span" title="Permalink to this heading">#</a></h2>
+<p>Standard DeepSets process each element independently, which means they do not capture interactions between elements. Advanced versions like <a class="reference external" href="https://www.emergentmind.com/topics/deepsets-style-architectures">Set Transformers</a> use attention mechanisms to model these complex relationships.</p>
+<p>We will start by looking at Deep Sets networks using PyTorch.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install wget
@@ -1316,6 +1356,7 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </div>
 </div>
+</section>
 <section id="span-style-color-lightblue-data-loader-span">
 <h2><span style="color:LightBlue">Data Loader</span><a class="headerlink" href="#span-style-color-lightblue-data-loader-span" title="Permalink to this heading">#</a></h2>
 <p>Here we have to define the dataset loader.</p>
@@ -2577,7 +2618,11 @@ New best model saved to: ./tmp_data/interactionnetwork_best.pth
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-training-the-model-span"><span style="color:LightBlue">Training the model</span></a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span"><span style="color:Orange">Deep Sets</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-deep-sets-span-neural-networks-for-unordered-sets"><span style="color:Orange">Deep Sets</span>: Neural Networks for Unordered Sets</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-core-architecture-span"><span style="color:LightBlue">Core Architecture</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-key-properties-span"><span style="color:LightBlue">Key Properties</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-practical-applications-span"><span style="color:LightBlue">Practical Applications</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-limitations-span"><span style="color:LightBlue">Limitations</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-data-loader-span"><span style="color:LightBlue">Data Loader</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightblue-deep-sets-network-span"><span style="color:LightBlue">Deep Sets Network</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-auc-and-roc-curves-span"><span style="color:LightGreen">AUC and ROC Curves</span></a></li>
