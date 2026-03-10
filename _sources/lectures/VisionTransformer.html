@@ -525,11 +525,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multi-headed-attention-span"><span style="color:LightGreen">Multi Headed Attention</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-efficient-attention-span"><span style="color:LightGreen">Efficient Attention</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multilayer-percepteron-span"><span style="color:LightGreen">MultiLayer Percepteron</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-transformer-block-span"><span style="color:LightGreen">Putting Together the Transformer Block</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-layer-normalization-span"><span style="color:LightPink">Layer Normalization</span></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-residual-connections-span"><span style="color:LightPink">Residual Connections</span></a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-transformer-block-span"><span style="color:LightGreen">Putting Together the Transformer Block</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-vision-transformer-span"><span style="color:LightGreen">Putting Together the Vision Transformer</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-input-shape-output-shape-span"><span style="color:LightPink">Input Shape = Output Shape</span></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-classification-task-span"><span style="color:LightPink">Classification Task</span></a></li>
@@ -810,22 +806,7 @@ document.write(`
 </section>
 <section id="span-style-color-lightgreen-putting-together-the-transformer-block-span">
 <h3><span style="color:LightGreen">Putting Together the Transformer Block</span><a class="headerlink" href="#span-style-color-lightgreen-putting-together-the-transformer-block-span" title="Permalink to this heading">#</a></h3>
-<p>In this step we will add in all parts we have build previously together in a transformer block, but there is two new concept we need to look at:</p>
-<section id="span-style-color-lightpink-layer-normalization-span">
-<h4><span style="color:LightPink">Layer Normalization</span><a class="headerlink" href="#span-style-color-lightpink-layer-normalization-span" title="Permalink to this heading">#</a></h4>
-<p>You should all be familiar with Batch Normalization, but the idea is, throughout the neural network, we will calculate the mean and standard deviation of a tensor across all the batches and use that to normalize our data. There are a few problems with this method that makes it difficult to use in sequence tasks:</p>
-<ul class="simple">
-<li><p>Typically sequence data has different lengths and so we add padding. This wouldnt really work with normalizing across batches because how do we handle the padding tokens?</p></li>
-<li><p>It fails with small batch sizes. These models can be very large and so we can only do a small batch size, but that would not be a good sample to estimate population parameters of our mean and standard deviation.</p></li>
-<li><p>We often have to train these models across GPUs but BatchNorm would have to sync the calculated mean and std across the GPUS during forward propagation which is messy.</p></li>
-</ul>
-<div>
-<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/VisionTransformer-layernorm.png" width=800></img>
-</div><p>We then opt for <span style="color:Violet">Layer Normalization</span> which essentially just normalizes each sample individually across the embedding dimension rather than across the batch. This also means we have to let Layer Normalization know what is the dimension it can expect, and because our embedding dimension is 768, we would have to instantiate it as <span class="math notranslate nohighlight">\(nn.LayerNorm(768)\)</span></p>
-</section>
-<section id="span-style-color-lightpink-residual-connections-span">
-<h4><span style="color:LightPink">Residual Connections</span><a class="headerlink" href="#span-style-color-lightpink-residual-connections-span" title="Permalink to this heading">#</a></h4>
-<p>This is inspired by <span style="color:Violet">ResNet</span> but as we know, the deeper a Neural Netowrk goes, we have vanishing gradient problems as backpropagation cannot make it back to the start of the model. Therefore to give other paths for gradients to flow back, we will add new calculations to previous ones rather than replace them</p>
+<p>In this step we will add in all parts we have build previously together in a transformer block, using Residual Connections and Layer Normalization for the reasons discussed in the <a class="reference external" href="https://illinois-mlp.github.io/MachineLearningForPhysics/_sources/lectures/Transformers.html">Transformers notebook</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TransformerBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -866,7 +847,6 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="span-style-color-lightgreen-putting-together-the-vision-transformer-span">
 <h3><span style="color:LightGreen">Putting Together the Vision Transformer</span><a class="headerlink" href="#span-style-color-lightgreen-putting-together-the-vision-transformer-span" title="Permalink to this heading">#</a></h3>
@@ -17542,11 +17522,7 @@ Validation Acc: 0.7025275737047195
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multi-headed-attention-span"><span style="color:LightGreen">Multi Headed Attention</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-efficient-attention-span"><span style="color:LightGreen">Efficient Attention</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-multilayer-percepteron-span"><span style="color:LightGreen">MultiLayer Percepteron</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-transformer-block-span"><span style="color:LightGreen">Putting Together the Transformer Block</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-layer-normalization-span"><span style="color:LightPink">Layer Normalization</span></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-residual-connections-span"><span style="color:LightPink">Residual Connections</span></a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-transformer-block-span"><span style="color:LightGreen">Putting Together the Transformer Block</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-putting-together-the-vision-transformer-span"><span style="color:LightGreen">Putting Together the Vision Transformer</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-input-shape-output-shape-span"><span style="color:LightPink">Input Shape = Output Shape</span></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightpink-classification-task-span"><span style="color:LightPink">Classification Task</span></a></li>

@@ -1113,8 +1113,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <section id="span-style-color-orange-computing-the-reweighted-padded-attention-mask-span">
 <h2><span style="color:Orange">Computing the Reweighted Padded Attention Mask</span><a class="headerlink" href="#span-style-color-orange-computing-the-reweighted-padded-attention-mask-span" title="Permalink to this heading">#</a></h2>
 <p>Lets create some numbers so we can get a better idea of how this works. Let the tokens be <span class="math notranslate nohighlight">\(X = [10, 2, \text{&lt;pad&gt;}]\)</span>, so the third token is a padding token. Lets then also pretend, we pass this to our model, and when we go to compute our attention <span class="math notranslate nohighlight">\(QK^T\)</span>. The raw output before the Softmax is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c29f660e-2059-496d-9118-25b777e55c6f">
-<span class="eqno">(1)<a class="headerlink" href="#equation-c29f660e-2059-496d-9118-25b777e55c6f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-77efc9dd-9d71-40a2-b99a-2dbafef501d4">
+<span class="eqno">(1)<a class="headerlink" href="#equation-77efc9dd-9d71-40a2-b99a-2dbafef501d4" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1127,8 +1127,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}
 \]</div>
 <p>If we ignore padding and everything right now, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-24ce12b6-08ee-49b7-a941-dda58eb55b4e">
-<span class="eqno">(2)<a class="headerlink" href="#equation-24ce12b6-08ee-49b7-a941-dda58eb55b4e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dfc01cae-b534-49cc-a45e-9c4096fe1c93">
+<span class="eqno">(2)<a class="headerlink" href="#equation-dfc01cae-b534-49cc-a45e-9c4096fe1c93" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1147,8 +1147,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>But what we need is to mask out all the tokens in this matrix related to padding. Just like we did in <a class="reference external" href="https://github.com/priyammaz/HAL-DL-From-Scratch/tree/main/PyTorch%20for%20NLP/GPT">GPT</a>, we will fill in the indexes of the that we want to mask with <span class="math notranslate nohighlight">\(-\infty\)</span>. If only the last token was a padding token in our sequence, then the attention before the softmax should be written as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-42836460-7176-4e91-9c02-3ee0df648adf">
-<span class="eqno">(3)<a class="headerlink" href="#equation-42836460-7176-4e91-9c02-3ee0df648adf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e527a0a5-443f-439b-a96d-da2c7a30c8b1">
+<span class="eqno">(3)<a class="headerlink" href="#equation-e527a0a5-443f-439b-a96d-da2c7a30c8b1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1156,8 +1156,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b9e433ad-b557-4495-8124-7b36072579b4">
-<span class="eqno">(4)<a class="headerlink" href="#equation-b9e433ad-b557-4495-8124-7b36072579b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a511a1ae-317e-4ce6-905f-3fb7e5c6140b">
+<span class="eqno">(4)<a class="headerlink" href="#equation-a511a1ae-317e-4ce6-905f-3fb7e5c6140b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
  7       &amp; -8   &amp; -\infty  \\
@@ -1199,8 +1199,8 @@ Shape of each Head of Query: torch.Size([1, 8, 3])
 <p><code class="docutils literal notranslate"><span class="pre">attn.shape</span></code> - (Batch x seq_len x seq_len)</p>
 <p><code class="docutils literal notranslate"><span class="pre">mask.shape</span></code> - (Batch x seq_len)</p>
 <p>It is clear that our mask is missing a dimension, and we need to repeat it. Lets take sequence_1 for instance that has a mask of [True, True, True, False]. Because the sequence length here is 4, lets repeat this row 4 times:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-36a3f10a-19a3-4642-aa90-b32d77f8dad1">
-<span class="eqno">(5)<a class="headerlink" href="#equation-36a3f10a-19a3-4642-aa90-b32d77f8dad1" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
+<div class="amsmath math notranslate nohighlight" id="equation-caab2d67-1b57-4738-b1c7-b0322765602e">
+<span class="eqno">(5)<a class="headerlink" href="#equation-caab2d67-1b57-4738-b1c7-b0322765602e" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
 \textrm{True} &amp; \textrm{True} &amp; \textrm{True} &amp; \textrm{False} \\
@@ -1460,8 +1460,8 @@ Final Output: torch.Size([3, 5, 9])
 <section id="span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span">
 <h3><span style="color:LightGreen">Computing the Reweighted Causal Attention Mask</span><a class="headerlink" href="#span-style-color-lightgreen-computing-the-reweighted-causal-attention-mask-span" title="Permalink to this heading">#</a></h3>
 <p>Lets pretend the raw outputs of <span class="math notranslate nohighlight">\(QK^T\)</span>, before the softmax, is below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-94c8027d-8db5-4761-943b-f53f853bcdfa">
-<span class="eqno">(6)<a class="headerlink" href="#equation-94c8027d-8db5-4761-943b-f53f853bcdfa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1b43c66b-aa48-4820-8d20-e4aaecb52c49">
+<span class="eqno">(6)<a class="headerlink" href="#equation-1b43c66b-aa48-4820-8d20-e4aaecb52c49" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
   -3       &amp; 2   &amp; 4   \\
@@ -1472,8 +1472,8 @@ Final Output: torch.Size([3, 5, 9])
 <div class="math notranslate nohighlight">
 \[\text{Softmax}(\vec{x}) = \frac{e^{x_i}}{\sum_{j=1}^N{e^{x_j}}}\]</div>
 <p>Then, we can compute softmax for row of the matrix above:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-de5e9274-d92b-4683-b87c-bec4fcef91ee">
-<span class="eqno">(7)<a class="headerlink" href="#equation-de5e9274-d92b-4683-b87c-bec4fcef91ee" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-355d790c-d4c4-4192-bd89-d9d438947445">
+<span class="eqno">(7)<a class="headerlink" href="#equation-355d790c-d4c4-4192-bd89-d9d438947445" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -8   &amp; 6  \\
@@ -1512,8 +1512,8 @@ x_2 = [-3, 2, -\infty]
 \text{Softmax}(x_2) = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [\frac{e^{-3}}{e^{-3}+e^{2}+0}, \frac{e^{2}}{e^{-3}+e^{2}+0}, \frac{0}{e^{-3}+e^{2}+0}] = [0.0067, 0.9933, 0.0000]
 \]</div>
 <p>So we have exactly what we want! The attention weight of the last value is set to 0, so when we are on the second vector <span class="math notranslate nohighlight">\(x_2\)</span>, we cannot look forward to the future value vectors <span class="math notranslate nohighlight">\(v_3\)</span>, and the remaining parts add up to 1 so its still a probability vector! To do this correctly for the entire matrix, we can just substitute in the top triangle of <span class="math notranslate nohighlight">\(QK^T\)</span> with <span class="math notranslate nohighlight">\(-\infty\)</span>. This would look like:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1bf65537-8229-4b91-a3ad-c0d3083b79d8">
-<span class="eqno">(8)<a class="headerlink" href="#equation-1bf65537-8229-4b91-a3ad-c0d3083b79d8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-be5485f5-94b5-4529-9e91-be379f8de4ba">
+<span class="eqno">(8)<a class="headerlink" href="#equation-be5485f5-94b5-4529-9e91-be379f8de4ba" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
   -3       &amp; 2   &amp; -\infty   \\
@@ -1521,8 +1521,8 @@ x_2 = [-3, 2, -\infty]
 \end{bmatrix}
 \end{equation}\]</div>
 <p>Taking the softmax of the rows of this matrix then gives:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c616d123-bb40-4d72-b6ef-17b92eeee1ec">
-<span class="eqno">(9)<a class="headerlink" href="#equation-c616d123-bb40-4d72-b6ef-17b92eeee1ec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e3166a4b-9fc3-483b-90f6-46fabcfe8e79">
+<span class="eqno">(9)<a class="headerlink" href="#equation-e3166a4b-9fc3-483b-90f6-46fabcfe8e79" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Softmax}
 \begin{bmatrix}
   7       &amp; -\infty   &amp; -\infty  \\
