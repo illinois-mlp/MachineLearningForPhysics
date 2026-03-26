@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Homework 08: Reinforcement Learning: Implementing a Deep Q-Network &#8212; PHYS 498 MLP</title>
+    <title>Homework 08: Simulation-Based Inference (SBI) &#8212; PHYS 498 MLP</title>
   
   
   
@@ -270,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../lectures/ReinforcementLearning.html">Reinforcement Learning</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 08: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 08: Simulation-Based Inference (SBI)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_11.html"><span style="color: blue;"><b>AI Explainablility and Uncertainty Quantification</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -499,7 +499,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Homework 08: Reinforcement Learning: Implementing a Deep Q-Network</h1>
+    <h1>Homework 08: Simulation-Based Inference (SBI)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -509,6 +509,26 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-1-span-prior-decay-time-simulator-and-summary-statistic"><span style="color:Orange">Problem 1</span>: Prior, Decay-Time Simulator, and Summary Statistic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-1-span"><span style="color:LightGreen"> Figure for Problem 1</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-2-span-exact-posterior-on-a-grid"><span style="color:Orange">Problem 2</span>: Exact Posterior on a Grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-2-span"><span style="color:LightGreen"> Figure for Problem 2</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-3-span-amortized-posterior-network"><span style="color:Orange">Problem 3</span>: Amortized Posterior Network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-3-span"><span style="color:LightGreen"> Figure for Problem 3</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-4-span-calibration-and-coverage"><span style="color:Orange">Problem 4</span>: Calibration and Coverage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-4-span"><span style="color:LightGreen"> Figure for Problem 4</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-5-span-posterior-predictive-simulation"><span style="color:Orange">Problem 5</span>: Posterior Predictive Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-5-span"><span style="color:LightGreen"> Figure for Problem 5</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -521,8 +541,431 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="homework-08-reinforcement-learning-implementing-a-deep-q-network">
-<h1>Homework 08: Reinforcement Learning: Implementing a Deep Q-Network<a class="headerlink" href="#homework-08-reinforcement-learning-implementing-a-deep-q-network" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-08-simulation-based-inference-sbi">
+<h1>Homework 08: Simulation-Based Inference (SBI)<a class="headerlink" href="#homework-08-simulation-based-inference-sbi" title="Permalink to this heading">#</a></h1>
+<p>Simulation-based inference (SBI) is a family of methods for Bayesian inference when we can generate data from a simulator but do not want to rely on an analytically tractable likelihood. Instead of writing down a closed-form posterior, we simulate many synthetic datasets under different parameter settings and use those simulations to learn how observations constrain latent parameters.</p>
+<p>This is especially useful in physics, where forward models are often natural to simulate even when exact likelihood-based inference is difficult. In this homework, you will work through a simple radioactive decay example and compare an exact reference posterior against an amortized neural approximation.</p>
+<p>In a simple radioactive decay experiment. We observe repeated waiting times between decay events and want to infer the decay rate parameter <code class="docutils literal notranslate"><span class="pre">lambda</span></code>. This is a natural simulation-based inference setting: the simulator is easy to write, and it produces realistic stochastic measurements from a physics process.</p>
+<p>In this homework, you will:</p>
+<ul class="simple">
+<li><p>define a prior and a decay-time simulator</p></li>
+<li><p>compute an exact posterior on a grid for comparison</p></li>
+<li><p>train a small amortized posterior network</p></li>
+<li><p>evaluate calibration on held-out simulations</p></li>
+<li><p>generate posterior predictive samples of decay times</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;device:&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-problem-1-span-prior-decay-time-simulator-and-summary-statistic">
+<h2><span style="color:Orange">Problem 1</span>: Prior, Decay-Time Simulator, and Summary Statistic<a class="headerlink" href="#span-style-color-orange-problem-1-span-prior-decay-time-simulator-and-summary-statistic" title="Permalink to this heading">#</a></h2>
+<p>Consider a simple radioactive decay model where the waiting time between decay events is exponentially distributed:</p>
+<ul class="simple">
+<li><p>latent parameter: <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">~</span> <span class="pre">Uniform(0.2,</span> <span class="pre">2.0)</span></code></p></li>
+<li><p>observations: <code class="docutils literal notranslate"><span class="pre">t_i</span> <span class="pre">~</span> <span class="pre">Exponential(rate=lambda)</span></code></p></li>
+</ul>
+<p>In an experiment, larger <code class="docutils literal notranslate"><span class="pre">lambda</span></code> means shorter typical waiting times. We will simulate many experiments, each consisting of <code class="docutils literal notranslate"><span class="pre">n_obs</span></code> waiting times.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_prior(n)</span></code> returning shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">simulate_decay_times(lam,</span> <span class="pre">n_obs=20)</span></code> returning shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n_obs)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_summary(t)</span></code> returning the sample mean waiting time with shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">1)</span></code></p></li>
+</ul>
+<p>Goal: build the simulator interface used in the rest of the homework.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sample_prior</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement sample_prior&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_decay_times</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement simulate_decay_times&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_summary</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement compute_summary&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Local checks</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="n">sample_prior</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">simulate_decay_times</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">compute_summary</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">lam</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">lam</span> <span class="o">&gt;=</span> <span class="mf">0.2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">lam</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 1 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-1-span">
+<h3><span style="color:LightGreen"> Figure for Problem 1</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-1-span" title="Permalink to this heading">#</a></h3>
+<p>Why this plot:</p>
+<ul class="simple">
+<li><p>Left: sampled decay rates from the prior</p></li>
+<li><p>Right: example simulated waiting-time sequences and their sample-mean summaries</p></li>
+</ul>
+<p>This connects the latent physics parameter to the observable data. Larger rates should tend to produce shorter waiting times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lam_demo</span> <span class="o">=</span> <span class="n">sample_prior</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">t_demo</span> <span class="o">=</span> <span class="n">simulate_decay_times</span><span class="p">(</span><span class="n">lam_demo</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">s_demo</span> <span class="o">=</span> <span class="n">compute_summary</span><span class="p">(</span><span class="n">t_demo</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">lam_demo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#4C78A8&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Prior samples of decay rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;lambda&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">t_demo</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_demo</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;lambda=&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lam_demo</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">s_demo</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Simulated decay waiting times&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;event index&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;waiting time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-2-span-exact-posterior-on-a-grid">
+<h2><span style="color:Orange">Problem 2</span>: Exact Posterior on a Grid<a class="headerlink" href="#span-style-color-orange-problem-2-span-exact-posterior-on-a-grid" title="Permalink to this heading">#</a></h2>
+<p>For exponential waiting times with known rate parameter <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, the likelihood for observed waiting times <code class="docutils literal notranslate"><span class="pre">t_obs</span></code> is known. That means we can compute the exact posterior numerically on a grid and use it as a reference.</p>
+<p>Assume a single observed dataset <code class="docutils literal notranslate"><span class="pre">t_obs</span></code>. Since the prior is uniform on <code class="docutils literal notranslate"><span class="pre">[0.2,</span> <span class="pre">2.0]</span></code>, the unnormalized posterior is proportional to the exponential likelihood inside that interval and zero outside.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">log_likelihood_grid(lam_grid,</span> <span class="pre">t_obs)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">posterior_from_loglik(loglik)</span></code> that normalizes on the grid</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">posterior_mean(lam_grid,</span> <span class="pre">posterior)</span></code></p></li>
+</ul>
+<p>Goal: create a numerical benchmark posterior before training a neural approximation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">log_likelihood_grid</span><span class="p">(</span><span class="n">lam_grid</span><span class="p">,</span> <span class="n">t_obs</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement log_likelihood_grid&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">posterior_from_loglik</span><span class="p">(</span><span class="n">loglik</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement posterior_from_loglik&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">posterior_mean</span><span class="p">(</span><span class="n">lam_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement posterior_mean&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Local checks</span>
+<span class="n">t_obs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">lam_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
+<span class="n">loglik</span> <span class="o">=</span> <span class="n">log_likelihood_grid</span><span class="p">(</span><span class="n">lam_grid</span><span class="p">,</span> <span class="n">t_obs</span><span class="p">)</span>
+<span class="n">post</span> <span class="o">=</span> <span class="n">posterior_from_loglik</span><span class="p">(</span><span class="n">loglik</span><span class="p">)</span>
+<span class="n">pm</span> <span class="o">=</span> <span class="n">posterior_mean</span><span class="p">(</span><span class="n">lam_grid</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">loglik</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">lam_grid</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">lam_grid</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+<span class="k">assert</span> <span class="mf">0.2</span> <span class="o">&lt;=</span> <span class="n">pm</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">2.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 2 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-2-span">
+<h3><span style="color:LightGreen"> Figure for Problem 2</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-2-span" title="Permalink to this heading">#</a></h3>
+<p>Why this plot:</p>
+<ul class="simple">
+<li><p>It shows the exact posterior over the decay rate <code class="docutils literal notranslate"><span class="pre">lambda</span></code> for one observed decay experiment</p></li>
+<li><p>It also marks the observed mean waiting time and the posterior mean estimate</p></li>
+</ul>
+<p>This is the reference posterior that your amortized inference model should learn to approximate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">t_obs_demo</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">lam_grid_demo</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
+<span class="n">loglik_demo</span> <span class="o">=</span> <span class="n">log_likelihood_grid</span><span class="p">(</span><span class="n">lam_grid_demo</span><span class="p">,</span> <span class="n">t_obs_demo</span><span class="p">)</span>
+<span class="n">post_demo</span> <span class="o">=</span> <span class="n">posterior_from_loglik</span><span class="p">(</span><span class="n">loglik_demo</span><span class="p">)</span>
+<span class="n">pm_demo</span> <span class="o">=</span> <span class="n">posterior_mean</span><span class="p">(</span><span class="n">lam_grid_demo</span><span class="p">,</span> <span class="n">post_demo</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lam_grid_demo</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">post_demo</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">t_obs_demo</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;crimson&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;1 / mean waiting time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">pm_demo</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;posterior mean&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;lambda&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;posterior probability (grid)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Exact posterior for one decay experiment&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-3-span-amortized-posterior-network">
+<h2><span style="color:Orange">Problem 3</span>: Amortized Posterior Network<a class="headerlink" href="#span-style-color-orange-problem-3-span-amortized-posterior-network" title="Permalink to this heading">#</a></h2>
+<p>In simulation-based inference, we often train a neural network that maps observations or summaries directly to an approximate posterior. This avoids solving a new inference problem from scratch for every new experiment.</p>
+<p>In this problem, train a small network that takes the sample mean waiting time as input and predicts the parameters of a Gaussian approximation to the posterior over <code class="docutils literal notranslate"><span class="pre">lambda</span></code>:</p>
+<ul class="simple">
+<li><p>posterior mean <code class="docutils literal notranslate"><span class="pre">mu(summary)</span></code></p></li>
+<li><p>posterior log standard deviation <code class="docutils literal notranslate"><span class="pre">log_sigma(summary)</span></code></p></li>
+</ul>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PosteriorNet.forward(summary)</span></code> returning <code class="docutils literal notranslate"><span class="pre">(mu,</span> <span class="pre">log_std)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gaussian_nll(lam,</span> <span class="pre">mu,</span> <span class="pre">log_std)</span></code></p></li>
+<li><p>the training loop over simulated <code class="docutils literal notranslate"><span class="pre">(lambda,</span> <span class="pre">summary)</span></code> pairs</p></li>
+</ul>
+<p>Goal: build a minimal amortized neural posterior estimator.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PosteriorNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summary</span><span class="p">):</span>
+        <span class="c1"># YOUR CODE HERE</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement PosteriorNet.forward&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_nll</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_std</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement gaussian_nll&#39;</span><span class="p">)</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">PosteriorNet</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">400</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="c1"># 1) sample lambda from the prior</span>
+    <span class="c1"># 2) simulate decay times and compute summaries</span>
+    <span class="c1"># 3) run the network and minimize Gaussian negative log likelihood</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># Local checks</span>
+<span class="n">summary_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">mu_test</span><span class="p">,</span> <span class="n">log_std_test</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">summary_test</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">mu_test</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">log_std_test</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 3 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-3-span">
+<h3><span style="color:LightGreen"> Figure for Problem 3</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-3-span" title="Permalink to this heading">#</a></h3>
+<p>Why this plot:</p>
+<ul class="simple">
+<li><p>It shows how the network maps the observed mean waiting time to a posterior mean estimate</p></li>
+<li><p>It also shows the predicted posterior uncertainty as a function of the summary statistic</p></li>
+</ul>
+<p>Physically, larger mean waiting times should generally correspond to smaller decay rates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">summary_grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">mu_grid</span><span class="p">,</span> <span class="n">log_std_grid</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">summary_grid</span><span class="p">)</span>
+<span class="n">std_grid</span> <span class="o">=</span> <span class="n">log_std_grid</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">mu_grid</span> <span class="o">=</span> <span class="n">mu_grid</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">summary_grid_np</span> <span class="o">=</span> <span class="n">summary_grid</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary_grid_np</span><span class="p">,</span> <span class="n">mu_grid</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;network posterior mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary_grid_np</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">summary_grid_np</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;1 / sample mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Predicted posterior mean vs sample mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;summary = mean waiting time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;predicted mu for lambda&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary_grid_np</span><span class="p">,</span> <span class="n">std_grid</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#F58518&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;network posterior std&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Predicted posterior std vs sample mean&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;summary = mean waiting time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;predicted std&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-4-span-calibration-and-coverage">
+<h2><span style="color:Orange">Problem 4</span>: Calibration and Coverage<a class="headerlink" href="#span-style-color-orange-problem-4-span-calibration-and-coverage" title="Permalink to this heading">#</a></h2>
+<p>A posterior approximation should provide uncertainty estimates that are not only sharp but also realistic.</p>
+<p>In this problem, estimate empirical coverage of nominal 68% intervals on held-out simulated decay experiments:</p>
+<ul class="simple">
+<li><p>simulate many <code class="docutils literal notranslate"><span class="pre">(lambda,</span> <span class="pre">t)</span></code> pairs</p></li>
+<li><p>compute summaries</p></li>
+<li><p>use the network to predict a Gaussian posterior</p></li>
+<li><p>build central 68% intervals and check how often the true <code class="docutils literal notranslate"><span class="pre">lambda</span></code> falls inside</p></li>
+</ul>
+<p>Implement <code class="docutils literal notranslate"><span class="pre">empirical_coverage(model,</span> <span class="pre">n_eval=2000,</span> <span class="pre">n_obs=20)</span></code>.</p>
+<p>Goal: compare nominal uncertainty against observed frequency coverage.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">empirical_coverage</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_eval</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement empirical_coverage&#39;</span><span class="p">)</span>
+
+
+<span class="n">coverage</span> <span class="o">=</span> <span class="n">empirical_coverage</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_eval</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">assert</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">coverage</span> <span class="o">&lt;=</span> <span class="mf">1.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Empirical 68</span><span class="si">% c</span><span class="s1">overage:&#39;</span><span class="p">,</span> <span class="n">coverage</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 4 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-4-span">
+<h3><span style="color:LightGreen"> Figure for Problem 4</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-4-span" title="Permalink to this heading">#</a></h3>
+<p>Why this plot:</p>
+<ul class="simple">
+<li><p>It compares predicted 68% posterior intervals against the true latent decay rate on held-out simulations</p></li>
+<li><p>The title reports empirical coverage</p></li>
+</ul>
+<p>This gives a direct visual test of whether the learned uncertainty is calibrated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_plot</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">lam_eval</span> <span class="o">=</span> <span class="n">sample_prior</span><span class="p">(</span><span class="n">n_plot</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t_eval</span> <span class="o">=</span> <span class="n">simulate_decay_times</span><span class="p">(</span><span class="n">lam_eval</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">s_eval</span> <span class="o">=</span> <span class="n">compute_summary</span><span class="p">(</span><span class="n">t_eval</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">mu_eval</span><span class="p">,</span> <span class="n">log_std_eval</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">s_eval</span><span class="p">)</span>
+<span class="n">std_eval</span> <span class="o">=</span> <span class="n">log_std_eval</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+<span class="n">lo</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu_eval</span> <span class="o">-</span> <span class="n">std_eval</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">hi</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu_eval</span> <span class="o">+</span> <span class="n">std_eval</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">mu_np</span> <span class="o">=</span> <span class="n">mu_eval</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">lam_np</span> <span class="o">=</span> <span class="n">lam_eval</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">inside</span> <span class="o">=</span> <span class="p">(</span><span class="n">lam_np</span> <span class="o">&gt;=</span> <span class="n">lo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">lam_np</span> <span class="o">&lt;=</span> <span class="n">hi</span><span class="p">)</span>
+<span class="n">coverage_plot</span> <span class="o">=</span> <span class="n">inside</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mu_np</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_plot</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">lo</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">hi</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inside</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="s1">&#39;#54A24B&#39;</span><span class="p">,</span> <span class="s1">&#39;#E45756&#39;</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">lam_np</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;true lambda&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">mu_np</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#4C78A8&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;predicted mean&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Predicted 68</span><span class="si">% i</span><span class="s1">ntervals on held-out decay experiments (coverage=</span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coverage_plot</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;held-out simulation (sorted by predicted mean)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;lambda&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-5-span-posterior-predictive-simulation">
+<h2><span style="color:Orange">Problem 5</span>: Posterior Predictive Simulation<a class="headerlink" href="#span-style-color-orange-problem-5-span-posterior-predictive-simulation" title="Permalink to this heading">#</a></h2>
+<p>A posterior is scientifically useful because it lets us propagate uncertainty back through the simulator and ask whether inferred parameters reproduce the observed experiment.</p>
+<p>In this problem, implement posterior predictive simulation for one observed decay dataset:</p>
+<ul class="simple">
+<li><p>compute the observed summary</p></li>
+<li><p>get the Gaussian posterior approximation from the network</p></li>
+<li><p>draw <code class="docutils literal notranslate"><span class="pre">lambda</span></code> samples from that approximate posterior</p></li>
+<li><p>simulate new decay-time datasets and compare predictive summaries to the observed summary</p></li>
+</ul>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_posterior_gaussian(mu,</span> <span class="pre">log_std,</span> <span class="pre">n_samples)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">posterior_predictive_summaries(model,</span> <span class="pre">t_obs,</span> <span class="pre">n_samples=200,</span> <span class="pre">n_obs=20)</span></code></p></li>
+</ul>
+<p>Goal: connect posterior inference to posterior predictive checking for a physics experiment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sample_posterior_gaussian</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_std</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement sample_posterior_gaussian&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">posterior_predictive_summaries</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t_obs</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement posterior_predictive_summaries&#39;</span><span class="p">)</span>
+
+
+<span class="n">t_obs</span> <span class="o">=</span> <span class="n">simulate_decay_times</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">]]),</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pred_summaries</span> <span class="o">=</span> <span class="n">posterior_predictive_summaries</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t_obs</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pred_summaries</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 5 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-5-span">
+<h3><span style="color:LightGreen"> Figure for Problem 5</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-5-span" title="Permalink to this heading">#</a></h3>
+<p>Why this plot:</p>
+<ul class="simple">
+<li><p>It compares the observed mean waiting time to the distribution of posterior predictive mean waiting times</p></li>
+<li><p>It tests whether the inferred posterior places weight on decay rates that reproduce data similar to the experiment you saw</p></li>
+</ul>
+<p>This is a standard posterior predictive diagnostic and a useful end-to-end SBI sanity check.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">t_obs_demo</span> <span class="o">=</span> <span class="n">simulate_decay_times</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">]]),</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">obs_summary</span> <span class="o">=</span> <span class="n">compute_summary</span><span class="p">(</span><span class="n">t_obs_demo</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">pred_summaries</span> <span class="o">=</span> <span class="n">posterior_predictive_summaries</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t_obs_demo</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">pred_summaries</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#72B7B2&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">obs_summary</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;observed mean waiting time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;posterior predictive sample mean waiting time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior predictive summaries for decay experiment&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -596,6 +1039,26 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-1-span-prior-decay-time-simulator-and-summary-statistic"><span style="color:Orange">Problem 1</span>: Prior, Decay-Time Simulator, and Summary Statistic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-1-span"><span style="color:LightGreen"> Figure for Problem 1</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-2-span-exact-posterior-on-a-grid"><span style="color:Orange">Problem 2</span>: Exact Posterior on a Grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-2-span"><span style="color:LightGreen"> Figure for Problem 2</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-3-span-amortized-posterior-network"><span style="color:Orange">Problem 3</span>: Amortized Posterior Network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-3-span"><span style="color:LightGreen"> Figure for Problem 3</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-4-span-calibration-and-coverage"><span style="color:Orange">Problem 4</span>: Calibration and Coverage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-4-span"><span style="color:LightGreen"> Figure for Problem 4</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-5-span-posterior-predictive-simulation"><span style="color:Orange">Problem 5</span>: Posterior Predictive Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-5-span"><span style="color:LightGreen"> Figure for Problem 5</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>

@@ -22,7 +22,7 @@ __Note__: *This schedule will evolve throughout the semseter*
 | Mar 02  | {doc}`_sources/Week_07`       | [HW 07](_sources/homework/Homework_07) |                            |
 | Mar 09  | {doc}`_sources/Week_08`       |                                        | {doc}`_sources/Project_01` |
 | Mar 16  | __SPRING BREAK - NO CLASSES__ |                                        |                            |
-| Mar 23  | {doc}`_sources/Week_09`       |                                        |                            |
+| Mar 23  | {doc}`_sources/Week_09`       | [HW 08](_sources/homework/Homework_08) |                            |
 | Mar 30  | {doc}`_sources/Week_10`       |                                        |                            |
 | Apr 06  | {doc}`_sources/Week_11`       |                                        |                            |
 | Apr 13  | {doc}`_sources/Week_12`       |                                        |                            |
