@@ -17,7 +17,7 @@ You will learn the basics of Deep Learning and Generative Modeling
 * {doc}`lectures/SimulationBasedInference`
 
 ## *Homework Assignment*
-* None
+* {doc}`homework/Homework_08`
 
 ## *Supplemental Readings*
 * None
