@@ -69,7 +69,7 @@ Upon completion of the course students will be able to:
 * Evelyn Wu
   * email: yw114@illinois.edu
   * Office Hour: Tuesday 10:00am - 11:00am
-  * Location: Loomis 279/275/271
+  * Location: Loomis 258
 
 ## <span style="color:Red">Online Tools</span>
 
