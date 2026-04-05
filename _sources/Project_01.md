@@ -9,3 +9,4 @@
 * {doc}`projects/Project_01_DarkEnergySurvey`
 * {doc}`projects/Project_01_AberratedImages`
 * {doc}`projects/Project_01_GravitationalWaves`
+* {doc}`projects/Project_01_ClimateModels`
