@@ -91,18 +91,19 @@ chapters:
   - file: _sources/lectures/Diffusion
   - file: _sources/lectures/NormalizingFlows
   - file: _sources/lectures/SimulationBasedInference
+  - file: _sources/homework/Homework_08
 - file: _sources/Week_10 # Reinforcement Learning
   sections:
   - url: https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/ReinforcementLearning
-  - file: _sources/homework/Homework_08
+  - file: _sources/homework/Homework_09
 - file: _sources/Week_11 # AI Explainability and Uncertainty Quantification
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/AIExplainabilityUncertaintyQuantification
-  - file: _sources/homework/Homework_09
+  - file: _sources/homework/Homework_10
 - file: _sources/Week_12 # Unsupervised Learning and Anomaly Detection
   sections:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
