@@ -537,15 +537,31 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="homework-09-reinforcement-learning-implementing-a-deep-q-network">
+  <p><a href="https://colab.research.google.com/github/utingge/bj18/blob/main/Homework_09__v2.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="homework-09-reinforcement-learning-implementing-a-deep-q-network">
 <h1>Homework 09: Reinforcement Learning: Implementing a Deep Q-Network<a class="headerlink" href="#homework-09-reinforcement-learning-implementing-a-deep-q-network" title="Permalink to this heading">#</a></h1>
 <p>Make sure to run every single cell in this notebook, or some libraries might be missing. Also, if you are using Colab, make sure to <strong>change your Runtime (change runtime type under Runtime)</strong> to a GPU, although it will work on a CPU.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">apt</span>-get install x11-utils &gt; /dev/null 2&gt;&amp;1
-<span class="o">%</span><span class="k">pip</span> install pyglet &gt; /dev/null 2&gt;&amp;1
-<span class="o">%</span><span class="k">apt</span>-get install -y xvfb python-opengl &gt; /dev/null 2&gt;&amp;1
-<span class="o">%</span><span class="k">pip</span> install gym pyvirtualdisplay &gt; /dev/null 2&gt;&amp;1
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>apt-get<span class="w"> </span>install<span class="w"> </span>x11-utils<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyglet<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="o">!</span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>xvfb<span class="w"> </span>python-opengl<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>gym<span class="w"> </span><span class="nv">gym</span><span class="o">==</span><span class="m">0</span>.26<span class="w"> </span>--force-reinstall
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyvirtualdisplay
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#print the version of numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0.2
 </pre></div>
 </div>
 </div>
@@ -561,6 +577,8 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">bool8</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
@@ -583,7 +601,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DQN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="c1"># YOUR CODE HERE</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    <span class="c1"># Instruction:</span>
+    <span class="c1"># Function __init__(self, input, hidden, output):</span>
+    <span class="c1"># Build a three layer neural network</span>
+    <span class="c1"># input/hidden/output: size of input/hidden/output layer</span>
+    <span class="c1"># Function forward(self,x):</span>
+    <span class="c1"># Sending the input data x through the neural network you construct</span>
+
+<span class="c1">#raise NotImplementedError()</span>
 </pre></div>
 </div>
 </div>
@@ -738,14 +763,21 @@ document.write(`
 
     <span class="k">def</span><span class="w"> </span><span class="nf">epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
         <span class="c1"># Creating epsilon greedy probabilities to sample from.</span>
+        <span class="c1"># q_values: 2-dim tensor, it is the output of neural network you designed</span>
+
 
         <span class="c1"># YOUR CODE HERE</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+<span class="c1">#        raise NotImplementedError()</span>
+
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_values</span><span class="p">):</span>
+        <span class="c1"># q_values: same as function &quot;epsilon_greedy_policy&quot;</span>
 
         <span class="c1"># YOUR CODE HERE</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+<span class="c1">#        raise NotImplementedError()</span>
+
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># In this function, we will train our network.</span>
@@ -788,22 +820,44 @@ document.write(`
 
     <span class="k">def</span><span class="w"> </span><span class="nf">td_estimate</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
         <span class="c1"># YOUR CODE HERE</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="c1"># Calculate Q(state,action), left hand side of Bellman equation</span>
+        <span class="c1"># --------------</span>
+        <span class="c1"># state: 2-dim tensor with shape (self.memory.memory_size, state_dim)</span>
+        <span class="c1"># action: 2-dim tensor with shape (self.memory.memory_size, 1)</span>
+        <span class="c1"># The attribute self.memory defined in __init__ function of class DQN_Agent()</span>
+        <span class="c1"># Quantities &#39;state&#39; and &#39;action&#39; are defined in class Replay_Memory()</span>
+        <span class="c1"># --------------</span>
+<span class="c1">#        raise NotImplementedError()</span>
+
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">td_target</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
         <span class="c1"># YOUR CODE HERE</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="c1"># Calculate r + gamma * p * max_a[Q(s,a)], the right hand side of Bellman equation</span>
+        <span class="c1"># Whether the action is taken depends on the result of epsilon_greedy_policy, which is reflected in input &quot;done&quot;</span>
+        <span class="c1"># If the action is taken, p=1, else p=0</span>
+        <span class="c1"># -------------------</span>
+        <span class="c1"># reward: 2-dim tensor with shape (self.memory.memory_size, 1)</span>
+        <span class="c1"># next_state: 2-dim tensor with (self.memory.memory_size, state_dim)</span>
+        <span class="c1"># done: 2-dim tensor with shape (self.memory.memory_size, 1)</span>
+        <span class="c1"># Quantities &#39;reward&#39;, &#39;next_state&#39; and &#39;done&#39; are defined in class Replay_Memory()</span>
+        <span class="c1"># -------------------</span>
+<span class="c1">#        raise NotImplementedError()</span>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">train_dqn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Sample from the replay buffer.</span>
+        <span class="c1"># For input data type, see instructions of function &#39;td_estimate&#39; and &#39;td_target&#39;</span>
         <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">sample_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 
         <span class="c1"># Optimization step. For reference, we used F.smooth_l1_loss as our loss function.</span>
-    
         <span class="c1"># YOUR CODE HERE</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-    
-        <span class="k">return</span> <span class="n">loss</span>
+
+        <span class="c1"># Step 1: compute td targets and estimate for loss</span>
+        <span class="c1"># Step 2: Use F.smooth_l1_loss(tensor_1,tensor_2) to compute loss and backpropagate</span>
+<span class="c1">#        raise NotImplementedError()</span>
+
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">hard_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
@@ -835,7 +889,9 @@ document.write(`
 <span class="sd">        Collects one rollout from the policy in an environment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">())</span>
+        <span class="c1"># Modified to handle the tuple returned by env.reset()</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Extract the state from the tuple</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>  <span class="c1"># Convert and ensure float32 type</span>
         <span class="n">rewards</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">q_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">((</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
         <span class="n">td_error</span> <span class="o">=</span> <span class="p">[]</span>
@@ -843,8 +899,13 @@ document.write(`
             <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span><span class="n">q_values</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">frameskip</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-                <span class="n">next_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+                <span class="c1"># The step method might be returning more than 4 values</span>
+                <span class="c1"># Use an underscore &quot;_&quot; to capture any extra values</span>
+                <span class="n">step_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="c1"># Ensure we only unpack the first 4 values</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">step_result</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+
+                <span class="n">next_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">next_state</span><span class="p">))</span>
                 <span class="n">rewards</span> <span class="o">+=</span> <span class="n">reward</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">next_q_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">((</span><span class="n">next_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
@@ -913,20 +974,31 @@ document.write(`
     <span class="c1"># To create video</span>
     <span class="n">env</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">env</span> <span class="c1"># gym.wrappers.Monitor(agent.env, save_path, force=True)</span>
     <span class="n">reward_total</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="c1"># Modified to handle the tuple returned by env.reset()</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Extract the state from the tuple</span>
     <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Video recording the agent with epsilon </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">epsilon</span><span class="p">))</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-        <span class="n">q_values</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="c1"># Convert state to a PyTorch tensor with the correct data type</span>
+        <span class="n">state_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">q_values</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">q_network</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">state_tensor</span><span class="p">)</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">greedy_policy</span><span class="p">(</span><span class="n">q_values</span><span class="p">)</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">agent</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;frameskip&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-            <span class="n">screen</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rgb_array&#39;</span><span class="p">)</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">screen</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># The render method no longer accepts the mode argument.</span>
+            <span class="c1"># We are already defining the render mode as &#39;rgb_array&#39;</span>
+            <span class="c1"># when initializing the environment.</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="c1"># Remove the &#39;mode=&#39;rgb_array&#39;&#39; argument</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span> <span class="c1"># screen is no longer a list</span>
             <span class="n">ipythondisplay</span><span class="o">.</span><span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">ipythondisplay</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">())</span>
 
-            <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="c1"># The step method might be returning more than 4 values</span>
+            <span class="c1"># Use an underscore &quot;_&quot; to capture any extra values</span>
+            <span class="n">step_result</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="c1"># Ensure we only unpack the first 4 values</span>
+            <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">step_result</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># changed this line</span>
+
             <span class="n">reward_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
@@ -953,7 +1025,6 @@ document.write(`
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">flags</span>
-
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">init_flags</span><span class="p">()</span>
