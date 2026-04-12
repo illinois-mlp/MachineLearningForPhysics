@@ -1,0 +1,1172 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Black Hole Parameter Inference from EHT Observations &#8212; PHYS 498 MLP</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_sources/projects/Project_01_EventHorizonTelescope';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generative Modeling and Simulation-Based Inference" href="../Week_09.html" />
+    <link rel="prev" title="Climate Model Neural Network Prediction" href="Project_01_ClimateModels.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="PHYS 498 MLP - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="PHYS 498 MLP - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <span style="color:Blue">Machine Learning for Physics</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_01.html"><span style="color: blue;"><b>Introduction to Data Science</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cQJycGyQ07qSOoeskr6GjjTD3byIkxDbdi228NRgFeU/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/JupyterNumpy.html">Jupyter Notebooks and Numerical Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Pandas.html">Handling Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Visualization.html">Visualizing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Clustering.html">Finding Structure in Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Dimensionality.html">Measuring and Reducing Dimensionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Nonlinear.html">Adapting Linear Methods to Non-Linear Data and Kernel Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_01.html">Homework 01: Introduction to Data Science</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_02.html"><span style="color: blue;"><b>Probability Theory and Density Estimation</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1o9tM9ppKZWIa9B3WIHy5JDF4myR5NkO02W6WAlyiTSg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ProbabilityTheory.html">Probability Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ProbabilityDistributions.html">Important Probability Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/DensityEstimation.html">Estimating Probability Density from Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_02.html">Homework 02: Probability Theory and Density Estimation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_03.html"><span style="color: blue;"><b>Bayesian Statistics I</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h2SMuH-Z5a_OE6UMDbFjysEiL2NmYT1tGww6VF5jzsA/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/BayesianInference.html">Bayesian Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/MarkovChainMonteCarlo.html">Markov Chain Monte Carlo in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/MarkovChains.html">Stochastic Processes and Markov-Chain Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_03.html">Homework 03: Bayesian Statistics and Markov Chains</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_04.html"><span style="color: blue;"><b>Bayesian Statistics II</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/18bft9_CiBLjjBy0MHvT_vN7E95kfakvhm_7d7WKHXyY/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ModelSelection.html">Bayesian Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VariationalInference.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/CrossValidation.html">Cross Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_04.html">Homework 04: Metropolis-Hastings and Cross Validation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_05.html"><span style="color: blue;"><b>Introduction to Artificial Intelligence</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1by3-6jDEorKi7_WEr6PTMfEBE8f4xrS94fNdtSuATVg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SupervisedLearning.html">Supervised Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Learning.html">Artificial Intelligence and Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ArtificialNeuralNetworks.html">Artificial Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/DeepLearning.html">Deep Learning</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_05.html">Homework 05: Artificial Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_06.html"><span style="color: blue;"><b>Recurrent and Convolutional Neural Networks</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1cDFVtEVGLaWd4256OShSb3Roto0x4y4GwG6LkhVozg0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/RecurrentNeuralNetworks.html">Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ConvolutionalNeuralNetworks.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_06.html">Homework 06: Forecasting Projectile Motion with Recurrent Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_07.html"><span style="color: blue;"><b>Geometric Deep Learning and Graph Neural Networks</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1jK61M3QGH7bxFU7TMBm16G3YDb-7HOFtgNdqlj3Gs38/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GraphNeuralNetworks.html">Geometric Deep Learning and Graph Neural Networks</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_07.html">Homework 07: Graph Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_08.html"><span style="color: blue;"><b>Attention Mechanism and Transformers</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ZHuK7TopASFSoyUoELKeCGT8bullhtSLcEkrp4ZueGg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Attention.html">Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Transformers.html">Transformers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VisionTransformer.html">Vision Transformer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../Project_01.html"><span style="color: blue;"><b>Project 01</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Project_01_HiggsTauTau.html">Higgs Boson Decaying to Tau Leptons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_ExoticParticles.html">Searching for Exotic Particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_GalaxyZoo.html">Galaxy Zoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_NuclearGeometryQGP.html">Nuclear Geometry and Characterization of the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_DarkEnergySurvey.html">Dark Energy Survey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_GravitationalWaves.html">Detection of Gravitational Waves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_01_ClimateModels.html">Climate Model Neural Network Prediction</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Black Hole Parameter Inference from EHT Observations</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_09.html"><span style="color: blue;"><b>Generative Modeling and Simulation-Based Inference</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GenerativeModeling.html">Generative Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/AutoEncoders.html">Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/VariationalAutoEncoders.html">Variational AutoEncoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/GenerativeAdversarialNetworks.html">Generative Adversarial Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Diffusion.html">Diffusion Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/NormalizingFlows.html">Normalizing Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SimulationBasedInference.html">Simulation Based Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_08.html">Homework 08: Simulation-Based Inference (SBI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_10.html"><span style="color: blue;"><b>Reinforcement Learning</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1EsW71u3hdNdXyhlDfkmOX__9c4wJZUee_pjlsmlv_Vg/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/ReinforcementLearning.html">Reinforcement Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_09.html">Homework 09: Reinforcement Learning: Implementing a Deep Q-Network</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_11.html"><span style="color: blue;"><b>AI Explainablility and Uncertainty Quantification</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/AIExplainabilityUncertaintyQuantification.html">AI Explainability and Uncertainty Quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../homework/Homework_10.html">Homework 10: Detecting Distribution Shift on MNIST using Bayesian Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_12.html"><span style="color: blue;"><b>Unsupervised Learning and Anomaly Detection</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/UnsupervisedLearningAnomalyDetection.html">Unsupervised Learning and Anomaly Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_13.html"><span style="color: blue;"><b>Physics Informed Neural Networks</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/PhysicsInformedNeuralNetworks.html">Physics Informed Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LearningTheSchrodingerEquation.html">Solving the Time Dependent Schrodinger Equation with Physics-Informed Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/SymbolicRegression.html">Introduction to Symbolic Regression</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Project_02.html"><span style="color: blue;"><b>Project 02</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_AnisotropyQGP.html">Anisotropy in the Quark Gluon Plasma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_AberratedImages.html">Aberrated Image Recovery of Ultracold Atoms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_Radiotherapy.html">Beam Angle Optimization for Radiative Cancer Therapy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Project_02_TailPulsePileupRejection.html">Precision Neutron Counting with Tail Pulse Pileup Rejection</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Project_02_BentPipeSurrogate.html">Fluid Dynamics of a Bent Pipe</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_14.html"><span style="color: blue;"><b>Learning from the Machines</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1hkfaU7JVy1f5S8jURZvTY67KRzP7I8zGRf4Zku_bpM4/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LearningPhysicsMachines.html">Learning Physics from the Machines</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Week_15.html"><span style="color: blue;"><b>Future of AI and Physics: What Lies Ahead?</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1eB1qCn5J07D5he_DCpkBiKjbVjdI6OexUzMQ351GCaI/edit?usp=sharing">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/LookingForward.html">Future of AI and Physics: What Lies Ahead?</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/illinois-mlp/MachineLearningForPhysics/blob/main/_sources/projects/Project_01_EventHorizonTelescope.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+<a href="https://github.com/illinois-mlp/MachineLearningForPhysics" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/_sources/projects/Project_01_EventHorizonTelescope.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Black Hole Parameter Inference from EHT Observations</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-background-span"><span style="color:Orange">Background</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-conceptual-span"><span style="color:Orange">Questions (Conceptual)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-01-span"><span style="color:Green">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-02-span"><span style="color:Green">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-03-span"><span style="color:Green">Question 03</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-ehtim-and-downloading-data">Installing ehtim and Downloading Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-exploring-the-real-eht-data">Loading and Exploring the Real EHT Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-04-span"><span style="color:Green">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-05-span"><span style="color:Green">Question 05</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-generating-labeled-training-data-span"><span style="color:Orange">Generating Labeled Training Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-dimensionality-reduction-span"><span style="color:Orange">Dimensionality Reduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-dimensionality-reduction-span"><span style="color:Orange">Questions (Dimensionality Reduction)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-06-span"><span style="color:Green">Question 06</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-cnn-for-black-hole-parameter-prediction-span"><span style="color:Orange">CNN for Black Hole Parameter Prediction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-cnn-prediction-span"><span style="color:Orange">Questions (CNN Prediction)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-07-span"><span style="color:Green">Question 07</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-overview-summary-span"><span style="color:Orange">Questions (Overview / Summary)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-08-span"><span style="color:Green">Question 08</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="black-hole-parameter-inference-from-eht-observations">
+<h1>Black Hole Parameter Inference from EHT Observations<a class="headerlink" href="#black-hole-parameter-inference-from-eht-observations" title="Permalink to this heading">#</a></h1>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/Project_EventHorizonTelescope.jpg" width=600></img>
+</div><section id="span-style-color-orange-background-span">
+<h2><span style="color:Orange">Background</span><a class="headerlink" href="#span-style-color-orange-background-span" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://eventhorizontelescope.org/">Event Horizon Telescope (EHT)</a> is a global network of radio telescopes that uses <a class="reference external" href="https://en.wikipedia.org/wiki/Very-long-baseline_interferometry">Very Long Baseline Interferometry (VLBI)</a> to achieve angular resolution sufficient to resolve the shadow of a supermassive black hole. In 2019, the EHT collaboration released the first image of the black hole shadow in Messier 87 (M87*) [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0ec7">1</a>], and in 2022, the first image of Sagittarius A* (Sgr A*), the black hole at the center of the Milky Way [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ac6674">2</a>].</p>
+<p>The appearance of a black hole shadow depends on several physical parameters, including:</p>
+<ul class="simple">
+<li><p><strong>Black hole spin</strong> <span class="math notranslate nohighlight">\(a\)</span>: the dimensionless angular momentum (<span class="math notranslate nohighlight">\(-1 \leq a \leq 1\)</span>), determining the asymmetry of the photon ring</p></li>
+<li><p><strong>Viewing inclination</strong> <span class="math notranslate nohighlight">\(i\)</span>: the angle between the observer’s line of sight and the black hole spin axis</p></li>
+<li><p><strong>Mass accretion rate</strong> <span class="math notranslate nohighlight">\(\dot{M}\)</span>: controlling the overall brightness</p></li>
+<li><p><strong>Electron temperature prescription</strong> <span class="math notranslate nohighlight">\(T_{e}\)</span>: a parameter governing how thermal energy is partitioned between ions and electrons in the accretion flow</p></li>
+</ul>
+<p>To interpret EHT observations, researchers use computationally expensive <a class="reference external" href="https://en.wikipedia.org/wiki/Magnetohydrodynamics">General Relativistic Magnetohydrodynamic (GRMHD)</a> simulations coupled with <a class="reference external" href="https://en.wikipedia.org/wiki/Radiative_transfer">General Relativistic Radiative Transfer (GRRT)</a> codes to produce synthetic images of black hole shadows across a range of physical parameters [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0c57">3</a>]. Fitting these simulated images to observations allows estimation of the underlying black hole parameters.</p>
+<p>Machine learning has emerged as a promising tool for this parameter estimation task, offering significant speedups over traditional MCMC-based pipelines [<a class="reference external" href="https://doi.org/10.1051/0004-6361/201937014">4</a>, <a class="reference external" href="https://doi.org/10.1093/mnras/stad256">5</a>]. Recent work has demonstrated that convolutional neural networks can recover parameters such as mass and accretion rate from black hole shadow images, though spin recovery remains challenging at current EHT resolution [<a class="reference external" href="https://doi.org/10.1051/0004-6361/201937014">4</a>].</p>
+<p>Looking forward beyond this project, <strong>Physics-Informed Neural Networks (PINNs)</strong> [<a class="reference external" href="https://doi.org/10.1016/j.jcp.2018.10.045">6</a>] offer the exciting possibility of embedding known physics (e.g., the Kerr metric, geodesic equations, radiative transfer) directly into the learning process, potentially improving parameter recovery with less training data and better physical consistency.</p>
+</section>
+<section id="span-style-color-orange-overview-span">
+<h2><span style="color:Orange">Overview</span><a class="headerlink" href="#span-style-color-orange-overview-span" title="Permalink to this heading">#</a></h2>
+<p>This notebook will have four goals:</p>
+<ol class="arabic simple">
+<li><p>Understanding the physics of black hole imaging and the EHT</p></li>
+<li><p>Working with real EHT observational data using the <code class="docutils literal notranslate"><span class="pre">ehtim</span></code> library</p></li>
+<li><p>Applying dimensionality reduction (PCA) to simulated black hole shadow images</p></li>
+<li><p>Implementing a CNN to predict black hole parameters from shadow images</p></li>
+</ol>
+</section>
+<section id="span-style-color-orange-questions-conceptual-span">
+<h2><span style="color:Orange">Questions (Conceptual)</span><a class="headerlink" href="#span-style-color-orange-questions-conceptual-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-green-question-01-span">
+<h3><span style="color:Green">Question 01</span><a class="headerlink" href="#span-style-color-green-question-01-span" title="Permalink to this heading">#</a></h3>
+<p>What is the Event Horizon Telescope and how does interferometry allow a collection of telescopes to achieve the angular resolution of an Earth-sized dish? [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0ec7">1</a>]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-green-question-02-span">
+<h3><span style="color:Green">Question 02</span><a class="headerlink" href="#span-style-color-green-question-02-span" title="Permalink to this heading">#</a></h3>
+<p>Briefly describe the key physical parameters that determine the appearance of a black hole shadow image (spin <span class="math notranslate nohighlight">\(a\)</span>, inclination <span class="math notranslate nohighlight">\(i\)</span>, mass accretion rate <span class="math notranslate nohighlight">\(\dot{M}\)</span>, electron temperature prescription <span class="math notranslate nohighlight">\(T_{e}\)</span>). Which of these do you expect to have the strongest visual signature in the image, and why?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-green-question-03-span">
+<h3><span style="color:Green">Question 03</span><a class="headerlink" href="#span-style-color-green-question-03-span" title="Permalink to this heading">#</a></h3>
+<p>What is a GRMHD simulation, and why are large libraries of simulated images important for training ML models on black hole data? What are some limitations of relying on simulated training data when applying models to real EHT observations? [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0c57">3</a>, <a class="reference external" href="https://doi.org/10.1051/0004-6361/201937014">4</a>]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-data-sources-span">
+<h2><span style="color:Orange">Data Sources</span><a class="headerlink" href="#span-style-color-orange-data-sources-span" title="Permalink to this heading">#</a></h2>
+<p>We will work with two types of data in this project:</p>
+<ol class="arabic simple">
+<li><p><strong>Real EHT observations</strong>: The publicly released Science Release 1 (SR1) visibility data from the 2017 EHT observation of M87* [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0c57">7</a>]. This data was used to produce the historic first image of a black hole. The data is in <code class="docutils literal notranslate"><span class="pre">uvfits</span></code> format, which is the standard for VLBI data, and contains complex visibilities measured on baselines between telescope pairs.</p></li>
+<li><p><strong>Simulated observations</strong>: Using the <code class="docutils literal notranslate"><span class="pre">ehtim</span></code> library [<a class="reference external" href="https://github.com/achael/eht-imaging">8</a>], we will generate synthetic observations of parameterized black hole models with the same <span class="math notranslate nohighlight">\((u,v)\)</span> coverage as the real EHT array. This gives us labeled training data where the ground truth parameters are known.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">ehtim</span></code> (eht-imaging) library is the primary open-source Python package developed by the EHT collaboration for loading, simulating, and imaging VLBI data. It was one of the three imaging pipelines used to produce the published M87* image [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0e85">9</a>].</p>
+<section id="installing-ehtim-and-downloading-data">
+<h3>Installing ehtim and Downloading Data<a class="headerlink" href="#installing-ehtim-and-downloading-data" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install ehtim</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>ehtim<span class="w"> </span>-q
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/159.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">153.6/159.8 kB</span> <span class=" -Color -Color-Red">6.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">159.8/159.8 kB</span> <span class=" -Color -Color-Red">4.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h  Preparing metadata (setup.py) ... ?25l?25hdone
+  Preparing metadata (setup.py) ... ?25l?25hdone
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">445.0/445.0 kB</span> <span class=" -Color -Color-Red">13.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">370.4/370.4 kB</span> <span class=" -Color -Color-Red">24.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">49.6/49.6 kB</span> <span class=" -Color -Color-Red">3.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">235.7/235.7 kB</span> <span class=" -Color -Color-Red">16.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">48.0/48.0 kB</span> <span class=" -Color -Color-Red">3.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">131.9/131.9 kB</span> <span class=" -Color -Color-Red">10.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h  Building wheel for paramsurvey (setup.py) ... ?25l?25hdone
+  Building wheel for pandas-appender (setup.py) ... ?25l?25hdone
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the EHT SR1 public data release</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;2019-D01-01&#39;</span><span class="p">):</span>
+    <span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/eventhorizontelescope/2019-D01-01.git
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EHT SR1 data files:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;2019-D01-01/uvfits&#39;</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.uvfits&#39;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;2019-D01-01&#39;...
+remote: Enumerating objects: 39, done.
+remote: Counting objects: 100% (39/39), done.
+remote: Compressing objects: 100% (37/37), done.
+remote: Total 39 (delta 2), reused 39 (delta 2), pack-reused 0 (from 0)
+Receiving objects: 100% (39/39), 8.67 MiB | 18.38 MiB/s, done.
+Resolving deltas: 100% (2/2), done.
+EHT SR1 data files:
+  SR1_M87_2017_095_hi_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_095_lo_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_096_hi_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_096_lo_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_100_hi_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_100_lo_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_101_hi_hops_netcal_StokesI.uvfits
+  SR1_M87_2017_101_lo_hops_netcal_StokesI.uvfits
+</pre></div>
+</div>
+</div>
+</div>
+<p>The SR1 data release contains calibrated Stokes I visibilities for M87* from four observing days in April 2017 (April 5, 6, 10, 11 — corresponding to day-of-year 095, 096, 100, 101), each with a low-band and high-band frequency channel at ~227 GHz. These are the exact data used in the original EHT M87 publications.</p>
+</section>
+<section id="loading-and-exploring-the-real-eht-data">
+<h3>Loading and Exploring the Real EHT Data<a class="headerlink" href="#loading-and-exploring-the-real-eht-data" title="Permalink to this heading">#</a></h3>
+<p>In this section we show one way to load and explore data from ehtim’s official tutorial. This is a standard way of using ehtim. You can find those tutorials <a class="reference external" href="https://github.com/achael/eht-imaging/tree/main/tutorials">here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ehtim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">eh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Load a single observation day (April 6, 2017 — day 096, low band)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">obsdata</span><span class="o">.</span><span class="n">load_uvfits</span><span class="p">(</span><span class="s1">&#39;2019-D01-01/uvfits/SR1_M87_2017_096_lo_hops_netcal_StokesI.uvfits&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source: </span><span class="si">{</span><span class="n">obs</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency: </span><span class="si">{</span><span class="n">obs</span><span class="o">.</span><span class="n">rf</span><span class="o">/</span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MJD: </span><span class="si">{</span><span class="n">obs</span><span class="o">.</span><span class="n">mjd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of visibilities: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Telescopes: </span><span class="si">{</span><span class="n">obs</span><span class="o">.</span><span class="n">tarr</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: No NFFT installed!
+Welcome to eht-imaging! v 1.2.10 
+
+Loading uvfits:  2019-D01-01/uvfits/SR1_M87_2017_096_lo_hops_netcal_StokesI.uvfits
+no IF in uvfits header!
+POLREP_UVFITS: circ
+Number of uvfits Correlation Products: 4
+No NX table in uvfits!
+Source: M87
+Frequency: 227.07 GHz
+MJD: 57849
+Number of visibilities: 8645
+Telescopes: [&#39;AA&#39; &#39;AP&#39; &#39;AZ&#39; &#39;JC&#39; &#39;LM&#39; &#39;PV&#39; &#39;SM&#39; &#39;SR&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the (u,v) coverage — this shows the Fourier plane sampling</span>
+<span class="c1"># Each point represents a baseline measurement between two telescopes</span>
+<span class="c1"># The gaps in coverage are why image reconstruction is challenging</span>
+
+<span class="n">obs</span><span class="o">.</span><span class="n">plotall</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">conj</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">export_pdf</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;(u,v) Coverage of EHT 2017 M87 Observation (Day 096)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;u (G$\lambda$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;v (G$\lambda$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a49115e346e75ac54a8e4da3e1efc26edc6aa6e853148557218f4198a9a8f79d.png" src="../../_images/a49115e346e75ac54a8e4da3e1efc26edc6aa6e853148557218f4198a9a8f79d.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-green-question-04-span">
+<h3><span style="color:Green">Question 04</span><a class="headerlink" href="#span-style-color-green-question-04-span" title="Permalink to this heading">#</a></h3>
+<p>Referring to the previous example, plot the <strong>visibility amplitudes</strong> as a function of <strong>uv-distance</strong> for the loaded
+EHT observation (hint: look at <code class="docutils literal notranslate"><span class="pre">obs.plotall()</span></code>).
+What structure do you notice, and what does it tell you about the source morphology?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-green-question-05-span">
+<h3><span style="color:Green">Question 05</span><a class="headerlink" href="#span-style-color-green-question-05-span" title="Permalink to this heading">#</a></h3>
+<p>Construct a <strong>dirty image</strong> and <strong>dirty beam</strong> (PSF) from the real M87* data
+using <code class="docutils literal notranslate"><span class="pre">obs.dirtyimage()</span></code> and <code class="docutils literal notranslate"><span class="pre">obs.dirtybeam()</span></code> with <code class="docutils literal notranslate"><span class="pre">npix=64</span></code> and a field of view
+of 200 <span class="math notranslate nohighlight">\(\mu\)</span>as (<code class="docutils literal notranslate"><span class="pre">fov</span> <span class="pre">=</span> <span class="pre">200</span> <span class="pre">*</span> <span class="pre">eh.RADPERUAS</span></code>). Plot them side by side.
+What does the dirty beam tell you about the EHT’s resolving power and sidelobe structure? You should find the tutorials linked previously helpful.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-generating-labeled-training-data-span">
+<h2><span style="color:Orange">Generating Labeled Training Data</span><a class="headerlink" href="#span-style-color-orange-generating-labeled-training-data-span" title="Permalink to this heading">#</a></h2>
+<p>To train a machine learning model, we need labeled data — images with known physical parameters. Since the real EHT data has only one target (M87*) with uncertain parameters, we generate synthetic training data using <code class="docutils literal notranslate"><span class="pre">ehtim</span></code>’s model and simulation capabilities.</p>
+<p>The approach:</p>
+<ol class="arabic simple">
+<li><p>Create parameterized black hole shadow models (crescents with varying parameters)</p></li>
+<li><p>“Observe” each model with the same <span class="math notranslate nohighlight">\((u,v)\)</span> coverage as the real EHT array</p></li>
+<li><p>Reconstruct images from the simulated visibilities using <code class="docutils literal notranslate"><span class="pre">ehtim</span></code>’s dirty imaging</p></li>
+</ol>
+<p>This mirrors the approach used in production EHT analysis, where GRMHD simulation images are forward-modeled through the EHT observation pipeline to create synthetic data for comparison [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0c57">3</a>].</p>
+<p>We parameterize our simple model with:</p>
+<ul class="simple">
+<li><p><strong>Crescent asymmetry</strong> <span class="math notranslate nohighlight">\(\xi \in [0.01, 0.99]\)</span>: controls brightness asymmetry (proxy for spin + inclination Doppler beaming)</p></li>
+<li><p><strong>Ring diameter</strong> <span class="math notranslate nohighlight">\(d \in [30, 60]\)</span> <span class="math notranslate nohighlight">\(\mu\)</span>as: related to black hole mass through the shadow radius <span class="math notranslate nohighlight">\(\theta \approx 5.2 \, GM/c^2 D\)</span></p></li>
+<li><p><strong>Position angle</strong> <span class="math notranslate nohighlight">\(\phi \in [0°, 360°]\)</span>: orientation of the crescent on the sky</p></li>
+<li><p><strong>Total flux</strong> <span class="math notranslate nohighlight">\(F \in [0.3, 1.5]\)</span> Jy: overall brightness (proxy for accretion rate)</p></li>
+</ul>
+<p>While this simplified model does not capture the full complexity of GRMHD simulations, it produces realistic-looking images suitable for demonstrating ML parameter inference and is the same class of geometric model used in early EHT parameter estimation [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0e85">9</a>].</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a dataset of simulated observations</span>
+<span class="c1"># Uses FFT convolution with the real EHT dirty beam (PSF) for speed</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">N_samples</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">npix</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">fov</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span>
+
+<span class="c1"># Load real EHT observation to get (u,v) coverage</span>
+<span class="n">obs_template</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">obsdata</span><span class="o">.</span><span class="n">load_uvfits</span><span class="p">(</span>
+    <span class="s1">&#39;2019-D01-01/uvfits/SR1_M87_2017_096_lo_hops_netcal_StokesI.uvfits&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Precompute dirty beam (PSF) from real (u,v) coverage</span>
+<span class="n">dbeam</span> <span class="o">=</span> <span class="n">obs_template</span><span class="o">.</span><span class="n">dirtybeam</span><span class="p">(</span><span class="n">npix</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+<span class="n">psf</span> <span class="o">=</span> <span class="n">dbeam</span><span class="o">.</span><span class="n">imvec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">npix</span><span class="p">,</span> <span class="n">npix</span><span class="p">)</span>
+<span class="n">psf_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">psf</span><span class="p">))</span>
+
+<span class="c1"># Noise estimate from real observation uncertainties</span>
+<span class="n">noise_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">obs_template</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obs_template</span><span class="o">.</span><span class="n">data</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span>
+
+<span class="c1"># Parameter ranges</span>
+<span class="n">asymmetries</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">)</span>
+<span class="n">diameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">)</span>        <span class="c1"># in microarcseconds</span>
+<span class="n">pos_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">)</span>        <span class="c1"># in degrees</span>
+<span class="n">fluxes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">)</span>          <span class="c1"># in Jy</span>
+
+<span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_samples</span><span class="p">,</span> <span class="n">npix</span><span class="p">,</span> <span class="n">npix</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_samples</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating sample </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">N_samples</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create crescent model using ehtim</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">make_square</span><span class="p">(</span><span class="n">obs_template</span><span class="p">,</span> <span class="n">npix</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+    <span class="n">Rp</span> <span class="o">=</span> <span class="n">diameters</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">Rn</span> <span class="o">=</span> <span class="n">Rp</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">asymmetries</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">offset_x</span> <span class="o">=</span> <span class="n">Rp</span> <span class="o">*</span> <span class="n">asymmetries</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">pos_angles</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="n">offset_y</span> <span class="o">=</span> <span class="n">Rp</span> <span class="o">*</span> <span class="n">asymmetries</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">pos_angles</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">add_crescent</span><span class="p">(</span><span class="n">fluxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">Rp</span><span class="p">,</span> <span class="n">Rn</span><span class="p">,</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">imvec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">npix</span><span class="p">,</span> <span class="n">npix</span><span class="p">)</span>
+
+    <span class="c1"># Simulate dirty image: convolve model with real EHT PSF via FFT</span>
+    <span class="n">dirty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="o">*</span> <span class="n">psf_fft</span><span class="p">))</span>
+    <span class="n">dirty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">dirty</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="c1"># Add observational noise</span>
+    <span class="n">dirty</span> <span class="o">+=</span> <span class="n">noise_level</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">npix</span><span class="p">,</span> <span class="n">npix</span><span class="p">)</span>
+    <span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">dirty</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Dataset generated: </span><span class="si">{</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Asymmetry range: [</span><span class="si">{</span><span class="n">asymmetries</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">asymmetries</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Diameter range: [</span><span class="si">{</span><span class="n">diameters</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">diameters</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">] uas&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position angle range: [</span><span class="si">{</span><span class="n">pos_angles</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">pos_angles</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">] deg&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Flux range: [</span><span class="si">{</span><span class="n">fluxes</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fluxes</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">] Jy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading uvfits:  2019-D01-01/uvfits/SR1_M87_2017_096_lo_hops_netcal_StokesI.uvfits
+no IF in uvfits header!
+POLREP_UVFITS: circ
+Number of uvfits Correlation Products: 4
+No NX table in uvfits!
+Generating sample 0/2000...
+Generating sample 500/2000...
+Generating sample 1000/2000...
+Generating sample 1500/2000...
+
+Dataset generated: (2000, 64, 64)
+Asymmetry range: [0.01, 0.99]
+Diameter range: [30.0, 60.0] uas
+Position angle range: [0.0, 359.8] deg
+Flux range: [0.30, 1.50] Jy
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize a few simulated images</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">fov</span><span class="o">/</span><span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fov</span><span class="o">/</span><span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+          <span class="o">-</span><span class="n">fov</span><span class="o">/</span><span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">fov</span><span class="o">/</span><span class="n">eh</span><span class="o">.</span><span class="n">RADPERUAS</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;afmhot&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">xi$=</span><span class="si">{</span><span class="n">asymmetries</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">, d=</span><span class="si">{</span><span class="n">diameters</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">$</span><span class="se">\\</span><span class="s1">mu$as&#39;</span><span class="p">,</span>
+                 <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta$RA ($\mu$as)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta$Dec ($\mu$as)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Simulated Black Hole Shadow Images (Dirty Images)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6c1b183b1b34754dab4d5582c116edeb445afdcacc96b7ffc34deca7a6c639ab.png" src="../../_images/6c1b183b1b34754dab4d5582c116edeb445afdcacc96b7ffc34deca7a6c639ab.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-dimensionality-reduction-span">
+<h2><span style="color:Orange">Dimensionality Reduction</span><a class="headerlink" href="#span-style-color-orange-dimensionality-reduction-span" title="Permalink to this heading">#</a></h2>
+<p>Principal Component Analysis (PCA) is a useful tool for understanding the dominant modes of variation in high-dimensional data. For images, PCA finds the directions in pixel space that capture the most variance. Each principal component can be reshaped back into an image and interpreted as an “eigenimage”, a pattern of variation across the dataset.</p>
+<p>This technique has direct relevance to EHT science: the PRIMO algorithm [<a class="reference external" href="https://doi.org/10.3847/2041-8213/acc32d">10</a>] that produced the sharpened M87* image is fundamentally a PCA-based method. It learns a basis of principal components from a training set of GRMHD images and uses them to reconstruct the observed data at higher fidelity.</p>
+</section>
+<section id="span-style-color-orange-questions-dimensionality-reduction-span">
+<h2><span style="color:Orange">Questions (Dimensionality Reduction)</span><a class="headerlink" href="#span-style-color-orange-questions-dimensionality-reduction-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-green-question-06-span">
+<h3><span style="color:Green">Question 06</span><a class="headerlink" href="#span-style-color-green-question-06-span" title="Permalink to this heading">#</a></h3>
+<p>Perform PCA on the flattened image dataset (each image reshaped to a 1D vector).
+Center the data by subtracting the mean image before fitting.
+Plot the explained variance ratio as a function of the number of components —
+how many components are needed to capture 90% of the total variance?
+Visualize the first several principal components reshaped back into images.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+<span class="c1"># from sklearn.decomposition import PCA # Helpful PCA library</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-cnn-for-black-hole-parameter-prediction-span">
+<h2><span style="color:Orange">CNN for Black Hole Parameter Prediction</span><a class="headerlink" href="#span-style-color-orange-cnn-for-black-hole-parameter-prediction-span" title="Permalink to this heading">#</a></h2>
+<p>From the previous PCA analyses you most likely concluded that noise is dominating the signal, which motivates us to move from linear methods to nonlinear ones. Convolutional neural networks are a natural choice for extracting information from images, and have been applied to black hole shadow parameter estimation in several studies. Some notable approaches include:</p>
+<ul class="simple">
+<li><p><strong>Deep Horizon</strong> [<a class="reference external" href="https://doi.org/10.1051/0004-6361/201937014">4</a>]: Used a Bayesian deep CNN for regression of viewing angle, accretion rate, and mass, plus a classification network for spin recovery</p></li>
+<li><p><strong>PRIMO</strong> [<a class="reference external" href="https://doi.org/10.3847/2041-8213/acc32d">10</a>]: A PCA-based ML method that improved the resolution of the M87* image by filling in gaps in the Fourier coverage</p></li>
+<li><p><strong>Random forest on polarimetric observables</strong> [<a class="reference external" href="https://doi.org/10.1093/mnras/stad256">5</a>]: Used hand-crafted polarimetric features with random forests for parameter inference</p></li>
+<li><p><strong>VLBInet</strong> [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ac2b3b">11</a>]: Neural networks applied directly to visibility-domain data for classifying accretion state (MAD vs SANE)</p></li>
+</ul>
+</section>
+<section id="span-style-color-orange-questions-cnn-prediction-span">
+<h2><span style="color:Orange">Questions (CNN Prediction)</span><a class="headerlink" href="#span-style-color-orange-questions-cnn-prediction-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-green-question-07-span">
+<h3><span style="color:Green">Question 07</span><a class="headerlink" href="#span-style-color-green-question-07-span" title="Permalink to this heading">#</a></h3>
+<p>Design and implement a convolutional neural network to predict the crescent
+<strong>diameter</strong> <span class="math notranslate nohighlight">\(d\)</span> (in <span class="math notranslate nohighlight">\(\mu\)</span>as) from the simulated dirty images. Use an 80/20 train/test split.
+Report the test MSE, plot <strong>predicted vs. true</strong> diameter for the test set,
+and show the <strong>training loss curve</strong> over epochs.</p>
+<p>As a follow-up: use your trained CNN to predict the diameter from the <em><em>real M87</em> dirty image</em>*
+you constructed in Question 05.
+The EHT collaboration found M87* is well described by a crescent with diameter
+<span class="math notranslate nohighlight">\(\sim 40.9 \pm 2.4\)</span> <span class="math notranslate nohighlight">\(\mu\)</span>as [<a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0e85">9</a>].
+How does your CNN’s prediction compare? Discuss possible reasons for any discrepancy
+(e.g., domain gap between simple crescent models and real data,
+noise properties, features not captured by the geometric model).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+<span class="c1"># Some helpful libraries</span>
+<span class="c1"># import torch</span>
+<span class="c1"># import torch.nn as nn</span>
+<span class="c1"># import torch.optim as optim</span>
+<span class="c1"># from torch.utils.data import DataLoader, TensorDataset</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-questions-overview-summary-span">
+<h2><span style="color:Orange">Questions (Overview / Summary)</span><a class="headerlink" href="#span-style-color-orange-questions-overview-summary-span" title="Permalink to this heading">#</a></h2>
+<section id="span-style-color-green-question-08-span">
+<h3><span style="color:Green">Question 08</span><a class="headerlink" href="#span-style-color-green-question-08-span" title="Permalink to this heading">#</a></h3>
+<p>Your CNN was trained purely on data — it has no knowledge of general relativity,
+radiative transfer, or the Kerr metric. Yet it predicted M87*’s diameter within
+a few <span class="math notranslate nohighlight">\(\mu\)</span>as of the published value.</p>
+<p>Write a short paragraph on:</p>
+<ul class="simple">
+<li><p>What physical knowledge is “baked into” your training pipeline even though the
+CNN itself doesn’t know any physics? (Think about how the training data was generated.)</p></li>
+<li><p>What limitations might this approach have if applied to a more complex task,
+such as predicting black hole spin (which has a subtler visual signature) from GRMHD simulation images instead of
+diameter from simple crescents?</p></li>
+<li><p>If you could add a physics-based penalty term to the loss function, for example,
+enforcing that the predicted diameter must be consistent with the shadow radius
+predicted by the Kerr metric (which describes how a spinning black hole distorts surrounding spacetime), how might that
+improve or constrain the network’s predictions?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-references-span">
+<h2><span style="color:Orange">References</span><a class="headerlink" href="#span-style-color-orange-references-span" title="Permalink to this heading">#</a></h2>
+<p><strong>[<span style="color:Blue">1</span>]</strong> Event Horizon Telescope Collaboration et al. (2019). First M87 Event Horizon Telescope Results. I. The Shadow of the Supermassive Black Hole. <em>The Astrophysical Journal Letters</em>, 875(1), L1. <a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0ec7">https://doi.org/10.3847/2041-8213/ab0ec7</a> <br></p>
+<p><strong>[<span style="color:Blue">2</span>]</strong> Event Horizon Telescope Collaboration et al. (2022). First Sagittarius A* Event Horizon Telescope Results. I. The Shadow of the Supermassive Black Hole in the Center of the Milky Way. <em>The Astrophysical Journal Letters</em>, 930(2), L12. <a class="reference external" href="https://doi.org/10.3847/2041-8213/ac6674">https://doi.org/10.3847/2041-8213/ac6674</a> <br></p>
+<p><strong>[<span style="color:Blue">3</span>]</strong> Event Horizon Telescope Collaboration et al. (2019). First M87 Event Horizon Telescope Results. V. Physical Origin of the Asymmetric Ring. <em>The Astrophysical Journal Letters</em>, 875(1), L5. <a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0f43">https://doi.org/10.3847/2041-8213/ab0f43</a> <br></p>
+<p><strong>[<span style="color:Blue">4</span>]</strong> van der Gucht, J., Davelaar, J., Hendriks, L., et al. (2020). Deep Horizon: A machine learning network that recovers accreting black hole parameters. <em>Astronomy &amp; Astrophysics</em>, 636, A94. <a class="reference external" href="https://doi.org/10.1051/0004-6361/201937014">https://doi.org/10.1051/0004-6361/201937014</a> <br></p>
+<p><strong>[<span style="color:Blue">5</span>]</strong> Ricarte, A., Tiede, P., Emami, R., Taber, A., &amp; Natarajan, P. (2023). Using Machine Learning to link black hole accretion flows with spatially resolved polarimetric observables. <em>Monthly Notices of the Royal Astronomical Society</em>, 520(4), 4867–4888. <a class="reference external" href="https://doi.org/10.1093/mnras/stad466">https://doi.org/10.1093/mnras/stad466</a></p>
+<p><strong>[<span style="color:Blue">6</span>]</strong> Raissi, M., Perdikaris, P., &amp; Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. <em>Journal of Computational Physics</em>, 378, 686–707. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2018.10.045">https://doi.org/10.1016/j.jcp.2018.10.045</a> <br></p>
+<p><strong>[<span style="color:Blue">7</span>]</strong> Event Horizon Telescope Collaboration et al. (2019). First M87 Event Horizon Telescope Results. III. Data Processing and Calibration. <em>The Astrophysical Journal Letters</em>, 875(1), L3. <a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0c57">https://doi.org/10.3847/2041-8213/ab0c57</a> <br></p>
+<p><strong>[<span style="color:Blue">8</span>]</strong> Chael, A. A., Johnson, M. D., Narayan, R., et al. (2016). High-resolution Linear Polarimetric Imaging for the Event Horizon Telescope. <em>The Astrophysical Journal</em>, 829(1), 11. <a class="reference external" href="https://doi.org/10.3847/0004-637X/829/1/11">https://doi.org/10.3847/0004-637X/829/1/11</a> <br></p>
+<p><strong>[<span style="color:Blue">9</span>]</strong> Event Horizon Telescope Collaboration et al. (2019). First M87 Event Horizon Telescope Results. IV. Imaging the Central Supermassive Black Hole. <em>The Astrophysical Journal Letters</em>, 875(1), L4. <a class="reference external" href="https://doi.org/10.3847/2041-8213/ab0e85">https://doi.org/10.3847/2041-8213/ab0e85</a> <br></p>
+<p><strong>[<span style="color:Blue">10</span>]</strong> Medeiros, L., Psaltis, D., Lauer, T. R., &amp; Özel, F. (2023). The Image of the M87 Black Hole Reconstructed with PRIMO. <em>The Astrophysical Journal Letters</em>, 947(1), L7. <a class="reference external" href="https://doi.org/10.3847/2041-8213/acc32d">https://doi.org/10.3847/2041-8213/acc32d</a> <br></p>
+<p><strong>[<span style="color:Blue">11</span>]</strong> Lin, Y.-Y., Pesce, D. W., Wong, G. N., et al. (2021). VLBInet: Radio Interferometry Data Classification for EHT with Neural Networks. <em>The Astrophysical Journal Letters</em>, 921(1), L2. <a class="reference external" href="https://doi.org/10.48550/arXiv.2110.07185">https://doi.org/10.48550/arXiv.2110.07185</a> <br></p>
+<p><strong>[<span style="color:Blue">12</span>]</strong> Smith, L., et al. (2025). PINNGraPE: Physics Informed Neural Network for Gravitational wave Parameter Estimation. <em>arXiv preprint arXiv:2510.02858</em>. <a class="reference external" href="https://doi.org/10.48550/arXiv.2510.02858">https://doi.org/10.48550/arXiv.2510.02858</a></p>
+</section>
+<section id="span-style-color-orange-acknowledgements-span">
+<h2><span style="color:Orange">Acknowledgements</span><a class="headerlink" href="#span-style-color-orange-acknowledgements-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Initial version: Yuheng Guo with some guidence from Mark Neubauer</p></li>
+<li><p>EHT SR1 data: <a class="reference external" href="https://eventhorizontelescope.org/">Event Horizon Telescope Collaboration</a>, data release <a class="reference external" href="https://github.com/eventhorizontelescope/2019-D01-01">2019-D01-01</a></p></li>
+<li><p>eht-imaging library: <a class="reference external" href="https://github.com/achael/eht-imaging">Andrew Chael et al.</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./_sources/projects"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Project_01_ClimateModels.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Climate Model Neural Network Prediction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Week_09.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span style="color: blue;"><b>Generative Modeling and Simulation-Based Inference</b></span></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-background-span"><span style="color:Orange">Background</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-overview-span"><span style="color:Orange">Overview</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-conceptual-span"><span style="color:Orange">Questions (Conceptual)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-01-span"><span style="color:Green">Question 01</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-02-span"><span style="color:Green">Question 02</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-03-span"><span style="color:Green">Question 03</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-data-sources-span"><span style="color:Orange">Data Sources</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-ehtim-and-downloading-data">Installing ehtim and Downloading Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-exploring-the-real-eht-data">Loading and Exploring the Real EHT Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-04-span"><span style="color:Green">Question 04</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-05-span"><span style="color:Green">Question 05</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-generating-labeled-training-data-span"><span style="color:Orange">Generating Labeled Training Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-dimensionality-reduction-span"><span style="color:Orange">Dimensionality Reduction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-dimensionality-reduction-span"><span style="color:Orange">Questions (Dimensionality Reduction)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-06-span"><span style="color:Green">Question 06</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-cnn-for-black-hole-parameter-prediction-span"><span style="color:Orange">CNN for Black Hole Parameter Prediction</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-cnn-prediction-span"><span style="color:Orange">Questions (CNN Prediction)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-07-span"><span style="color:Green">Question 07</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-questions-overview-summary-span"><span style="color:Orange">Questions (Overview / Summary)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-green-question-08-span"><span style="color:Green">Question 08</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-references-span"><span style="color:Orange">References</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgements-span"><span style="color:Orange">Acknowledgements</span></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Mark Neubauer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -10,3 +10,4 @@
 * {doc}`projects/Project_01_AberratedImages`
 * {doc}`projects/Project_01_GravitationalWaves`
 * {doc}`projects/Project_01_ClimateModels`
+* {doc}`projects/Project_01_EventHorizonTelescope`
