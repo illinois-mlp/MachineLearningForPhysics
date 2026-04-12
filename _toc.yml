@@ -80,6 +80,7 @@ chapters:
   - file: _sources/projects/Project_01_DarkEnergySurvey
   - file: _sources/projects/Project_01_GravitationalWaves
   - file: _sources/projects/Project_01_ClimateModels
+  - file: _sources/projects/Project_01_EventHorizonTelescope
 - file: _sources/Week_09 # Generative Modeling
   sections:
   - url: https://docs.google.com/presentation/d/1h13YeUjtTU_WHLxghxFBBQJO3uRr1GtsIyO4DVZviJo/edit?usp=sharing
