@@ -11,7 +11,7 @@ You will learn the basics of Unsupervised Learning and Anomaly Detection
 * {doc}`lectures/UnsupervisedLearningAnomalyDetection`
 
 ## *Homework Assignment*
-* None
+* {doc}`homework/Homework_11`
 
 ## *Supplemental Readings*
 * None

@@ -110,6 +110,7 @@ chapters:
   - url: https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing
     title: Slides
   - file: _sources/lectures/UnsupervisedLearningAnomalyDetection
+  - file: _sources/homework/Homework_11
 - file: _sources/Week_13 # Physics Informed Neural Networks
   sections:
   - url: https://docs.google.com/presentation/d/1C-Z8b6WP5rE8yohZQdSxyH8O_bHIbllq97QhEJYyh0w/edit?usp=sharing
