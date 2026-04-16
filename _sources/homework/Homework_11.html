@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Homework 11: &#8212; PHYS 498 MLP</title>
+    <title>Homework 11: Unsupervised Learning and Anomaly Detection &#8212; PHYS 498 MLP</title>
   
   
   
@@ -285,7 +285,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../Week_12.html"><span style="color: blue;"><b>Unsupervised Learning and Anomaly Detection</b></span></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference external" href="https://docs.google.com/presentation/d/1ydzY7IEYzALTR6ez5gvwwKDduf_7wUtZddq0SUSuvI0/edit?usp=sharing">Slides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../lectures/UnsupervisedLearningAnomalyDetection.html">Unsupervised Learning and Anomaly Detection</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 11:</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 11: Unsupervised Learning and Anomaly Detection</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Week_13.html"><span style="color: blue;"><b>Physics Informed Neural Networks</b></span></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -503,7 +503,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Homework 11:</h1>
+    <h1>Homework 11: Unsupervised Learning and Anomaly Detection</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -513,6 +513,27 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-synthetic-detector-data-span"><span style="color:Orange">Synthetic Detector Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-1-standardize-features-and-compute-pca-projection-span"><span style="color:Orange">Problem 1: Standardize Features and Compute PCA Projection</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-1-span"><span style="color:LightGreen">Figure for Problem 1</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-2-k-means-clustering-on-normal-events-span"><span style="color:Orange">Problem 2: K-means Clustering on Normal Events</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-2-span"><span style="color:LightGreen">Figure for Problem 2</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-3-distance-based-anomaly-score-span"><span style="color:Orange">Problem 3: Distance-based Anomaly Score</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-3-span"><span style="color:LightGreen">Figure for Problem 3</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-4-autoencoder-reconstruction-error-span"><span style="color:Orange">Problem 4: Autoencoder Reconstruction Error</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-4-span"><span style="color:LightGreen">Figure for Problem 4</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-5-thresholding-and-basic-detection-metrics-span"><span style="color:Orange">Problem 5: Thresholding and Basic Detection Metrics</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-5-span"><span style="color:LightGreen">Figure for Problem 5</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -525,8 +546,467 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="homework-11">
-<h1>Homework 11:<a class="headerlink" href="#homework-11" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-11-unsupervised-learning-and-anomaly-detection">
+<h1>Homework 11: Unsupervised Learning and Anomaly Detection<a class="headerlink" href="#homework-11-unsupervised-learning-and-anomaly-detection" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span>
+    <span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+    <span class="k">else</span> <span class="s2">&quot;mps&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+    <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CUDA:&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MPS:&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selected device:&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-synthetic-detector-data-span">
+<h2><span style="color:Orange">Synthetic Detector Data</span><a class="headerlink" href="#span-style-color-orange-synthetic-detector-data-span" title="Permalink to this heading">#</a></h2>
+<p>Imagine a simplified collider detector in which each event corresponds to a reconstructed particle shower or track-like object. In ordinary running conditions, most events come from a few well-understood Standard Model background processes. Those backgrounds populate characteristic regions of feature space because they have typical energy scales, spatial profiles, and timing signatures.</p>
+<p>In contrast, a rare new-physics or detector-pathology event could look different: it might deposit unusually large energy, appear at larger radius, arrive with an unusual timing offset, or produce an atypical shower shape. We will model those unusual events as anomalies. The point of the exercise is not high-fidelity detector simulation, but a controlled setting where unsupervised methods can learn normal structure and then flag rare departures from it.</p>
+<p>Each event has four features:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code>: reconstructed energy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">R</span></code>: radial displacement from the beamline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: arrival time offset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: shower-shape observable</p></li>
+</ul>
+<p>Most events come from two common detector populations, which you can think of as two different background channels. Rare anomalous events are generated from a different mechanism with shifted feature values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_detector_data</span><span class="p">(</span><span class="n">n_normal</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">n_anomaly</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">n_normal</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">n_normal</span> <span class="o">-</span> <span class="n">n1</span>
+
+    <span class="n">normal_1</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">4.8</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+        <span class="n">cov</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">]],</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">n1</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">normal_2</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">7.3</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">],</span>
+        <span class="n">cov</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">]],</span><span class="n">c</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">n2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">anomalies</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
+        <span class="n">cov</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
+             <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]],</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">n_anomaly</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">normal_1</span><span class="p">,</span> <span class="n">normal_2</span><span class="p">,</span> <span class="n">anomalies</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_normal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_anomaly</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_detector_data</span><span class="p">()</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">]</span>
+<span class="n">X_normal</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">X_anomaly</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-problem-1-standardize-features-and-compute-pca-projection-span">
+<h2><span style="color:Orange">Problem 1: Standardize Features and Compute PCA Projection</span><a class="headerlink" href="#span-style-color-orange-problem-1-standardize-features-and-compute-pca-projection-span" title="Permalink to this heading">#</a></h2>
+<p>Unsupervised methods are sensitive to feature scales. Before applying PCA or clustering, we usually standardize each feature so that it has comparable numerical scale.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fit_standardizer(X)</span></code> returning <code class="docutils literal notranslate"><span class="pre">(mean,</span> <span class="pre">std)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply_standardizer(X,</span> <span class="pre">mean,</span> <span class="pre">std)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pca_project_2d(X)</span></code> using SVD or eigendecomposition to return a 2D projection of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">2)</span></code></p></li>
+</ul>
+<p>Use only the normal events to fit the standardizer and PCA directions. This is typical in anomaly detection, where the representation is learned from background-like data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fit_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement fit_standardizer&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement apply_standardizer&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pca_project_2d</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement pca_project_2d&#39;</span><span class="p">)</span>
+
+<span class="c1"># Local checks</span>
+<span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">pca_project_2d</span><span class="p">(</span><span class="n">Xn</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">mean</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)</span>
+<span class="k">assert</span> <span class="n">std</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)</span>
+<span class="k">assert</span> <span class="n">Xn</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">X_normal</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">assert</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">X_normal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">Xn</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 1 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-1-span">
+<h3><span style="color:LightGreen">Figure for Problem 1</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-1-span" title="Permalink to this heading">#</a></h3>
+<p>This figure helps you inspect two things:</p>
+<ul class="simple">
+<li><p>whether standardization places features on a comparable scale</p></li>
+<li><p>whether a 2D PCA view begins to separate the dominant detector populations</p></li>
+</ul>
+<p>If your PCA implementation is working, the normal events should organize into visible low-dimensional structure, even before any labels are used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">Za_demo</span> <span class="o">=</span> <span class="n">pca_project_2d</span><span class="p">(</span><span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">tick_labels</span><span class="o">=</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standardized normal features&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;z-score&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Za_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Za_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Za_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Za_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;anomaly&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;PCA projection of detector events&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-2-k-means-clustering-on-normal-events-span">
+<h2><span style="color:Orange">Problem 2: K-means Clustering on Normal Events</span><a class="headerlink" href="#span-style-color-orange-problem-2-k-means-clustering-on-normal-events-span" title="Permalink to this heading">#</a></h2>
+<p>K-means is a simple and widely used unsupervised learning algorithm. Here we will use it to find two common event populations in the normal detector sample.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assign_clusters(X,</span> <span class="pre">centers)</span></code> returning the nearest-center assignment for each point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_centers(X,</span> <span class="pre">labels,</span> <span class="pre">k)</span></code> returning updated cluster centers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">run_kmeans(X,</span> <span class="pre">init_centers,</span> <span class="pre">n_steps=10)</span></code> returning <code class="docutils literal notranslate"><span class="pre">(labels,</span> <span class="pre">centers)</span></code></p></li>
+</ul>
+<p>Use Euclidean distance and fit only on the standardized normal data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">assign_clusters</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement assign_clusters&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_centers</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement update_centers&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init_centers</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement run_kmeans&#39;</span><span class="p">)</span>
+
+<span class="c1"># Local checks</span>
+<span class="n">Xn</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="o">*</span><span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">))</span>
+<span class="n">init_centers</span> <span class="o">=</span> <span class="n">Xn</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="n">run_kmeans</span><span class="p">(</span><span class="n">Xn</span><span class="p">,</span> <span class="n">init_centers</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">Xn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+<span class="k">assert</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">Xn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 2 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-2-span">
+<h3><span style="color:LightGreen">Figure for Problem 2</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-2-span" title="Permalink to this heading">#</a></h3>
+<p>This plot shows the learned K-means partition in the 2D PCA plane. The cluster colors come entirely from unsupervised fitting on the normal sample.</p>
+<p>You should see that K-means is capturing the two dominant normal event populations, even though it has no access to labels or anomaly information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">Z_demo</span> <span class="o">=</span> <span class="n">pca_project_2d</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">)</span>
+<span class="n">labels_demo</span><span class="p">,</span> <span class="n">centers_demo</span> <span class="o">=</span> <span class="n">run_kmeans</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">Xn_demo</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">center_proj</span> <span class="o">=</span> <span class="n">pca_project_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">centers_demo</span><span class="p">]))[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Z_demo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Z_demo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">labels_demo</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">center_proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">center_proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cluster centers&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;K-means clustering of normal detector events&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-3-distance-based-anomaly-score-span">
+<h2><span style="color:Orange">Problem 3: Distance-based Anomaly Score</span><a class="headerlink" href="#span-style-color-orange-problem-3-distance-based-anomaly-score-span" title="Permalink to this heading">#</a></h2>
+<p>Once we have a model of normal structure, we can score new events by how far they lie from that structure. A simple approach is to assign each event the squared distance to its nearest K-means center.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nearest_center_distance2(X,</span> <span class="pre">centers)</span></code> returning the squared distance to the nearest center</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">anomaly_threshold(scores,</span> <span class="pre">frac=0.05)</span></code> returning a score threshold based on the top <code class="docutils literal notranslate"><span class="pre">frac</span></code> fraction of normal scores</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">predict_anomaly(scores,</span> <span class="pre">threshold)</span></code> returning a binary anomaly mask</p></li>
+</ul>
+<p>Fit the score model using only normal events, then evaluate on the combined dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">nearest_center_distance2</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement nearest_center_distance2&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">anomaly_threshold</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement anomaly_threshold&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_anomaly</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement predict_anomaly&#39;</span><span class="p">)</span>
+
+<span class="c1"># Local checks</span>
+<span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn_train</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+<span class="n">labels_train</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="n">run_kmeans</span><span class="p">(</span><span class="n">Xn_train</span><span class="p">,</span> <span class="n">Xn_train</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">scores_train</span> <span class="o">=</span> <span class="n">nearest_center_distance2</span><span class="p">(</span><span class="n">Xn_train</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span>
+<span class="n">thr</span> <span class="o">=</span> <span class="n">anomaly_threshold</span><span class="p">(</span><span class="n">scores_train</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">predict_anomaly</span><span class="p">(</span><span class="n">scores_train</span><span class="p">,</span> <span class="n">thr</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">scores_train</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">Xn_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">thr</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pred</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">Xn_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 3 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-3-span">
+<h3><span style="color:LightGreen">Figure for Problem 3</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-3-span" title="Permalink to this heading">#</a></h3>
+<p>This figure compares anomaly scores for normal and anomalous events using the nearest-cluster-center distance.</p>
+<p>A useful anomaly score should push most normal events toward lower values and assign larger values to the rare, structurally unusual events.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">X_all_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">Xn_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">centers_demo</span> <span class="o">=</span> <span class="n">run_kmeans</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">Xn_demo</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">scores_demo</span> <span class="o">=</span> <span class="n">nearest_center_distance2</span><span class="p">(</span><span class="n">X_all_demo</span><span class="p">,</span> <span class="n">centers_demo</span><span class="p">)</span>
+<span class="n">thr_demo</span> <span class="o">=</span> <span class="n">anomaly_threshold</span><span class="p">(</span><span class="n">nearest_center_distance2</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">centers_demo</span><span class="p">),</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">scores_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">scores_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;anomaly&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">thr_demo</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;threshold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;nearest-center squared distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distance-based anomaly score&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-4-autoencoder-reconstruction-error-span">
+<h2><span style="color:Orange">Problem 4: Autoencoder Reconstruction Error</span><a class="headerlink" href="#span-style-color-orange-problem-4-autoencoder-reconstruction-error-span" title="Permalink to this heading">#</a></h2>
+<p>Autoencoders learn to compress and reconstruct normal data. If they are trained only on normal events, unusual events often reconstruct poorly and receive larger reconstruction errors.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AutoEncoder.forward(x)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reconstruction_error(x,</span> <span class="pre">xhat)</span></code> returning mean squared error per event</p></li>
+<li><p>the training loop for the autoencoder on standardized normal data only</p></li>
+</ul>
+<p>This is a classic unsupervised anomaly-detection approach and connects directly to the lecture discussion of representation learning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AutoEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">latent_dim</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># YOUR CODE HERE</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement AutoEncoder.forward&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">reconstruction_error</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xhat</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement reconstruction_error&#39;</span><span class="p">)</span>
+
+<span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn_train</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+<span class="n">train_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Xn_train</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">ae</span> <span class="o">=</span> <span class="n">AutoEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">ae</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE. TO DO:</span>
+    <span class="c1"># 1) reconstruct the normal training data</span>
+    <span class="c1"># 2) compute mean reconstruction loss</span>
+    <span class="c1"># 3) backprop and update</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Local checks</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">xhat</span> <span class="o">=</span> <span class="n">ae</span><span class="p">(</span><span class="n">train_tensor</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">reconstruction_error</span><span class="p">(</span><span class="n">train_tensor</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">xhat</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">xhat</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">train_tensor</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">assert</span> <span class="n">err</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">5</span><span class="p">,)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 4 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-4-span">
+<h3><span style="color:LightGreen">Figure for Problem 4</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-4-span" title="Permalink to this heading">#</a></h3>
+<p>This figure compares reconstruction-error distributions for normal and anomalous events after training on normal events only.</p>
+<p>If the autoencoder learns the structure of the normal detector population, anomalous events should tend to reconstruct less accurately and shift toward larger errors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">X_all_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">X_all_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X_all_demo</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">xhat_demo</span> <span class="o">=</span> <span class="n">ae</span><span class="p">(</span><span class="n">X_all_tensor</span><span class="p">)</span>
+    <span class="n">err_demo</span> <span class="o">=</span> <span class="n">reconstruction_error</span><span class="p">(</span><span class="n">X_all_tensor</span><span class="p">,</span> <span class="n">xhat_demo</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">err_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">err_demo</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;anomaly&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;reconstruction error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Autoencoder anomaly score&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-problem-5-thresholding-and-basic-detection-metrics-span">
+<h2><span style="color:Orange">Problem 5: Thresholding and Basic Detection Metrics</span><a class="headerlink" href="#span-style-color-orange-problem-5-thresholding-and-basic-detection-metrics-span" title="Permalink to this heading">#</a></h2>
+<p>An anomaly score becomes operational only after we choose a threshold. In a realistic analysis, thresholds are often tuned to control false positives on well-understood background data.</p>
+<p>Implement:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">precision_recall(y_true,</span> <span class="pre">y_pred)</span></code> returning <code class="docutils literal notranslate"><span class="pre">(precision,</span> <span class="pre">recall)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f1_score(precision,</span> <span class="pre">recall)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scan_thresholds(scores_normal,</span> <span class="pre">scores_all,</span> <span class="pre">y_all,</span> <span class="pre">n_steps=50)</span></code> returning the best threshold and best F1 score over a grid of thresholds based on the normal score range</p></li>
+</ul>
+<p>Use the autoencoder reconstruction error as the anomaly score in this problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">precision_recall</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement precision_recall&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">f1_score</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement f1_score&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scan_thresholds</span><span class="p">(</span><span class="n">scores_normal</span><span class="p">,</span> <span class="n">scores_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="c1"># YOUR CODE HERE</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Implement scan_thresholds&#39;</span><span class="p">)</span>
+
+<span class="c1"># Local checks</span>
+<span class="n">y_true_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">p</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">precision_recall</span><span class="p">(</span><span class="n">y_true_test</span><span class="p">,</span> <span class="n">y_pred_test</span><span class="p">)</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem 5 checks passed.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-lightgreen-figure-for-problem-5-span">
+<h3><span style="color:LightGreen">Figure for Problem 5</span><a class="headerlink" href="#span-style-color-lightgreen-figure-for-problem-5-span" title="Permalink to this heading">#</a></h3>
+<p>This final plot scans thresholds on the autoencoder score and shows the resulting F1 value. It turns a continuous anomaly score into a concrete decision rule.</p>
+<p>The best threshold depends on the tradeoff between rejecting rare anomalies and avoiding too many false positives among normal detector events.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span> <span class="o">=</span> <span class="n">fit_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">)</span>
+<span class="n">Xn_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X_normal</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">Xa_demo</span> <span class="o">=</span> <span class="n">apply_standardizer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_demo</span><span class="p">,</span> <span class="n">std_demo</span><span class="p">)</span>
+<span class="n">Xn_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Xn_demo</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">Xa_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Xa_demo</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">score_normal</span> <span class="o">=</span> <span class="n">reconstruction_error</span><span class="p">(</span><span class="n">Xn_tensor</span><span class="p">,</span> <span class="n">ae</span><span class="p">(</span><span class="n">Xn_tensor</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">score_all</span> <span class="o">=</span> <span class="n">reconstruction_error</span><span class="p">(</span><span class="n">Xa_tensor</span><span class="p">,</span> <span class="n">ae</span><span class="p">(</span><span class="n">Xa_tensor</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">ths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">score_normal</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="nb">max</span><span class="p">(</span><span class="n">score_all</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">score_normal</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">f1_vals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">th</span> <span class="ow">in</span> <span class="n">ths</span><span class="p">:</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="p">(</span><span class="n">score_all</span> <span class="o">&gt;</span> <span class="n">th</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">precision_recall</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">f1_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f1_score</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+<span class="n">best_th</span><span class="p">,</span> <span class="n">best_f1</span> <span class="o">=</span> <span class="n">scan_thresholds</span><span class="p">(</span><span class="n">score_normal</span><span class="p">,</span> <span class="n">score_all</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ths</span><span class="p">,</span> <span class="n">f1_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">best_th</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;best threshold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;threshold on reconstruction error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;F1 score&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Threshold scan for anomaly detection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;best F1 =&#39;</span><span class="p">,</span> <span class="n">best_f1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -600,6 +1080,27 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-synthetic-detector-data-span"><span style="color:Orange">Synthetic Detector Data</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-1-standardize-features-and-compute-pca-projection-span"><span style="color:Orange">Problem 1: Standardize Features and Compute PCA Projection</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-1-span"><span style="color:LightGreen">Figure for Problem 1</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-2-k-means-clustering-on-normal-events-span"><span style="color:Orange">Problem 2: K-means Clustering on Normal Events</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-2-span"><span style="color:LightGreen">Figure for Problem 2</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-3-distance-based-anomaly-score-span"><span style="color:Orange">Problem 3: Distance-based Anomaly Score</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-3-span"><span style="color:LightGreen">Figure for Problem 3</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-4-autoencoder-reconstruction-error-span"><span style="color:Orange">Problem 4: Autoencoder Reconstruction Error</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-4-span"><span style="color:LightGreen">Figure for Problem 4</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-problem-5-thresholding-and-basic-detection-metrics-span"><span style="color:Orange">Problem 5: Thresholding and Basic Detection Metrics</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-figure-for-problem-5-span"><span style="color:LightGreen">Figure for Problem 5</span></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
