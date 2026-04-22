@@ -11,3 +11,4 @@
 * {doc}`projects/Project_01_GravitationalWaves`
 * {doc}`projects/Project_01_ClimateModels`
 * {doc}`projects/Project_01_EventHorizonTelescope`
+* {doc}`projects/Project_01_SloanDigitalSkySurvey`
