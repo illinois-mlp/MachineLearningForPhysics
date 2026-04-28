@@ -2241,9 +2241,13 @@ L_{f}=\frac{1}{N_{f}} \sum_{i=1}^{N_{f}}\left|f_{net}\left(\mathbf{r}_{f}^{i}, t
 <section id="span-style-color-violet-collection-points-span">
 <h5><span style="color:Violet">Collection Points</span><a class="headerlink" href="#span-style-color-violet-collection-points-span" title="Permalink to this heading">#</a></h5>
 <p>The accuracy of the NN increases with increase in density of collocation points. However, the computational resources required also increases exponentially with the increase in density of points. This can lead to training bottlenecks, especially for high dimensional systems. A trade-off has to be made between the desired accuracy and number of collocation points because training the NN on a large number of points may lead to overfitting and adversely affect generalisability. The distribution of points can also be customised according to the problem domain. Density could be increased around areas of sharp discontinuities to capture more information about the domain.</p>
-<p><em><strong><span style="color:Violet">Exercise</span></strong></em>: What is the effect of changing collocation points on the training time and accuracy of the Neural Network? You can run it multiple times with different grids of collocation point to observe this.</p>
+<p><em><strong><span style="color:Violet">Exercise</span></strong></em>: What is the effect of changing density collocation points on the training time and accuracy of the Neural Network? You can run it multiple times with different grids of collocation point to observe this.</p>
 <p><em><strong><span style="color:Pink">Solution</span></strong></em>: Training time and accuracy both increase exponentially with collocation grid size.</p>
-</section>
+<div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/LearningTheSchrodingerEquation-TrainingTime.png" width=400></img>
+</div><div>
+<img src="https://raw.githubusercontent.com/illinois-mlp/MachineLearningForPhysics/main/img/LearningTheSchrodingerEquation-Performance.png" width=400/></img>
+</div></section>
 </section>
 </section>
 </section>
