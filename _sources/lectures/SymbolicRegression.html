@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_sources/lectures/SymbolicRegression';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -514,6 +516,29 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-helper-functions-span"><span style="color:Orange">Helper Functions</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-brief-overview-span"><span style="color:Orange">Brief Overview</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-mathematical-formulation-span"><span style="color:LightGreen">Mathematical Formulation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-a-lightweight-symbolic-regression-engine-span"><span style="color:LightGreen">A Lightweight Symbolic Regression Engine</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-physics-guided-shortcuts-before-search-span"><span style="color:Orange">Physics-Guided Shortcuts Before Search</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-dimensional-analysis-span"><span style="color:LightGreen">Dimensional Analysis</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-pink-example-ohm-s-law-span"><span style="color:Pink">Example: Ohm’s Law</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-symmetry-example-span"><span style="color:LightGreen">Symmetry Example</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-constant-acceleration-span"><span style="color:Orange">Example: Constant Acceleration</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-restoring-force-in-an-anharmonic-oscillator-span"><span style="color:Orange">Example: Restoring Force in an Anharmonic Oscillator</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-an-inverse-square-law-span"><span style="color:Orange">Example: An Inverse-Square Law</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-neural-networks-for-symbolic-regression-span"><span style="color:Orange">Neural Networks for Symbolic Regression</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-conclusions-from-the-executed-results-span"><span style="color:LightGreen">Conclusions from the Executed Results</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-parting-thoughts-span"><span style="color:Orange">Parting Thoughts</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-some-ideas-to-explore-further-span"><span style="color:Orange">Some Ideas to Explore Further</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
             </nav>
@@ -528,14 +553,927 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-symbolic-regression">
 <h1>Introduction to Symbolic Regression<a class="headerlink" href="#introduction-to-symbolic-regression" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-v0_8-whitegrid&#39;</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="span-style-color-orange-helper-functions-span">
+<h2><span style="color:Orange">Helper Functions</span><a class="headerlink" href="#span-style-color-orange-helper-functions-span" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SymbolicModel</span><span class="p">:</span>
+    <span class="n">selected_names</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">selected_idx</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">intercept</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">coef</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">mse</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">bic</span><span class="p">:</span> <span class="nb">float</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_design_matrix</span><span class="p">(</span><span class="n">var_dict</span><span class="p">,</span> <span class="n">library</span><span class="p">):</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">library</span><span class="p">:</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">var_dict</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">names</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_linear_model</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">Phi_aug</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Phi</span><span class="p">)),</span> <span class="n">Phi</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">Phi_aug</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">Phi_aug</span> <span class="o">@</span> <span class="n">params</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">y_pred</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bic_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">n_params</span><span class="p">):</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">mse</span><span class="p">),</span> <span class="mf">1e-14</span><span class="p">)</span>
+    <span class="n">bic</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_params</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mse</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">bic</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_symbolic_regression</span><span class="p">(</span><span class="n">var_dict</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">library</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">min_improvement</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="n">Phi</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">build_design_matrix</span><span class="p">(</span><span class="n">var_dict</span><span class="p">,</span> <span class="n">library</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">selected</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">selected_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">best_mse</span><span class="p">,</span> <span class="n">best_bic</span> <span class="o">=</span> <span class="n">bic_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">n_params</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">best_intercept</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">best_coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_terms</span><span class="p">):</span>
+        <span class="n">candidate_best</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">remaining</span><span class="p">:</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">selected</span> <span class="o">+</span> <span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">fit_linear_model</span><span class="p">(</span><span class="n">Phi</span><span class="p">[:,</span> <span class="n">cols</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">mse</span><span class="p">,</span> <span class="n">bic</span> <span class="o">=</span> <span class="n">bic_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">n_params</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">candidate_best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bic</span> <span class="o">&lt;</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]:</span>
+                <span class="n">candidate_best</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span>
+                    <span class="s1">&#39;intercept&#39;</span><span class="p">:</span> <span class="n">intercept</span><span class="p">,</span>
+                    <span class="s1">&#39;coef&#39;</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span>
+                    <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="n">mse</span><span class="p">,</span>
+                    <span class="s1">&#39;bic&#39;</span><span class="p">:</span> <span class="n">bic</span><span class="p">,</span>
+                <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">candidate_best</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">best_bic</span> <span class="o">-</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_improvement</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">])</span>
+        <span class="n">selected_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]])</span>
+        <span class="n">remaining</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">])</span>
+        <span class="n">best_intercept</span> <span class="o">=</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">]</span>
+        <span class="n">best_coef</span> <span class="o">=</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;coef&#39;</span><span class="p">]</span>
+        <span class="n">best_mse</span> <span class="o">=</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">]</span>
+        <span class="n">best_bic</span> <span class="o">=</span> <span class="n">candidate_best</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">SymbolicModel</span><span class="p">(</span>
+        <span class="n">selected_names</span><span class="o">=</span><span class="n">selected_names</span><span class="p">,</span>
+        <span class="n">selected_idx</span><span class="o">=</span><span class="n">selected</span><span class="p">,</span>
+        <span class="n">intercept</span><span class="o">=</span><span class="n">best_intercept</span><span class="p">,</span>
+        <span class="n">coef</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">best_coef</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+        <span class="n">mse</span><span class="o">=</span><span class="n">best_mse</span><span class="p">,</span>
+        <span class="n">bic</span><span class="o">=</span><span class="n">best_bic</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_symbolic_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">var_dict</span><span class="p">,</span> <span class="n">library</span><span class="p">):</span>
+    <span class="n">Phi</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">build_design_matrix</span><span class="p">(</span><span class="n">var_dict</span><span class="p">,</span> <span class="n">library</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">selected_idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">Phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept</span> <span class="o">+</span> <span class="n">Phi</span><span class="p">[:,</span> <span class="n">model</span><span class="o">.</span><span class="n">selected_idx</span><span class="p">]</span> <span class="o">@</span> <span class="n">model</span><span class="o">.</span><span class="n">coef</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">format_equation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">pieces</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">intercept</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">selected_names</span><span class="p">):</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">coeff</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span>
+        <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">sign</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">g</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pieces</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">format_equation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE = </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">mse</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC = </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">bic</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_fit</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;crimson&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;symbolic fit&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-brief-overview-span">
+<h2><span style="color:Orange">Brief Overview</span><a class="headerlink" href="#span-style-color-orange-brief-overview-span" title="Permalink to this heading">#</a></h2>
+<p>Symbolic regression searches for an explicit mathematical expression that maps inputs to outputs. Unlike ordinary regression, where we pick a fixed model class and only fit its parameters, symbolic regression tries to discover both the structure of the equation and the numerical coefficients.</p>
+<p>That makes it especially attractive in physics, where we often care about interpretable laws rather than only predictive accuracy. A good symbolic model can suggest conservation laws, constitutive relations, scaling behavior, or reduced-order descriptions of a system.</p>
+<p>In production workflows, symbolic regression is often performed with genetic programming, Monte Carlo tree search, differentiable expression search, or sparse equation discovery. In this lecture, we use a lighter approach that runs in a plain notebook: we build a library of candidate terms and then greedily select the ones that improve a model-selection score.</p>
+<section id="span-style-color-lightgreen-mathematical-formulation-span">
+<h3><span style="color:LightGreen">Mathematical Formulation</span><a class="headerlink" href="#span-style-color-lightgreen-mathematical-formulation-span" title="Permalink to this heading">#</a></h3>
+<p>We assume that the target can be approximated by a sparse combination of candidate basis functions,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+y(\mathbf{x}) \approx c_0 + \sum_{k=1}^{K} c_k \, \phi_k(\mathbf{x}),
+\]</div>
+<p>where the library terms <span class="math notranslate nohighlight">\(\phi_k\)</span> might include powers, trigonometric functions, inverse powers, exponentials, or domain-specific combinations suggested by the physics.</p>
+<p>The approach we take in this notebook uses a forward-selection strategy:</p>
+<ol class="arabic simple">
+<li><p>Start with a constant model.</p></li>
+<li><p>Try adding each candidate term one at a time.</p></li>
+<li><p>Refit the coefficients with least squares.</p></li>
+<li><p>Keep the term that most improves the Bayesian information criterion (BIC).</p></li>
+<li><p>Stop when adding more structure is no longer justified.</p></li>
+</ol>
+<p>This is not the only way to do symbolic regression, but it captures an important idea: in scientific modeling we want the simplest equation that still explains the data well.</p>
+</section>
+<section id="span-style-color-lightgreen-a-lightweight-symbolic-regression-engine-span">
+<h3><span style="color:LightGreen">A Lightweight Symbolic Regression Engine</span><a class="headerlink" href="#span-style-color-lightgreen-a-lightweight-symbolic-regression-engine-span" title="Permalink to this heading">#</a></h3>
+<p>The code below defines small libraries of candidate terms and uses the helper functions above to select a compact symbolic model. Because the search is explicit, it is easy to inspect what the algorithm is doing and to connect the result back to the physics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_library</span><span class="p">(</span><span class="n">library</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Candidate terms:&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">library</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-physics-guided-shortcuts-before-search-span">
+<h2><span style="color:Orange">Physics-Guided Shortcuts Before Search</span><a class="headerlink" href="#span-style-color-orange-physics-guided-shortcuts-before-search-span" title="Permalink to this heading">#</a></h2>
+<p>A recurring theme in physics-flavored symbolic regression is that we often do not search blindly over all algebraic expressions. Instead, we use physical structure to simplify the problem first. Two especially useful ideas are:</p>
+<ol class="arabic simple">
+<li><p><em><span style="color:Violet">Dimensional analysis</span></em>: only consider combinations of variables with the right units.</p></li>
+<li><p><em><span style="color:Violet">Symmetry</span></em>: rewrite the problem in variables that respect invariances, such as relative coordinates instead of absolute positions.</p></li>
+</ol>
+<p>This is one of the most useful ideas in symbolic regression workflows such as the <a class="reference external" href="https://www.science.org/doi/10.1126/sciadv.aay2631">AI Feynman algorithm</a> created by Max Tegmark and Silviu Udrescu: physics can dramatically shrink the symbolic search space before any optimizer starts combining terms.</p>
+<section id="span-style-color-lightgreen-dimensional-analysis-span">
+<h3><span style="color:LightGreen">Dimensional Analysis</span><a class="headerlink" href="#span-style-color-lightgreen-dimensional-analysis-span" title="Permalink to this heading">#</a></h3>
+<p>Physical quantities have units associated with them (e.g. Force is measured in Newtons, Speed in meters per second). When we have data with various units and know what units the answer takes we can analyze the combinations of units to see what answers make sense.</p>
+<p>For example if we measure the <span style="color:Violet">voltage</span>[<span class="math notranslate nohighlight">\(kg~m^2s^{-3}A^{-1}\)</span>] drop across a wire as well as the <span style="color:Violet">current</span>[<span class="math notranslate nohighlight">\(A\)</span>], <span style="color:Violet">resistance</span>[<span class="math notranslate nohighlight">\(kg~m^2s^{-3}A^{-2}\)</span>], <span style="color:Violet">temperature</span>[<span class="math notranslate nohighlight">\(K\)</span>], <span style="color:Violet">mass</span>[<span class="math notranslate nohighlight">\(kg\)</span>], and <span style="color:Violet">length</span>[<span class="math notranslate nohighlight">\(m\)</span>] of the wire, can we figure out what combination gives us the voltage?</p>
+<p>We can use linear algebra to build an algorithm to do dimensional analysis for us. Let’s first create a dataframe (a matrix with labels) where we can keep track of the units of various physical quantities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
+
+<span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Variable&#39;</span><span class="p">:[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;V&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span><span class="s1">&#39;x2&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Units&#39;</span>   <span class="p">:[</span><span class="s1">&#39;Force&#39;</span><span class="p">,</span><span class="s1">&#39;Mass&#39;</span><span class="p">,</span><span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span><span class="s1">&#39;Voltage&#39;</span><span class="p">,</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span><span class="s1">&#39;Resistance&#39;</span><span class="p">,</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Spring Constant&#39;</span><span class="p">,</span><span class="s1">&#39;Length&#39;</span><span class="p">,</span><span class="s1">&#39;Length&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Energy&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;m&#39;</span>       <span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;s&#39;</span>       <span class="p">:[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;kg&#39;</span>      <span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Amp&#39;</span>     <span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
+
+<span class="c1"># Here we create a dataframe from a python dictionary. This allows us to call the entries by row or by name.</span>
+<span class="n">df_units</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
+<span class="n">df_units</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Variable</th>
+      <th>Units</th>
+      <th>m</th>
+      <th>s</th>
+      <th>kg</th>
+      <th>Amp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>F</td>
+      <td>Force</td>
+      <td>1</td>
+      <td>-2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>m</td>
+      <td>Mass</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>a</td>
+      <td>Acceleration</td>
+      <td>1</td>
+      <td>-2</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>V</td>
+      <td>Voltage</td>
+      <td>2</td>
+      <td>-3</td>
+      <td>1</td>
+      <td>-1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>I</td>
+      <td>Current</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>R</td>
+      <td>Resistance</td>
+      <td>2</td>
+      <td>-3</td>
+      <td>1</td>
+      <td>-2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>U</td>
+      <td>Energy</td>
+      <td>2</td>
+      <td>-2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>k</td>
+      <td>Spring Constant</td>
+      <td>0</td>
+      <td>-2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>x1</td>
+      <td>Length</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>x2</td>
+      <td>Length</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>vx</td>
+      <td>Speed</td>
+      <td>1</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>vy</td>
+      <td>Speed</td>
+      <td>1</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>K</td>
+      <td>Energy</td>
+      <td>2</td>
+      <td>-2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can see that for example the values in the row corresponding to force are the sum of the rows for mass and acceleration. By keeping track of the appropriate powers of SI Units for our physical quantities, dimensional analysis for a target quantity reduces to the linear algebra problem of finding which vector of integers will reproduce the target row when multiplying the input rows.</p>
+<p>For example, we can see that <span style="color:Violet">Force</span> has the units of <span style="color:Violet">mass</span><span class="math notranslate nohighlight">\(\times\)</span><span style="color:Violet">acceleration</span> because</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Large
+1*\begin{pmatrix}0\\0\\1\\0\end{pmatrix}+1*\begin{pmatrix}1\\-2\\0\\0\end{pmatrix}=\begin{pmatrix}1\\-2\\1\\0\end{pmatrix}
+\end{split}\]</div>
+<section id="span-style-color-pink-example-ohm-s-law-span">
+<h4><span style="color:Pink">Example: Ohm’s Law</span><a class="headerlink" href="#span-style-color-pink-example-ohm-s-law-span" title="Permalink to this heading">#</a></h4>
+<p>Suppose we want to recover <a class="reference external" href="https://en.wikipedia.org/wiki/Ohm%27s_law">Ohm’s law</a>. If the target quantity is voltage and the candidate inputs are current, resistance, and mass, dimensional analysis already tells us that only one simple combination is plausible: <span class="math notranslate nohighlight">\(V \propto IR\)</span>. That means symbolic regression does not need to waste time testing dimensionally inconsistent expressions such as <span class="math notranslate nohighlight">\(V \propto I + m\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_dimensional_matches</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span> <span class="n">target_units</span><span class="p">,</span> <span class="n">exponent_range</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_units</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_units</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">exponents</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">exponent_range</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exponents</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">exponent</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">exponents</span><span class="p">):</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">exponent</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">input_units</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+            <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">exponents</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">matches</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">format_dimensional_match</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+    <span class="n">pieces</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">exponent</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">exponent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">exponent</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">^</span><span class="si">{</span><span class="n">exponent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39; * &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pieces</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unit vectors are ordered as [kg, m, s, A]</span>
+<span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+    <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]),</span>
+    <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+<span class="p">}</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_dimensional_matches</span><span class="p">(</span>
+    <span class="p">{</span><span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="n">units</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">],</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">units</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">],</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="n">units</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]},</span>
+    <span class="n">units</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span>
+    <span class="n">exponent_range</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dimensionally valid monomial combinations for voltage:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  V ~&#39;</span><span class="p">,</span> <span class="n">format_dimensional_match</span><span class="p">(</span><span class="n">match</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensionally valid monomial combinations for voltage:
+  V ~ I * R
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-lightgreen-symmetry-example-span">
+<h3><span style="color:LightGreen">Symmetry Example</span><a class="headerlink" href="#span-style-color-lightgreen-symmetry-example-span" title="Permalink to this heading">#</a></h3>
+<p>Now consider spring potential energy,</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+U(x_1, x_2) = \frac{1}{2} k (x_1 - x_2)^2.
+\]</div>
+<p>This system has translation symmetry: if we shift both positions by the same amount, the potential energy does not change. That suggests a better coordinate choice than <span class="math notranslate nohighlight">\((x_1, x_2)\)</span> individually. The physically meaningful variable is the relative displacement <span class="math notranslate nohighlight">\(\Delta x = x_1 - x_2\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">translation_invariance_error</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+    <span class="n">shifted</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">,</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">base</span> <span class="o">-</span> <span class="n">shifted</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k_sym</span> <span class="o">=</span> <span class="mf">1.8</span>
+<span class="n">x1_sym</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">x2_sym</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">dx_sym</span> <span class="o">=</span> <span class="n">x1_sym</span> <span class="o">-</span> <span class="n">x2_sym</span>
+<span class="n">U_sym</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">k_sym</span> <span class="o">*</span> <span class="n">dx_sym</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">dx_sym</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">shift</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x1_sym</span><span class="p">)</span>
+<span class="n">symmetry_rmse</span> <span class="o">=</span> <span class="n">translation_invariance_error</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">k_sym</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">x1_sym</span><span class="p">,</span>
+    <span class="n">x2_sym</span><span class="p">,</span>
+    <span class="n">shift</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">library_relative</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;dx&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;dx^2&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;dx&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;dx^3&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;dx&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">model_relative</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">({</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx_sym</span><span class="p">},</span> <span class="n">U_sym</span><span class="p">,</span> <span class="n">library_relative</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">U_pred_relative</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">model_relative</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx_sym</span><span class="p">},</span> <span class="n">library_relative</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Translation-invariance RMSE after shifting both coordinates equally: </span><span class="si">{</span><span class="n">symmetry_rmse</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">model_relative</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;U(dx)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected quadratic coefficient: </span><span class="si">{</span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k_sym</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1_sym</span><span class="p">,</span> <span class="n">U_sym</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;vs x1&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2_sym</span><span class="p">,</span> <span class="n">U_sym</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;vs x2&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Using absolute positions is messy&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;potential U&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">dx_sym</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dx_sym</span><span class="p">,</span> <span class="n">U_sym</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data vs dx&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dx_sym</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">U_pred_relative</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;crimson&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;symbolic fit&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Relative coordinate reveals the law&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;dx = x1 - x2&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;potential U&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Translation-invariance RMSE after shifting both coordinates equally: 0.00e+00
+U(dx) = -0.005973 + 0.9016*dx^2
+MSE = 5.6935e-03
+BIC = -610.64
+Expected quadratic coefficient: 0.9000
+</pre></div>
+</div>
+<img alt="../../_images/73e44d73b1fcebeeca9277cd4aed3d6003fa9995755628340fb6be06e85496ab.png" src="../../_images/73e44d73b1fcebeeca9277cd4aed3d6003fa9995755628340fb6be06e85496ab.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="span-style-color-orange-example-constant-acceleration-span">
+<h2><span style="color:Orange">Example: Constant Acceleration</span><a class="headerlink" href="#span-style-color-orange-example-constant-acceleration-span" title="Permalink to this heading">#</a></h2>
+<p>For one-dimensional motion with constant acceleration, the position is</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+x(t) = x_0 + v_0 t + \frac{1}{2} a t^2.
+\]</div>
+<p>If the data come from free fall, we expect the symbolic regressor to prefer a sparse quadratic model over more complicated alternatives.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="mf">1.25</span>
+<span class="n">v0</span> <span class="o">=</span> <span class="mf">6.75</span>
+<span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">x_true</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">v0</span> <span class="o">*</span> <span class="n">t</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">x_obs</span> <span class="o">=</span> <span class="n">x_true</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.18</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">library_kinematics</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;t^2&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;t^3&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;t^4&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">4</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">model_kinematics</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span> <span class="n">x_obs</span><span class="p">,</span> <span class="n">library_kinematics</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">x_pred</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">model_kinematics</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">},</span> <span class="n">library_kinematics</span><span class="p">)</span>
+
+<span class="n">print_library</span><span class="p">(</span><span class="n">library_kinematics</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">model_kinematics</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;x(t)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected quadratic coefficient: </span><span class="si">{</span><span class="o">-</span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">g</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">))</span>
+<span class="n">compare_fit</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_obs</span><span class="p">,</span> <span class="n">x_pred</span><span class="p">,</span> <span class="s1">&#39;time t&#39;</span><span class="p">,</span> <span class="s1">&#39;position x&#39;</span><span class="p">,</span> <span class="s1">&#39;Symbolic regression for free fall&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ground truth&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Candidate terms:
+   t
+   t^2
+   t^3
+   t^4
+
+x(t) = 1.232 + 6.721*t - 4.926*t^2
+MSE = 2.7637e-02
+BIC = -416.27
+Expected quadratic coefficient: -4.9050
+</pre></div>
+</div>
+<img alt="../../_images/7efe6792be89986ef0131b3acaa9acd2cbfbcb39a7269eab7031779b766a5598.png" src="../../_images/7efe6792be89986ef0131b3acaa9acd2cbfbcb39a7269eab7031779b766a5598.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-example-restoring-force-in-an-anharmonic-oscillator-span">
+<h2><span style="color:Orange">Example: Restoring Force in an Anharmonic Oscillator</span><a class="headerlink" href="#span-style-color-orange-example-restoring-force-in-an-anharmonic-oscillator-span" title="Permalink to this heading">#</a></h2>
+<p>A pure Hooke’s-law spring has <span class="math notranslate nohighlight">\(F(x) = -kx\)</span>, but many physical systems pick up nonlinear corrections. A common toy model is</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F(x) = -k x - \alpha x^3,
+\]</div>
+<p>which appears in <a class="reference external" href="https://en.wikipedia.org/wiki/Duffing_equation">Duffing-style oscillators</a> and weakly nonlinear restoring forces. Here we ask the symbolic regressor to discover that the cubic correction matters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mf">2.4</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.75</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">force_true</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">force_obs</span> <span class="o">=</span> <span class="n">force_true</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">library_force</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;x^2&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;x^3&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;x^5&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">5</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">model_force</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">},</span> <span class="n">force_obs</span><span class="p">,</span> <span class="n">library_force</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">force_pred</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">model_force</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">},</span> <span class="n">library_force</span><span class="p">)</span>
+<span class="n">print_library</span><span class="p">(</span><span class="n">library_force</span><span class="p">)</span>
+
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">model_force</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;F(x)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected linear coefficient: </span><span class="si">{</span><span class="o">-</span><span class="n">k</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected cubic coefficient: </span><span class="si">{</span><span class="o">-</span><span class="n">alpha</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">))</span>
+<span class="n">compare_fit</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">force_obs</span><span class="p">,</span> <span class="n">force_pred</span><span class="p">,</span> <span class="s1">&#39;displacement x&#39;</span><span class="p">,</span> <span class="s1">&#39;force F&#39;</span><span class="p">,</span> <span class="s1">&#39;Recovering an anharmonic restoring force&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">force_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ground truth&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Candidate terms:
+   x
+   x^2
+   x^3
+   x^5
+F(x) = -0.01477 - 2.429*x - 0.7318*x^3
+MSE = 1.3716e-02
+BIC = -500.34
+Expected linear coefficient: -2.4000
+Expected cubic coefficient: -0.7500
+</pre></div>
+</div>
+<img alt="../../_images/e4cd15bfc2aa7817af617cc158f73fcb9b2f40c39c4d0e627de6a8accb919a82.png" src="../../_images/e4cd15bfc2aa7817af617cc158f73fcb9b2f40c39c4d0e627de6a8accb919a82.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-example-an-inverse-square-law-span">
+<h2><span style="color:Orange">Example: An Inverse-Square Law</span><a class="headerlink" href="#span-style-color-orange-example-an-inverse-square-law-span" title="Permalink to this heading">#</a></h2>
+<p>Inverse-power laws are everywhere in physics. As a simple example, suppose we observe a force that depends on distance like</p>
+<div class="math notranslate nohighlight">
+\[ \Large
+F(r) = \frac{C}{r^2}.
+\]</div>
+<p>This could represent a toy gravitational or electrostatic interaction in convenient units. A symbolic regressor should prefer the <span class="math notranslate nohighlight">\(r^{-2}\)</span> term when the library contains several competing powers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="mf">3.6</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">force_true_inv</span> <span class="o">=</span> <span class="n">C</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">force_obs_inv</span> <span class="o">=</span> <span class="n">force_true_inv</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">library_inverse</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;1/r&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;1/r^2&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;1/r^3&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;log(r)&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">])),</span>
+<span class="p">]</span>
+
+<span class="n">model_inverse</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">({</span><span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">},</span> <span class="n">force_obs_inv</span><span class="p">,</span> <span class="n">library_inverse</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">force_pred_inv</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">model_inverse</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">},</span> <span class="n">library_inverse</span><span class="p">)</span>
+
+<span class="n">print_library</span><span class="p">(</span><span class="n">library_inverse</span><span class="p">)</span>
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">model_inverse</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;F(r)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected inverse-square coefficient: </span><span class="si">{</span><span class="n">C</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">))</span>
+<span class="n">compare_fit</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">force_obs_inv</span><span class="p">,</span> <span class="n">force_pred_inv</span><span class="p">,</span> <span class="s1">&#39;radius r&#39;</span><span class="p">,</span> <span class="s1">&#39;force F&#39;</span><span class="p">,</span> <span class="s1">&#39;Discovering an inverse-square relation&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">force_true_inv</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ground truth&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Candidate terms:
+   r
+   1/r
+   1/r^2
+   1/r^3
+   log(r)
+F(r) = -0.00431 + 3.612*1/r^2
+MSE = 9.0101e-04
+BIC = -831.86
+Expected inverse-square coefficient: 3.6000
+</pre></div>
+</div>
+<img alt="../../_images/047a9d37ac4da6fc40c85e34348cdc2619b74b38c09da46543089b169a481a23.png" src="../../_images/047a9d37ac4da6fc40c85e34348cdc2619b74b38c09da46543089b169a481a23.png" />
+</div>
+</div>
+</section>
+<section id="span-style-color-orange-neural-networks-for-symbolic-regression-span">
+<h2><span style="color:Orange">Neural Networks for Symbolic Regression</span><a class="headerlink" href="#span-style-color-orange-neural-networks-for-symbolic-regression-span" title="Permalink to this heading">#</a></h2>
+<p>A neural network can act as a flexible surrogate model before symbolic regression is applied. This is useful when the measurements are sparse or noisy: the network first learns a smooth approximation to the underlying function, and then we run symbolic regression on the network predictions instead of directly on the raw observations.</p>
+<p>This hybrid workflow is often called <span style="color:Violet">symbolic distillation</span>. It is not fully end-to-end symbolic regression, but it is a practical scientific pattern:</p>
+<ol class="arabic simple">
+<li><p>Fit a neural network to the data.</p></li>
+<li><p>Sample the neural network on a dense grid.</p></li>
+<li><p>Recover a compact symbolic law from the neural surrogate.</p></li>
+</ol>
+<p>Below we revisit the anharmonic restoring-force example with but this time with fewer, noisier measurements. We compare a symbolic fit to the raw data against a symbolic fit distilled from a neural network.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NeuralRegressor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">train_neural_regressor</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">x_mean</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">x_std</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">y_std</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+
+    <span class="n">x_scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_train</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_std</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+    <span class="n">y_scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_train</span> <span class="o">-</span> <span class="n">y_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">y_std</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+
+    <span class="n">x_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x_scaled</span><span class="p">)</span>
+    <span class="n">y_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y_scaled</span><span class="p">)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">NeuralRegressor</span><span class="p">(</span><span class="n">hidden</span><span class="o">=</span><span class="n">hidden</span><span class="p">)</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_tensor</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">y_tensor</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">(),</span>
+        <span class="s1">&#39;x_mean&#39;</span><span class="p">:</span> <span class="n">x_mean</span><span class="p">,</span>
+        <span class="s1">&#39;x_std&#39;</span><span class="p">:</span> <span class="n">x_std</span><span class="p">,</span>
+        <span class="s1">&#39;y_mean&#39;</span><span class="p">:</span> <span class="n">y_mean</span><span class="p">,</span>
+        <span class="s1">&#39;y_std&#39;</span><span class="p">:</span> <span class="n">y_std</span><span class="p">,</span>
+        <span class="s1">&#39;losses&#39;</span><span class="p">:</span> <span class="n">losses</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_neural_regressor</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">x_eval</span><span class="p">):</span>
+    <span class="n">x_eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_eval</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">x_scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_eval</span> <span class="o">-</span> <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;x_mean&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;x_std&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">pred_scaled</span> <span class="o">=</span> <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">](</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x_scaled</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pred_scaled</span> <span class="o">*</span> <span class="p">(</span><span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;y_std&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">+</span> <span class="n">bundle</span><span class="p">[</span><span class="s1">&#39;y_mean&#39;</span><span class="p">]</span>
+
+
+<span class="n">rng_nn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">x_sparse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">force_true_sparse</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span> <span class="o">*</span> <span class="n">x_sparse</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x_sparse</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">force_obs_sparse</span> <span class="o">=</span> <span class="n">force_true_sparse</span> <span class="o">+</span> <span class="n">rng_nn</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x_sparse</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">library_force_nn</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s1">&#39;x^2&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;x^3&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">raw_symbolic_model</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">(</span>
+    <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x_sparse</span><span class="p">},</span> <span class="n">force_obs_sparse</span><span class="p">,</span> <span class="n">library_force_nn</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="n">nn_bundle</span> <span class="o">=</span> <span class="n">train_neural_regressor</span><span class="p">(</span><span class="n">x_sparse</span><span class="p">,</span> <span class="n">force_obs_sparse</span><span class="p">)</span>
+<span class="n">x_dense</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mi">240</span><span class="p">)</span>
+<span class="n">force_true_dense</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span> <span class="o">*</span> <span class="n">x_dense</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x_dense</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">force_nn_dense</span> <span class="o">=</span> <span class="n">predict_neural_regressor</span><span class="p">(</span><span class="n">nn_bundle</span><span class="p">,</span> <span class="n">x_dense</span><span class="p">)</span>
+
+<span class="n">distilled_symbolic_model</span> <span class="o">=</span> <span class="n">fit_symbolic_regression</span><span class="p">(</span>
+    <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x_dense</span><span class="p">},</span> <span class="n">force_nn_dense</span><span class="p">,</span> <span class="n">library_force_nn</span><span class="p">,</span> <span class="n">max_terms</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="n">force_raw_symbolic</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">raw_symbolic_model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x_dense</span><span class="p">},</span> <span class="n">library_force_nn</span><span class="p">)</span>
+<span class="n">force_distilled_symbolic</span> <span class="o">=</span> <span class="n">predict_symbolic_model</span><span class="p">(</span><span class="n">distilled_symbolic_model</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x_dense</span><span class="p">},</span> <span class="n">library_force_nn</span><span class="p">)</span>
+
+<span class="n">mse_raw_to_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">force_raw_symbolic</span> <span class="o">-</span> <span class="n">force_true_dense</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">mse_distilled_to_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">force_distilled_symbolic</span> <span class="o">-</span> <span class="n">force_true_dense</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">print_library</span><span class="p">(</span><span class="n">library_force_nn</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Raw symbolic fit:&#39;</span><span class="p">)</span>
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">raw_symbolic_model</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;F(x)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Neural-distilled symbolic fit:&#39;</span><span class="p">)</span>
+<span class="n">summarize_model</span><span class="p">(</span><span class="n">distilled_symbolic_model</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;F(x)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MSE of raw symbolic fit vs. true dense curve: </span><span class="si">{</span><span class="n">mse_raw_to_truth</span><span class="si">:</span><span class="s1">.4e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MSE of neural-distilled symbolic fit vs. true dense curve: </span><span class="si">{</span><span class="n">mse_distilled_to_truth</span><span class="si">:</span><span class="s1">.4e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nn_bundle</span><span class="p">[</span><span class="s1">&#39;losses&#39;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Neural training loss&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;epoch&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MSE loss&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_sparse</span><span class="p">,</span> <span class="n">force_obs_sparse</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;noisy data&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">force_true_dense</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ground truth&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">force_nn_dense</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;neural surrogate&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Neural surrogate on sparse data&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;displacement x&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;force F&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">force_true_dense</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ground truth&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">force_raw_symbolic</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw symbolic&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">force_distilled_symbolic</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;neural distilled&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Symbolic fits&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;displacement x&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;force F&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">raw_residual</span> <span class="o">=</span> <span class="n">force_raw_symbolic</span> <span class="o">-</span> <span class="n">force_true_dense</span>
+<span class="n">distilled_residual</span> <span class="o">=</span> <span class="n">force_distilled_symbolic</span> <span class="o">-</span> <span class="n">force_true_dense</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">7.2</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">raw_residual</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw symbolic residual&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dense</span><span class="p">,</span> <span class="n">distilled_residual</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;neural distilled residual&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Residuals relative to the true force law&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;displacement x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;fit - truth&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Candidate terms:
+   x
+   x^2
+   x^3
+Raw symbolic fit:
+F(x) = -0.05361 - 2.485*x - 0.7094*x^3
+MSE = 1.1561e-01
+BIC = -30.16
+
+Neural-distilled symbolic fit:
+F(x) = -0.008211 - 2.421*x - 0.7456*x^3
+MSE = 1.3434e-01
+BIC = -465.34
+
+MSE of raw symbolic fit vs. true dense curve: 3.9546e-03
+MSE of neural-distilled symbolic fit vs. true dense curve: 2.4563e-04
+</pre></div>
+</div>
+<img alt="../../_images/50c7bc309547be34bc6a660f40b0e0359c7c7c4d1114e54240cf77d7ee1c6491.png" src="../../_images/50c7bc309547be34bc6a660f40b0e0359c7c7c4d1114e54240cf77d7ee1c6491.png" />
+<img alt="../../_images/535e3035dd3407acc60dd5aab343c50bf0ecd2694041135b50c3ca7edb4336ef.png" src="../../_images/535e3035dd3407acc60dd5aab343c50bf0ecd2694041135b50c3ca7edb4336ef.png" />
+</div>
+</div>
+<section id="span-style-color-lightgreen-conclusions-from-the-executed-results-span">
+<h3><span style="color:LightGreen">Conclusions from the Executed Results</span><a class="headerlink" href="#span-style-color-lightgreen-conclusions-from-the-executed-results-span" title="Permalink to this heading">#</a></h3>
+<p>In this run, the neural-distilled symbolic fit recovered a noticeably better approximation to the true force law than the direct symbolic fit to the raw noisy data. The dense-curve error dropped from about <span class="math notranslate nohighlight">\(3.95 \times 10^{-3}\)</span> for the raw symbolic model to about <span class="math notranslate nohighlight">\(2.46 \times 10^{-4}\)</span> after neural distillation, which is more than an order-of-magnitude improvement! This is also easily seen in the fit-truth residual plot.</p>
+<p>The main lesson is that the neural network helped by <span style="color:Violet">smoothing the noise</span> before equation discovery. With only 18 noisy samples, the direct symbolic fit still found the right qualitative structure, namely linear plus cubic terms, but its coefficients were pulled farther away from the true value generated in the data. The neural surrogate produced a cleaner dense curve, and symbolic regression on that curve returned coefficients closer to the underlying physics.</p>
+<p><span style="color:Violet">Advantages of the NN-assisted approach:</span></p>
+<ul class="simple">
+<li><p>It can denoise sparse or irregular measurements before symbolic discovery.</p></li>
+<li><p>It often yields more stable coefficients when the raw data are noisy.</p></li>
+<li><p>It lets us sample a learned surrogate on a dense grid, which can make the symbolic search easier.</p></li>
+<li><p>It can be extended to higher-dimensional or more complicated signals where a direct symbolic fit may struggle.</p></li>
+</ul>
+<p><span style="color:Violet">Disadvantages of the NN-assisted approach:</span></p>
+<ul class="simple">
+<li><p>It introduces an extra modeling layer, so there are more hyperparameters, more computation, and more ways to overfit.</p></li>
+<li><p>The neural network itself is not as interpretable, so the pipeline is less transparent end to end.</p></li>
+<li><p>If the network learns the wrong smooth trend, symbolic regression may faithfully distill the wrong equation.</p></li>
+<li><p>Reproducibility can be more sensitive to initialization, optimizer settings, and training duration than a direct symbolic fit.</p></li>
+</ul>
+<p><span style="color:Violet">Advantages of the direct non-NN symbolic fit:</span></p>
+<ul class="simple">
+<li><p>It is simpler, faster, and easier to inspect.</p></li>
+<li><p>The result depends only on the library, the score, and the observed data.</p></li>
+<li><p>When the data quality is already good, it may be all we need.</p></li>
+</ul>
+<p><span style="color:Violet">Disadvantages of the direct non-NN symbolic fit:</span></p>
+<ul class="simple">
+<li><p>It is more sensitive to noise and small-sample effects.</p></li>
+<li><p>Coefficients can drift even when the correct terms are selected.</p></li>
+<li><p>It may fail when the raw measurements are too sparse or too messy for a simple library search.</p></li>
+</ul>
+<p>So the practical conclusion is not that neural networks replace symbolic regression. Rather, they can serve as a useful front end when the measurements are noisy enough that a direct symbolic fit becomes brittle. If the data are already clean and plentiful, the simpler non-NN route remains attractive.</p>
+</section>
+</section>
+<section id="span-style-color-orange-parting-thoughts-span">
+<h2><span style="color:Orange">Parting Thoughts</span><a class="headerlink" href="#span-style-color-orange-parting-thoughts-span" title="Permalink to this heading">#</a></h2>
+<p>Real symbolic-regression systems can do much more. They may search over nested expressions, discover free constants inside nonlinear functions, enforce dimensional consistency, or combine equation discovery with differential equations and latent variables. Still, this notebook captures a core scientific idea: interpretable structure can often be recovered by balancing goodness of fit against complexity.</p>
+</section>
+<section id="span-style-color-orange-some-ideas-to-explore-further-span">
+<h2><span style="color:Orange">Some Ideas to Explore Further</span><a class="headerlink" href="#span-style-color-orange-some-ideas-to-explore-further-span" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use numerical derivatives from trajectory data to discover a governing equation such as <span class="math notranslate nohighlight">\(\ddot{x} = -\omega^2 x\)</span>.</p></li>
+<li><p>Add dimensional-analysis checks so that candidate terms with inconsistent units are automatically rejected.</p></li>
+<li><p>Compare this greedy search with LASSO, SINDy, or a genetic-programming symbolic regressor.</p></li>
+<li><p>Study how the discovered equation changes as you vary noise level, data quantity, or the candidate library.</p></li>
+<li><p>Build a hybrid pipeline where a neural network denoises the data and symbolic regression extracts the law.</p></li>
+</ul>
+</section>
 <section id="span-style-color-orange-acknowledgments-span">
 <h2><span style="color:Orange">Acknowledgments</span><a class="headerlink" href="#span-style-color-orange-acknowledgments-span" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Initial version: Mark Neubauer</p>
-<ul>
-<li><p>From APS GDS repository</p></li>
-</ul>
-</li>
+<li><p>Initial version: Mark Neubauer</p></li>
 </ul>
 <p>© Copyright 2026</p>
 </section>
@@ -605,6 +1543,29 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-helper-functions-span"><span style="color:Orange">Helper Functions</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-brief-overview-span"><span style="color:Orange">Brief Overview</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-mathematical-formulation-span"><span style="color:LightGreen">Mathematical Formulation</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-a-lightweight-symbolic-regression-engine-span"><span style="color:LightGreen">A Lightweight Symbolic Regression Engine</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-physics-guided-shortcuts-before-search-span"><span style="color:Orange">Physics-Guided Shortcuts Before Search</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-dimensional-analysis-span"><span style="color:LightGreen">Dimensional Analysis</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-pink-example-ohm-s-law-span"><span style="color:Pink">Example: Ohm’s Law</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-symmetry-example-span"><span style="color:LightGreen">Symmetry Example</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-constant-acceleration-span"><span style="color:Orange">Example: Constant Acceleration</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-restoring-force-in-an-anharmonic-oscillator-span"><span style="color:Orange">Example: Restoring Force in an Anharmonic Oscillator</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-example-an-inverse-square-law-span"><span style="color:Orange">Example: An Inverse-Square Law</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-neural-networks-for-symbolic-regression-span"><span style="color:Orange">Neural Networks for Symbolic Regression</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-lightgreen-conclusions-from-the-executed-results-span"><span style="color:LightGreen">Conclusions from the Executed Results</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-parting-thoughts-span"><span style="color:Orange">Parting Thoughts</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-some-ideas-to-explore-further-span"><span style="color:Orange">Some Ideas to Explore Further</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-style-color-orange-acknowledgments-span"><span style="color:Orange">Acknowledgments</span></a></li>
 </ul>
   </nav></div>
