@@ -7,3 +7,4 @@
 * {doc}`projects/Project_02_Radiotherapy`
 * {doc}`projects/Project_02_TailPulsePileupRejection`
 * {doc}`projects/Project_02_BentPipeSurrogate`
+* {doc}`projects/Project_02_Project_02_Wake_Behind_Cylinder`
